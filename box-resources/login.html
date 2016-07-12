@@ -12,9 +12,7 @@
 		<![endif]-->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-	<link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
-
-
+		<link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
 <style rel='stylesheet' type='text/css'>
 body{
     background-color: #2B2B2B;   
@@ -242,7 +240,9 @@ cm.sendAccountNamePw = function(username, pw) {
 		data.username=username;
 		data.cellUrl = cm.rootUrl;
 		data.profile = cm.profile;
-		location.href = "main.html#" + JSON.stringify(data);
+		sessionStorage.setItem("sessionData", JSON.stringify(data));
+		location.href = "main.html";
+		//location.href = "main.html#" + JSON.stringify(data);
 	}).fail(function(){
 		alert("fail");
 	});
@@ -259,7 +259,7 @@ cm.clock = function() {
      h = h - 12;
    }
    $('#tHour').html(h);
-   $('#tMin').html(now.getMinutes());
+   $('#tMin').html(("" + (100 + now.getMinutes())).substring(1,3));
    if (now.getSeconds()%2){
      $('#tClockSep').css("visibility","visible");
    } else {
@@ -270,16 +270,14 @@ cm.clock = function() {
 };
 
 </script>
-
 	</head>
-
-<body>
+	<body>
 
 <div class="container">
 	<div class="row login_box">
 	    <div class="col-md-12 col-xs-12" align="center">
             <div class="line"><h3><span id="tHour"></span> <span id="tClockSep">:</span> <span id="tMin"></span> <span id="tAmpm"></span></h3></div>
-            <div class="outter"><img id="imProfile" src="http://lorempixel.com/output/people-q-c-100-100-1.jpg" class="image-circle"/></div>   
+            <div class="outter"><img id="imProfile" src="" class="image-circle"/></div>   
             <h1 id="tProfileDisplayName">Guest</h1>
             <span id="tUrl">personium cell</span>
 	    </div>
@@ -312,6 +310,6 @@ cm.clock = function() {
         </div>
     </div>
 </div>
-</body>
+	</body>
 
 </html>
