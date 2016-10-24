@@ -197,8 +197,10 @@ var cm = {};
 
 var cellUrl = function() {
   var u = location.href;
-  if (u.indexOf("file:") == 0) {
-     return "https://demo.personium.io/akio-shimono/";
+  return "https://demo.personium.io/kyouhei-sakamoto/";
+  if (u.indexOf("http:") == 0) {
+     //return "https://demo.personium.io/akio-shimono/";
+     return "https://demo.personium.io/kyouhei-sakamoto/";
   }
   var i = u.indexOf("/", 8); // first slash
   i = u.indexOf("/", i + 1);  // second slash
