@@ -198,7 +198,7 @@ var cm = {};
 var cellUrl = function() {
   var u = location.href;
   return "https://demo.personium.io/kyouhei-sakamoto/";
-  if (u.indexOf("http:") == 0) {
+  if (u.indexOf("file:") == 0) {
      //return "https://demo.personium.io/akio-shimono/";
      return "https://demo.personium.io/kyouhei-sakamoto/";
   }
@@ -241,6 +241,9 @@ cm.sendAccountNamePw = function(username, pw) {
 	}).done(function(data) {
 		data.username=username;
 		data.cellUrl = cm.rootUrl;
+                var i = cm.rootUrl.indexOf("/"); // first slash
+                i = cm.rootUrl.indexOf("/", i + 2);  // second slash
+                data.baseUrl = cm.rootUrl.substring(0, i + 1);
 		data.profile = cm.profile;
 		sessionStorage.setItem("sessionData", JSON.stringify(data));
 		location.href = "main.html";

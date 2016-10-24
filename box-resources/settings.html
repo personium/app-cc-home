@@ -144,6 +144,28 @@ header {
               ha.addRole(); 
           });
           $('#b-del-role-ok').on('click', function () { ha.restDeleteRoleAPI(); });
+          $('#b-add-acclinkrole-ok').on('click', function () { ha.resrAddAccountLinkRole(); });
+          $('#b-del-acclinkrole-ok').on('click', function () { ha.restDeleteAccountLinkRole(); });
+          $('#ddlAccLinkRoleList').on('change', function () {
+              var value = $("#ddlAccLinkRoleList option:selected").val();
+              if (value === "") {
+                  $("#b-add-acclinkrole-ok").prop('disabled', true);
+              } else {
+                  ha.setLinkParam(value);
+                  $("#b-add-acclinkrole-ok").prop('disabled', false);
+              }
+          });
+          $('#addCheckAccountLinkRole').on('change', function () {
+              if (this.checked) {
+                  $("#ddlAddAccLinkRoleList").val("");
+                  $("#ddlAddAccLinkRoleList").prop('disabled', false);
+              } else {
+                  $("#ddlAddAccLinkRoleList").val("");
+                  $("#popupAddAccountLinkRoleErrorMsg").html("");
+                  $("#ddlAddAccLinkRoleList").prop('disabled', true);
+              }
+          });
+
           $('#pAddNewPassword').blur(function() {
               var bool = ha.charCheck($(this), "addChangeMessage");
               $('#b-add-account-ok').prop('disabled', !bool);
@@ -165,6 +187,8 @@ header {
           $('#addRoleName').blur(function() {
               ha.addRoleNameBlurEvent();
           });
+          $('#ddlAddAccLinkRoleList').blur(function() { ha.checkAccLinkRole(); });
+
           $("#modal-add-account").on("hidden.bs.modal", function () {
               $("#addAccountName").val("");
               document.getElementById("popupAddAccountNameErrorMsg").innerHTML = "";
@@ -172,6 +196,7 @@ header {
               $("#addChangeMessage").html("");
               $("#pAddConfirm").val("");
               $("#addConfirmMessage").html("");
+              document.getElementById("addCheckAccountLinkRole").checked = false;
           });
           $("#modal-edit-account").on("hidden.bs.modal", function () {
               $("#editAccountName").val("");
@@ -191,6 +216,14 @@ header {
               $("#addRoleName").val("");
               $("#header-role").html("Add Role");
               $("#b-add-role-ok").html("Add");
+          });
+          $("#modal-add-acclinkrole").on("show.bs.modal", function () {
+              $("#ddlAccLinkRoleList").val("");
+              $("#b-add-acclinkrole-ok").prop('disabled', true);
+          });
+          $("#modal-add-account").on("show.bs.modal", function () {
+              $("#ddlAddAccLinkRoleList").val("");
+              $("#ddlAddAccLinkRoleList").prop('disabled', true);
           });
 
           // menu-toggle
@@ -240,6 +273,30 @@ header {
       	}
       	return false;
       };
+      ha.slideToggle = function(id) {
+          $("#" + id).slideToggle();
+      }
+      ha.checkAccLinkRole = function() {
+          var value = $("#ddlAddAccLinkRoleList option:selected").val();
+          if (value === "") {
+              $("#popupAddAccountLinkRoleErrorMsg").html("Please select a role.");
+              return false;
+          } else {
+              $("#popupAddAccountLinkRoleErrorMsg").html("");
+              ha.setLinkParam(value);
+              return true;
+          }
+      };
+      ha.setLinkParam = function(value) {
+          var roleMatch = value.match(/(.+)\(/);
+          ha.linkRoleName = roleMatch[1];
+          var boxMatch = value.match(/\((.+)\)/);
+          var boxName = boxMatch[1];
+          if (boxName === "[main]") {
+              boxName = null;
+          }
+          ha.linkBoxName = boxName;
+      };
 
       // Account
       ha.getAccountList = function() {
@@ -264,14 +321,78 @@ header {
         })
         for (var i in results) {
           var acc = json.d.results[i];
-          var html = '<div class="list-group-item">' + acc.Name
+          var html = '<div class="list-group-item">';
+          html += '<a id="accountLinkToRoleToggle' + i + '" onClick="ha.slideToggle(\'accountRoleMenu' + i + '\')">' + acc.Name + '</a>';
           if (acc.Name !== ha.user.username) {
               html += '<a class="edit-button list-group-item" href="#" onClick="ha.dispEditModal(\'' + acc.Name + '\');return(false)">edit</a>'
-                   + '<a class="del-button list-group-item" href="#" onClick="ha.dispDelModal(\'' + acc.Name + '\');return(false)">del</a>'
+                   + '<a class="del-button list-group-item" href="#" onClick="ha.dispDelModal(\'' + acc.Name + '\');return(false)">del</a>';
           }
           html += '</div>';
+          html += '<nav class="accountRoleMenu" id="accountRoleMenu' + i + '"><ul><div id="dvAccountRoleList' + i + '"></div><div>';
+          html += '<a class="list-group-item" href="#" onClick="ha.setLinkAccName(\'' + acc.Name + '\',\'' + i + '\')" data-toggle="modal" data-target="#modal-add-acclinkrole">＋ Assigning Roles</a></div>';
           $("#dvAccountList").append(html);
+          ha.getAccountRoleList(acc.Name, i);
         }
+        $(".accountRoleMenu").css("display", "none");
+      }
+      ha.setLinkAccName = function(accName, no) {
+        ha.linkAccName = accName;
+        ha.linkAccNameNo = no;
+      }
+      ha.getAccountRoleList = function(accName, no) {
+        $("#dvAccountRoleList" + no).empty();
+        $.ajax({
+                type: "GET",
+                url:ha.user.cellUrl + '__ctl/Account(Name=\'' + accName + '\')/$links/_Role',
+                //data:{'url':ha.user.cellUrl + '__ctl/Role(\'rolename\')'},
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token,
+                  'Accept':'application/json'
+                }
+        }).done(function(data) {
+                  ha.dispAccountRoleList(data, accName, no);
+        }).fail(function(data) {
+                  $("#dvAccountRoleList").empty();
+        });
+      }
+      ha.dispAccountRoleList = function(json, accName, no) {
+        var results = json.d.results;
+        results.sort(function(val1, val2) {
+          return (val1.Name < val2.Name ? 1 : -1);
+        })
+        for (var i in results) {
+          var acc = json.d.results[i];
+          var url = acc.uri;
+          //var re = new RegExp("\(Name='(.+)',", "g");
+          //var re = new RegExp("Name");
+          var matchName = url.match(/\(Name='(.+)',/);
+          var name = matchName[1];
+          var matchBox = url.match(/_Box\.Name='(.+)'/);
+          var boxName = "";
+          if (matchBox != null) {
+            boxName = matchBox[1];
+          } else {
+            boxName = "[main]";
+          }
+          var html = '<div class="list-group-item">';
+          html += '<td>' + name + '</td><br>';
+          html += '<td>' + boxName + '</td>';
+          html += '<a class="del-button list-group-item" href="#" onClick="ha.dispDelAccountRoleModal(\'' + accName + '\',\'' + name + '\',\'' + boxName + '\',\'' + no + '\');return(false)">del</a>';
+          html += '</div>';
+          $("#dvAccountRoleList" + no).append(html);
+        }
+      }
+      ha.dispDelAccountRoleModal = function(accName, roleName, boxName, no) {
+          ha.linkAccName = accName;
+          ha.linkRoleName = roleName;
+          if (boxName === "[main]") {
+            ha.linkBoxName = null;
+          } else {
+            ha.linkBoxName = boxName
+          }
+          ha.linkAccNameNo = no;
+          $("#dvDelTextAccLinkRole").html("Remove the association between this role( " + roleName + ":" + boxName + " ). Is it OK?");
+          $('#modal-del-acclinkrole').modal('show');
       }
       ha.dispEditModal = function(name) {
           ha.updUser = name;
@@ -348,7 +469,16 @@ header {
                               "Name" : name
               };
 
-              ha.restCreateAccountAPI(jsonData, pass);
+              // Assigning Roles
+              var chkObj = document.getElementById("addCheckAccountLinkRole");
+              if (chkObj.checked) {
+                if (ha.checkAccLinkRole()) {
+                  ha.linkAccName = name;
+                  ha.restCreateAccountAPI(jsonData, pass);
+                }
+              } else {
+                ha.restCreateAccountAPI(jsonData, pass);
+              }
           }
         }
       };
@@ -427,12 +557,28 @@ header {
         results.sort(function(val1, val2) {
           return (val1.Name < val2.Name ? 1 : -1);
         })
+        var objSel = document.getElementById("ddlAccLinkRoleList");
+        if (objSel.hasChildNodes()) {
+          while (objSel.childNodes.length > 0) {
+            objSel.removeChild(objSel.firstChild);
+          }
+        }
+        objSel = document.getElementById("ddlAddAccLinkRoleList");
+        if (objSel.hasChildNodes()) {
+          while (objSel.childNodes.length > 0) {
+            objSel.removeChild(objSel.firstChild);
+          }
+        }
+        $("#ddlAccLinkRoleList").append('<option value="">Please select a Role</option>');
+        $("#ddlAddAccLinkRoleList").append('<option value="">Please select a Role</option>');
         for (var i in results) {
           var objRole = json.d.results[i];
           var boxName = objRole["_Box.Name"];
           if (boxName === null) {
             boxName = "[main]";
           }
+
+          // role list
           var html = '<div class="list-group-item">';
           html += '<td>' + objRole.Name + '</td><br>';
           html += '<td>' + boxName + '</td>';
@@ -440,6 +586,10 @@ header {
           html += '<a class="del-button list-group-item" href="#" onClick="ha.dispDelRoleModal(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">del</a>';
           html += '</div>';
           $("#dvRoleList").append(html);
+
+          // role list(selectBox)
+          $("#ddlAccLinkRoleList").append('<option value="' + objRole.Name + '(' + boxName + ')">' + objRole.Name + '(' + boxName + ')</option>');
+          $("#ddlAddAccLinkRoleList").append('<option value="' + objRole.Name + '(' + boxName + ')">' + objRole.Name + '(' + boxName + ')</option>');
         }
       }
       ha.dispEditRoleModal = function(name, box) {
@@ -477,7 +627,7 @@ header {
         results.sort(function(val1, val2) {
           return (val1.Name < val2.Name ? 1 : -1);
         })
-        $("#ddlRoleBoxList").append('<option value="">Boxを選択して下さい</option>');
+        $("#ddlRoleBoxList").append('<option value="">Please select a Box</option>');
         $("#ddlRoleBoxList").append('<option value="[main]">[main]</option>');
         for (var i in results) {
           var objBox = json.d.results[i];
@@ -712,6 +862,9 @@ header {
                   'X-Dc-Credential': pass
                 }
         }).done(function(data) {
+          if (document.getElementById("addCheckAccountLinkRole").checked) {
+            ha.resrAddAccountLinkRole()
+          }
           ha.getAccountList();
           $("#modal-add-account").modal("hide");
         }).fail(function(data) {
@@ -842,6 +995,53 @@ header {
         }).done(function(data) {
           ha.getRoleList();
           $("#modal-del-role").modal("hide");
+        }).fail(function(data) {
+          var res = JSON.parse(data.responseText);
+          alert("An error has occurred.\n" + res.message.value);
+        });
+      };
+      ha.resrAddAccountLinkRole = function(url) {
+        var uri = ha.user.cellUrl + '__ctl/Role';
+        if (ha.linkBoxName === null) {
+          uri += '(\'' + ha.linkRoleName + '\')';
+        } else {
+          uri += '(Name=\'' + ha.linkRoleName + '\',_Box\.Name=\'' + ha.linkBoxName + '\')';
+        }
+        var json = {"uri":uri};
+
+        $.ajax({
+                type: "POST",
+                url: ha.user.cellUrl + '__ctl/Account(Name=\'' + ha.linkAccName + '\')/$links/_Role',
+                data: JSON.stringify(json),
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token,
+                  'Accept':'application/json'
+                }
+        }).done(function(data) {
+          ha.getAccountRoleList(ha.linkAccName, ha.linkAccNameNo);
+          $("#modal-add-acclinkrole").modal("hide");
+        }).fail(function(data) {
+          var res = JSON.parse(data.responseText);
+          alert("An error has occurred.\n" + res.message.value);
+        });
+      }
+      ha.restDeleteAccountLinkRole = function() {
+        var api = '__ctl/Account(Name=\'' + ha.linkAccName + '\')/$links/_Role';
+        if (ha.linkBoxName === null) {
+          api += '(\'' + ha.linkRoleName + '\')';
+        } else {
+          api += '(Name=\'' + ha.linkRoleName + '\',_Box.Name=\'' + ha.linkBoxName + '\')';
+        }
+
+        $.ajax({
+                type: "DELETE",
+                url: ha.user.cellUrl + api,
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token
+                }
+        }).done(function(data) {
+          ha.getAccountRoleList(ha.linkAccName, ha.linkAccNameNo);
+          $("#modal-del-acclinkrole").modal("hide");
         }).fail(function(data) {
           var res = JSON.parse(data.responseText);
           alert("An error has occurred.\n" + res.message.value);
@@ -1000,30 +1200,46 @@ header {
                     <h4 class="modal-title">Add Account</h4>
                 </div>
                 <div class="modal-body">
-                    <div id="dvAddName">Name</div>
-                    <div id="dvTextAddName" style="margin-bottom: 10px;">
-                      <input type="text" id="addAccountName" onblur="ha.addAccountNameBlurEvent();">
-                      <span class="popupAlertArea" style="color:red">
-                        <aside id="popupAddAccountNameErrorMsg"> </aside>
-                      </span>
-                    </div>
-                    
-                    <div id="dvAddPassword">Password</div>
-                    <div id="dvTextAddNewPassword" style="margin-bottom: 10px;">
-                      <input type="password" placeholder="New Password (6 to 32 Character, Character Type(Half Size Alphanumeric, '-', '_'))" id="pAddNewPassword">
-                      <span class="popupAlertArea" style="color:red">
-                        <aside id="addChangeMessage"> </aside>
-                      </span>
-                    </div>
-                    
-                    <div id="dvAddConfirm">type new password again</div>
-                    <div id="dvTextAddConfirm" style="margin-bottom: 10px;">
-                      <input type="password" placeholder="Confirm (type new password again)" id="pAddConfirm">
-                      <span class="popupAlertArea" style="color:red">
-                        <aside id="addConfirmMessage"> </aside>
-                      </span>
-                    </div>
-                    
+                    <table ><tr>
+                    <td style="width: 250px">
+                        <div id="dvAddName">Name</div>
+                        <div id="dvTextAddName" style="margin-bottom: 10px;">
+                          <input type="text" id="addAccountName" onblur="ha.addAccountNameBlurEvent();">
+                          <span class="popupAlertArea" style="color:red">
+                            <aside id="popupAddAccountNameErrorMsg"> </aside>
+                          </span>
+                        </div>
+                        
+                        <div id="dvAddPassword">Password</div>
+                        <div id="dvTextAddNewPassword" style="margin-bottom: 10px;">
+                          <input type="password" placeholder="New Password (6 to 32 Character, Character Type(Half Size Alphanumeric, '-', '_'))" id="pAddNewPassword">
+                          <span class="popupAlertArea" style="color:red">
+                            <aside id="addChangeMessage"> </aside>
+                          </span>
+                        </div>
+                        
+                        <div id="dvAddConfirm">type new password again</div>
+                        <div id="dvTextAddConfirm" style="margin-bottom: 10px;">
+                          <input type="password" placeholder="Confirm (type new password again)" id="pAddConfirm">
+                          <span class="popupAlertArea" style="color:red">
+                            <aside id="addConfirmMessage"> </aside>
+                          </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div id="dvCheckAddAccountLinkRole" style="margin-bottom: 10px;">
+                          <input type="checkbox" id="addCheckAccountLinkRole">&nbsp;Role assignment
+                        </div>
+                        <div id="dvSelectAddAccountLinkRole" style="margin-bottom: 10px;">
+                          <select name="" id="ddlAddAccLinkRoleList">
+                            <option>Select a role</option>
+                          </select>
+                          <span class="popupAlertArea" style="color:red">
+                            <aside id="popupAddAccountLinkRoleErrorMsg"> </aside>
+                          </span>
+                        </div>
+                    </td>
+                    </tr></table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -1162,7 +1378,7 @@ header {
                     <div id="dvAddRoleBox">Select a Box that this role is to use</div>
                     <div id="dvSelectAddRoleBox" style="margin-bottom: 10px;">
                       <select name="" id="ddlRoleBoxList">
-                        <option>Boxを選択</option>
+                        <option>Please select a Box.</option>
                       </select>
                       <span class="popupAlertArea" style="color:red">
                         <aside id="addRoleBoxMessage"> </aside>
@@ -1192,6 +1408,51 @@ header {
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" id="b-del-role-ok" >Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assigning Role -->
+    <div id="modal-add-acclinkrole" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="header-role">Assigning Role</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="dvAddAccLinkRole">Select a role to assign</div>
+                    <div id="dvSelectAddAccLinkRole" style="margin-bottom: 10px;">
+                      <select name="" id="ddlAccLinkRoleList">
+                        <option>Select a role</option>
+                      </select>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="b-add-acclinkrole-ok">Assign</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Assigning Role -->
+    <div id="modal-del-acclinkrole" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">Delete External Cell</h4>
+                </div>
+                <div class="modal-body">
+                     <div id="dvDelTextAccLinkRole"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="b-del-acclinkrole-ok" >Delete</button>
                 </div>
             </div>
         </div>
