@@ -76,24 +76,1009 @@ header {
     text-align; left;
    color: #030;
 }
+.toggle:after{
+    position: absolute;
+    top: 30%;
+    right: 20px;
+    width: 10px;
+    height: 10px;
+    content: "";
+    border-top: 2px solid #7a0;
+    border-right: 2px solid #7a0;
+    -webkit-transform: rotate(135deg);
+    transform: rotate(135deg);
+}
+
+.toggle.active:after {
+    top: 40%;
+    -moz-transform: translate(0, 50%);
+    -ms-transform: translate(0, 50%);
+    -webkit-transform: translate(0, 50%);
+    transform: translate(0, 50%);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.edit-button {
+    position: absolute;
+    top : 10%;
+    padding: 5px;
+    right: 50px;
+    border: 1px solid #606060;
+}
+.del-button {
+    position: absolute;
+    top : 10%;
+    padding: 5px;
+    right: 10px;
+    border: 1px solid #606060;
+}
+.image-circle{
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #000;
+    margin-right: 10px;
+}
 
     </style>
     <script type="text/javascript">
       var ha = {};
       ha.user = JSON.parse(sessionStorage.getItem("sessionData"));
+      ha.updUser = "";
       
-      if (!ha.user) {
-      }
       $(document).ready(function() {
           ha.populateProfile();
+          ha.getAccountList();
+          ha.getExtCellList();
+          ha.getRoleList();
+          ha.getRoleBoxList();
+          $('#b-add-account-ok').on('click', function () { ha.addAccount(); });
+          $('#b-edit-account-ok').on('click', function () { ha.editAccount(); });
+          $('#b-del-account-ok').on('click', function () { ha.restDeleteAccountAPI(); });
+          $('#b-add-extcell-ok').on('click', function () { ha.addExtCell(); });
+          $('#b-del-extcell-ok').on('click', function () { ha.restDeleteExtCellAPI(); });
+          $('#b-add-role-ok').on('click', function () { 
+              ha.addRole(); 
+          });
+          $('#b-del-role-ok').on('click', function () { ha.restDeleteRoleAPI(); });
+          $('#b-add-acclinkrole-ok').on('click', function () { ha.resrAddAccountLinkRole(); });
+          $('#b-del-acclinkrole-ok').on('click', function () { ha.restDeleteAccountLinkRole(); });
+          $('#ddlAccLinkRoleList').on('change', function () {
+              var value = $("#ddlAccLinkRoleList option:selected").val();
+              if (value === "") {
+                  $("#b-add-acclinkrole-ok").prop('disabled', true);
+              } else {
+                  ha.setLinkParam(value);
+                  $("#b-add-acclinkrole-ok").prop('disabled', false);
+              }
+          });
+          $('#addCheckAccountLinkRole').on('change', function () {
+              if (this.checked) {
+                  $("#ddlAddAccLinkRoleList").val("");
+                  $("#ddlAddAccLinkRoleList").prop('disabled', false);
+              } else {
+                  $("#ddlAddAccLinkRoleList").val("");
+                  $("#popupAddAccountLinkRoleErrorMsg").html("");
+                  $("#ddlAddAccLinkRoleList").prop('disabled', true);
+              }
+          });
+
+          $('#pAddNewPassword').blur(function() {
+              var bool = ha.charCheck($(this), "addChangeMessage");
+              $('#b-add-account-ok').prop('disabled', !bool);
+          });
+          $('#pEditNewPassword').blur(function() {
+              var bool = ha.charCheck($(this), "editChangeMessage");
+              $('#b-edit-account-ok').prop('disabled', !bool);
+          });
+          $('#pAddConfirm').blur(function() {
+              ha.changePassCheck($("#pAddNewPassword").val(), $("#pAddConfirm").val(), "addConfirmMessage");
+          });
+          $('#pEditConfirm').blur(function() {
+              ha.changePassCheck($("#pEditNewPassword").val(), $("#pEditConfirm").val(), "editConfirmMessage");
+          });
+          $('#addExtCellUrl').blur(function() {
+              var bool = ha.urlBlurEvent();
+              $('#b-add-extcell-ok').prop('disabled', !bool);
+          });
+          $('#addRoleName').blur(function() {
+              ha.addRoleNameBlurEvent();
+          });
+          $('#ddlAddAccLinkRoleList').blur(function() { ha.checkAccLinkRole(); });
+
+          $("#modal-add-account").on("hidden.bs.modal", function () {
+              $("#addAccountName").val("");
+              document.getElementById("popupAddAccountNameErrorMsg").innerHTML = "";
+              $("#pAddNewPassword").val("");
+              $("#addChangeMessage").html("");
+              $("#pAddConfirm").val("");
+              $("#addConfirmMessage").html("");
+              document.getElementById("addCheckAccountLinkRole").checked = false;
+          });
+          $("#modal-edit-account").on("hidden.bs.modal", function () {
+              $("#editAccountName").val("");
+              document.getElementById("popupEditAccountNameErrorMsg").innerHTML = "";
+              $("#pEditNewPassword").val("");
+              $("#editChangeMessage").html("");
+              $("#pEditConfirm").val("");
+              $("#editConfirmMessage").html("");
+          });
+          $("#modal-add-extcell").on("hidden.bs.modal", function () {
+              $("#addExtCellUrl").val("");
+              $("#popupAddExtCellUrlErrorMsg").html("");
+          });
+          $("#modal-add-role").on("hidden.bs.modal", function () {
+              ha.updUser = null;
+              ha.updBox = null;
+              $("#addRoleName").val("");
+              $("#header-role").html("Add Role");
+              $("#b-add-role-ok").html("Add");
+          });
+          $("#modal-add-acclinkrole").on("show.bs.modal", function () {
+              $("#ddlAccLinkRoleList").val("");
+              $("#b-add-acclinkrole-ok").prop('disabled', true);
+          });
+          $("#modal-add-account").on("show.bs.modal", function () {
+              $("#ddlAddAccLinkRoleList").val("");
+              $("#ddlAddAccLinkRoleList").prop('disabled', true);
+          });
+
+          // menu-toggle
+          $(".accountMenu").css("display", "none");
+          $("#accountToggle.toggle").on("click", function() {
+            $(this).toggleClass("active");
+            $(".accountMenu").slideToggle();
+          });
+          $(".extcellMenu").css("display", "none");
+          $("#extcellToggle.toggle").on("click", function() {
+            $(this).toggleClass("active");
+            $(".extcellMenu").slideToggle();
+          });
+          $(".roleMenu").css("display", "none");
+          $("#roleToggle").on("click", function() {
+            $(this).toggleClass("active");
+            $(".roleMenu").slideToggle();
+          });
       });
+      ha.getName = function(path) {
+        var collectionName = path;
+        var recordsCount = 0;
+        if (collectionName != undefined) {
+                recordsCount = collectionName.length;
+                var lastIndex = collectionName.lastIndexOf("/");
+                if (recordsCount - lastIndex === 1) {
+                        collectionName = path.substring(0, recordsCount - 1);
+                        recordsCount = collectionName.length;
+                        lastIndex = collectionName.lastIndexOf("/");
+                }
+                collectionName = path.substring(lastIndex + 1, recordsCount);
+        }
+        return collectionName;
+      };
+      ha.getExternalCellInfo = function(uri) {
+        // function getExternalCellName(uri) {
+        var arrUri = uri.split("/");
+        if (arrUri.length < 6) {
+            var arrExtCellInfo = new Array();
+      	    arrExtCellInfo.push(arrUri[2]);
+      	    var externalCellName = arrUri[3];
+      	    if (externalCellName != undefined && externalCellName.length == 0) {
+      	        externalCellName = undefined;
+      	    }
+            arrExtCellInfo.push(externalCellName);
+      	    return arrExtCellInfo;
+      	}
+      	return false;
+      };
+      ha.slideToggle = function(id) {
+          $("#" + id).slideToggle();
+      }
+      ha.checkAccLinkRole = function() {
+          var value = $("#ddlAddAccLinkRoleList option:selected").val();
+          if (value === "") {
+              $("#popupAddAccountLinkRoleErrorMsg").html("Please select a role.");
+              return false;
+          } else {
+              $("#popupAddAccountLinkRoleErrorMsg").html("");
+              ha.setLinkParam(value);
+              return true;
+          }
+      };
+      ha.setLinkParam = function(value) {
+          var roleMatch = value.match(/(.+)\(/);
+          ha.linkRoleName = roleMatch[1];
+          var boxMatch = value.match(/\((.+)\)/);
+          var boxName = boxMatch[1];
+          if (boxName === "[main]") {
+              boxName = null;
+          }
+          ha.linkBoxName = boxName;
+      };
+
+      // Account
+      ha.getAccountList = function() {
+        $("#dvAccountList").empty();
+        $.ajax({
+                type: "GET",
+                url:ha.user.cellUrl + '__ctl/Account',
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token,
+                  'Accept':'application/json'
+                }
+        }).done(function(data) {
+                  ha.dispAccountList(data);
+        }).fail(function(data) {
+                  $("#dvAccountList").empty();
+        });
+      }
+      ha.dispAccountList = function(json) {
+        var results = json.d.results;
+        results.sort(function(val1, val2) {
+          return (val1.Name < val2.Name ? 1 : -1);
+        })
+        for (var i in results) {
+          var acc = json.d.results[i];
+          var html = '<div class="list-group-item">';
+          html += '<a id="accountLinkToRoleToggle' + i + '" onClick="ha.slideToggle(\'accountRoleMenu' + i + '\')">' + acc.Name + '</a>';
+          if (acc.Name !== ha.user.username) {
+              html += '<a class="edit-button list-group-item" href="#" onClick="ha.dispEditModal(\'' + acc.Name + '\');return(false)">edit</a>'
+                   + '<a class="del-button list-group-item" href="#" onClick="ha.dispDelModal(\'' + acc.Name + '\');return(false)">del</a>';
+          }
+          html += '</div>';
+          html += '<nav class="accountRoleMenu" id="accountRoleMenu' + i + '"><ul><div id="dvAccountRoleList' + i + '"></div><div>';
+          html += '<a class="list-group-item" href="#" onClick="ha.setLinkAccName(\'' + acc.Name + '\',\'' + i + '\')" data-toggle="modal" data-target="#modal-add-acclinkrole">＋ Assigning Roles</a></div>';
+          $("#dvAccountList").append(html);
+          ha.getAccountRoleList(acc.Name, i);
+        }
+        $(".accountRoleMenu").css("display", "none");
+      }
+      ha.setLinkAccName = function(accName, no) {
+        ha.linkAccName = accName;
+        ha.linkAccNameNo = no;
+      }
+      ha.getAccountRoleList = function(accName, no) {
+        $("#dvAccountRoleList" + no).empty();
+        $.ajax({
+                type: "GET",
+                url:ha.user.cellUrl + '__ctl/Account(Name=\'' + accName + '\')/$links/_Role',
+                //data:{'url':ha.user.cellUrl + '__ctl/Role(\'rolename\')'},
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token,
+                  'Accept':'application/json'
+                }
+        }).done(function(data) {
+                  ha.dispAccountRoleList(data, accName, no);
+        }).fail(function(data) {
+                  $("#dvAccountRoleList").empty();
+        });
+      }
+      ha.dispAccountRoleList = function(json, accName, no) {
+        var results = json.d.results;
+        results.sort(function(val1, val2) {
+          return (val1.Name < val2.Name ? 1 : -1);
+        })
+        for (var i in results) {
+          var acc = json.d.results[i];
+          var url = acc.uri;
+          //var re = new RegExp("\(Name='(.+)',", "g");
+          //var re = new RegExp("Name");
+          var matchName = url.match(/\(Name='(.+)',/);
+          var name = matchName[1];
+          var matchBox = url.match(/_Box\.Name='(.+)'/);
+          var boxName = "";
+          if (matchBox != null) {
+            boxName = matchBox[1];
+          } else {
+            boxName = "[main]";
+          }
+          var html = '<div class="list-group-item">';
+          html += '<td>' + name + '</td><br>';
+          html += '<td>' + boxName + '</td>';
+          html += '<a class="del-button list-group-item" href="#" onClick="ha.dispDelAccountRoleModal(\'' + accName + '\',\'' + name + '\',\'' + boxName + '\',\'' + no + '\');return(false)">del</a>';
+          html += '</div>';
+          $("#dvAccountRoleList" + no).append(html);
+        }
+      }
+      ha.dispDelAccountRoleModal = function(accName, roleName, boxName, no) {
+          ha.linkAccName = accName;
+          ha.linkRoleName = roleName;
+          if (boxName === "[main]") {
+            ha.linkBoxName = null;
+          } else {
+            ha.linkBoxName = boxName
+          }
+          ha.linkAccNameNo = no;
+          $("#dvDelTextAccLinkRole").html("Remove the association between this role( " + roleName + ":" + boxName + " ). Is it OK?");
+          $('#modal-del-acclinkrole').modal('show');
+      }
+      ha.dispEditModal = function(name) {
+          ha.updUser = name;
+          $("#editAccountName").val(name);
+          $('#modal-edit-account').modal('show');
+      }
+      ha.dispDelModal = function(name) {
+          ha.updUser = name;
+          $("#dvDelText").html("You want to delete this account ( " + name + " ). Is it OK?");
+          $('#modal-del-account').modal('show');
+      }
+      ha.getExtCellList = function() {
+        $("#dvExtCellList").empty();
+        $.ajax({
+                type: "GET",
+                url:ha.user.cellUrl + '__ctl/ExtCell',
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token,
+                  'Accept':'application/json'
+                }
+        }).done(function(data) {
+                  ha.dispExtCellList(data);
+        }).fail(function(data) {
+                  $("#dvExtCellList").empty();
+        });
+      }
+      ha.getRoleList = function() {
+        $("#dvRoleList").empty();
+        $.ajax({
+                type: "GET",
+                url:ha.user.cellUrl + '__ctl/Role',
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token,
+                  'Accept':'application/json'
+                }
+        }).done(function(data) {
+                  ha.dispRoleList(data);
+        }).fail(function(data) {
+                  $("#dvRoleList").empty();
+        });
+      }
+      ha.getRoleBoxList = function() {
+        $.ajax({
+                type: "GET",
+                url: ha.user.cellUrl + '__ctl/Box',
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token,
+                  'Accept':'application/json'
+                }
+        }).done(function(data) {
+                  ha.dispRoleBoxList(data);
+        }).fail(function(data) {
+                  
+        });
+      }
+      ha.addAccountNameBlurEvent = function() {
+              var name = $("#addAccountName").val();
+              var nameSpan = "popupAddAccountNameErrorMsg";
+              var txtname = "#addAccountName";
+              ha.validateName(name, nameSpan, txtname);
+      };
+      ha.editAccountNameBlurEvent = function() {
+              var name = $("#editAccountName").val();
+              var nameSpan = "popupEditAccountNameErrorMsg";
+              var txtname = "#editAccountName";
+              ha.validateName(name, nameSpan, txtname);
+      };
+      ha.addAccount = function() {
+        var name = $("#addAccountName").val();
+        if (ha.validateName(name, "popupAddAccountNameErrorMsg")) {
+          var pass = $("#pAddNewPassword").val();
+          if (ha.changePassCheck($("#pAddNewPassword").val(), $("#pAddConfirm").val())) {
+              var jsonData = {
+                              "Name" : name
+              };
+
+              // Assigning Roles
+              var chkObj = document.getElementById("addCheckAccountLinkRole");
+              if (chkObj.checked) {
+                if (ha.checkAccLinkRole()) {
+                  ha.linkAccName = name;
+                  ha.restCreateAccountAPI(jsonData, pass);
+                }
+              } else {
+                ha.restCreateAccountAPI(jsonData, pass);
+              }
+          }
+        }
+      };
+      ha.editAccount = function() {
+        var keyName = ha.updUser;
+        var name = $("#editAccountName").val();
+        if (ha.validateName(name, "popupEditAccountNameErrorMsg")) {
+          var pass = $("#pEditNewPassword").val();
+          if (ha.changePassCheck($("#pEditNewPassword").val(), $("#pEditConfirm").val())) {
+              var jsonData = {
+                              "Name" : name
+              };
+
+              ha.restEditAccountAPI(jsonData, pass, keyName);
+          }
+        }
+      }
+
+      // External Cell
+      ha.dispExtCellList = function(json) {
+        var results = json.d.results;
+        results.sort(function(val1, val2) {
+          return (val1.Name < val2.Name ? 1 : -1);
+        })
+        for (var i in results) {
+          var extCell = json.d.results[i];
+          ha.getProfile(extCell.Url);
+          //var html = '<div class="list-group-item">';
+          //html += '<li><img id="extCellPicture" src="' + userProf.Image + '" alt="user">'
+          //html += '<li>' + userProf.DisplayName + '</li>'
+          //html += '<td>' + ha.getName(extCell.Url) + '</td><br>';
+          //html += '<td>' + extCell.Url + '</td>';
+          //html += '<a class="del-button list-group-item" href="#" onClick="ha.dispDelExtCellModal(\'' + extCell.Url + '\');return(false)">del</a>'
+          //html += '</div>';
+          //$("#dvExtCellList").append(html);
+        }
+      }
+      ha.addExtCell = function() {
+        var url = $("#addExtCellUrl").val();
+        //if (ha.validateName(name, "popupAddExtCellUrlErrorMsg")) {
+          var jsonData = {
+                          "Url" : url
+          };
+
+          ha.restCreateExtCellAPI(jsonData);
+        //}
+      };
+      ha.dispDelExtCellModal = function(url) {
+          ha.updUrl = url;
+          $("#dvDelTextExtCell").html("You want to delete this external cell ( " + url + " ). Is it OK?");
+          $('#modal-del-extcell').modal('show');
+      }
+      ha.urlBlurEvent = function() {
+              var schemaURL = $("#addExtCellUrl").val();
+              var extCellInfo = ha.getExternalCellInfo(schemaURL);
+              if (extCellInfo == false) {
+                  $("#popupAddExtCellUrlErrorMsg").html("無効なURL");
+                  return false;
+              }
+              var extCellName = extCellInfo[1];
+              var extCellURL = extCellInfo[0];
+              if (ha.validateSchemaURL(schemaURL, "popupAddExtCellUrlErrorMsg", "#addExtCellUrl")
+                && ha.validateURL(extCellURL, "popupAddExtCellUrlErrorMsg", "#addExtCellUrl")
+                && ha.validateExternalCellName(extCellName)
+                && ha.doesUrlContainSlash(schemaURL, "popupAddExtCellUrlErrorMsg", "#addExtCellUrl", "External cell URL must end with '/'")) {
+
+                return true;
+              }
+              
+              return false;
+      };
+
+      // Role
+      ha.dispRoleList = function(json) {
+        var results = json.d.results;
+        results.sort(function(val1, val2) {
+          return (val1.Name < val2.Name ? 1 : -1);
+        })
+        var objSel = document.getElementById("ddlAccLinkRoleList");
+        if (objSel.hasChildNodes()) {
+          while (objSel.childNodes.length > 0) {
+            objSel.removeChild(objSel.firstChild);
+          }
+        }
+        objSel = document.getElementById("ddlAddAccLinkRoleList");
+        if (objSel.hasChildNodes()) {
+          while (objSel.childNodes.length > 0) {
+            objSel.removeChild(objSel.firstChild);
+          }
+        }
+        $("#ddlAccLinkRoleList").append('<option value="">Please select a Role</option>');
+        $("#ddlAddAccLinkRoleList").append('<option value="">Please select a Role</option>');
+        for (var i in results) {
+          var objRole = json.d.results[i];
+          var boxName = objRole["_Box.Name"];
+          if (boxName === null) {
+            boxName = "[main]";
+          }
+
+          // role list
+          var html = '<div class="list-group-item">';
+          html += '<td>' + objRole.Name + '</td><br>';
+          html += '<td>' + boxName + '</td>';
+          html += '<a class="edit-button list-group-item" href="#" onClick="ha.dispEditRoleModal(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">edit</a>';
+          html += '<a class="del-button list-group-item" href="#" onClick="ha.dispDelRoleModal(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">del</a>';
+          html += '</div>';
+          $("#dvRoleList").append(html);
+
+          // role list(selectBox)
+          $("#ddlAccLinkRoleList").append('<option value="' + objRole.Name + '(' + boxName + ')">' + objRole.Name + '(' + boxName + ')</option>');
+          $("#ddlAddAccLinkRoleList").append('<option value="' + objRole.Name + '(' + boxName + ')">' + objRole.Name + '(' + boxName + ')</option>');
+        }
+      }
+      ha.dispEditRoleModal = function(name, box) {
+          ha.updUser = name;
+          if (box === "[main]") {
+            ha.updBox = null;
+          } else {
+            ha.updBox = box;
+          }
+          $("#addRoleName").val(name);
+          $("#ddlRoleBoxList").val(box);
+          $("#header-role").html("Edit Role");
+          $("#b-add-role-ok").html("Edit");
+          $('#modal-add-role').modal('show');
+      }
+      ha.dispDelRoleModal = function(name, box) {
+          ha.updUser = name;
+          if (box === "[main]") {
+            ha.updBox = null;
+          } else {
+            ha.updBox = box;
+          }
+          $('#dvDelTextRole').html("You want to delete this role ( Name:" + name + ", Box:" + box + " ). Is it OK?");
+          $('#modal-del-role').modal('show');
+      }
+      ha.dispRoleBoxList = function(json) {
+        var objSel = document.getElementById("ddlRoleBoxList");
+        if (objSel.hasChildNodes()) {
+          while (objSel.childNodes.length > 0) {
+            objSel.removeChild(objSel.firstChild);
+          }
+        }
+
+        var results = json.d.results;
+        results.sort(function(val1, val2) {
+          return (val1.Name < val2.Name ? 1 : -1);
+        })
+        $("#ddlRoleBoxList").append('<option value="">Please select a Box</option>');
+        $("#ddlRoleBoxList").append('<option value="[main]">[main]</option>');
+        for (var i in results) {
+          var objBox = json.d.results[i];
+          var boxName = objBox.Name;
+          $("#ddlRoleBoxList").append('<option value="' + boxName + '">' + boxName + '</option>');
+        }
+      }
+      ha.addRoleNameBlurEvent = function() {
+              var name = $("#addRoleName").val();
+              var nameSpan = "popupAddRoleNameErrorMsg";
+              var txtname = "#addRoleName";
+              ha.validateName(name, nameSpan, txtname);
+      };
+      ha.addRole = function() {
+        var name = $("#addRoleName").val();
+        var box = $("#ddlRoleBoxList option:selected").val();
+        if (box === "") {
+            $("#addRoleBoxMessage").html("Please Select Box");
+            return false;
+        } else if (box === "[main]") {
+            box = null;
+        }
+        //if (ha.validateName(name, "popupAddExtCellUrlErrorMsg")) {
+          var jsonData = {
+                          "Name" : name,
+                          "_Box.Name" : box
+          };
+
+          if (ha.updUser === null) {
+              ha.restCreateRoleAPI(jsonData);
+          } else {
+              ha.restEditRoleAPI(jsonData);
+          }
+        //}
+      };
+
+      // Validation Check
+      ha.validateName = function (displayName, displayNameSpan,txtID) {
+              var MINLENGTH = 1;
+              var MAXLENGTH = 128;
+              var letters = /[0-9a-zA-Z-_!\$\*=\^`\{\|\}~\.@]+$/;
+              var specialchar = /^[-_!\$\*=\^`\{\|\}~\.@]*$/;
+              var allowedLetters = /[0-9a-zA-Z-_!\$\*=\^`\{\|\}~\.@]+$/;
+              var lenDisplayName = displayName.length;
+              //this.removeStatusIcons(txtID);
+              document.getElementById(displayNameSpan).innerHTML = "";
+              if(lenDisplayName < MINLENGTH || displayName == undefined || displayName == null || displayName == "") {
+                      document.getElementById(displayNameSpan).innerHTML =  "Please enter name";
+                      //this.showErrorIcon(txtID);
+                      //uCellProfile.spinner.stop();
+                      return false;
+              } else if (lenDisplayName >= MAXLENGTH) {
+                      document.getElementById(displayNameSpan).innerHTML = "Name cannot exceed 128 characters";
+                      //uCellProfile.spinner.stop();
+                      //this.showErrorIcon(txtID);
+                      return false;
+              } else if (lenDisplayName != 0 && ! (displayName.match(letters))){
+                      document.getElementById(displayNameSpan).innerHTML = "Special characters: only “-” & “_” are allowed";
+                      //this.showErrorIcon(txtID);
+                      return false;
+              } else if (lenDisplayName != 0 && !(displayName.match(allowedLetters))) {
+                      document.getElementById(displayNameSpan).innerHTML = "Name can not start with special character";
+                      //this.showErrorIcon(txtID);
+                      return false;
+              } else if(lenDisplayName != 0 && (specialchar.toString().indexOf(displayName.substring(0,1)) >= 0)){
+                      document.getElementById(displayNameSpan).innerHTML = "Name can not start with special character";
+                      //this.showErrorIcon(txtID);
+                      //uCellProfile.spinner.stop();
+                      return false;
+              }
+              //this.showValidValueIcon(txtID);
+              return true;
+      };
+      ha.validateSchemaURL = function(schemaURL, schemaSpan, txtID) {
+        var isHttp = schemaURL.substring(0, 5);
+        var isHttps = schemaURL.substring(0, 6);
+        var minURLLength = schemaURL.length;
+        var validMessage = "Please enter valid schema URL";
+        var letters = /^[0-9a-zA-Z-_.\/]+$/;
+        var startHyphenUnderscore = /^[-_!@#$%^&*()=+]/;
+        var urlLength = schemaURL.length;
+        var schemaSplit = schemaURL.split("/");
+        var isDot = -1;
+        if(schemaURL.split("/").length > 2) {
+          if (schemaSplit[2].length>0) {
+            isDot = schemaSplit[2].indexOf(".");
+          }
+        }
+        var domainName = schemaURL.substring(8, urlLength);
+        if (schemaURL == "" || schemaURL == null || schemaURL == undefined) {
+          //removeStatusIcons(txtID);
+          return true;
+      	} else if ((isHttp != "http:" && isHttps != "https:")
+                  || (minURLLength <= 8)) {
+          document.getElementById(schemaSpan).innerHTML = validMessage;
+          //showErrorIcon(txtID);
+          return false;
+        } else if (urlLength > 1024) {
+          document.getElementById(schemaSpan).innerHTML = "URL cannot exceed 1024 characters";
+          //showErrorIcon(txtID);
+          return false;
+        } else if (domainName.match(startHyphenUnderscore)) {
+          document.getElementById(schemaSpan).innerHTML = "Domain name cannot start with special character";
+          //showErrorIcon(txtID);
+          return false;
+        } else if (!(domainName.match(letters))) {
+          document.getElementById(schemaSpan).innerHTML = "Special characters: only - & _ are allowed";
+          //showErrorIcon(txtID);
+          return false;
+        } else if (isDot == -1) {
+          document.getElementById(schemaSpan).innerHTML = validMessage;
+          //showErrorIcon(txtID);
+          return false;
+        } else if ((domainName.indexOf(".."))>-1 || (domainName.indexOf("//"))>-1) {
+          document.getElementById(schemaSpan).innerHTML = validMessage;
+          //showErrorIcon(txtID);
+          return false;
+        }
+        //showValidValueIcon(txtID);
+        document.getElementById(schemaSpan).innerHTML = "";
+        return true;
+      };
+      ha.validateURL = function(domainName,errorSpan,txtID) {
+	var letters = /^[0-9a-zA-Z-_.]+$/;
+	var startHyphenUnderscore = /^[-_!@#$%^&*()=+]/;
+	if (domainName == undefined){
+		document.getElementById(errorSpan).innerHTML = "Invalid URL";
+		//cellpopup.showErrorIcon(txtID);
+		return false;
+	}
+	var lenCellName = domainName.length;
+	if (domainName.match(startHyphenUnderscore)) {
+		document.getElementById(errorSpan).innerHTML = "Domain name cannot start with special character";
+		//cellpopup.showErrorIcon(txtID);
+		return false;
+	} else if (lenCellName != 0 && !(domainName.match(letters))) {
+		document.getElementById(errorSpan).innerHTML = "Special characters: only - & _ are allowed";
+		//cellpopup.showErrorIcon(txtID);
+		return false;
+	} 
+	document.getElementById(errorSpan).innerHTML = "";
+	//cellpopup.showValidValueIcon(txtID);
+	return true;
+      };
+      ha.validateExternalCellName = function(cellName) {
+	if (cellName == undefined) {
+		//cellpopup.showErrorIcon('#txtUrl');
+		document.getElementById("popupAddExtCellUrlErrorMsg").innerHTML = "Please enter external cell name";
+		return false;
+	}
+	var letters = /^[0-9a-zA-Z-_]+$/;
+	var startHyphenUnderscore = /^[-_]/;
+	var lenCellName = cellName.length;
+	if (lenCellName < 1) {
+		document.getElementById("popupAddExtCellUrlErrorMsg").innerHTML = "Please enter valid external cell URL";
+		//cellpopup.showErrorIcon('#txtUrl');
+		return false;
+	} else if (lenCellName > 128) {
+		document.getElementById("popupAddExtCellUrlErrorMsg").innerHTML = "External cell name cannot exceed 128 characters";
+		//cellpopup.showErrorIcon('#txtUrl');
+		return false;
+	} else if (cellName.match(startHyphenUnderscore)) {
+                document.getElementById("popupAddExtCellUrlErrorMsg").innerHTML = "External cell name cannot start with special character";
+                //cellpopup.showErrorIcon('#txtUrl');
+                return false;
+	} else if (lenCellName != 0 && !(cellName.match(letters))) {
+		document.getElementById("popupAddExtCellUrlErrorMsg").innerHTML = "Special characters: only - & _ are allowed";
+		//cellpopup.showErrorIcon('#txtUrl');
+		return false;
+	}
+	document.getElementById("popupAddExtCellUrlErrorMsg").innerHTML = "";
+	//cellpopup.showValidValueIcon('#txtUrl');
+	return true;
+      };
+      ha.doesUrlContainSlash = function(schemaURL, schemaSpan,txtID,message) {
+	if (schemaURL != undefined) {
+		if (!schemaURL.endsWith("/")) {
+			document.getElementById(schemaSpan).innerHTML = message;
+			//cellpopup.showErrorIcon(txtID);
+			return false;
+		}
+		document.getElementById(schemaSpan).innerHTML = "";
+		//cellpopup.showValidValueIcon(txtID);
+		return true;
+	}
+      };
+      ha.charCheck = function(check, displayNameSpan) {
+        var passLen = check.val().length;
+        var msg = "";
+        var bool = false;
       
+        if (passLen !== 0) {
+          bool = true;
+          if (passLen < 6 || passLen > 36) {
+            msg = "Please enter between 6 to 32 characters.";
+            bool = false;
+          } else if (check.val().match(/[^0-9a-zA-Z_-]+/)) {
+            msg = "Please enter Character Type(Half Size Alphanumeric, '-', '_')";
+            bool = false;
+          }
+      
+          $('#' + displayNameSpan).html(msg);
+        }
+      
+        return bool;
+      };
+      ha.changePassCheck = function(newpass, confirm, displayNameSpan) {
+        if (newpass === confirm) {
+          $('#' + displayNameSpan).html("");
+        } else {
+          $('#' + displayNameSpan).html("Password do not match. Please enter the correct password.");
+          return false
+        }
+      
+        return true;
+      };
       
       ha.populateProfile = function() {
         $("#tProfileDisplayName").html(ha.user.profile.DisplayName);
         $("#imProfilePicture").attr('src', ha.user.profile.Image);
       
       };
+
+      // API
+      ha.restCreateAccountAPI = function(json, pass) {
+        $.ajax({
+                type: "POST",
+                url: ha.user.cellUrl + '__ctl/Account',
+                data: JSON.stringify(json),
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token,
+                  'X-Dc-Credential': pass
+                }
+        }).done(function(data) {
+          if (document.getElementById("addCheckAccountLinkRole").checked) {
+            ha.resrAddAccountLinkRole()
+          }
+          ha.getAccountList();
+          $("#modal-add-account").modal("hide");
+        }).fail(function(data) {
+          var res = JSON.parse(data.responseText);
+          alert("An error has occurred.\n" + res.message.value);
+        });
+      };
+      ha.restEditAccountAPI = function(json, pass, updUser) {
+        $.ajax({
+                type: "PUT",
+                url: ha.user.cellUrl + '__ctl/Account(\'' + updUser + '\')',
+                data: JSON.stringify(json),
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token,
+                  'X-Dc-Credential': pass
+                }
+        }).done(function(data) {
+          ha.getAccountList();
+          $("#modal-edit-account").modal("hide");
+        }).fail(function(data) {
+          var res = JSON.parse(data.responseText);
+          alert("An error has occurred.\n" + res.message.value);
+        });
+      };
+      ha.restDeleteAccountAPI = function() {
+        $.ajax({
+                type: "DELETE",
+                url: ha.user.cellUrl + '__ctl/Account(\'' + ha.updUser + '\')',
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token
+                }
+        }).done(function(data) {
+          ha.getAccountList();
+          $("#modal-del-account").modal("hide");
+        }).fail(function(data) {
+          var res = JSON.parse(data.responseText);
+          alert("An error has occurred.\n" + res.message.value);
+        });
+      };
+      ha.restCreateExtCellAPI = function(json) {
+        $.ajax({
+                type: "POST",
+                url: ha.user.cellUrl + '__ctl/ExtCell',
+                data: JSON.stringify(json),
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token
+                }
+        }).done(function(data) {
+          ha.getExtCellList();
+          $("#modal-add-extcell").modal("hide");
+        }).fail(function(data) {
+          var res = JSON.parse(data.responseText);
+          alert("An error has occurred.\n" + res.message.value);
+        });
+      };
+      ha.restDeleteExtCellAPI = function() {
+        var urlArray = ha.updUrl.split("/");
+        var hProt = urlArray[0].substring(0, urlArray[0].length - 1);
+        var fqdn = urlArray[2];
+        var cellName = urlArray[3];
+        $.ajax({
+                type: "DELETE",
+                url: ha.user.cellUrl + '__ctl/ExtCell(\'' + hProt + '%3A%2F%2F' + fqdn + '%2F' + cellName + '%2F\')',
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token
+                }
+        }).done(function(data) {
+          ha.getExtCellList();
+          $("#modal-del-extcell").modal("hide");
+        }).fail(function(data) {
+          var res = JSON.parse(data.responseText);
+          alert("An error has occurred.\n" + res.message.value);
+        });
+      };
+      ha.restCreateRoleAPI = function(json) {
+        $.ajax({
+                type: "POST",
+                url: ha.user.cellUrl + '__ctl/Role',
+                data: JSON.stringify(json),
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token
+                }
+        }).done(function(data) {
+          ha.getRoleList();
+          $("#modal-add-role").modal("hide");
+        }).fail(function(data) {
+          var res = JSON.parse(data.responseText);
+          alert("An error has occurred.\n" + res.message.value);
+        });
+      };
+      ha.restEditRoleAPI = function(json) {
+        var api = '__ctl/Role';
+        if (ha.updBox === null) {
+          api += '(\'' + ha.updUser + '\')';
+        } else {
+          api += '(Name=\'' + ha.updUser + '\',_Box.Name=\'' + ha.updBox + '\')';
+        }
+
+        $.ajax({
+                type: "PUT",
+                url: ha.user.cellUrl + api,
+                data: JSON.stringify(json),
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token
+                }
+        }).done(function(data) {
+          ha.getRoleList();
+          $("#modal-add-role").modal("hide");
+        }).fail(function(data) {
+          var res = JSON.parse(data.responseText);
+          alert("An error has occurred.\n" + res.message.value);
+        });
+      };
+      ha.restDeleteRoleAPI = function() {
+        var api = '__ctl/Role';
+        if (ha.updBox === null) {
+          api += '(\'' + ha.updUser + '\')';
+        } else {
+          api += '(Name=\'' + ha.updUser + '\',_Box.Name=\'' + ha.updBox + '\')';
+        }
+
+        $.ajax({
+                type: "DELETE",
+                url: ha.user.cellUrl + api,
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token
+                }
+        }).done(function(data) {
+          ha.getRoleList();
+          $("#modal-del-role").modal("hide");
+        }).fail(function(data) {
+          var res = JSON.parse(data.responseText);
+          alert("An error has occurred.\n" + res.message.value);
+        });
+      };
+      ha.resrAddAccountLinkRole = function(url) {
+        var uri = ha.user.cellUrl + '__ctl/Role';
+        if (ha.linkBoxName === null) {
+          uri += '(\'' + ha.linkRoleName + '\')';
+        } else {
+          uri += '(Name=\'' + ha.linkRoleName + '\',_Box\.Name=\'' + ha.linkBoxName + '\')';
+        }
+        var json = {"uri":uri};
+
+        $.ajax({
+                type: "POST",
+                url: ha.user.cellUrl + '__ctl/Account(Name=\'' + ha.linkAccName + '\')/$links/_Role',
+                data: JSON.stringify(json),
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token,
+                  'Accept':'application/json'
+                }
+        }).done(function(data) {
+          ha.getAccountRoleList(ha.linkAccName, ha.linkAccNameNo);
+          $("#modal-add-acclinkrole").modal("hide");
+        }).fail(function(data) {
+          var res = JSON.parse(data.responseText);
+          alert("An error has occurred.\n" + res.message.value);
+        });
+      }
+      ha.restDeleteAccountLinkRole = function() {
+        var api = '__ctl/Account(Name=\'' + ha.linkAccName + '\')/$links/_Role';
+        if (ha.linkBoxName === null) {
+          api += '(\'' + ha.linkRoleName + '\')';
+        } else {
+          api += '(Name=\'' + ha.linkRoleName + '\',_Box.Name=\'' + ha.linkBoxName + '\')';
+        }
+
+        $.ajax({
+                type: "DELETE",
+                url: ha.user.cellUrl + api,
+                headers: {
+                  'Authorization':'Bearer ' + ha.user.access_token
+                }
+        }).done(function(data) {
+          ha.getAccountRoleList(ha.linkAccName, ha.linkAccNameNo);
+          $("#modal-del-acclinkrole").modal("hide");
+        }).fail(function(data) {
+          var res = JSON.parse(data.responseText);
+          alert("An error has occurred.\n" + res.message.value);
+        });
+      };
+
+      ha.getProfile = function(url) {
+	$.ajax({
+		type: "GET",
+		url: url + '__/profile.json',
+		dataType: 'json',
+		headers: {'Accept':'application/json'}
+	}).done(function(data) {
+	        var html = '<table class="list-group-item">';
+                var imageSrc = data.Image;
+                if (imageSrc === null) {
+                  imageSrc = "https://demo.personium.io/kyouhei-sakamoto/__/profile_image.png";
+                }
+                html += '<tr><td rowspan="2"><img class="image-circle" id="extCellPicture" src="' + imageSrc + '" alt="user"></td>';
+                html += '<td>' + data.DisplayName + '</td>';
+                html += '<td rowspan="2"><a class="del-button list-group-item" style="top:25%" href="#" onClick="ha.dispDelExtCellModal(\'' + url + '\');return(false)">del</a></td>';
+                html += '</tr>';
+                html += '<tr><td><font color="LightGray">' + data.Description + '</font></td></tr>';
+                html += '</table>';
+                $("#dvExtCellList").append(html);
+	}).fail(function(){
+                var html = '<table class="list-group-item">';
+                html += '<tr><td rowspan="2"><img class="image-circle" id="extCellPicture" src="https://demo.personium.io/akio-shimono/__/profile.jpg" alt="user"></td>';
+                html += '<td>' + ha.getName(url) + '</td>';
+                html += '<td rowspan="2"><a class="del-button list-group-item" href="#" onClick="ha.dispDelExtCellModal(\'' + url + '\');return(false)">del</a></td>';
+                html += '</tr>';
+                html += '<tr><td><font color="LightGray"> </font></td></tr>';
+                html += '</table>';
+                $("#dvExtCellList").append(html);
+	});
+      };
+
     </script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
   </head>
@@ -104,7 +1089,9 @@ header {
             <div class="col-md-10 col-sm-11 display-table-cell v-align">
                 <div class="row">
                     <header>
-                        <div class="col-md-7">back</div>
+                        <div class="col-md-7">
+                            <a href="main.html" class="p-app-icon"><>back</a>
+                        </div>
                         <div class="col-md-5">
                             <div class="header-rightside">
                                 <ul class="list-inline header-top pull-right">
@@ -127,11 +1114,11 @@ header {
                                                     </p>
                                                     <div class="divider">
                                                     </div>
-					<div class="list-group">
+                                        <div class="list-group">
                                              <a href="#" class="list-group-item">Edit Profile</a>
                                              <a href="#" class="list-group-item" data-toggle="modal" data-target="#modal-change-password">Change Password</a>
                                              <a href="#" class="list-group-item" data-toggle="modal" data-target="#modal-logout">Logout</a>
-					</div>
+                                        </div>
                                                 </div>
                                             </li>
                                         </ul>
@@ -152,17 +1139,323 @@ header {
           </a>
       <div class="panel-body">
         <div class="list-group">
-          <a class="list-group-item" href="#">
-            Accounts
-          </a>
+          <div id="dvAccount" class="toggleButton" style="margin-bottom: 10px;">
+            <!--<a class="list-group-item" href="#" data-toggle="modal" data-target="#modal-add-account">-->
+            <a class="list-group-item toggle" id="accountToggle">
+              Accounts
+            </a>
+          </div>
+          <nav class="accountMenu">
+            <ul>
+              <div id="dvAccountList">
+                <!--<a class="list-group-item" href="">Account1</a>-->
+              </div>
+              <div>
+                <a class="list-group-item" href="#" data-toggle="modal" data-target="#modal-add-account">＋ Create Account</a>
+              </div>
+            </ul>
+          </nav>
+          <div id="dvExtCell" class="toggleButton" style="margin-bottom: 10px;">
+            <a class="list-group-item toggle" id="extcellToggle">
+              External Cell
+            </a>
+          </div>
+          <nav class="extcellMenu">
+            <ul>
+              <div id="dvExtCellList"></div>
+              <div>
+                <a class="list-group-item" href="#" data-toggle="modal" data-target="#modal-add-extcell">＋ Add ExternalCell</a>
+              </div>
+            </ul>
+          </nav>
           <a class="list-group-item" href="#">
             Applications
           </a>
-          <a class="list-group-item" href="#">
-            Roles
-          </a>
+          <div id="dvRole" class="toggleButton" style="margin-bottom: 10px">
+            <a class="list-group-item toggle" id="roleToggle">
+              Roles
+            </a>
+          </div>
+          <nav class="roleMenu">
+            <ul>
+              <div id="dvRoleList"></div>
+              <div>
+                <a class="list-group-item" href="#" data-toggle="modal" data-target="#modal-add-role">＋ Add Role</a>
+              </div>
+            </ul>
+          </nav>
         </div>
       </div>
+    </div>
+
+
+    <!-- Modal -->
+    <!-- Add Account -->
+    <div id="modal-add-account" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title">Add Account</h4>
+                </div>
+                <div class="modal-body">
+                    <table ><tr>
+                    <td style="width: 250px">
+                        <div id="dvAddName">Name</div>
+                        <div id="dvTextAddName" style="margin-bottom: 10px;">
+                          <input type="text" id="addAccountName" onblur="ha.addAccountNameBlurEvent();">
+                          <span class="popupAlertArea" style="color:red">
+                            <aside id="popupAddAccountNameErrorMsg"> </aside>
+                          </span>
+                        </div>
+                        
+                        <div id="dvAddPassword">Password</div>
+                        <div id="dvTextAddNewPassword" style="margin-bottom: 10px;">
+                          <input type="password" placeholder="New Password (6 to 32 Character, Character Type(Half Size Alphanumeric, '-', '_'))" id="pAddNewPassword">
+                          <span class="popupAlertArea" style="color:red">
+                            <aside id="addChangeMessage"> </aside>
+                          </span>
+                        </div>
+                        
+                        <div id="dvAddConfirm">type new password again</div>
+                        <div id="dvTextAddConfirm" style="margin-bottom: 10px;">
+                          <input type="password" placeholder="Confirm (type new password again)" id="pAddConfirm">
+                          <span class="popupAlertArea" style="color:red">
+                            <aside id="addConfirmMessage"> </aside>
+                          </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div id="dvCheckAddAccountLinkRole" style="margin-bottom: 10px;">
+                          <input type="checkbox" id="addCheckAccountLinkRole">&nbsp;Role assignment
+                        </div>
+                        <div id="dvSelectAddAccountLinkRole" style="margin-bottom: 10px;">
+                          <select name="" id="ddlAddAccLinkRoleList">
+                            <option>Select a role</option>
+                          </select>
+                          <span class="popupAlertArea" style="color:red">
+                            <aside id="popupAddAccountLinkRoleErrorMsg"> </aside>
+                          </span>
+                        </div>
+                    </td>
+                    </tr></table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="b-add-account-ok">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Account -->
+    <div id="modal-edit-account" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title">Edit Account</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="dvEditName">Name</div>
+                    <div id="dvTextEditName" style="margin-bottom: 10px;">
+                      <input type="text" id="editAccountName" onblur="ha.editAccountNameBlurEvent();">
+                      <span class="popupAlertArea" style="color:red">
+                        <aside id="popupEditAccountNameErrorMsg"> </aside>
+                      </span>
+                    </div>
+                    
+                    <div id="dvEditPassword">Password</div>
+                    <div id="dvTextEditNewPassword" style="margin-bottom: 10px;">
+                      <input type="password" placeholder="New Password (6 to 32 Character, Character Type(Half Size Alphanumeric, '-', '_'))" id="pEditNewPassword">
+                      <span class="popupAlertArea" style="color:red">
+                        <aside id="editChangeMessage"> </aside>
+                      </span>
+                    </div>
+                    
+                    <div id="dvEditConfirm">type new password again</div>
+                    <div id="dvTextEditConfirm" style="margin-bottom: 10px;">
+                      <input type="password" placeholder="Confirm (type new password again)" id="pEditConfirm">
+                      <span class="popupAlertArea" style="color:red">
+                        <aside id="editConfirmMessage"> </aside>
+                      </span>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="b-edit-account-ok">Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account -->
+    <div id="modal-del-account" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">Delete Account</h4>
+                </div>
+                <div class="modal-body">
+                     <div id="dvDelText"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="b-del-account-ok" >Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add ExternalCell -->
+    <div id="modal-add-extcell" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title">Add External Cell</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="dvSelectedCell">URL</div>
+                    <div id="dvTextSelectedCell" style="margin-bottom: 10px;">
+                      <input type="text" id="addExtCellUrl">
+                      <span class="popupAlertArea" style="color:red">
+                        <aside id="popupAddExtCellUrlErrorMsg"> </aside>
+                      </span>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="b-add-extcell-ok">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete ExternalCell -->
+    <div id="modal-del-extcell" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">Delete External Cell</h4>
+                </div>
+                <div class="modal-body">
+                     <div id="dvDelTextExtCell"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="b-del-extcell-ok" >Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Role -->
+    <div id="modal-add-role" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="header-role">Add Role</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="dvAddRoleName">Name</div>
+                    <div id="dvTextAddRoleName" style="margin-bottom: 10px;">
+                      <input type="text" id="addRoleName">
+                      <span class="popupAlertArea" style="color:red">
+                        <aside id="popupAddRoleNameErrorMsg"> </aside>
+                      </span>
+                    </div>
+                    
+                    <div id="dvAddRoleBox">Select a Box that this role is to use</div>
+                    <div id="dvSelectAddRoleBox" style="margin-bottom: 10px;">
+                      <select name="" id="ddlRoleBoxList">
+                        <option>Please select a Box.</option>
+                      </select>
+                      <span class="popupAlertArea" style="color:red">
+                        <aside id="addRoleBoxMessage"> </aside>
+                      </span>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="b-add-role-ok">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Role -->
+    <div id="modal-del-role" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">Delete External Cell</h4>
+                </div>
+                <div class="modal-body">
+                     <div id="dvDelTextRole"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="b-del-role-ok" >Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assigning Role -->
+    <div id="modal-add-acclinkrole" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title" id="header-role">Assigning Role</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="dvAddAccLinkRole">Select a role to assign</div>
+                    <div id="dvSelectAddAccLinkRole" style="margin-bottom: 10px;">
+                      <select name="" id="ddlAccLinkRoleList">
+                        <option>Select a role</option>
+                      </select>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="b-add-acclinkrole-ok">Assign</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Assigning Role -->
+    <div id="modal-del-acclinkrole" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">Delete External Cell</h4>
+                </div>
+                <div class="modal-body">
+                     <div id="dvDelTextAccLinkRole"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="b-del-acclinkrole-ok" >Delete</button>
+                </div>
+            </div>
+        </div>
     </div>
   </body>
 </html>
