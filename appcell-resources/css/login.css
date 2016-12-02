@@ -1,0 +1,114 @@
+body{
+    background-color: #1a247f;
+}
+
+*{
+    font-family: 'Raleway', sans-serif;
+    color : #FFF;
+}
+
+
+div h3 span.small{
+     color : #FFF;
+     font-size:14px;
+}
+
+div span {
+     font-weight: 200;
+}
+
+h1{
+     font-weight: 200;
+     margin-bottom: 44px;
+}
+
+.image-circle-large{
+    border-radius: 50%;
+    width: 172px;
+    height: 172px;
+    border: 4px solid #FFF;
+}
+
+.control {
+    color:#000;
+    width: 272px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 8px;
+}
+
+.form-control{
+    height: 40px;
+    border-radius: 40px;
+    color: #333333 !important;
+    font-size: 16px;
+    border: none;
+    padding-left: 16px;
+    padding-right: 16px;
+    outline: none;
+    /*-webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;*/
+}
+
+.form-control:focus{
+    border-radius: 40px;
+    outline: none;
+    border: none;
+    /*-webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;*/
+}
+.login_btn{
+    background-color:#1a247f !important;
+    border: 1px solid rgba(255, 255, 255, 100);
+    border-radius: 40px;
+    margin: 5px;
+    padding: 5px;
+    width: 272px;
+    outline: none;
+    font-size: 16px;
+    font-weight: inherit;
+}
+
+.login_btn:hover,.login_btn:focus {
+    background-color:#44447f !important;
+    border: 1px solid rgba(255, 255, 255, 100);
+    border-radius: 40px;
+    margin: 5px;
+    padding: 5px;
+    width: 272px;
+    font-size: 16px;
+    font-weight: inherit;
+    outline: none;
+}
+
+.new_user {
+    margin-top: 8px;
+    height: 16px;
+}
+
+.forgot_pass {
+    margin-top: 8px;
+    height: 16px;
+}
+
+.version_area {
+    font-size: 11px;
+    margin-top: 30px;
+    margin-left: 16px;
+    margin-bottom: 11px;
+}
+
+.version_area p {
+    margin: 0px;
+}
+
+.login_control {
+    position: relative;
+}
+
+.outter{
+    margin-top:80px;
+    margin-bottom:8px;
+}
