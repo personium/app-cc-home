@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Personium Cell</title>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+                <script src="../../appcell-resources/js/login.js"></script>
+                <script src="../../appcell-resources/js/message_jp.js"></script>
+		<link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
+                <link href='../../appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
+                <link href='../../appcell-resources/css/login.css' rel='stylesheet' type='text/css'>
+	</head>
+<body>
+    <div class="main_box">
+	<div class="col-md-12 col-xs-12" align="center">
+            <div class="outter">
+                <img id="imProfile" src="" class="image-circle-large"/>
+            </div>
+            <h1 id="tProfileDisplayName">Guest</h1>
+	</div>
+        
+        <div class="col-md-12 col-xs-12 login_control">
+            <div class="control">
+                <input id="iAccountName" type="text" class="form-control" placeholder="アカウント名を入力して下さい。" value=""/>
+            </div>
+            
+            <div class="control">
+                <input id="iAccountPw" type="password" class="form-control" placeholder="パスワードを入力して下さい。" value=""/>
+            </div>
+            <div align="center">
+                 <button class="login_btn" id="bLogin">ログイン</button>
+            </div>
+            <div class="new_user">
+            </div>
+            <div class="forgot_pass">
+            </div>
+            <div class="version_area">
+                  <p>ver.XXX</p>
+                  <p>Copyright 20xx FUJITSU LIMITED</p>
+            </div>
+        </div>
+        <div class="error_box">
+        <div align="center" id="error_area" class="error_area">
+            <table class="msg_area">
+                <tr>
+                    <td class="image-error">
+                        <img id="imError" class="image-error" src="../../appcell-resources/icons/ico_error.png"/>
+                    </td>
+                    <td align="left">
+                        <label id="error_msg" class="error_msg">エラー</label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+body{
+    background: #ffffff;
+}
+
+div.p-app {
+  float: left;
+  width: 208px;
+  font-family: Raleway;
+  margin-bottom: 16px;
+  color: #efd;
+}
+
+a.p-app-icon {
+  width: 48px;
+  heigth: 48px;
+  display: block;
+  background-color: rgba(128,200,128,0.9);
+}
+a.p-app-icon:hover {
+  background-color: rgba(128,200,128,0.9);
+  -webkit-box-shadow: 1px 8px 4px 4px rgba(200, 200, 200, 0.54);
+  -moz-box-shadow:    1px 8px 4px 4px rgba(200, 200, 200, 0.54);
+  box-shadow:         1px 8px 4px 4px rgba(200, 200, 200, 0.54);
+}
+
+img.p-app-icon {
+  width: 48px;
+  heigth: 48px;
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+div.p-app-name {
+  text-align: center;
+  margin: 10px 0px 0px 0px;
+  /*text-shadow:    1px 4px 2px rgba(50, 50, 50, 0.54);*/
+  color: #333333;
+  font-size: 21px;
+}
+
+a:focus,a:hover,a{
+    outline:none;
+    text-decoration: none;
+}
+li,ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.header-rightside .nav > li > a:focus,
+.header-rightside .nav > li > a:hover {
+    background: none;
+    text-decoration: none;
+}
+
+header {
+    background: rgba(255,255,255,0.5);
+    box-shadow: 0 1px 12px rgba(0, 0, 0, 0.04);
+    display: inline-block !important;
+    line-height: 23px;
+    padding: 15px;
+    transition: all 0.5s ease 0s;
+    width: 100%;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.navbar-default {
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+
+.hidden-xs{
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.user-dashboard {
+    padding: 16px 40px;
+    /*background: -webkit-linear-gradient(45deg,  #fafafa 5%,#fafafa 99%); /* Chrome10+,Safari5.1+ */
+    background: #ffffff;
+}
+
+.user-dashboard h1 {
+    color: #0e1a35;
+    font-size: 30px;
+    font-weight: 500;
+    margin: 0;
+    padding: 21px 0;
+}
+
+.service-header {
+    font-size: 21px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    color: #333333;
+}
+
+.shield-buttons {
+    display: none;
+}
+
+/*Main CSS(Device)*/
+
+@media (max-width: 767px) {
+    div.p-app {
+      float: left;
+      width: 104px;
+      font-family: Raleway;
+      margin-bottom: 8px;
+      color: #efd;
+    }
+    a.p-app-icon {
+      width: 24px;
+      heigth: 24px;
+      display: block;
+      background-color: rgba(128,200,128,0.9);
+    }
+    a.p-app-icon {
+      width: 24px;
+      heigth: 24px;
+      display: block;
+      background-color: rgba(128,200,128,0.9);
+    }
+    img.p-app-icon {
+      width: 24px;
+      heigth: 24px;
+      -webkit-filter: invert(100%);
+      filter: invert(100%);
+    }
+    div.p-app-name {
+      text-align: center;
+      margin: 10px 0px 0px 0px;
+      /*text-shadow:    1px 4px 2px rgba(50, 50, 50, 0.54);*/
+      color: #333333;
+      font-size: 14px;
+    }
+    .user-dashboard {
+        padding: 8px 20px;
+        /*background: -webkit-linear-gradient(45deg,  #fafafa 5%,#fafafa 99%); /* Chrome10+,Safari5.1+ */
+        background: #ffffff;
+    }
+    .service-header {
+        font-size: 14px;
+        margin-top: 16px;
+        margin-bottom: 16px;
+        color: #333333;
+    }
+
+}

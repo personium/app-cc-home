@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Personium Cell</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+                <script type="text/javascript">
+//自分のURLを取得
+// cell URLを取得してそれを
+//var appUrl = 'https://demo.personium.io/home-app/__/login.html';
+//var appUrl = 'file:///D:/git/home-app/appcell-resources/login.html';
+var appUrl = 'file:///D:/Personium/home-app/box-resources/login.html';
+
+var cellUrl = function() {
+  var u = location.href;
+  if (u.indexOf("file:") == 0) {
+     return "https://demo.personium.io/akio-shimono/";
+  }
+  var i = u.indexOf("/", 8); // first slash
+  i = u.indexOf("/", i + 1);  // second slash
+  return u.substring(0, i + 1);
+};
+
+var toUrl = appUrl + '?cell=' + cellUrl();
+
+//alert(toUrl);
+location.href = toUrl;
+
+                </script>
+<style type="text/css">
+body {
+      margin: 0;
+      padding: 0;
+}
+div {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+}
+#iframeBlock {
+  width: 100%;
+  height:100%;
+}
+    iframe {
+      border: none;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+</style>
+	</head>
+	<body>
+<!--
+		<div id="iframeBlock">
+<iframe src="https://demo.personium.io/home-app/__/login.html" class="sample" frameborder="0" scrolling="no" height="200" ></iframe>
+		</div>
+-->
+	</body>
+</html>
+
