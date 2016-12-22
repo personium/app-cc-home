@@ -1,14 +1,23 @@
 ha.updUser = null;
+var insAppList = new Array();
+var insAppBoxList = new Array();
+var nowInstalledID = null;
+
+var testProgPar = 0;
 
 $(document).ready(function() {
+    // Create Profile Menu
     createProfileHeaderMenu();
+    // Create Side Menu
     createSideMenu();
+    // Create Title Header
     createTitleHeader();
+    // Create Back Button
     createBackMenu("main.html");
+    // Set Title
     setTitleMenu(getMsg("00001"));
     setIdleTime();
 
-    ha.populateProfile();
     $('#b-edit-accconfirm-ok').on('click', function () { 
         ha.editAccount();
     });
@@ -23,6 +32,7 @@ $(document).ready(function() {
     });
     $('#b-del-relation-ok').on('click', function () { ha.restDeleteRelationAPI(); });
     $('#b-del-rellinkrole-ok').on('click', function () { ha.restDeleteRelationLinkRole(); });
+    $('#b-ins-bar-ok').on('click', function() { ha.execBarInstall(); });
 
     $("#modal-confirmation").on("hidden.bs.modal", function () {
         ha.updUser = null;
@@ -34,18 +44,20 @@ $(document).ready(function() {
         $('#b-edit-accconfirm-ok').css("display","none");
         $('#b-del-relation-ok').css("display","none");
         $('#b-del-rellinkrole-ok').css("display","none");
+        $('#b-ins-bar-ok').css("display","none");
     });
 
     // menu-toggle
-    $(".accountMenu").css("display", "none");
     $("#accountToggle.toggle").on("click", function() {
       ha.createAccountList();
     });
-    $(".roleMenu").css("display", "none");
+    $("#applicationToggle.toggle").on("click", function() {
+      ha.createApplicationList();
+      //testAPI();
+    });
     $("#roleToggle").on("click", function() {
       ha.createRoleList();
     });
-    $(".relationMenu").css("display", "none");
     $("#relationToggle.toggle").on("click", function() {
       ha.createRelationList();
     });
@@ -120,14 +132,14 @@ ha.dispAccountList = function(json) {
   for (var i in results) {
     var acc = json.d.results[i];
     var type = acc.Type;
-    var typeImg = "../../appcell-resources/icons/ico_user_00.png";
+    var typeImg = "https://demo.personium.io/HomeApplication/__/icons/ico_user_00.png";
     if (type !== "basic") {
-        typeImg = "../../appcell-resources/icons/ico_user_01.png";
+        typeImg = "https://demo.personium.io/HomeApplication/__/icons/ico_user_01.png";
     }
 
     html += '<div class="list-group-item">';
     html += '<table style="width: 100%;"><tr>';
-    html += '<td style="width: 80%;"><a class="accountToggle" id="accountLinkToRoleToggle' + i + '" onClick="ha.createAccountRole(\'' + acc.Name + '\',\'' + i + '\')">' + acc.Name + '&nbsp;<img class="image-circle-small" src="' + typeImg + '"></a></td>';
+    html += '<td style="width: 80%;"><a class="accountToggle ellipsisText" id="accountLinkToRoleToggle' + i + '" onClick="ha.createAccountRole(\'' + acc.Name + '\',\'' + i + '\')">' + acc.Name + '&nbsp;<img class="image-circle-small" src="' + typeImg + '"></a></td>';
     if (acc.Name !== ha.user.username) {
         html += '<td style="margin-right:10px;width: 10%;"><a class="edit-button list-group-item" href="#" onClick="ha.createEditAccount(\'' + acc.Name + '\');return(false)">' + getMsg("00003") + '</a></td>'
              + '<td style="width: 10%;"><a class="del-button list-group-item" href="#" onClick="ha.dispDelModal(\'' + acc.Name + '\');return(false)">' + getMsg("00004") + '</a></td>';
@@ -249,9 +261,9 @@ ha.dispAccountRoleList = function(json, accName, no) {
       boxName = "[main]";
     }
     html += '<div class="list-group-item">';
-    html += '<table style="width: 100%;"><tr>';
-    html += '<td style="width: 90%;">' + name + '(' + boxName + ')</td>';
-    html += '<td colspan="2" style="width: 10%;"><a class="del-button list-group-item" href="#" onClick="ha.dispDelAccountRoleModal(\'' + accName + '\',\'' + name + '\',\'' + boxName + '\',\'' + no + '\');return(false)">' + getMsg("00029") + '</a></td>';
+    html += '<table class="table-fixed"><tr>';
+    html += '<td style="width: 85%;"><p class="ellipsisText">' + name + '(' + boxName + ')</p></td>';
+    html += '<td colspan="2" style="width: 15%;"><a class="del-button list-group-item" href="#" onClick="ha.dispDelAccountRoleModal(\'' + accName + '\',\'' + name + '\',\'' + boxName + '\',\'' + no + '\');return(false)">' + getMsg("00029") + '</a></td>';
     html += '</tr>';
     html += '</table></div>';
     //$("#dvAccountRoleList" + no).append(html);
@@ -307,16 +319,6 @@ ha.dispDelModal = function(name) {
     $('#modal-confirmation-title').html(getMsg("00007"));
     $('#b-del-account-ok').css("display","");
     $('#modal-confirmation').modal('show');
-}
-ha.getBoxList = function() {
-  return $.ajax({
-          type: "GET",
-          url: ha.user.cellUrl + '__ctl/Box',
-          headers: {
-            'Authorization':'Bearer ' + ha.user.access_token,
-            'Accept':'application/json'
-          }
-  })
 }
 ha.dispBoxList = function(json, id) {
   var objSel = document.getElementById(id);
@@ -397,6 +399,198 @@ ha.editAccount = function() {
   return false;
 }
 
+// Application
+ha.createApplicationList = function() {
+    $("#toggle-panel1").remove();
+    setBackahead();
+    var html = '<div class="panel-body"><table><tr><td>installed<div id="insAppList"></div></td></tr><tr><td><hr>application list<div id="appList"></div></td></tr></div>';
+    $("#toggle-panel1").append(html);
+    // install application list
+    getBoxList().done(function(data) {
+        var insAppRes = data.d.results;
+        insAppRes.sort(function(val1, val2) {
+            return (val1.Name < val2.Name ? 1 : -1);
+        })
+        insAppList = new Array();
+        insAppBoxList = new Array();
+        for (var i in insAppRes) {
+            var schema = insAppRes[i].Schema;
+            if (schema && schema.length > 0) {
+                insAppList.push(schema);
+                insAppBoxList.push(insAppRes[i].Name);
+            }
+        }
+        ha.dispInsAppList();
+
+        // application list
+        ha.getApplicationList().done(function(data) {
+            ha.dispApplicationList(data);
+            $("#toggle-panel1,.panel-default").toggleClass('slide-on');
+            setTitleMenu(getMsg("00039"));
+        }).fail(function(data) {
+            alert(data);
+        });
+    });
+};
+ha.getApplicationList = function() {
+    return $.ajax({
+            type: "GET",
+            url: ha.user.baseUrl + 'market/__/applist.json',
+            datatype: 'json',
+            headers: {
+              'Accept':'application/json'
+            }
+    })
+};
+ha.dispInsAppList = function() {
+    $("#insAppList").empty();
+    nowInstalledID = null;
+    for (var i in insAppList) {
+        ha.dispInsAppListSchema(insAppList[i], insAppBoxList[i], i);
+    }
+};
+ha.dispInsAppListSchema = function(schema, boxName, no) {
+    getProfile(schema).done(function(profData) {
+        var dispName = profData.DisplayName;
+        var imageSrc = notImage;
+        if (profData.Image) {
+            imageSrc = profData.Image;
+        }
+        getBoxStatus(boxName).done(function(data) {
+            var status = data.status;
+            var html = '';
+            if (status.indexOf('ready') >= 0) {
+                // ready
+                html = '<div class="ins-app" align="center"><a id="insAppNo_' + no + '" class="ins-app-icon" onClick="uninstallApp(\'' + schema + '\', \'' + boxName + '\')"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div>';
+
+                // test -->
+                //html += '<div id="nowInstallParent_' + no + '" class="progress progress-striped active" style="height: 10px;"><div name="nowInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + testProgPar + '%;"></div></div>';
+                //testProgPar = 0;
+                //if (nowInstalledID === null) {
+                //    nowInstalledID = setInterval(checkBoxInstallTest, 1000);
+                //}
+                // <-- test
+
+                html += '</div>';
+            } else if (status.indexOf('progress') >= 0) {
+                // progress
+                html = '<div class="ins-app" align="center"><a id="insAppNo_' + no + '" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div><div id="nowInstallParent_' + no + '" class="progress progress-striped active"><div name="nowInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';"></div></div></div>';
+                if (nowInstalledID === null) {
+                    setInterval(checkBoxInstall, 1000);
+                }
+            } else {
+                // failed
+                html = '<div class="ins-app" align="center"><a class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '(<font color="red"> ! </font>)</div></div>';
+            }
+
+            $("#insAppList").append(html);
+        });
+    });
+};
+ha.dispApplicationList = function(json) {
+    $("#appList").empty();
+    var results = json.Apps;
+    results.sort(function(val1, val2) {
+      return (val1.SchemaUrl < val2.SchemaUrl ? 1 : -1);
+    })
+    for (var i in results) {
+      var schema = results[i].SchemaUrl;
+      if (insAppList.indexOf(schema) < 0) {
+          ha.dispApplicationListSchema(results[i]);
+      }
+    }
+};
+ha.dispApplicationListSchema = function(schemaJson) {
+    var schema = schemaJson.SchemaUrl;
+    getProfile(schema).done(function(profData) {
+        var dispName = profData.DisplayName;
+        var description = profData.Description;
+        var imageSrc = notImage;
+        if (profData.Image) {
+            imageSrc = profData.Image;
+        }
+        var html = '<div class="ins-app" align="center"><a class="ins-app-icon" onClick="ha.dispViewApp(\'' + schema + '\',\'' + dispName + '\',\'' + imageSrc + '\',\'' + description + '\',\'' + schemaJson.BarUrl + '\',\'' + schemaJson.BoxName + '\',true)"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
+        $("#appList").append(html);
+   });
+};
+ha.dispViewApp = function(schema, dispName, imageSrc, description, barUrl, barBoxName, insFlag) {
+    $("#toggle-panel2").empty();
+    setBackahead();
+    var html = '<div class="panel-body">';
+    html += '<div class="app-profile" id="dvAppProfileImage"><img class="image-circle" style="margin: auto;" id="imgAppProfileImage" src="' + imageSrc + '" alt="image" /><span style="margin-left: 10px;" id="txtAppName">' + dispName + '</span><br><br><br><h5>概要</h5><span id="txtDescription">' + description + '</span></div>';
+    if (insFlag) {
+        html += '<br><br><div class="toggleButton" style="text-align:center;"><a class="appToggle list-group-item" href="#" onClick="ha.confBarInstall(\'' + schema + '\',\'' + barUrl + '\',\'' + barBoxName + '\');return(false);">' + getMsg("00040") + '</a></div>';
+    } else {
+        html += '<br><br><div class="toggleButton" style="text-align:center;"><a class="appToggle list-group-item" href="#" onClick="return(false);">' + getMsg("00041") + '</a></div>';
+    }
+
+    $("#toggle-panel2").append(html);
+    setTitleMenu(getMsg("00042"));
+    $("#toggle-panel2").toggleClass('slide-on');
+    $("#toggle-panel1").toggleClass('slide-on-holder');
+};
+ha.confBarInstall = function(schema, barUrl, barBoxName) {
+    ha.barSchemaUrl = schema;
+    ha.barFileUrl = barUrl;
+    ha.barBoxName = barBoxName;
+    $("#dvTextConfirmation").html(getMsg("I0020"));
+    $("#modal-confirmation-title").html(getMsg("00040"));
+    $('#b-ins-bar-ok').css("display","");
+    $('#modal-confirmation').modal('show');
+};
+ha.execBarInstall = function() {
+    var barFilePath = ha.barSchemaUrl + ha.barFileUrl;
+    var oReq = new XMLHttpRequest();
+    oReq.open("GET", barFilePath);
+    oReq.responseType = "arraybuffer";
+    oReq.setRequestHeader("Content-Type", "application/zip");
+    oReq.onload = function(e) {
+        var arrayBuffer = oReq.response;
+        var view = new Uint8Array(arrayBuffer);
+        var blob = new Blob([view], {"type":"application/zip"});
+        $.ajax({
+            type: "MKCOL",
+            url: ha.user.cellUrl + ha.barBoxName + '/',
+            data: blob,
+            processData: false,
+            headers: {
+                'Authorization':'Bearer ' + ha.user.access_token,
+                'Content-type':'application/zip'
+            }
+        }).done(function(data) {
+            getBoxList().done(function(data) {
+                var insAppRes = data.d.results;
+                insAppRes.sort(function(val1, val2) {
+                    return (val1.Name < val2.Name ? 1 : -1);
+                })
+                insAppList = new Array();
+                insAppBoxList = new Array();
+                for (var i in insAppRes) {
+                    var schema = insAppRes[i].Schema;
+                    if (schema && schema.length > 0) {
+                        insAppList.push(schema);
+                        insAppBoxList.push(insAppRes[i].Name);
+                    }
+                }
+                ha.dispInsAppList();
+
+                // application list
+                ha.getApplicationList().done(function(data) {
+                    ha.dispApplicationList(data);
+                    $("#modal-confirmation").modal("hide");
+                    moveBackahead();
+                }).fail(function(data) {
+                    alert(data);
+                });
+            });
+        }).fail(function(data) {
+            var res = JSON.parse(data.responseText);
+            alert("An error has occurred.\n" + res.message.value);
+        });
+    }
+    oReq.send();
+};
+
 // Role
 ha.createRoleList = function() {
     $("#toggle-panel1").remove();
@@ -425,10 +619,10 @@ ha.dispRoleList = function(json) {
 
     // role list
     html += '<div class="list-group-item">';
-    html += '<table style="width: 100%;"><tr>';
-    html += '<td style="width: 80%;">' + objRole.Name + '(' + boxName + ')</td>';
-    html += '<td colspan="2" style="width: 10%;"><a class="edit-button list-group-item" href="#" onClick="ha.createEditRole(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + getMsg("00003") + '</a></td>';
-    html += '<td colspan="2" style="width: 10%;"><a class="del-button list-group-item" href="#" onClick="ha.dispDelRoleModal(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + getMsg("00004") + '</a></td>';
+    html += '<table class="table-fixed"><tr>';
+    html += '<td style="width: 70%;"><p class="ellipsisText">' + objRole.Name + '(' + boxName + ')</p></td>';
+    html += '<td style="width: 15%;"><a class="edit-button list-group-item" href="#" onClick="ha.createEditRole(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + getMsg("00003") + '</a></td>';
+    html += '<td style="width: 15%;"><a class="del-button list-group-item" href="#" onClick="ha.dispDelRoleModal(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + getMsg("00004") + '</a></td>';
     html += '</tr>';
     html += '</table></div>';
     //$("#dvRoleList").append(html);
@@ -441,6 +635,11 @@ ha.dispRoleList = function(json) {
   $("#toggle-panel1").append(html);
 };
 ha.createAddRole = function() {
+    ha.updUser = null;
+    ha.updBox = null;
+    ha.operationRole();
+};
+ha.operationRole = function() {
     var name = "";
     if (ha.updUser !== null) {
         name = ha.updUser;
@@ -454,10 +653,15 @@ ha.createAddRole = function() {
     html += '<div id="dvSelectAddRoleBox" style="margin-bottom: 10px;"><select name="" id="ddlRoleBoxList"><option>Please select a Box.</option></select><span class="popupAlertArea" style="color:red"><aside id="addRoleBoxMessage"> </aside></span></div>';
     html += '<div class="modal-footer">';
     html += '<button type="button" class="btn btn-default" onClick="moveBackahead();">Cancel</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-add-role-ok" onClick="ha.addRole();">Add</button>';
+    if (ha.updUser !== null) {
+        html += '<button type="button" class="btn btn-primary" id="b-add-role-ok" onClick="ha.addRole();">Edit</button>';
+    } else {
+        html += '<button type="button" class="btn btn-primary" id="b-add-role-ok" onClick="ha.addRole();">Add</button>';
+    }
+    
     html += '</div></div>';
     $("#toggle-panel2").append(html);
-    ha.getBoxList().done(function(data) {
+    getBoxList().done(function(data) {
         ha.dispBoxList(data, "ddlRoleBoxList", false);
         if (ha.updUser !== null) {
             var box = ha.updBox;
@@ -470,7 +674,11 @@ ha.createAddRole = function() {
 
     $("#toggle-panel2").toggleClass('slide-on');
     $("#toggle-panel1").toggleClass('slide-on-holder');
-    setTitleMenu(getMsg("00030"));
+    if (ha.updUser !== null) {
+        setTitleMenu(getMsg("00043"));
+    } else {
+        setTitleMenu(getMsg("00030"));
+    }
 };
 ha.createEditRole = function(name, box) {
     ha.updUser = name;
@@ -479,7 +687,7 @@ ha.createEditRole = function(name, box) {
     } else {
       ha.updBox = box;
     }
-    ha.createAddRole();
+    ha.operationRole();
 }
 ha.dispDelRoleModal = function(name, box) {
     ha.updUser = name;
@@ -553,7 +761,7 @@ ha.dispRelationList = function(json) {
     html += '<div class="list-group-item">';
     html += '<table style="width: 100%;"><tr>';
     html += '<td style="width: 80%;"><a class="accountToggle" id="relationLinkToRoleToggle' + i + '" onClick="ha.createRelationRole(\'' + objRelation.Name + '\',\'' + boxName + '\',\'' + i + '\')">';
-    html += '<table><tr><td>' + objRelation.Name + '(' + boxName + ')</td></tr></table>';
+    html += '<table class="table-fixed"><tr><td><p class="ellipsisText">' + objRelation.Name + '(' + boxName + ')</p></td></tr></table>';
     html += '</a></td>';
     html += '<td style="width: 10%;"><a class="edit-button list-group-item" href="#" onClick="ha.createEditRelation(\'' + objRelation.Name + '\',\'' + boxName + '\');return(false)">' + getMsg("00003") + '</a></td>';
     html += '<td style="width: 10%;"><a class="del-button list-group-item" href="#" onClick="ha.dispDelRelationModal(\'' + objRelation.Name + '\',\'' + boxName + '\');return(false)">' + getMsg("00004") + '</a></td>';
@@ -591,7 +799,7 @@ ha.createAddRelation = function() {
         html += '</div></div>';
         $("#toggle-panel2").append(html);
         dispRoleList(data, "ddlAddRelLinkRoleList", true);
-        ha.getBoxList().done(function(data) {
+        getBoxList().done(function(data) {
             ha.dispBoxList(data, "ddlAddRelationBoxList", false);
         });
     });
@@ -708,7 +916,7 @@ ha.createEditRelation = function(name, box) {
     html += '<button type="button" class="btn btn-primary" id="b-edit-relation-ok" onClick="ha.editRelationOk();" disabled>Edit</button>';
     html += '</div>';
     $("#toggle-panel2").append(html);
-    ha.getBoxList().done(function(data) {
+    getBoxList().done(function(data) {
         ha.dispBoxList(data, "ddlEditRelationBoxList", false);
         $('#ddlEditRelationBoxList').val(box);
     });
@@ -1051,12 +1259,6 @@ ha.passInputCheck = function(newpass, displayNameSpan) {
   return true;
 }
 
-ha.populateProfile = function() {
-  $("#tProfileDisplayName").html(ha.user.profile.DisplayName);
-  $("#imProfilePicture").attr('src', ha.user.profile.Image);
-
-};
-
 // API
 ha.restCreateAccountAPI = function(json, pass) {
   $.ajax({
@@ -1299,3 +1501,44 @@ ha.restDeleteRelationLinkRole = function() {
     alert("An error has occurred.\n" + res.message.value);
   });
 }
+
+function checkBoxInstall() {
+    var elements = document.getElementsByName("nowInstall");
+    for (var i in elements) {
+        var ele = elements[i];
+        var no = ele.id.split("_")[1];
+        updateProgress(no, ele.id);
+    }
+};
+function updateProgress(no, id) {
+    getBoxStatus(insAppBoxList[no]).done(function(data) {
+        var status = data.status;
+        if (status.indexOf('ready') >= 0) {
+            $("#nowInstallParent_" + no).remove();
+            $("#insAppNo_" + no).on('click', function() { ha.uninstallApp(insAppList[no],insAppBoxList[no]) });
+        } else if (status.indexOf('progress') >= 0) {
+            $('#' + id).css("width", data.progress);
+        } else {
+            $('#nowInstallParent_' + no).remove();
+            $('#appid_' + no).append('(<font color="red"> ! </font>)');
+        }
+        var elements = document.getElementsByName("nowInstall");
+        if (elements.length = 0) {
+            clearInterval(nowInstalledID);
+        }
+    });
+};
+function checkBoxInstallTest() {
+    var elements = document.getElementsByName("nowInstall");
+    for (var i in elements) {
+        var ele = elements[i];
+        testProgPar += 1;
+        if (testProgPar > 100) {
+            var no = ele.id.split("_")[1];
+            $("#nowInstallParent_" + no).remove();
+            clearInterval(nowInstalledID);
+        } else {
+            $('#' + ele.id).css("width", testProgPar + "%");
+        }
+    }
+};

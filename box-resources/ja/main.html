@@ -12,11 +12,13 @@
 		<![endif]-->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-                <script src="../../appcell-resources/js/common.js"></script>
-                <script src="../../appcell-resources/js/message_jp.js"></script>
+                <script src="https://demo.personium.io/HomeApplication/__/js/common.js"></script>
+                <!--<script src="../../appcell-resources/js/common.js"></script>-->
+                <script src="https://demo.personium.io/HomeApplication/__/js/message_ja.js"></script>
 		<link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
-                <link href='../../appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
-                <link href='../../appcell-resources/css/main.css' rel='stylesheet' type='text/css'>
+                <link href='https://demo.personium.io/HomeApplication/__/css/common.css' rel='stylesheet' type='text/css'>
+                <!--<link href='../../appcell-resources/css/common.css' rel='stylesheet' type='text/css'>-->
+                <link href='https://demo.personium.io/HomeApplication/__/css/main.css' rel='stylesheet' type='text/css'>
 <script type="text/javascript">
 //ha.user= JSON.parse(location.hash.substring(1));
 
@@ -58,6 +60,7 @@ ha.systemApps = [
 
 $(document).ready(function() {
     ha.deploySystemApps();
+    ha.dispInsAppList();
     //createTitleHeader();
     createProfileHeaderMenu();
     createSideMenu();
@@ -79,6 +82,41 @@ ha.deploySystemApps = function() {
 
   $("#serviceCount").append(arrCount);
 };
+
+ha.dispInsAppList = function() {
+    getBoxList().done(function(data) {
+        var insAppRes = data.d.results;
+        insAppRes.sort(function(val1, val2) {
+            return (val1.Name < val2.Name ? 1 : -1);
+        })
+        for (var i in insAppRes) {
+            var schema = insAppRes[i].Schema;
+            if (schema && schema.length > 0) {
+                ha.dispInsAppListSchema(schema, insAppRes[i].Name);
+            }
+        }
+    });
+};
+
+ha.dispInsAppListSchema = function(schema, boxName) {
+    getProfile(schema).done(function(profData) {
+        var dispName = profData.DisplayName;
+        var imageSrc = notImage;
+        if (profData.Image) {
+            imageSrc = profData.Image;
+        }
+        getBoxStatus(boxName).done(function(data) {
+            var status = data.status;
+            var html = '';
+            if (status.indexOf('ready') >= 0) {
+                var html = '<div class="ins-app" align="center"><a class="ins-app-icon" onClick="execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
+                $("#dashboard").append(html);
+            }
+        });
+    });
+};
+
+
 
 </script>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">

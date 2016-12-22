@@ -15,3 +15,21 @@ header {
 .accountMenu, .roleMenu, .relationMenu {
     padding: 0px;
 }
+
+.app-profile{
+    text-align: left;
+}
+
+a.appToggle{
+    background-color: #337ab7;
+    border-color: #337ab7;
+    color: #fff;
+    text-align:center;
+}
+
+.appToggle:after{
+    text-align:center;
+    width: 10px;
+    height: 10px;
+    content: "";
+}

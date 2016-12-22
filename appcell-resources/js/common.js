@@ -6,7 +6,7 @@ if (!ha.user) {
 }
 ha.user.nowPage = 0;
 ha.user.nowTitle = {};
-var notImage = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEcAAABGCAYAAACe7Im6AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBXaW5kb3dzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjUyREQ0MTQ1OTdEODExRTNBNzE3RDNCNTI0QUYxQjY4IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjUyREQ0MTQ2OTdEODExRTNBNzE3RDNCNTI0QUYxQjY4Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NTJERDQxNDM5N0Q4MTFFM0E3MTdEM0I1MjRBRjFCNjgiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NTJERDQxNDQ5N0Q4MTFFM0E3MTdEM0I1MjRBRjFCNjgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6o15UuAAADC0lEQVR42uyb2W7iQBBFG2P2fZMQiK+YR36fN574B0Dsm9nXmduSNZmJwwzpxW1TV7KSh8g0x7equ6qcSKfTeTDSJ0Wj0bWNX9rtNtH4oNvtxrrdLrMIxdciOASH4BAcgkNwCA7BCatsExbxeDzY+Xz+vSjbxvH9feHc73e22WzYfr9nx+Px88J+AcpkMiyXy7F4PP4+cNbrNVsulxzQV7per/zvcAFQuVzW7iZbt1smkwl3yytyHIcdDgdWr9e1usjSmVdGo9HLYD46aTgc/pGbQgNnNpt55pZXnTcej5+GY+DgAApCQ4YulwtbLBbhgSP7ywA0wizwcJAjRMPJK3/hGBB4ON9NwH7dV7tzVN0XDgo0HJW5AY3wQMNR+XQD7xzLUvcRqssJ5XBUHfcBRiV4LXCSyWSg7qsVTjqdVvKEUakHHk4kEmHFYlF6qAJ6KMqHfD7Pm1eyVK1Ww1NbIazQi4GLRIWml458o7VlgVAAIJH8AwfKDlEj4ECpVIo1Gg0Wi8Vedl6tVtMWTq6095DhoFarxavq1Wr1tLwAlGw2y0qlki/TCN+mDwgRXKfTibc08NMtBwACLsOOJCNPBQ4OWg7b7ZY3zr0KSLdf40KCg0I9fUAIIZQA5X/7wICHaz6fc1CFQkHLGUcbHIQL5lSYQYlU0i6oRCLBE7TqMY2WZle/3+eOkdViQH4aDAYcdmCdg0SLWZWKUQpAI9QQqpVKJVhwkHAxY1LdkIJ7kNARZrJ3NksVGDhGNRhXSPAYMxufczB0U7HQf2m32/GkbzQcgNE1rv1bgCNzRiYVDnYk7CR+ajqdSgtnaXCQFAHHbyGsZU1DpcHBruFXOHk5WIZ7pMBxX2EzRXCxjLc6pMDBTmGKa1wZBcc0YWMQHUULw0Fsoxg0UaJvYlgynpCuk/B3ajtf4ch+MSlUcHS8fiayaxGcJ/lQZH3CcEzbwmWuj+A8kXCzq9lsGg1HpAFm+/nhpov+GY3gEByCQ3AIDsEhOATnDcVPyL1ej0h4nf4dx/lBGDzLottPAQYAdNK3d3dhCSIAAAAASUVORK5CYII=";
+var notImage = "https://demo.personium.io/HomeApplication/__/icons/profile_image.png";
 
 //Default timeout limit - 60 minutes.
 var IDLE_TIMEOUT =  3600000;
@@ -17,12 +17,15 @@ var LASTACTIVITY = new Date().getTime();
 // Class "profile-menu" in create
 // and Modal create
 function createProfileHeaderMenu() {
+    // get profile image
     if (ha.user.profile.Image) {
         imgBinaryFile = ha.user.profile.Image;
     } else {
+        // if there is no image, set default image
         imgBinaryFile = notImage;
     }
 
+    // create a profile menu in to "profile-menu" class
     var html = '<div class="header-rightside">';
     html += '<table class="list-inline table-fixed">';
     html += '<tr><td rowspan="2" class="profile-header">';
@@ -31,21 +34,25 @@ function createProfileHeaderMenu() {
     html += '<span id="tProfileDisplayName">' + ha.user.profile.DisplayName + '</span>';
     html += '</td><td width="30%">&nbsp;</td></tr>';
     html += '<tr><td class="sizeCaption2">';
-    html += '<p class="headerUrlText">' + ha.user.cellUrl + '</p>';
+    html += '<p class="ellipsisText">' + ha.user.cellUrl + '</p>';
     html += '</td><td class="sizeCaption" style="text-align:right;"><a onClick="openSlide();">';
     html += '<p class="headerAccountNameText">' + ha.user.userName + '</p>';
     //html += '<p class="headerAccountNameText">aiueokakikukekosasisuseso</p>▼';
     html += '</a></td></tr>';
-
     $(".profile-menu").html(html);
+
+    // Processing when resized
     $(window).on('load resize', function(){
         $('.headerAccountNameText').each(function() {
             var $target = $(this);
 
-            // get now display accountname
+            // get a account name
             var html = ha.user.userName + '▼';
 
+            // Duplicate the current state
             var $clone = $target.clone();
+
+            // Set an account name on the duplicated element and hide it
             $clone
               .css({
                 display: 'none',
@@ -54,9 +61,9 @@ function createProfileHeaderMenu() {
               })
               .width('auto')
               .html(html);
-
             $target.after($clone);
 
+            // Replace sentences that exceed the display area
             while((html.length > 0) && ($clone.width() > $target.width())) {
                 html = html.substr(0, html.length - 1);
                 $clone.html(html + '...▼');
@@ -68,10 +75,10 @@ function createProfileHeaderMenu() {
     });
 }
 
-// Class "header-menu" in create
+// Create title header in "header-menu" class
 function createTitleHeader() {
-    var html = '<table style="width:100%;">';
-    html += '<tr>';
+    var html = '<table class="table-fixed">';
+    html += '<tr style="vertical-align: middle;">';
     html += '<td id="backMenu" class="prev-icon" style="width: 10%;"></td>';
     html += '<td id="backTitle" align="left" style="width: 30%;white-space: nowrap;"></td>';
     html += '<td id="titleMenu" align="left" class="title"></td>';
@@ -80,6 +87,7 @@ function createTitleHeader() {
     $(".header-menu").html(html);
 }
 
+// Back ahead Setting
 function setBackahead() {
     ha.user.nowPage = ha.user.nowPage + 1;
     if (document.getElementById('toggle-panel' + ha.user.nowPage) == null) {
@@ -90,6 +98,7 @@ function setBackahead() {
     }
 }
 
+// Back ahead move
 function moveBackahead() {
     var no = ha.user.nowPage;
     switch (no) {
@@ -106,14 +115,19 @@ function moveBackahead() {
     }
 
     ha.user.nowPage = no - 1;
-    setTitleMenu(ha.user.nowTitle[ha.user.nowPage]);
-    if (ha.user.nowPage > 0) {
-        $("#backTitle").html(ha.user.nowTitle[ha.user.nowPage - 1]);
+    if (ha.user.nowPage >= 0) {
+        setTitleMenu(ha.user.nowTitle[ha.user.nowPage]);
+        if (ha.user.nowPage > 0) {
+            $("#backTitle").html(ha.user.nowTitle[ha.user.nowPage - 1]);
+        } else {
+            $("#backTitle").html("");
+        }
     } else {
         $("#backTitle").html("");
     }
 }
 
+// create side menu
 function createSideMenu() {
     var itemName = {};
     itemName.EditProf = getMsg("00010");
@@ -128,13 +142,13 @@ function createSideMenu() {
     html += '<table class="menu-title"><span class="commonLabel">' + getMsg("00026") + '</span>';
     //html += '<tr class="sidemenu-list v-align-m">';
     html += '<tr>';
-    html += '<td rowspan="3" class="sidemenu-itemEmpty">&nbsp;</td><td valign="middle" class="sidemenu-item sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">' + itemName.EditProf + '<img class="moveIcon" src="../../appcell-resources/icons/ico_back.png" alt="user"></a></td>';
+    html += '<td rowspan="3" class="sidemenu-itemEmpty">&nbsp;</td><td valign="middle" class="sidemenu-item sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">' + itemName.EditProf + '<img class="moveIcon" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a></td>';
     //html += '</tr><tr class="sidemenu-list v-align-m">';
     html += '</tr><tr>';
-    html += '<td class="sidemenu-item sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-change-password">' + itemName.ChgPass + '<img class="moveIcon" src="../../appcell-resources/icons/ico_back.png" alt="user"></a></td>';
+    html += '<td class="sidemenu-item sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-change-password">' + itemName.ChgPass + '<img class="moveIcon" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a></td>';
     //html += '</tr><tr class="sidemenu-list v-align-m">';
     html += '</tr><tr>';
-    html += '<td class="sidemenu-lastitem sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout">' + itemName.Logout + '<img class="moveIcon" src="../../appcell-resources/icons/ico_back.png" alt="user"></a></td>';
+    html += '<td class="sidemenu-lastitem sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout">' + itemName.Logout + '<img class="moveIcon" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a></td>';
     html += '</tr>';
     html += '</table></div>';
     html += '<div class="overlay" id="dvOverlay"></div>';
@@ -291,18 +305,19 @@ function openSlide() {
 }
 
 function createBackMenu(moveUrl) {
-    var html = '<a class="allToggle" style="float:left;" onClick="moveBackahead();return false;"><img id="imBack" src="../../appcell-resources/icons/ico_back.png" alt="user"></a>';
+    var html = '<a class="allToggle" style="float:left;" onClick="moveBackahead();return false;"><img id="imBack" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a>';
     $("#backMenu").html(html);
     ha.user.prevUrl = moveUrl;
 }
 
 function setTitleMenu(title) {
-    $("#titleMenu").html(title);
+    $("#titleMenu").html('<p  class="ellipsisText">' + title + '</p>');
     var titles = ha.user.nowTitle;
     titles[ha.user.nowPage] = title;
     ha.user.nowTitle = titles;
     if (ha.user.nowPage > 0) {
-        $("#backTitle").html(ha.user.nowTitle[ha.user.nowPage - 1]);
+        var html = '<p class="ellipsisText">' + ha.user.nowTitle[ha.user.nowPage - 1] + '</p>'
+        $("#backTitle").html(html);
     }
 }
 
@@ -563,25 +578,25 @@ function validateDisplayName(displayName, displayNameSpan,txtID) {
 	//this.removeStatusIcons(txtID);
         document.getElementById(displayNameSpan).innerHTML = "";
 	if(lenDisplayName < MINLENGTH || displayName == undefined || displayName == null || displayName == "") {
-		document.getElementById(displayNameSpan).innerHTML =  "Please enter display name";
+		document.getElementById(displayNameSpan).innerHTML =  getMsg("E0003");
 		//this.showErrorIcon(txtID);
 		//uCellProfile.spinner.stop();
 		return false;
 	} else if (lenDisplayName >= MAXLENGTH) {
-		document.getElementById(displayNameSpan).innerHTML = "Display name cannot exceed 128 characters";
+		document.getElementById(displayNameSpan).innerHTML = getMsg("E0004");
 		//uCellProfile.spinner.stop();
 		//this.showErrorIcon(txtID);
 		return false;
 	} else if (lenDisplayName != 0 && ! (displayName.match(letters))){
-		document.getElementById(displayNameSpan).innerHTML = "Special characters: only “-” & “_” are allowed";
+		document.getElementById(displayNameSpan).innerHTML = getMsg("E0005");
 		//this.showErrorIcon(txtID);
 		return false;
 	} else if (lenDisplayName != 0 && !(displayName.match(allowedLetters))) {
-		document.getElementById(displayNameSpan).innerHTML = "Display name can not start with special character";
+		document.getElementById(displayNameSpan).innerHTML = getMsg("E0006");
 		//this.showErrorIcon(txtID);
 		return false;
 	} else if(lenDisplayName != 0 && (specialchar.toString().indexOf(displayName.substring(0,1)) >= 0)){
-		document.getElementById(displayNameSpan).innerHTML = "Display name can not start with special character";
+		document.getElementById(displayNameSpan).innerHTML = getMsg("E0006");
 		//this.showErrorIcon(txtID);
 		//uCellProfile.spinner.stop();
 		return false;
@@ -594,7 +609,7 @@ function validateDescription(descriptionDetails, descriptionSpan) {
 	var lenDescription = descriptionDetails.length;
 	if (lenDescription > 51200) {
 		isValidDescription = false;
-		document.getElementById(descriptionSpan).innerHTML = "Size cannot exceed 51200 characters";
+		document.getElementById(descriptionSpan).innerHTML = getMsg("E0021");
 	}
 	return isValidDescription;
 };
@@ -610,38 +625,29 @@ function setIdleTime() {
     setInterval(checkIdleTime, 1000);
     document.onclick = function() {
       LASTACTIVITY = new Date().getTime();
-      refreshToken();
+      refreshToken().done(function(data) {
+              ha.user.access_token = data.access_token;
+              ha.user.refresh_token = data.refresh_token;
+              sessionStorage.setItem("sessionData", JSON.stringify(ha.user));
+      });
     };
     document.onmousemove = function() {
       LASTACTIVITY = new Date().getTime();
-      refreshToken();
+      refreshToken().done(function(data) {
+              ha.user.access_token = data.access_token;
+              ha.user.refresh_token = data.refresh_token;
+              sessionStorage.setItem("sessionData", JSON.stringify(ha.user));
+      });
     };
     document.onkeypress = function() {
       LASTACTIVITY = new Date().getTime();
-      refreshToken();
+      refreshToken().done(function(data) {
+              ha.user.access_token = data.access_token;
+              ha.user.refresh_token = data.refresh_token;
+              sessionStorage.setItem("sessionData", JSON.stringify(ha.user));
+      });
     };
 }
-function refreshToken() {
-    $.ajax({
-          type: "POST",
-          url: ha.user.cellUrl + '__auth',
-          processData: true,
-          dataType: 'json',
-          data: {
-                 grant_type: "refresh_token",
-                 refresh_token: ha.user.refresh_token
-          },
-          headers: {'Accept':'application/json'}
-  }).done(function(data) {
-          ha.user.access_token = data.access_token;
-          ha.user.refresh_token = data.refresh_token;
-          sessionStorage.setItem("sessionData", JSON.stringify(ha.user));
-  }).fail(function(data) {
-          var res = JSON.parse(data.responseText);
-          alert("An error has occurred.\n" + res.message.value);
-  });
-}
-
 function checkIdleTime() {
   if (new Date().getTime() > LASTACTIVITY + IDLE_TIMEOUT) {
     if (sessionStorage.isResourceMgmt = "true") {
@@ -649,7 +655,6 @@ function checkIdleTime() {
     }
   }
 };
-
 function changePassCheck(newpass, confirm) {
   if (newpass === confirm) {
     $('#confirmMessage').html("");
@@ -660,6 +665,34 @@ function changePassCheck(newpass, confirm) {
 };
 
 // API
+function refreshToken() {
+    return $.ajax({
+        type: "POST",
+        url: ha.user.cellUrl + '__auth',
+        processData: true,
+        dataType: 'json',
+        data: {
+               grant_type: "refresh_token",
+               refresh_token: ha.user.refresh_token
+        },
+        headers: {'Accept':'application/json'}
+    })
+}
+//function getTargetToken(extCellUrl) {
+//  return $.ajax({
+//                type: "POST",
+//                url: ha.user.cellUrl + '__auth',
+//                processData: true,
+//		dataType: 'json',
+//                data: {
+//                        grant_type: "password",
+//                        username: ha.user.userName,
+//			password: ha.user.pass,
+//                        dc_target: extCellUrl
+//                },
+//		headers: {'Accept':'application/json'}
+//         });
+//};
 function getTargetToken(extCellUrl) {
   return $.ajax({
                 type: "POST",
@@ -667,14 +700,41 @@ function getTargetToken(extCellUrl) {
                 processData: true,
 		dataType: 'json',
                 data: {
-                        grant_type: "password",
-                        username: ha.user.userName,
-			password: ha.user.pass,
+                        grant_type: "refresh_token",
+                        refresh_token: ha.user.refresh_token,
                         dc_target: extCellUrl
                 },
 		headers: {'Accept':'application/json'}
          });
 };
+function getProfile(url) {
+    return $.ajax({
+	type: "GET",
+	url: url + '__/profile.json',
+	dataType: 'json',
+        headers: {'Accept':'application/json'}
+    })
+};
+function getBoxList() {
+  return $.ajax({
+          type: "GET",
+          url: ha.user.cellUrl + '__ctl/Box',
+          headers: {
+            'Authorization':'Bearer ' + ha.user.access_token,
+            'Accept':'application/json'
+          }
+  })
+}
+function getBoxStatus(boxName) {
+  return $.ajax({
+          type: "GET",
+          url: ha.user.cellUrl + boxName,
+          headers: {
+            'Authorization':'Bearer ' + ha.user.access_token,
+            'Accept':'application/json'
+          }
+  })
+}
 function changePass(newpass) {
   $.ajax({
           type: "PUT",
@@ -713,3 +773,157 @@ function editProfileHeaderMenu() {
     $("#imProfilePicture").attr('src', imgBinaryFile);
     $("#tProfileDisplayName").html(ha.user.profile.DisplayName);
 }
+
+// APP
+//function execApp(schema,boxName) {
+//    $.ajax({
+//        type: "GET",
+//        url: schema + "__/launch.json",
+//        headers: {
+//            'Authorization':'Bearer ' + ha.user.access_token,
+//            'Accept':'application/json'
+//        }
+//    }).done(function(data) {
+//        var type = data.type;
+//        var launch = data[type];
+//        var target = ha.user.cellUrl + boxName;
+//        refreshToken().done(function(data) {
+//            switch (type) {
+//                case "web":
+//                    var url = launch;
+//                    url += '#target=' + target;
+//                    url += '&token=' + data.access_token;
+//                    url += '&ref=' + data.refresh_token;
+//                    url += '&expires=' + data.expires_in;
+//                    url += '&refexpires=' + data.refresh_token_expires_in;
+//                    window.open(url);
+//                    break;
+//            }
+//        });
+//    });
+//};
+function execApp(schema,boxName) {
+    var childWindow = window.open('about:blank');
+    $.ajax({
+        type: "GET",
+        url: schema + "__/launch.json",
+        headers: {
+            'Authorization':'Bearer ' + ha.user.access_token,
+            'Accept':'application/json'
+        }
+    }).done(function(data) {
+        var type = data.type;
+        var launch = data[type];
+        var target = ha.user.cellUrl + boxName;
+        refreshToken().done(function(data) {
+            switch (type) {
+                case "web":
+                    var url = launch;
+                    url += '#target=' + target;
+                    url += '&token=' + data.access_token;
+                    url += '&ref=' + data.refresh_token;
+                    url += '&expires=' + data.expires_in;
+                    url += '&refexpires=' + data.refresh_token_expires_in;
+                    childWindow.location.href = url;
+                    childWindow = null;
+                    break;
+            }
+        });
+    }).fail(function(data) {
+        childWindow.close();
+        childWindow = null;
+    });
+};
+
+// TEST
+function testBinary() {
+    var file = document.getElementById("testFile").files[0];
+    if (file) {
+        try {
+             var reader = new FileReader();
+        } catch (e) {
+             return;
+        }
+
+        reader.readAsDataURL(file, "UTF-8");
+        reader.onload = testAPI;
+    }
+}
+function testAPI(evt) {
+    var file = document.getElementById("testFile");
+    var form_data = new FormData(file);
+
+    var url = ha.user.cellUrl;
+    //var url = "https://demo.personium.io/ksakamoto/";
+    var urlArray = [];
+    urlArray[0] = "https";
+    urlArray[1] = "demo.personium.io";
+    urlArray[2] = "kyouhei-sakamoto";
+    var apiUrl = "https://demo.personium.io/app-myboard/__/MyBoard.bar";
+    //urlArray[2] = "ksakamoto";
+    var oReq = new XMLHttpRequest();
+    oReq.open("GET", "https://demo.personium.io/app-myboard/__/MyBoard.bar", true);
+    //oReq.open("GET", "https://demo.personium.io/app-myboard/__/V1_1_2_bar_webdav_odata.bar", true);
+    oReq.responseType = "arraybuffer";
+    oReq.setRequestHeader("Content-Type", "application/zip");
+    //oReq.responseType = "blob";
+    oReq.onload = function(e) {
+        //var blob = new Blob([oReq.response], {type: "application/octet-stream"});
+        //var formData = new FormData(); 
+        //formData.append('zip', blob);
+        //console.log(blob);
+        //var r = new FileReader();
+        //r.onload = function() {
+        //    console.log(r.result.substr(r.result.indexOf(',')+1));
+        //}
+        //r.readAsDataURL(blob);
+        //var view = new DataView(arrayBuffer);
+        var arrayBuffer = oReq.response;
+        var view = new Uint8Array(arrayBuffer);
+        var blob = new Blob([view], {"type" : "application/zip"})
+        //if (arrayBuffer) {
+        //    var byteArray = new Uint8Array(arrayBuffer);
+        //    var binaryData = "";
+        //    for (var i = 0; i < byteArray.byteLength; i++) {
+        //        binaryData += String.fromCharCode(byteArray[i]);
+        //    }
+        //}
+        //var binary = evt.target.result.substr(evt.target.result.indexOf(',')+1);
+        $.ajax({
+                type: "MKCOL",
+                url: url + 'MyBoard/', // 作成ボックス名
+                data: blob,
+                //data: 'C:\Users\coe\Desktop\V1_1_2_bar_webdav_odata.bar',
+                processData: false,
+                headers: {
+                    'Authorization':'Bearer ' + ha.user.access_token,
+                    //'Content-type':'application/zip'
+                    'Content-type':'application/zip'
+                }
+        }).done(function(data) {
+            alert(data);
+        }).fail(function(data) {
+            alert(data);
+        });
+    }
+    oReq.send();
+};
+function testAPI2() {
+    $.ajax({
+            //type: "GET",
+            //url: 'https://demo.personium.io/HomeApplication/io_personium_demo_app-myboard',
+            //headers: {
+            //    'Authorization':'Bearer ' + ha.user.access_token
+            //}
+            type: "PROPFIND",
+            url: 'https://demo.personium.io/HomeApplication/io_personium_demo_app-myboard/MyBoardBox/my-board.json',
+            headers: {
+                'Authorization':'Bearer ' + ha.user.access_token,
+                'Depth': 1
+            }
+    }).done(function(data) {
+        alert(data);
+    }).fail(function(data) {
+        alert(data);
+    });
+};

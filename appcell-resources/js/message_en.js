@@ -39,6 +39,11 @@ msgStr["00035"] = "Name";
 msgStr["00036"] = "Password";
 msgStr["00037"] = "Watch public BOX";
 msgStr["00038"] = "Role list";
+msgStr["00039"] = "Application";
+msgStr["00040"] = "Install";
+msgStr["00041"] = "Uninstall";
+msgStr["00042"] = "Details";
+msgStr["00043"] = "Edit Role";
 
 // INFO
 msgStr["I0001"] = "You have successfully changed your password!<br>Please login again.";
@@ -60,6 +65,7 @@ msgStr["I0016"] = "Box used for relation";
 msgStr["I0017"] = "Select a Box that this role is to use";
 msgStr["I0018"] = "Assign (s)";
 msgStr["I0019"] = "You do not have view permission.";
+msgStr["I0020"] = "Perform the installation. Is it OK?";
 
 // WARNING
 msgStr["W0001"] = "Expiration date of the session has expired.<br>Please login again.";
@@ -85,6 +91,7 @@ msgStr["E0017"] = "Please enter external cell name";
 msgStr["E0018"] = "Please enter valid external cell URL";
 msgStr["E0019"] = "External cell name cannot exceed 128 characters";
 msgStr["E0020"] = "External cell name cannot start with special character";
+msgStr["E0021"] = "Size cannot exceed 51200 characters";
 
 function getMsg(id) {
     var str = "";
