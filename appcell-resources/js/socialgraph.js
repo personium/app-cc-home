@@ -10,8 +10,6 @@ $(document).ready(function() {
 
     // Initialization
     ha.getRelationList();
-    ha.populateProfile();
-    //ha.getRoleList();
 
     // click event
     $('#b-add-extcell-ok').on('click', function () { ha.addExtCell(); });
@@ -153,10 +151,6 @@ ha.setLinkParamName = function(relName, relBoxName) {
     } else {
         ha.linkBoxName = relBoxName;
     }
-};
-ha.populateProfile = function() {
-  $("#tProfileDisplayName").html(ha.user.profile.DisplayName);
-  $("#imProfilePicture").attr('src', ha.user.profile.Image);
 };
 ha.setLinkUrl = function(url, no) {
   ha.linkExtCellUrl = url;
@@ -321,7 +315,7 @@ ha.dispExtCellLinkRelation = function(json, extUrl) {
       var description = "";
       var imageSrc = notImage;
       var extRelID = "dvExtCellRelList";
-      ha.getProfile(extUrl).done(function(profData) {
+      getProfile(extUrl).done(function(profData) {
           if (profData !== null) {
               dispName = profData.DisplayName;
               description = profData.Description;
@@ -357,9 +351,10 @@ ha.dispRelationLinkExtCell = function(json, relName, relBoxName) {
 
       ha.appendRelationLinkExtCellAfter(extUrl, extRelID);
     }
+    
 };
 ha.appendRelationLinkExtCellAfter = function(extUrl, extRelID) {
-    ha.getProfile(extUrl).done(function(profData) {
+    getProfile(extUrl).done(function(profData) {
           var dispName = ha.getName(extUrl);
           var description = "";
           var imageSrc = notImage;
@@ -383,9 +378,9 @@ ha.appendRelationLinkExtCell = function(url, dispName, description, imageSrc, ex
     html += '<table style="width: 100%;"><tr>';
     //html += '<td style="width: 90%;"><a class="accountToggle" onClick="ha.showRoleList(\'' + url + '\')"">';
     html += '<td style="width: 90%;"><a class="allToggle" onClick="ha.createExtCellProfile(\'' + url + '\',\'' + dispName + '\',\'' + description + '\',\'' + imageSrc + '\')"">';
-    html += '<table><tr><td rowspan="2"><img class="image-circle" src="' + imageSrc + '" alt="user"></td>';
+    html += '<table class="table-fixed"><tr><td rowspan="2" style="width: 25%;"><img class="image-circle" src="' + imageSrc + '" alt="user"></td>';
     html += '<td>' + dispName + '</td></tr>';
-    html += '<tr><td><font color="LightGray">' + description + '</font></td>';
+    html += '<tr><td><p class="ellipsisText"><font color="LightGray">' + description + '</font></p></td>';
     html += '</a></td></tr></table>';
     if (delFlag) {
         var splitID = extRelID.split("-");
@@ -395,6 +390,8 @@ ha.appendRelationLinkExtCell = function(url, dispName, description, imageSrc, ex
             boxName = splitID[2];
         }
         html += '<td style="width: 10%;"><a class="del-button list-group-item" style="top:25%" href="#" onClick="ha.dispDelExtCellRelationModal(\'' + url + '\',\'' + relName + '\',\'' + boxName + '\');return(false)">' + getMsg("00004") + '</a></td>';
+    } else {
+        html += '<td style="width: 10%;"></td>';
     }
     html += '</tr></table></div>';
     $("#" + extRelID).append(html);
@@ -470,9 +467,9 @@ ha.dispExtCellRoleList = function(json, exturl) {
       boxName = "[main]";
     }
     html += '<div class="list-group-item">';
-    html += '<table style="width: 100%;"><tr>';
-    html += '<td style="width: 90%;">' + name + '(' + boxName + ')</td>';
-    html += '<td colspan="2" style="width: 10%;"><a class="del-button list-group-item" href="#" onClick="ha.dispDelExtCellRoleModal(\'' + exturl + '\',\'' + name + '\',\'' + boxName + '\');return(false)">' + getMsg("00004") + '</a></td>';
+    html += '<table class="table-fixed"><tr>';
+    html += '<td style="width: 85%;"><p class="ellipsisText">' + name + '(' + boxName + ')</p></td>';
+    html += '<td colspan="2" style="width: 15%;"><a class="del-button list-group-item" href="#" onClick="ha.dispDelExtCellRoleModal(\'' + exturl + '\',\'' + name + '\',\'' + boxName + '\');return(false)">' + getMsg("00004") + '</a></td>';
     //html += '</tr><tr>';
     //html += '<td>' + boxName + '</td>';
     html += '</tr></table></div>';
@@ -528,9 +525,6 @@ ha.checkBoxPublic = function(json) {
     $("#toggle-panel1").toggleClass('slide-on-holder');
     setTitleMenu(getMsg("00037"));
     //$('#modal-public-extbox').modal('show');
-};
-ha.dispPublicBoxList = function(json) {
-    
 };
 ha.dispDelExtCellRelationModal = function(url, relationName, boxName, no) {
     ha.linkExtCellUrl = url;
@@ -636,7 +630,7 @@ ha.dispRelationList = function(json) {
     html += '</a></td>';
     html += '</tr></table></div>';
     html += '<nav id="extCellRelMenu' + i + '"><ul class="extCellRelMenu"><div name="dvExtCellRelList" id="' + extRelID + '"></div><div>';
-    html += '<a class="list-group-item" href="#" onClick="ha.setLinkParamName(\'' + objRelation.Name + '\',\'' + boxName + '\')" data-toggle="modal" data-target="#modal-add-extcelllinkrelation">＋ ' + getMsg("00022") + '</a></div></nav>';
+    html += '<a class="list-group-item" href="#" onClick="ha.setLinkParamName(\'' + objRelation.Name + '\',\'' + boxName + '\')" data-toggle="modal" data-target="#modal-add-extcelllinkrelation">＋ ' + getMsg("00022") + '</a></div></ul></nav>';
     $("#dvExtCellList").append(html);
     ha.getRelLinkExtCell(objRelation.Name, relBoxName);
   }
@@ -648,7 +642,7 @@ ha.dispRelationList = function(json) {
   html += '<nav id="extCellRelMenu"><ul class="extCellRelMenu"><div name="dvExtCellRelList" id="dvExtCellRelList"></div>';
   //html += '<div><a class="list-group-item" href="#" data-toggle="modal" data-target="#modal-add-extcell">＋ ' + getMsg("00024") + '</a></div>';
   html += '<div class="list-group-item"><a class="allToggle" href="#" onClick="ha.createAddExtCell()">＋ ' + getMsg("00024") + '</a></div>';
-  html += '</nav>';
+  html += '</ul></nav>';
   $("#dvExtCellList").append(html);
   ha.getExtCellList();
 
@@ -902,14 +896,6 @@ ha.passInputCheck = function(newpass, displayNameSpan) {
 }
 
 // API
-ha.getProfile = function(url) {
-    return $.ajax({
-	type: "GET",
-	url: url + '__/profile.json',
-	dataType: 'json',
-        headers: {'Accept':'application/json'}
-    })
-};
 ha.restCreateExtCellAPI = function(json) {
   $.ajax({
           type: "POST",
@@ -1086,7 +1072,7 @@ ha.restAddExtCellLinkRelation = function(moveFlag) {
           }
   }).done(function(data) {
     ha.getRelLinkExtCell(linkName, linkBoxName);
-    //ha.getProfile(ha.linkExtCellUrl)
+    //getProfile(ha.linkExtCellUrl)
     //ha.getExtCellRelationList(ha.linkExtCellUrl, ha.linkExtCellNo);
     $("#modal-add-extcelllinkrelation").modal("hide");
     if (moveFlag) {
@@ -1154,34 +1140,6 @@ ha.restDeleteExtCellLinkRelation = function() {
 //        alert(data);
 //    });
 //};
-
-ha.testAPI = function() {
-    var url = ha.user.cellUrl;
-    //var url = "https://demo.personium.io/ksakamoto/";
-    var urlArray = [];
-    urlArray[0] = "https";
-    urlArray[1] = "demo.personium.io";
-    urlArray[2] = "kyouhei-sakamoto";
-    var apiUrl = "https://demo.personium.io/app-myboard/__/MyBoard.bar";
-    //urlArray[2] = "ksakamoto";
-    $.ajax({
-            type: "MKCOL",
-            //url: url + '__box?schema=' + urlArray[0] + '%3A%2F%2F' + urlArray[1] + '%2F' + urlArray[2] + '%2F',
-            url: url + '/test',
-            form: {
-                   'file':'https://demo.personium.io/app-myboard/',
-                   'type':'application/zip'
-            },
-            headers: {
-                'Authorization':'Bearer ' + ha.user.access_token,
-                'Content-type':'application / zip'
-            }
-    }).done(function(data) {
-        alert(data);
-    }).fail(function(data) {
-        alert(data);
-    });
-};
 
 ha.testAPI2 = function() {
     $.ajax({

@@ -12,12 +12,12 @@
     <![endif]-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    <script src="../../appcell-resources/js/common.js"></script>
-    <script src="../../appcell-resources/js/settings.js"></script>
-    <script src="../../appcell-resources/js/message_en.js"></script>
+    <script src="https://demo.personium.io/HomeApplication/__/js/common.js"></script>
+    <script src="https://demo.personium.io/HomeApplication/__/js/settings.js"></script>
+    <script src="https://demo.personium.io/HomeApplication/__/js/message_en.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
-    <link href='../../appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
-    <link href='../../appcell-resources/css/settings.css' rel='stylesheet' type='text/css'>
+    <link href='https://demo.personium.io/HomeApplication/__/css/common.css' rel='stylesheet' type='text/css'>
+    <link href='https://demo.personium.io/HomeApplication/__/css/settings.css' rel='stylesheet' type='text/css'>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
   </head>
   <body>
@@ -34,43 +34,27 @@
                     <div class="panel panel-default list-group">
                         <div class="panel-body">
                           <div class="list-group">
-                            <div id="dvAccount" class="toggleButton" style="margin-bottom: 10px;">
+                            <div id="dvAccount" class="toggleButton">
                               <!--<a class="list-group-item" href="#" data-toggle="modal" data-target="#modal-add-account">-->
                               <a class="list-group-item toggle" id="accountToggle">
                                 Accounts
                               </a>
                             </div>
-                            <div id="dvApp" class="toggleButton" style="margin-bottom: 10px">
-                              <a class="list-group-item toggle" href="#">
+                            <div id="dvApplication" class="toggleButton">
+                              <a class="list-group-item toggle" id="applicationToggle">
                                 Applications
                               </a>
                             </div>
-                            <div id="dvRole" class="toggleButton" style="margin-bottom: 10px">
+                            <div id="dvRole" class="toggleButton">
                               <a class="list-group-item toggle" id="roleToggle">
                                 Roles
                               </a>
                             </div>
-                            <nav>
-                              <ul class="roleMenu">
-                                <div id="dvRoleList"></div>
-                                <div>
-                                  <a class="list-group-item" href="#" data-toggle="modal" data-target="#modal-add-role">＋ Add Role</a>
-                                </div>
-                              </ul>
-                            </nav>
                             <div id="dvRelation" class="toggleButton" style="margin-bottom: 10px">
                               <a class="list-group-item toggle" id="relationToggle">
                                 Relation
                               </a>
                             </div>
-                            <nav>
-                              <ul class="relationMenu">
-                                <div id="dvRelationList"></div>
-                                <div>
-                                  <a class="list-group-item" href="#" data-toggle="modal" data-target="#modal-add-relation">＋ Add Relation</a>
-                                </div>
-                              </ul>
-                            </nav>
                           </div>
                         </div>
                     </div>
@@ -92,14 +76,15 @@
                      <div id="dvTextConfirmation"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="b-edit-relconfirm-ok" style="display:none">Edit</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="b-edit-relconfirm-ok" style="display:none">Edit</button>
                     <button type="button" class="btn btn-primary" id="b-edit-accconfirm-ok" style="display:none">Edit</button>
                     <button type="button" class="btn btn-primary" id="b-del-acclinkrole-ok" style="display:none">Delete</button>
                     <button type="button" class="btn btn-primary" id="b-del-role-ok" style="display:none">Delete</button>
                     <button type="button" class="btn btn-primary" id="b-del-account-ok" style="display:none">Delete</button>
                     <button type="button" class="btn btn-primary" id="b-del-relation-ok" style="display:none">Delete</button>
                     <button type="button" class="btn btn-primary" id="b-del-rellinkrole-ok" style="display:none">Delete</button>
+                    <button type="button" class="btn btn-primary" id="b-ins-bar-ok" style="display:none">OK</button>
                 </div>
             </div>
         </div>

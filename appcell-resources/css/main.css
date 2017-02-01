@@ -6,13 +6,13 @@ div.p-app {
   float: left;
   width: 208px;
   font-family: Raleway;
-  margin-bottom: 16px;
+  margin-bottom: 30px;
   color: #efd;
 }
 
 a.p-app-icon {
   width: 48px;
-  heigth: 48px;
+  height: 48px;
   display: block;
   background-color: rgba(128,200,128,0.9);
 }
@@ -25,7 +25,7 @@ a.p-app-icon:hover {
 
 img.p-app-icon {
   width: 48px;
-  heigth: 48px;
+  height: 48px;
   -webkit-filter: invert(100%);
   filter: invert(100%);
 }
@@ -79,8 +79,12 @@ header {
     transition: all 0.5s ease;
 }
 
+.user-header {
+    margin-bottom: 30px;
+}
+
 .user-dashboard {
-    padding: 16px 40px;
+    padding: 0px 40px;
     /*background: -webkit-linear-gradient(45deg,  #fafafa 5%,#fafafa 99%); /* Chrome10+,Safari5.1+ */
     background: #ffffff;
 }
@@ -111,24 +115,18 @@ header {
       float: left;
       width: 104px;
       font-family: Raleway;
-      margin-bottom: 8px;
+      margin-bottom: 30px;
       color: #efd;
     }
     a.p-app-icon {
-      width: 24px;
-      heigth: 24px;
-      display: block;
-      background-color: rgba(128,200,128,0.9);
-    }
-    a.p-app-icon {
-      width: 24px;
-      heigth: 24px;
+      width: 38px;
+      height: 38px;
       display: block;
       background-color: rgba(128,200,128,0.9);
     }
     img.p-app-icon {
-      width: 24px;
-      heigth: 24px;
+      width: 38px;
+      height: 38px;
       -webkit-filter: invert(100%);
       filter: invert(100%);
     }
@@ -140,7 +138,7 @@ header {
       font-size: 14px;
     }
     .user-dashboard {
-        padding: 8px 20px;
+        padding: 0px 20px;
         /*background: -webkit-linear-gradient(45deg,  #fafafa 5%,#fafafa 99%); /* Chrome10+,Safari5.1+ */
         background: #ffffff;
     }
