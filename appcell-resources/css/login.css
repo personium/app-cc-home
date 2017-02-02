@@ -83,6 +83,30 @@ h1{
     outline: none;
 }
 
+.login_btn_g{
+    background-color:#4682b4 !important;
+    border: 1px solid rgba(255, 255, 255, 100);
+    border-radius: 40px;
+    margin: 5px;
+    padding: 5px;
+    width: 272px;
+    outline: none;
+    font-size: 16px;
+    font-weight: inherit;
+}
+
+.login_btn_g:hover,.login_btn_g:focus {
+    background-color:#44447f !important;
+    border: 1px solid rgba(255, 255, 255, 100);
+    border-radius: 40px;
+    margin: 5px;
+    padding: 5px;
+    width: 272px;
+    font-size: 16px;
+    font-weight: inherit;
+    outline: none;
+}
+
 .new_user {
     margin-top: 8px;
     height: 16px;
