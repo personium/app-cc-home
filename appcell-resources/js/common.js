@@ -20,7 +20,7 @@ var LASTACTIVITY = new Date().getTime();
 // and Modal create
 function createProfileHeaderMenu() {
     // get profile image
-    if (ha.user.profile.Image) {
+    if (ha.user.profile && ha.user.profile.Image) {
         imgBinaryFile = ha.user.profile.Image;
     } else {
         // if there is no image, set default image
