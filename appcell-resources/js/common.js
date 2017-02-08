@@ -774,7 +774,12 @@ function validateDescription(descriptionDetails, descriptionSpan) {
 // Logout
 function logout() {
   sessionStorage.setItem("sessionData", null);
-  location.href = "./login.html";
+  var mode = sessionStorage.getItem("mode");
+  if (mode) {
+      location.href = "./login.html?mode=" + mode;
+  } else {
+      location.href = "./login.html";
+  }
 };
 
 // This method checks idle time

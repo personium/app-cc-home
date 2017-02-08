@@ -92,6 +92,7 @@ msgStr["E0018"] = "Please enter valid external cell URL";
 msgStr["E0019"] = "External cell name cannot exceed 128 characters";
 msgStr["E0020"] = "External cell name cannot start with special character";
 msgStr["E0021"] = "Size cannot exceed 51200 characters";
+msgStr["E0022"] = "The target cell does not exist.";
 
 function getMsg(id) {
     var str = "";

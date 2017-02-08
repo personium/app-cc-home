@@ -13,10 +13,6 @@ div h3 span.small{
      font-size:14px;
 }
 
-div span {
-     font-weight: 200;
-}
-
 h1{
      font-weight: 200;
      margin-bottom: 44px;
@@ -133,6 +129,11 @@ h1{
 }
 
 .outter{
-    margin-top:80px;
+    /*margin-top:80px;*/
     margin-bottom:8px;
+}
+
+.fontBlack {
+    color: #000000 !important;
+    font-weight: inherit !important;
 }
