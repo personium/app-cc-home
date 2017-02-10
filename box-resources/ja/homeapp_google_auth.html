@@ -11,7 +11,7 @@
  <div id="implicit">
  <script type="text/javascript">
   var token = "";
-  var match = location.search.match(/id_token=(.*?)(&|$)/);
+  var match = location.hash.match(/id_token=(.*?)(&|$)/);
   if (match) {
     token = decodeURIComponent(match[1]);
   }
@@ -40,10 +40,10 @@
           sessionStorage.setItem("sessionData", JSON.stringify(data));
           location.href = "main.html";
       }).fail(function(data) {
-          logout();
+          //logout();
       });
   } else {
-      logout();
+      //logout();
   }
 
   // Logout
