@@ -40,10 +40,10 @@
           sessionStorage.setItem("sessionData", JSON.stringify(data));
           location.href = "main.html";
       }).fail(function(data) {
-          //logout();
+          logout();
       });
   } else {
-      //logout();
+      logout();
   }
 
   // Logout
