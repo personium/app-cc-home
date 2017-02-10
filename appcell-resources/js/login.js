@@ -35,6 +35,8 @@ $(document).ready(function() {
 
   $('#b-input-cell-ok').on('click', function () {
      $('#modal-input-cell').modal('hide');
+  });
+  $('#modal-input-cell').on('hidden.bs.modal', function() {
      targetCellLogin($("#pCellUrl").val());
   });
   $("#bLogin").on("click", function(e){
@@ -43,7 +45,7 @@ $(document).ready(function() {
   });
   $("#gLogin").on("click", function(e) {
      //var url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=102363313215-408im4hc7mtsgrda4ratkro2thn58bcd.apps.googleusercontent.com&response_type=code+id_token&scope=openid%20email%20profile&redirect_uri=https%3A%2F%2Fdemo.personium.io%2FoidcTest%2Foidc%2Fdav%2Findex2.html&state=abc&display=popup&nonce=personium";
-     var url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=102363313215-408im4hc7mtsgrda4ratkro2thn58bcd.apps.googleusercontent.com&response_type=code+id_token&scope=openid%20email%20profile&redirect_uri=https%3A%2F%2Fdemo.personium.io%2FHomeApplication%2F__%2Fja%2Fhomeapp_google_auth.html&state=abc&display=popup&nonce=personium";
+     var url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=102363313215-408im4hc7mtsgrda4ratkro2thn58bcd.apps.googleusercontent.com&response_type=code+id_token&scope=openid%20email%20profile&redirect_uri=http%3A%2F%2Fpersonium.io%2Fdemo%2Fhome-app%2Fbox-resources%2Fja%2Fhomeapp_google_auth.html&state=abc&display=popup&nonce=personium";
 
      window.location.href = url;
   });
@@ -96,7 +98,17 @@ cm.loadProfile = function() {
                 sessionStorage.setItem("myProfile", cm.profile);
 		cm.populateProfile(data);
 	}).fail(function(){
-		alert("I do not have a profile.");
+		alert("Do not have a profile.");
+                var noProfile = {
+                    Description: "",
+                    DisplayName: "Guest",
+                    Image: notImage,
+                    ProfileImageName: "",
+                    Scope: "Private"
+                };
+                cm.profile = noProfile;
+                sessionStorage.setItem("myProfile", cm.profile);
+		cm.populateProfile(noProfile);
 	});
 };
 cm.populateProfile = function(profile) {

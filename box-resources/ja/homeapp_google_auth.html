@@ -5,7 +5,6 @@
  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
  <!--<script src="https://demo.personium.io/HomeApplication/__/js/common.js"></script>-->
- <script src="../../appcell-resources/js/common.js"></script>
 </head>
  <body>
  <h1>認証完了</h1>
@@ -16,7 +15,7 @@
   if (match) {
     token = decodeURIComponent(match[1]);
   }
-
+  
   if (token) {
       var cellUrl = sessionStorage.getItem("targetCellUrl");
       $.ajax({
@@ -46,6 +45,17 @@
   } else {
       logout();
   }
+
+  // Logout
+  function logout() {
+    sessionStorage.setItem("sessionData", null);
+    var mode = sessionStorage.getItem("mode");
+    if (mode) {
+        location.href = "./login.html?mode=" + mode;
+    } else {
+        location.href = "./login.html";
+    }
+  };
   
  </script>
   </div>
