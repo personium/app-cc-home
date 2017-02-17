@@ -12,15 +12,22 @@
 		<![endif]-->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-                <script src="https://demo.personium.io/HomeApplication/__/js/login.js"></script>
-                <script src="https://demo.personium.io/HomeApplication/__/js/message_en.js"></script>
+                <!--<script src="https://demo.personium.io/HomeApplication/__/js/login.js"></script>
+                <script src="https://demo.personium.io/HomeApplication/__/js/message_en.js"></script>-->
+                <script src="../../appcell-resources/js/login.js"></script>
+                <script src="../../appcell-resources/js/message_en.js"></script>
 		<link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
-                <link href='https://demo.personium.io/HomeApplication/__/css/common.css' rel='stylesheet' type='text/css'>
-                <link href='https://demo.personium.io/HomeApplication/__/css/login.css' rel='stylesheet' type='text/css'>
+                <!--<link href='https://demo.personium.io/HomeApplication/__/css/common.css' rel='stylesheet' type='text/css'>
+                <link href='https://demo.personium.io/HomeApplication/__/css/login.css' rel='stylesheet' type='text/css'>-->
+                <link href='../../appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
+                <link href='../../appcell-resources/css/login.css' rel='stylesheet' type='text/css'>
 	</head>
 <body>
     <div class="main_box">
 	<div class="col-md-12 col-xs-12" align="center">
+            <div>
+                <h1 id="pdsRogo">Personium</h1>
+            </div>
             <div class="outter">
                 <img id="imProfile" src="" class="image-circle-large"/>
             </div>
@@ -51,18 +58,40 @@
             </div>
         </div>
         <div class="error_box">
-        <div align="center" id="error_area" class="error_area">
-            <table class="msg_area">
-                <tr>
-                    <td class="image-error">
-                        <img id="imError" class="image-error" src="https://demo.personium.io/HomeApplication/__/icons/ico_error.png"/>
-                    </td>
-                    <td align="left">
-                        <label id="error_msg" class="error_msg">Error</label>
-                    </td>
-                </tr>
-            </table>
+            <div align="center" id="error_area" class="error_area">
+                <table class="msg_area">
+                    <tr>
+                        <td class="image-error">
+                            <img id="imError" class="image-error" src="https://demo.personium.io/HomeApplication/__/icons/ico_error.png"/>
+                        </td>
+                        <td align="left">
+                            <label id="error_msg" class="error_msg">Error</label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
+    </div>
+
+    <div id="modal-input-cell" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">Login cell input</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <div id="dvCellUrl">Cell URL</div>
+                            <input type="text" class="fontBlack" id="pCellUrl">
+                            <span id="errorCellUrl" style="color:red"></span>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-input-cell-ok">OK</button>
+                </div>
+            </div>
         </div>
     </div>
 </body>

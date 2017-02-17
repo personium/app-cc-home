@@ -12,46 +12,53 @@
 		<![endif]-->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-                <script src="https://demo.personium.io/HomeApplication/__/js/common.js"></script>
+                <!--<script src="https://demo.personium.io/HomeApplication/__/js/common.js"></script>
                 <script src="https://demo.personium.io/HomeApplication/__/js/settings.js"></script>
-                <script src="https://demo.personium.io/HomeApplication/__/js/message_en.js"></script>
+                <script src="https://demo.personium.io/HomeApplication/__/js/message_en.js"></script>-->
+                <script src="../../appcell-resources/js/common.js"></script>
+                <script src="../../appcell-resources/js/settings.js"></script>
+                <script src="../../appcell-resources/js/message_en.js"></script>
 		<link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
-                <link href='https://demo.personium.io/HomeApplication/__/css/common.css' rel='stylesheet' type='text/css'>
+                <!--<link href='https://demo.personium.io/HomeApplication/__/css/common.css' rel='stylesheet' type='text/css'>
                 <link href='https://demo.personium.io/HomeApplication/__/css/settings.css' rel='stylesheet' type='text/css'>
-                <!--<link href='../../appcell-resources/css/common.css' rel='stylesheet' type='text/css'>-->
-                <link href='https://demo.personium.io/HomeApplication/__/css/main.css' rel='stylesheet' type='text/css'>
+                <link href='https://demo.personium.io/HomeApplication/__/css/main.css' rel='stylesheet' type='text/css'>-->
+                <link href='../../appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
+                <link href='../../appcell-resources/css/settings.css' rel='stylesheet' type='text/css'>
+                <link href='../../appcell-resources/css/main.css' rel='stylesheet' type='text/css'>
 <script type="text/javascript">
-//ha.user= JSON.parse(location.hash.substring(1));
-
-if (!ha.user) {
-  location.href = "./login.html";
-}
+//cm.user= JSON.parse(location.hash.substring(1));
 
 ha.systemApps = [
   {
     "name": "Messages",
     "icon": "001lighticons-02full.png",
-    "url": "messages.html"
+    "url": "messages.html",
+    "used": false
   }, {
     "name": "Social",
     "icon": "003lighticons-03full.png",
-    "url": "socialgraph.html"
+    "url": "socialgraph.html",
+    "used": true
   }, {
     "name": "App Market",
     "icon": "001lighticons-31full.png",
-    "url": ""
+    "url": "",
+    "used": false
   }, {
     "name": "Data Viewer",
     "icon": "001lighticons-35full.png",
-    "url": "dataviewer.html"
+    "url": "dataviewer.html",
+    "used": false
   }, {
     "name": "Devices",
     "icon": "001lighticons-10full.png",
-    "url": "devices.html"
+    "url": "devices.html",
+    "used": false
   }, {
     "name": "Questionnaire",
     "icon": "001lighticons-73full.png",
-    "url": ""
+    "url": "",
+    "used": false
   }
 ];
 
@@ -59,10 +66,10 @@ $(document).ready(function() {
     ha.deploySystemApps();
     ha.dispInsAppList();
     //createTitleHeader();
-    createProfileHeaderMenu();
-    createSideMenu();
-    setIdleTime();
-    initSettings();
+    cm.createProfileHeaderMenu();
+    cm.createSideMenu();
+    cm.setIdleTime();
+    st.initSettings();
     // App launcher from the box list
 });
 
@@ -70,10 +77,15 @@ ha.deploySystemApps = function() {
   var arrCount = 0;
   for (var i in ha.systemApps) {
     var app = ha.systemApps[i];
-    var html = '<div class="p-app" align="center"><a href="' + app.url + '" class="p-app-icon">'
-             + '<img src="https://demo.personium.io/HomeApplication/__/icons/' + app.icon + '" class="p-app-icon"/></a>'
-             + '<div class="p-app-name">' + app.name + '</div>'
-             + '</div>';
+    var html = '<div class="p-app" align="center"><a href="';
+    if (app.used) {
+        html += app.url;
+    } else {
+        html += "javascript:void(0)";
+    }
+    html += '" class="p-app-icon"><img src="https://demo.personium.io/HomeApplication/__/icons/' + app.icon + '" class="p-app-icon"/></a>'
+         + '<div class="p-app-name">' + app.name + '</div>'
+         + '</div>';
     $("#dashboard").append(html);
     arrCount += 1;
   }
@@ -82,7 +94,7 @@ ha.deploySystemApps = function() {
 };
 
 ha.dispInsAppList = function() {
-    getBoxList().done(function(data) {
+    cm.getBoxList().done(function(data) {
         var insAppRes = data.d.results;
         insAppRes.sort(function(val1, val2) {
             return (val1.Name < val2.Name ? 1 : -1);
@@ -97,17 +109,17 @@ ha.dispInsAppList = function() {
 };
 
 ha.dispInsAppListSchema = function(schema, boxName) {
-    getProfile(schema).done(function(profData) {
+    cm.getProfile(schema).done(function(profData) {
         var dispName = profData.DisplayName;
-        var imageSrc = notImage;
+        var imageSrc = cm.notImage;
         if (profData.Image) {
             imageSrc = profData.Image;
         }
-        getBoxStatus(boxName).done(function(data) {
+        cm.getBoxStatus(boxName).done(function(data) {
             var status = data.status;
             var html = '';
             if (status.indexOf('ready') >= 0) {
-                var html = '<div class="ins-app" align="center"><a class="ins-app-icon" onClick="execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
+                var html = '<div class="ins-app" align="center"><a class="ins-app-icon" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
                 $("#dashboard_ins").append(html);
             }
         });
