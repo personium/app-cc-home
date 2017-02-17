@@ -783,38 +783,28 @@ function logout() {
 };
 
 // This method checks idle time
+// Check 5 minutes before session expires
 function setIdleTime() {
-    setInterval(checkIdleTime, 1000);
+    setInterval(checkIdleTime, 3300000);
     document.onclick = function() {
       LASTACTIVITY = new Date().getTime();
-      refreshToken().done(function(data) {
-              ha.user.access_token = data.access_token;
-              ha.user.refresh_token = data.refresh_token;
-              sessionStorage.setItem("sessionData", JSON.stringify(ha.user));
-      });
     };
     document.onmousemove = function() {
       LASTACTIVITY = new Date().getTime();
-      refreshToken().done(function(data) {
-              ha.user.access_token = data.access_token;
-              ha.user.refresh_token = data.refresh_token;
-              sessionStorage.setItem("sessionData", JSON.stringify(ha.user));
-      });
     };
     document.onkeypress = function() {
       LASTACTIVITY = new Date().getTime();
-      refreshToken().done(function(data) {
-              ha.user.access_token = data.access_token;
-              ha.user.refresh_token = data.refresh_token;
-              sessionStorage.setItem("sessionData", JSON.stringify(ha.user));
-      });
     };
 }
 function checkIdleTime() {
   if (new Date().getTime() > LASTACTIVITY + IDLE_TIMEOUT) {
-    if (sessionStorage.isResourceMgmt = "true") {
-      $('#modal-session-expired').modal('show');
-    }
+    $('#modal-session-expired').modal('show');
+  } else {
+      refreshToken().done(function(data) {
+          ha.user.access_token = data.access_token;
+          ha.user.refresh_token = data.refresh_token;
+          sessionStorage.setItem("sessionData", JSON.stringify(ha.user));
+      });
   }
 };
 function changePassCheck(newpass, confirm) {

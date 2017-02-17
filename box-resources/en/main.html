@@ -36,27 +36,33 @@ ha.systemApps = [
   {
     "name": "Messages",
     "icon": "001lighticons-02full.png",
-    "url": "messages.html"
+    "url": "messages.html",
+    "used": false
   }, {
     "name": "Social",
     "icon": "003lighticons-03full.png",
-    "url": "socialgraph.html"
+    "url": "socialgraph.html",
+    "used": true
   }, {
     "name": "App Market",
     "icon": "001lighticons-31full.png",
-    "url": ""
+    "url": "",
+    "used": false
   }, {
     "name": "Data Viewer",
     "icon": "001lighticons-35full.png",
-    "url": "dataviewer.html"
+    "url": "dataviewer.html",
+    "used": false
   }, {
     "name": "Devices",
     "icon": "001lighticons-10full.png",
-    "url": "devices.html"
+    "url": "devices.html",
+    "used": false
   }, {
     "name": "Questionnaire",
     "icon": "001lighticons-73full.png",
-    "url": ""
+    "url": "",
+    "used": false
   }
 ];
 
@@ -75,10 +81,15 @@ ha.deploySystemApps = function() {
   var arrCount = 0;
   for (var i in ha.systemApps) {
     var app = ha.systemApps[i];
-    var html = '<div class="p-app" align="center"><a href="' + app.url + '" class="p-app-icon">'
-             + '<img src="https://demo.personium.io/HomeApplication/__/icons/' + app.icon + '" class="p-app-icon"/></a>'
-             + '<div class="p-app-name">' + app.name + '</div>'
-             + '</div>';
+    var html = '<div class="p-app" align="center"><a href="';
+    if (app.used) {
+        html += app.url;
+    } else {
+        html += "javascript:void(0)";
+    }
+    html += '" class="p-app-icon"><img src="https://demo.personium.io/HomeApplication/__/icons/' + app.icon + '" class="p-app-icon"/></a>'
+         + '<div class="p-app-name">' + app.name + '</div>'
+         + '</div>';
     $("#dashboard").append(html);
     arrCount += 1;
   }
