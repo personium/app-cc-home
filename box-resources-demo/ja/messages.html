@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Personium Cell</title>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+		<link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
+<style>
+
+div.p-app {
+  float: left;
+  margin: 10px 10px 10px 10px;
+  
+  font-family: Raleway;
+  padding: 10px 10px 10px 10px;
+  color: #efd;
+}
+a.p-app-icon {
+  border-radius: 10px;
+  width: 100px;
+  heigth: 100px;
+  display: block;
+  background-color: rgba(128,200,128,0.9);
+  -webkit-box-shadow: 0px 8px 2px 2px rgba(50, 50, 50, 0.3);
+  -moz-box-shadow:    0px 8px 2px 2px rgba(50, 50, 50, 0.3);
+  box-shadow:         0px 8px 2px 2px rgba(50, 50, 50, 0.3);
+}
+a.p-app-icon:hover {
+  background-color: rgba(128,200,128,0.9);
+  -webkit-box-shadow: 1px 8px 4px 4px rgba(200, 200, 200, 0.54);
+  -moz-box-shadow:    1px 8px 4px 4px rgba(200, 200, 200, 0.54);
+  box-shadow:         1px 8px 4px 4px rgba(200, 200, 200, 0.54);
+}
+img.p-app-icon {
+  width: 100px;
+  heigth: 100px;
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+div.p-app-name {
+  text-align: center;
+  margin: 10px 0px 0px 0px;
+  text-shadow:    1px 4px 2px rgba(50, 50, 50, 0.54);
+
+}
+.navbar-content {
+  width: 100%;
+  
+}
+.list-group-item {
+  text-align: left;
+  width: 100%;
+  
+}
+
+.modal-content {
+  background-color: rgba(200,255,200,0.8);
+}
+
+/*Main CSS*/
+
+
+
+a:focus,a:hover,a{
+    outline:none;
+    text-decoration: none;
+}
+li,ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.header-top i {
+    font-size: 24px;
+    color: #dfe;
+}
+
+
+body {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: table;
+    background: url(dewdrop-1373998_1920.jpg) no-repeat 0 0 / cover;
+}
+
+
+
+.display-table {
+    display: table;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.display-table-row {
+    display: table-row;
+    height: 100%;
+}
+
+.display-table-cell {
+    display: table-cell;
+    float: none;
+    height: 100%;
+}
+
+.v-align {
+    vertical-align: top;
+}
+
+
+.header-top {
+    margin: 0;
+    padding-top: 2px;
+}
+
+.header-top img {
+    border-radius: 50%;
+    max-width: 48px !important;
+    width: 100%;
+}
+
+.add-project {
+    background: #5584ff none repeat scroll 0 0;
+    border-radius: 100px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 27px 10px 45px;
+    position: relative;
+}
+
+.header-rightside .nav > li > a:focus,
+.header-rightside .nav > li > a:hover {
+    background: none;
+    text-decoration: none;
+}
+
+
+
+.icon-info {
+    position: relative;
+}
+
+.label.label-primary {
+    border-radius: 50%;
+    font-size: 9px;
+    left: 8px;
+    position: absolute;
+    top: -9px;
+}
+
+.icon-info .label {
+    border: 2px solid #ffffff;
+    font-weight: 500;
+    padding: 3px 5px;
+    text-align: center;
+}
+
+.header-top li {
+    display: inline-block;
+    text-align: center;
+}
+
+.header-top .dropdown-toggle {
+    color: #0e1a35;
+}
+
+.header-top ul.dropdown-menu {
+    border: medium none;
+    left: -185px;
+    padding: 17px;
+    background-color: rgba(255,255,255,0.7);
+    width: 250px;
+    text-align; left;
+   color: #030;
+}
+#tProfileDisplayName {
+}
+a.list-group-item {
+    background-color: rgba(255,255,255,0.0);
+   color: #030;
+}
+.navbar-content > span {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+header {
+    background: rgba(255,255,255,0.5);
+    box-shadow: 0 1px 12px rgba(0, 0, 0, 0.04);
+    display: inline-block !important;
+    line-height: 23px;
+    padding: 15px;
+    transition: all 0.5s ease 0s;
+    width: 100%;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.navbar-default {
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+
+
+
+
+.hidden-xs{
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.user-dashboard {
+    padding: 0 20px;
+}
+
+.user-dashboard h1 {
+    color: #0e1a35;
+    font-size: 30px;
+    font-weight: 500;
+    margin: 0;
+    padding: 21px 0;
+}
+
+
+
+
+.shield-buttons {
+    display: none;
+}
+.modal-body input {
+    border: 1px solid #d4d9e3;
+    font-size: 14px;
+    font-weight: 300;
+    margin: 5px 0;
+    padding: 14px 10px;
+    width: 100%;
+    color: #8492af;
+}
+.modal-header h4 {
+    color: #030;
+}
+.modal-footer {
+    border: 0 none;
+    padding: 10px 15px 26px;
+    text-align: right;
+}
+
+.modal{
+    top: 0%; 
+}
+.modal-header .close {
+    margin-top: 2px;
+}
+
+.modal-header.login-header {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+
+/*Main CSS*/
+
+@media only screen and (max-device-width: 767px) {
+    header .header-top img {
+        max-width: 38px !important;
+    }
+    .v-align header {
+        padding: 12px 15px;
+    }
+    header .header-top li {
+        padding-left: 13px;
+        padding-right: 6px;
+    }
+
+    button,
+        html [type="button"],
+        [type="reset"],
+        [type="submit"] {
+            outline: medium none;
+    }
+
+}
+
+@media only screen and (max-device-width: 992px) {
+    header .header-top li {
+        padding-left: 20px !important;
+        padding-right: 0;
+    }
+}
+
+@media only screen and (min-device-width: 767px) and (max-device-width: 998px){
+      .user-dashboard .header-top {
+        padding-top: 5px;
+    }
+    .user-dashboard .header-rightside {
+        display: inline-block;
+        float: left;
+        width: 100%;
+    }
+    .user-dashboard .header-rightside .header-top img {
+        max-width: 41px !important;
+    } 
+}
+</style>
+<script type="text/javascript">
+var ha = {};
+ha.user= JSON.parse(location.hash.substring(1));
+
+if (!ha.user) {
+}
+
+ha.systemApps = [
+  {
+    "name": "Messages",
+    "icon": "001lighticons-02full.png",
+    "url": "messages.html"
+  }, {
+    "name": "Social Graph",
+    "icon": "003lighticons-03full.png",
+    "url": "socialgraph.html"
+  }, {
+    "name": "App Market",
+    "icon": "001lighticons-31full.png",
+    "url": ""
+  }, {
+    "name": "Data Viewer",
+    "icon": "001lighticons-35full.png",
+    "url": "dataviewer.html"
+  }, {
+    "name": "Devices",
+    "icon": "001lighticons-10full.png",
+    "url": "devices.html"
+  }, {
+    "name": "Questionnaire",
+    "icon": "001lighticons-73full.png",
+    "url": ""
+  }, {
+    "name": "Settings",
+    "icon": "003lighticons-76full.png",
+    "url": "settings.html"
+  }
+];
+
+
+$(document).ready(function() {
+    ha.populateProfile();
+    ha.deploySystemApps();
+    // box一覧からアプリランチャ
+
+
+});
+
+
+ha.populateProfile = function() {
+  $("#tProfileDisplayName").html(ha.user.profile.DisplayName);
+  $("#imProfilePicture").attr('src', ha.user.profile.Image);
+
+};
+ha.deploySystemApps = function() {
+  for (var i in ha.systemApps) {
+    var app = ha.systemApps[i];
+    var html = '<div class="p-app"><a href="' + app.url + '" class="p-app-icon">'
+             + '<img src="./icons/' + app.icon + '" class="p-app-icon"/></a>'
+             + '<div class="p-app-name">' + app.name + '</div>'
+             + '</div>';
+    $("#dashboard").append(html);
+  }
+};
+
+</script>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+	</head>
+
+<body>
+    <div class="container-fluid display-table">
+        <div class="row display-table-row">
+            <div class="col-md-10 col-sm-11 display-table-cell v-align">
+                <!--<button type="button" class="slide-toggle">Slide Toggle</button> -->
+                <div class="row">
+                    <header>
+                        <div class="col-md-7">
+
+                        </div>
+                        <div class="col-md-5">
+                            <div class="header-rightside">
+                                <ul class="list-inline header-top pull-right">
+                                    <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+                                    <li>
+                                        <a href="#" class="icon-info">
+                                            <i class="fa fa-bell" aria-hidden="true"></i>
+                                            <span class="label label-primary">3</span>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img id="imProfilePicture" src="" alt="user">
+                                            <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <div class="navbar-content">
+                                                    <span id="tProfileDisplayName"></span>
+                                                    <p class="text-muted small">
+                                                        
+                                                    </p>
+                                                    <div class="divider">
+                                                    </div>
+					<div class="list-group">
+                                             <a href="#" class="list-group-item">Edit Profile</a>
+                                             <a href="#" class="list-group-item" data-toggle="modal" data-target="#modal-change-password">Change Password</a>
+                                             <a href="#" class="list-group-item" data-toggle="modal" data-target="#modal-logout">Logout</a>
+					</div>
+
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+                <div class="user-dashboard" id="dashboard">
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- Modal -->
+    <div id="modal-change-password" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title">Change Password</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="password" placeholder="New Password" id="pNewPassword">
+                    <input type="password" placeholder="Confirm (type new password again)" id="pConfirm">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-logout" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title">Logout</h4>
+                </div>
+                <div class="modal-body">
+                     Log out?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

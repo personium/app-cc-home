@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+ <title>OpenID connect authentication completed!</title>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+ <!--<script src="https://demo.personium.io/HomeApplication/__/js/common.js"></script>-->
+</head>
+ <body>
+ <h1>認証完了</h1>
+ <div id="implicit">
+ <script type="text/javascript">
+  var token = "";
+  var match = location.hash.match(/id_token=(.*?)(&|$)/);
+  if (match) {
+    token = decodeURIComponent(match[1]);
+  }
+  
+  if (token) {
+      var cellUrl = sessionStorage.getItem("targetCellUrl");
+      $.ajax({
+          type: "POST",
+          url: cellUrl + "__auth",
+          data: {
+              grant_type: 'urn:x-personium:oidc:google',
+              id_token: token
+          },
+          headers: {
+              'Accept':'application/json',
+              'Content-Type':'application/x-www-form-urlencoded'
+          }
+      }).done(function(data) {
+          data.cellUrl = cellUrl;
+          var i = cellUrl.indexOf("/"); // first slash
+          i = cellUrl.indexOf("/", i + 2);  // second slash
+          data.baseUrl = cellUrl.substring(0, i + 1);
+          data.profile = sessionStorage.getItem("myProfile");
+          //data.userName = username;
+          data.userName = "googleAccount";
+          sessionStorage.setItem("sessionData", JSON.stringify(data));
+          location.href = "main.html";
+      }).fail(function(data) {
+          logout();
+      });
+  } else {
+      logout();
+  }
+
+  // Logout
+  function logout() {
+    sessionStorage.setItem("sessionData", null);
+    var mode = sessionStorage.getItem("mode");
+    if (mode) {
+        location.href = "./login.html?mode=" + mode;
+    } else {
+        location.href = "./login.html";
+    }
+  };
+  
+ </script>
+  </div>
+ </body>
+</html>

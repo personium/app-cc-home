@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Personium Cell</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="https://demo.personium.io/HomeApplication/__/js/common.js"></script>
+    <script src="https://demo.personium.io/HomeApplication/__/js/settings.js"></script>
+    <script src="https://demo.personium.io/HomeApplication/__/js/message_ja.js"></script>
+    <!--<script src="../../appcell-resources/js/common.js"></script>
+    <script src="../../appcell-resources/js/settings.js"></script>
+    <script src="../../appcell-resources/js/message_ja.js"></script>-->
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
+    <link href='https://demo.personium.io/HomeApplication/__/css/common.css' rel='stylesheet' type='text/css'>
+    <link href='https://demo.personium.io/HomeApplication/__/css/settings.css' rel='stylesheet' type='text/css'>
+    <!--<link href='../../appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
+    <link href='../../appcell-resources/css/settings.css' rel='stylesheet' type='text/css'>-->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container-fluid display-table">
+        <div class="row display-parent-div">
+            <div class="col-md-12 col-sm-12 display-table-cell v-align">
+                <!--<button type="button" class="slide-toggle">Slide Toggle</button> -->
+                <div class="row profile-menu">
+                </div>
+                <div class="row header-menu">
+                    
+                </div>
+                <div class="row user-dashboard" id="dashboard">
+                    <div class="panel panel-default list-group">
+                        <div class="panel-body">
+                          <div class="list-group">
+                            <div id="dvAccount" class="toggleButton">
+                              <!--<a class="list-group-item" href="#" data-toggle="modal" data-target="#modal-add-account">-->
+                              <a class="list-group-item toggle" id="accountToggle">
+                                アカウント
+                              </a>
+                            </div>
+                            <div id="dvApplication" class="toggleButton">
+                              <a class="list-group-item toggle" id="applicationToggle">
+                                アプリケーション
+                              </a>
+                            </div>
+                            <div id="dvRole" class="toggleButton">
+                              <a class="list-group-item toggle" id="roleToggle">
+                                ロール
+                              </a>
+                            </div>
+                            <div id="dvRelation" class="toggleButton" style="margin-bottom: 10px">
+                              <a class="list-group-item toggle" id="relationToggle">
+                                リレーション
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <!-- Confirmation Modal -->
+    <div id="modal-confirmation" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title" id="modal-confirmation-title"></h4>
+                </div>
+                <div class="modal-body">
+                     <div id="dvTextConfirmation"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="b-edit-relconfirm-ok" style="display:none">Edit</button>
+                    <button type="button" class="btn btn-primary" id="b-edit-accconfirm-ok" style="display:none">Edit</button>
+                    <button type="button" class="btn btn-primary" id="b-del-acclinkrole-ok" style="display:none">Delete</button>
+                    <button type="button" class="btn btn-primary" id="b-del-role-ok" style="display:none">Delete</button>
+                    <button type="button" class="btn btn-primary" id="b-del-account-ok" style="display:none">Delete</button>
+                    <button type="button" class="btn btn-primary" id="b-del-relation-ok" style="display:none">Delete</button>
+                    <button type="button" class="btn btn-primary" id="b-del-rellinkrole-ok" style="display:none">Delete</button>
+                    <button type="button" class="btn btn-primary" id="b-ins-bar-ok" style="display:none">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>

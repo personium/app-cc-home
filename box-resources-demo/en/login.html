@@ -13,20 +13,24 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
                 <!--<script src="https://demo.personium.io/HomeApplication/__/js/login.js"></script>
-                <script src="https://demo.personium.io/HomeApplication/__/js/message_en.js"></script>-->
+                <script src="https://demo.personium.io/HomeApplication/__/js/message_en.js"></script>
+                <script src="https://demo.personium.io/HomeApplication/__/js/demo.js"></script>-->
                 <script src="../../appcell-resources/js/login.js"></script>
                 <script src="../../appcell-resources/js/message_en.js"></script>
+                <script src="../../appcell-resources/js/demo.js"></script>
 		<link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
                 <!--<link href='https://demo.personium.io/HomeApplication/__/css/common.css' rel='stylesheet' type='text/css'>
-                <link href='https://demo.personium.io/HomeApplication/__/css/login.css' rel='stylesheet' type='text/css'>-->
+                <link href='https://demo.personium.io/HomeApplication/__/css/login.css' rel='stylesheet' type='text/css'>
+                <link href='https://demo.personium.io/HomeApplication/__/css/demo.css' rel='stylesheet' type='text/css'>-->
                 <link href='../../appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
                 <link href='../../appcell-resources/css/login.css' rel='stylesheet' type='text/css'>
-	</head>
+                <link href='../../appcell-resources/css/demo.css' rel='stylesheet' type='text/css'>
 <script type="text/javascript">
     $(document).ready(function() {
-        lg.initTarget();
+        demo.initTarget();
     });
 </script>
+	</head>
 <body>
     <div class="main_box">
 	<div class="col-md-12 col-xs-12" align="center">
@@ -95,6 +99,62 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="b-input-cell-ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-demo-start" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">Welcome to the demo version home application</h4>
+                </div>
+                <div class="modal-body fontBlack">
+                    I will explain how to use the home application in the demo version. <br>
+                    Let's first enter the cell URL to log in. <br>
+                    This time the demo cell URL: <br>
+                    Https://demo.personium.io/democell/ <br>
+                    I will try logging in to.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-demo-start-ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-celllogin-start" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">Selecting the login target cell is completed</h4>
+                </div>
+                <div class="modal-body fontBlack">
+                    You can now access the cell you are logging in to. <br>
+                     Let's login to the cell. <br>
+                     Login ID to this cell and PASS<br>
+                     ID: me <br>
+                     PW: democell <br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-celllogin-start-ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-demoend-start" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">Thank you for your hard work.</h4>
+                </div>
+                <div class="modal-body fontBlack">
+                    This concludes the description of the demo home application.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-demoend-start-ok">OK</button>
                 </div>
             </div>
         </div>

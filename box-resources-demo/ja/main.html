@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Personium Cell</title>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+                <!--<script src="https://demo.personium.io/HomeApplication/__/js/common.js"></script>
+                <script src="https://demo.personium.io/HomeApplication/__/js/settings.js"></script>
+                <script src="https://demo.personium.io/HomeApplication/__/js/message_ja.js"></script>
+                <script src="https://demo.personium.io/HomeApplication/__/js/demo.js"></script>-->
+                <script src="../../appcell-resources/js/common.js"></script>
+                <script src="../../appcell-resources/js/settings.js"></script>
+                <script src="../../appcell-resources/js/message_ja.js"></script>
+                <script src="../../appcell-resources/js/demo.js"></script>
+		<link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
+                <!--<link href='https://demo.personium.io/HomeApplication/__/css/common.css' rel='stylesheet' type='text/css'>
+                <link href='https://demo.personium.io/HomeApplication/__/css/settings.css' rel='stylesheet' type='text/css'>
+                <link href='https://demo.personium.io/HomeApplication/__/css/main.css' rel='stylesheet' type='text/css'>
+                <link href='https://demo.personium.io/HomeApplication/__/css/demo.css' rel='stylesheet' type='text/css'>-->
+                <link href='../../appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
+                <link href='../../appcell-resources/css/settings.css' rel='stylesheet' type='text/css'>
+                <link href='../../appcell-resources/css/main.css' rel='stylesheet' type='text/css'>
+                <link href='../../appcell-resources/css/demo.css' rel='stylesheet' type='text/css'>
+<script type="text/javascript">
+//ha.user= JSON.parse(location.hash.substring(1));
+ha = {};
+
+ha.systemApps = [
+  {
+    "name": "Messages",
+    "icon": "001lighticons-02full.png",
+    "url": "messages.html",
+    "used": false
+  }, {
+    "name": "Social",
+    "icon": "003lighticons-03full.png",
+    "url": "socialgraph.html",
+    "used": true
+  }, {
+    "name": "App Market",
+    "icon": "001lighticons-31full.png",
+    "url": "",
+    "used": false
+  }, {
+    "name": "Data Viewer",
+    "icon": "001lighticons-35full.png",
+    "url": "dataviewer.html",
+    "used": false
+  }, {
+    "name": "Devices",
+    "icon": "001lighticons-10full.png",
+    "url": "devices.html",
+    "used": false
+  }, {
+    "name": "Questionnaire",
+    "icon": "001lighticons-73full.png",
+    "url": "",
+    "used": false
+  }
+];
+
+$(document).ready(function() {
+    ha.deploySystemApps();
+    //createTitleHeader();
+    demo.createProfileHeaderMenu();
+    cm.createSideMenu();
+    cm.setIdleTime();
+    demo.initSettings();
+    demo.initMain();
+    if (demoSession.insApp) {
+        ha.dispInsAppList();
+    }
+    // App launcher from the box list
+});
+
+ha.deploySystemApps = function() {
+  var arrCount = 0;
+  for (var i in ha.systemApps) {
+    var app = ha.systemApps[i];
+    var html = '<div class="p-app" align="center"><a href="';
+    if (app.used) {
+        html += app.url;
+    } else {
+        html += "javascript:void(0)";
+    }
+    html += '" class="p-app-icon"><img src="https://demo.personium.io/HomeApplication/__/icons/' + app.icon + '" class="p-app-icon"/></a>'
+         + '<div class="p-app-name">' + app.name + '</div>'
+         + '</div>';
+    $("#dashboard").append(html);
+    arrCount += 1;
+  }
+
+  $("#serviceCount").append(arrCount);
+};
+
+ha.dispInsAppList = function() {
+    $("#dashboard_ins").empty();
+    cm.getBoxList().done(function(data) {
+        var insAppRes = data.d.results;
+        insAppRes.sort(function(val1, val2) {
+            return (val1.Name < val2.Name ? 1 : -1);
+        })
+        for (var i in insAppRes) {
+            var schema = insAppRes[i].Schema;
+            if (schema && schema.length > 0) {
+                ha.dispInsAppListSchema(schema, insAppRes[i].Name);
+            }
+        }
+    });
+};
+
+ha.dispInsAppListSchema = function(schema, boxName) {
+    cm.getProfile(schema).done(function(profData) {
+        var dispName = profData.DisplayName;
+        var imageSrc = cm.notImage;
+        if (profData.Image) {
+            imageSrc = profData.Image;
+        }
+        cm.getBoxStatus(boxName).done(function(data) {
+            var status = data.status;
+            var html = '';
+            if (status.indexOf('ready') >= 0) {
+                var html = '<div class="ins-app" align="center"><a class="ins-app-icon" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\');ha.dispEndDemo();" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
+                $("#dashboard_ins").append(html);
+            }
+        });
+    });
+};
+
+ha.dispEndDemo = function() {
+    demoSession.demoend = true;
+    sessionStorage.setItem("demoSession", JSON.stringify(demoSession));
+    $('#modal-logout-start').modal('show');
+};
+
+</script>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+	</head>
+
+<body>
+    <div class="container-fluid display-table">
+        <div class="row display-parent-div" id="displayParentDiv">
+            <div class="col-md-12 col-sm-12 display-table-cell v-align">
+                <!--<button type="button" class="slide-toggle">Slide Toggle</button> -->
+                <div class="row user-header">
+                    <!--<header>-->
+                        <div class="profile-menu">
+                        </div>
+                    <!--</header>-->
+                </div>
+                <div class="row header-menu">
+                    
+                </div>
+                <div class="row user-dashboard" id="dashboard_ins">
+                </div>
+                <div class="row user-dashboard" id="dashboard">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="modal-logined-start" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">ログインしました。</h4>
+                </div>
+                <div class="modal-body fontBlack">
+                    ログインに成功しました。<br>
+                    次にホームアプリの機能について説明します。<br>
+                    右上のメニューアイコンを選択して下さい。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-logined-start-ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-menued-start" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body fontBlack">
+                    では次にsocialアイコンを選択して下さい。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-menued-start-ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-socialed-start" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body fontBlack">
+                    では次に右上のメニューアイコンを選択して下さい。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-socialed-start-ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-sidemenu-start" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">サイドメニュー</h4>
+                </div>
+                <div class="modal-body fontBlack">
+                    サイドメニューには以下の機能があります。<br>
+                    ・プロフィール編集<br>
+                      自セルの表示名や説明、プロフィール画像を変更する事が出来ます。<br>
+                    ・パスワード変更<br>
+                      現在ログインしているアカウントのパスワードを変更する事が出来ます。<br>
+                    ・アカウント<br>
+                      自セルへログイン出来るアカウントの作成や編集をすることが出来ます。<br>
+                    ・アプリケーション<br>
+                      Personiumマーケットからアプリのインストールを行うことが出来ます。<br>
+                    ・ロール<br>
+                      ロールの作成・編集・削除を行うことが出来ます。<br>
+                    ・リレーション<br>
+                      リレーションの作成・編集・削除を行うことが出来ます。<br>
+                    ・ログアウト<br>
+                      ログインしているセルからログアウトします。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-sidemenu-start-ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-application-start" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">サイドメニュー</h4>
+                </div>
+                <div class="modal-body fontBlack">
+                    今回はアプリケーションのインストールを行ってみましょう。<br>
+                    アプリケーションメニューを選択して下さい。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-application-start-ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-applicationlist-start" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">アプリケーション</h4>
+                </div>
+                <div class="modal-body fontBlack">
+                    インストール済みのアプリはinstalledに<br>
+                    インストールしていないアプリはapplication listに表示されています。<br>
+                    <br>
+                    今は何もインストールされていないので、MyBoardをインストールしてみましょう。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-applicationlist-start-ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-installed-start" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">インストール完了</h4>
+                </div>
+                <div class="modal-body fontBlack">
+                    セルにMyBoardがインストールされました。<br>
+                    右上の×(閉じる)ボタンでホーム画面に戻り、アプリを起動してみましょう。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-installed-start-ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-logout-start" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">説明終了</h4>
+                </div>
+                <div class="modal-body fontBlack">
+                    最後にログアウトをしてみましょう。<br>
+                    右上のメニューアイコンから、ログアウトを選択して下さい。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-logout-start-ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
