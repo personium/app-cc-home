@@ -851,7 +851,7 @@ cm.refreshToken = function() {
 //                        grant_type: "password",
 //                        username: cm.user.userName,
 //			password: cm.user.pass,
-//                        dc_target: extCellUrl
+//                        p_target: extCellUrl
 //                },
 //		headers: {'Accept':'application/json'}
 //         });
@@ -865,7 +865,7 @@ cm.getTargetToken = function(extCellUrl) {
                 data: {
                         grant_type: "refresh_token",
                         refresh_token: cm.user.refresh_token,
-                        dc_target: extCellUrl
+                        p_target: extCellUrl
                 },
 		headers: {'Accept':'application/json'}
          });
