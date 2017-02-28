@@ -982,7 +982,7 @@ cm.execApp = function(schema,boxName) {
         var type = data.type;
         var launch = data[type];
         var target = cm.user.cellUrl + boxName;
-        cm.refreshToken().done(function(data) {
+        cm.refreshTokenAPI().done(function(data) {
             switch (type) {
                 case "web":
                     var url = launch;
