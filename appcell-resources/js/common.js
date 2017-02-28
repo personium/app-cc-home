@@ -1,48 +1,49 @@
-var ha = {};
-var imgBinaryFile = null;
-ha.user = JSON.parse(sessionStorage.getItem("sessionData"));
-if (!ha.user) {
-  location.href = "./login.html";
+var cm = {};
+cm.imgBinaryFile = null;
+cm.user = JSON.parse(sessionStorage.getItem("sessionData"));
+if (!cm.user) {
+  //location.href = "./login.html";
+  cm.logout();
 }
-ha.user.nowPage = 0;
-ha.user.nowTitle = {};
-ha.user.settingNowPage = 0;
-ha.user.settingNowTitle = {};
-var notImage = "https://demo.personium.io/HomeApplication/__/icons/profile_image.png";
+cm.user.nowPage = 0;
+cm.user.nowTitle = {};
+cm.user.settingNowPage = 0;
+cm.user.settingNowTitle = {};
+cm.notImage = "https://demo.personium.io/HomeApplication/__/icons/profile_image.png";
 
 //Default timeout limit - 60 minutes.
-var IDLE_TIMEOUT =  3600000;
-//var IDLE_TIMEOUT =  10000;
+cm.IDLE_TIMEOUT =  3600000;
+//cm.IDLE_TIMEOUT =  10000;
 // Records last activity time.
-var LASTACTIVITY = new Date().getTime();
+cm.LASTACTIVITY = new Date().getTime();
 
 // Class "profile-menu" in create
 // and Modal create
-function createProfileHeaderMenu() {
+cm.createProfileHeaderMenu = function() {
     // get profile image
-    if (ha.user.profile.Image) {
-        imgBinaryFile = ha.user.profile.Image;
+    if (cm.user.profile && cm.user.profile.Image) {
+        cm.imgBinaryFile = cm.user.profile.Image;
     } else {
         // if there is no image, set default image
-        imgBinaryFile = notImage;
+        cm.imgBinaryFile = cm.notImage;
     }
 
     // create a profile menu in to "profile-menu" class
     var html = '<div class="header-rightside">';
     html += '<table class="list-inline table-fixed">';
     html += '<tr><td rowspan="2" class="profile-header">';
-    html += '<img class="icon-profile" id="imProfilePicture" src="' + imgBinaryFile + '" alt="user">';
+    html += '<img class="icon-profile" id="imProfilePicture" src="' + cm.imgBinaryFile + '" alt="user">';
     html += '</td><td width="70%" class="sizeBody1">';
-    html += '<span id="tProfileDisplayName">' + ha.user.profile.DisplayName + '</span>';
+    html += '<span id="tProfileDisplayName">' + cm.user.profile.DisplayName + '</span>';
     //html += '</td><td width="30%">&nbsp;</td>';
-    html += '</td><td rowspan="2" style="text-align:right;"><a onClick="openSlide();">';
+    html += '</td><td rowspan="2" style="text-align:right;"><a onClick="cm.openSlide();">';
     html += '<img src="https://demo.personium.io/HomeApplication/__/icons/ico_menu.png">';
-    //html += '<p class="headerAccountNameText">' + ha.user.userName + '</p>';
+    //html += '<p class="headerAccountNameText">' + cm.user.userName + '</p>';
     //html += '<p class="headerAccountNameText">aiueokakikukekosasisuseso</p>▼';
     html += '</a></td></tr>';
     html += '<tr><td class="sizeCaption">';
-    //html += '<p class="ellipsisText">' + ha.user.cellUrl + '</p>';
-    html += '<p>Account: ' + ha.user.userName + '</p>';
+    //html += '<p class="ellipsisText">' + cm.user.cellUrl + '</p>';
+    html += '<p>Account: ' + cm.user.userName + '</p>';
     html += '</td></tr>';
     $(".profile-menu").html(html);
 
@@ -52,7 +53,7 @@ function createProfileHeaderMenu() {
             var $target = $(this);
 
             // get a account name
-            var html = ha.user.userName + '▼';
+            var html = cm.user.userName + '▼';
 
             // Duplicate the current state
             var $clone = $target.clone();
@@ -82,7 +83,7 @@ function createProfileHeaderMenu() {
 
 // Create title header in "header-menu" class
 // true: Settings false: Default
-function createTitleHeader(flg) {
+cm.createTitleHeader = function(flg) {
     var id = ".header-menu";
     if (flg) {
         id = ".setting-header";
@@ -94,7 +95,7 @@ function createTitleHeader(flg) {
         html += '<td id="settingBackMenu" class="prev-icon" style="width: 10%;"></td>'
         html += '<td id="settingBackTitle" align="left" style="width: 30%;white-space: nowrap;"></td>';
         html += '<td id="settingTitleMenu" align="left" style="width: 50%;" class="title"></td>';
-        html += '<td style="width: 10%;"><a style="padding: 0;font-size: 28px;" onClick="closeSetting();return false;">×</button></td>';
+        html += '<td style="width: 10%;"><a style="padding: 0;font-size: 28px;" onClick="cm.closeSetting();return false;">×</button></td>';
     } else {
         html += '<td id="backMenu" class="prev-icon" style="width: 10%;"></td>'
         html += '<td id="backTitle" align="left" style="width: 30%;white-space: nowrap;"></td>';
@@ -106,14 +107,14 @@ function createTitleHeader(flg) {
     $(id).html(html);
 }
 
-function closeSetting() {
+cm.closeSetting = function() {
     $(".setting-menu").toggleClass("slide-on");
     $("#settingboard").empty();
     $("#settingBackTitle").empty();
-    ha.user.settingNowPage = 0;
+    cm.user.settingNowPage = 0;
 }
 
-function createSettingArea() {
+cm.createSettingArea = function() {
     var html = '<div class="col-md-12 col-sm-12 display-table-cell v-align setting-menu">';
     html += '<div class="row header-menu setting-header"></div>';
     html += '<div class="row" id="settingboard"></div>';
@@ -147,29 +148,29 @@ function createSettingArea() {
 
 // Back ahead Setting
 // true: Settings false: Default
-function setBackahead(flg) {
+cm.setBackahead = function(flg) {
     var boardId = "dashboard";
     if (flg) {
-        ha.user.settingNowPage = ha.user.settingNowPage + 1;
+        cm.user.settingNowPage = cm.user.settingNowPage + 1;
         boardId = "settingboard";
         var toggleClass = "toggle-panel";
-        if (ha.user.settingNowPage == 1) {
+        if (cm.user.settingNowPage == 1) {
             // first page
             toggleClass = "panel-default";
         }
-        if (document.getElementById('setting-panel' + ha.user.settingNowPage) == null) {
-            $("#" + boardId).append('<div class="panel list-group ' + toggleClass + '" id="setting-panel' + ha.user.settingNowPage + '"></div>');
+        if (document.getElementById('setting-panel' + cm.user.settingNowPage) == null) {
+            $("#" + boardId).append('<div class="panel list-group ' + toggleClass + '" id="setting-panel' + cm.user.settingNowPage + '"></div>');
         }
-        if (document.getElementById('setting-panel' + (ha.user.settingNowPage + 1)) == null) {
-            $("#" + boardId).append('<div class="panel list-group toggle-panel" id="setting-panel' + (ha.user.settingNowPage + 1) + '"></div>');
+        if (document.getElementById('setting-panel' + (cm.user.settingNowPage + 1)) == null) {
+            $("#" + boardId).append('<div class="panel list-group toggle-panel" id="setting-panel' + (cm.user.settingNowPage + 1) + '"></div>');
         }
     } else {
-        ha.user.nowPage = ha.user.nowPage + 1;
-        if (document.getElementById('toggle-panel' + ha.user.nowPage) == null) {
-            $("#" + boardId).append('<div class="panel list-group toggle-panel" id="toggle-panel' + ha.user.nowPage + '"></div>');
+        cm.user.nowPage = cm.user.nowPage + 1;
+        if (document.getElementById('toggle-panel' + cm.user.nowPage) == null) {
+            $("#" + boardId).append('<div class="panel list-group toggle-panel" id="toggle-panel' + cm.user.nowPage + '"></div>');
         }
-        if (document.getElementById('toggle-panel' + (ha.user.nowPage + 1)) == null) {
-            $("#" + boardId).append('<div class="panel list-group toggle-panel" id="toggle-panel' + (ha.user.nowPage + 1) + '"></div>');
+        if (document.getElementById('toggle-panel' + (cm.user.nowPage + 1)) == null) {
+            $("#" + boardId).append('<div class="panel list-group toggle-panel" id="toggle-panel' + (cm.user.nowPage + 1) + '"></div>');
         }
     }
     
@@ -177,12 +178,12 @@ function setBackahead(flg) {
 
 // Back ahead move
 // true: Settings false: Default
-function moveBackahead(flg) {
+cm.moveBackahead = function(flg) {
     if (flg) {
-        var no = ha.user.settingNowPage;
+        var no = cm.user.settingNowPage;
         switch (no) {
             case 0:
-                window.location.href = ha.user.prevUrl;
+                window.location.href = cm.user.prevUrl;
                 break;
             case 1:
                 $("#setting-panel1").toggleClass("slide-on");
@@ -193,11 +194,11 @@ function moveBackahead(flg) {
                 break;
         }
 
-        ha.user.settingNowPage = no - 1;
-        if (ha.user.settingNowPage >= 1) {
-            setTitleMenu(ha.user.settingNowTitle[ha.user.settingNowPage], true);
-            if (ha.user.settingNowPage > 1) {
-                $("#settingBackTitle").html(ha.user.settingNowTitle[ha.user.settingNowPage - 1]);
+        cm.user.settingNowPage = no - 1;
+        if (cm.user.settingNowPage >= 1) {
+            cm.setTitleMenu(cm.user.settingNowTitle[cm.user.settingNowPage], true);
+            if (cm.user.settingNowPage > 1) {
+                $("#settingBackTitle").html(cm.user.settingNowTitle[cm.user.settingNowPage - 1]);
             } else {
                 $("#settingBackTitle").html("");
                 $("#settingBackMenu").css("display", "none");
@@ -207,10 +208,10 @@ function moveBackahead(flg) {
             $("#settingBackMenu").css("display", "none");
         }
     } else {
-        var no = ha.user.nowPage;
+        var no = cm.user.nowPage;
         switch (no) {
             case 0:
-                window.location.href = ha.user.prevUrl;
+                window.location.href = cm.user.prevUrl;
                 break;
             case 1:
                 $(".panel-default,#toggle-panel1").toggleClass("slide-on");
@@ -221,11 +222,11 @@ function moveBackahead(flg) {
                 break;
         }
 
-        ha.user.nowPage = no - 1;
-        if (ha.user.nowPage >= 0) {
-            setTitleMenu(ha.user.nowTitle[ha.user.nowPage]);
-            if (ha.user.nowPage > 0) {
-                $("#backTitle").html(ha.user.nowTitle[ha.user.nowPage - 1]);
+        cm.user.nowPage = no - 1;
+        if (cm.user.nowPage >= 0) {
+            cm.setTitleMenu(cm.user.nowTitle[cm.user.nowPage]);
+            if (cm.user.nowPage > 0) {
+                $("#backTitle").html(cm.user.nowTitle[cm.user.nowPage - 1]);
             } else {
                 $("#backTitle").html("");
             }
@@ -236,19 +237,19 @@ function moveBackahead(flg) {
 }
 
 // create side menu
-function createSideMenu() {
+cm.createSideMenu = function() {
     var itemName = {};
-    itemName.EditProf = getMsg("00010");
-    itemName.ChgPass = getMsg("00011");
-    itemName.Logout = getMsg("00012");
-    itemName.DispName = getMsg("00013");
-    itemName.Description = getMsg("00014");
-    itemName.Photo = getMsg("00015");
-    itemName.Relogin = getMsg("00016");
+    itemName.EditProf = mg.getMsg("00010");
+    itemName.ChgPass = mg.getMsg("00011");
+    itemName.Logout = mg.getMsg("00012");
+    itemName.DispName = mg.getMsg("00013");
+    itemName.Description = mg.getMsg("00014");
+    itemName.Photo = mg.getMsg("00015");
+    itemName.Relogin = mg.getMsg("00016");
 
     var html = '<div class="slide-menu"><nav>';
     // Menu Title
-    html += '<div style="margin:10px;"><span class="commonLabel">' + getMsg("00026") + '</span></div>';
+    html += '<div style="margin:10px;"><span class="commonLabel">' + mg.getMsg("00026") + '</span></div>';
 
     // profile edit
     html += '<table class="menu-title">';
@@ -269,10 +270,10 @@ function createSideMenu() {
     // setting menu
     html += '<table class="menu-title"><tr>';
     html += '<td rowspan="4" class="sidemenu-itemEmpty">&nbsp;</td>';
-    html += '<td class="sidemenu-item sizeBody1"><a class="allToggle" id="accountToggle">' + getMsg("00028") + '</a></td></tr>';
-    html += '<tr><td class="sidemenu-item sizeBody1"><a class="allToggle" id="applicationToggle">' + getMsg("00039") + '</a></td></tr>';
-    html += '<tr><td class="sidemenu-item sizeBody1"><a class="allToggle" id="roleToggle">' + getMsg("00032") + '</a></td></tr>';
-    html += '<tr><td class="sidemenu-lastitem sizeBody1"><a class="allToggle" id="relationToggle">' + getMsg("00033") + '</a></td></tr>';
+    html += '<td class="sidemenu-item sizeBody1"><a class="allToggle" id="accountToggle">' + mg.getMsg("00028") + '</a></td></tr>';
+    html += '<tr><td class="sidemenu-item sizeBody1"><a class="allToggle" id="applicationToggle">' + mg.getMsg("00039") + '</a></td></tr>';
+    html += '<tr><td class="sidemenu-item sizeBody1"><a class="allToggle" id="roleToggle">' + mg.getMsg("00032") + '</a></td></tr>';
+    html += '<tr><td class="sidemenu-lastitem sizeBody1"><a class="allToggle" id="relationToggle">' + mg.getMsg("00033") + '</a></td></tr>';
     html += '</table>';
 
     // log out
@@ -297,21 +298,21 @@ function createSideMenu() {
     html += '<div class="modal-body">';
     html += '<div id="dvDisplayName">' + itemName.DispName + '</div>';
     html += '<div id="dvTextDisplayName">';
-    html += '<input type="text" id="editDisplayName" onblur="editDisplayNameBlurEvent();">';
+    html += '<input type="text" id="editDisplayName" onblur="cm.editDisplayNameBlurEvent();">';
     html += '</div>';
     html += '<span class="popupAlertArea" style="color:red">';
     html += '<aside id="popupEditDisplayNameErrorMsg"></aside>';
     html += '</span>';
     html += '<div id="dvDescription">' + itemName.Description + '</div>';
     html += '<div id="dvTextDescription">';
-    html += '<textarea onblur="editDescriptionBlurEvent();" name="" cols="" rows=""  id="editDescription"></textarea>';
+    html += '<textarea onblur="cm.editDescriptionBlurEvent();" name="" cols="" rows=""  id="editDescription"></textarea>';
     html += '</div>';
     html += '<span style="padding-top: 3px;height:11px;color:red;">';
     html += '<aside id="popupEditDescriptionErrorMsg"></aside>';
     html += '</span>';
     html += '<div id="dvPhoto">' + itemName.Photo + '</div>';
     html += '<div id="dvBrowseButtonSection">';
-    html += '<input type="file" class="fileUpload" onchange="attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile">';
+    html += '<input type="file" class="fileUpload" onchange="cm.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile">';
     html += '</div>';
     html += '<div id="dvBoxProfileImage">';
     html += '<figure id="figEditCellProfile" class="boxProfileImage">';
@@ -339,9 +340,9 @@ function createSideMenu() {
            '<h4 class="modal-title">' + itemName.ChgPass + '</h4>' +
            '</div>' +
            '<div class="modal-body">' +
-           '<input type="password" placeholder="' + getMsg("I0005") + '" id="pNewPassword">' +
+           '<input type="password" placeholder="' + mg.getMsg("I0005") + '" id="pNewPassword">' +
            '<span id="changeMessage" style="color:red"></span>' +
-           '<input type="password" placeholder="' + getMsg("I0003") + '" id="pConfirm">' +
+           '<input type="password" placeholder="' + mg.getMsg("I0003") + '" id="pConfirm">' +
            '<span id="confirmMessage" style="color:red"></span>' +
            '</div>' +
            '<div class="modal-footer">' +
@@ -360,7 +361,7 @@ function createSideMenu() {
            '<h4 class="modal-title">' + itemName.Relogin + '</h4>' +
            '</div>' +
            '<div class="modal-body">' +
-           getMsg("I0001") +
+           mg.getMsg("I0001") +
            '</div>' +
            '<div class="modal-footer">' +
            '<button type="button" class="btn btn-primary" id="b-relogin-ok" >OK</button>' +
@@ -377,7 +378,7 @@ function createSideMenu() {
            '<h4 class="modal-title">' + itemName.Logout + '</h4>' +
            '</div>' +
            '<div class="modal-body">' +
-           getMsg("I0002") +
+           mg.getMsg("I0002") +
            '</div>' +
            '<div class="modal-footer">' +
            '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>' +
@@ -394,7 +395,7 @@ function createSideMenu() {
            '<h4 class="modal-title">' + itemName.Relogin + '</h4>' +
            '</div>' +
            '<div class="modal-body">' +
-           getMsg("W0001") +
+           mg.getMsg("W0001") +
            '</div>' +
            '<div class="modal-footer">' +
            '<button type="button" class="btn btn-primary" id="b-session-relogin-ok" >OK</button>' +
@@ -403,8 +404,8 @@ function createSideMenu() {
     $(document.body).append(modal);
 
     // Set Event
-    $('#b-logout-ok,#b-relogin-ok,#b-session-relogin-ok').on('click', function() { logout(); });
-    $('#b-change-password-ok').on('click', function() { changePassCheck($("#pNewPassword").val(), $("#pConfirm").val());});
+    $('#b-logout-ok,#b-relogin-ok,#b-session-relogin-ok').on('click', function() { cm.logout(); });
+    $('#b-change-password-ok').on('click', function() { cm.changePassCheck($("#pNewPassword").val(), $("#pConfirm").val());});
     $('#modal-change-password').on('hidden.bs.modal', function () {
       $("#pNewPassword").val("");
       $("#pConfirm").val("");
@@ -413,47 +414,47 @@ function createSideMenu() {
       $('#b-change-password-ok').prop('disabled', true);
     });
     $('#modal-edit-profile').on('show.bs.modal', function () {
-      populateProfileEditData();
+      cm.populateProfileEditData();
     });
     $('#pNewPassword').blur(function() {
-       charCheck($(this));
+       cm.charCheck($(this));
     });
-    $('#b-edit-profile-ok').on('click', function () { updateCellProfile(); });
+    $('#b-edit-profile-ok').on('click', function () { cm.updateCellProfile(); });
     $('#dvOverlay').on('click', function() {
         $(".overlay").removeClass('overlay-on');
         $(".slide-menu").removeClass('slide-on');
     });
 
     // Time Out Set
-    setIdleTime();
+    cm.setIdleTime();
 }
 
-function openSlide() {
+cm.openSlide = function() {
     $(".overlay").toggleClass('overlay-on');
     $(".slide-menu").toggleClass('slide-on');
 }
 
 // Create Backahead
 // true: Settings false: Default
-function createBackMenu(moveUrl, flg) {
+cm.createBackMenu = function(moveUrl, flg) {
     if (flg) {
-        var html = '<a class="allToggle" style="float:left;" onClick="moveBackahead(true);return false;"><img id="imBack" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a>';
+        var html = '<a class="allToggle" style="float:left;" onClick="cm.moveBackahead(true);return false;"><img id="imBack" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a>';
         $("#settingBackMenu").html(html);
     } else {
-        var html = '<a class="allToggle" style="float:left;" onClick="moveBackahead();return false;"><img id="imBack" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a>';
+        var html = '<a class="allToggle" style="float:left;" onClick="cm.moveBackahead();return false;"><img id="imBack" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a>';
         $("#backMenu").html(html);
     }
-    ha.user.prevUrl = moveUrl;
+    cm.user.prevUrl = moveUrl;
 }
 
-function setTitleMenu(title, flg) {
+cm.setTitleMenu = function(title, flg) {
     if (flg) {
         $("#settingTitleMenu").html('<p  class="ellipsisText">' + title + '</p>');
-        var titles = ha.user.settingNowTitle;
-        titles[ha.user.settingNowPage] = title;
-        ha.user.settingNowTitle = titles;
-        if (ha.user.settingNowPage > 1) {
-            var html = '<p class="ellipsisText">' + ha.user.settingNowTitle[ha.user.settingNowPage - 1] + '</p>'
+        var titles = cm.user.settingNowTitle;
+        titles[cm.user.settingNowPage] = title;
+        cm.user.settingNowTitle = titles;
+        if (cm.user.settingNowPage > 1) {
+            var html = '<p class="ellipsisText">' + cm.user.settingNowTitle[cm.user.settingNowPage - 1] + '</p>'
             $("#settingBackTitle").html(html);
             $("#settingBackMenu").css("display", "");
         } else {
@@ -461,28 +462,28 @@ function setTitleMenu(title, flg) {
         }
     } else {
         $("#titleMenu").html('<p  class="ellipsisText">' + title + '</p>');
-        var titles = ha.user.nowTitle;
-        titles[ha.user.nowPage] = title;
-        ha.user.nowTitle = titles;
-        if (ha.user.nowPage > 0) {
-            var html = '<p class="ellipsisText">' + ha.user.nowTitle[ha.user.nowPage - 1] + '</p>'
+        var titles = cm.user.nowTitle;
+        titles[cm.user.nowPage] = title;
+        cm.user.nowTitle = titles;
+        if (cm.user.nowPage > 0) {
+            var html = '<p class="ellipsisText">' + cm.user.nowTitle[cm.user.nowPage - 1] + '</p>'
             $("#backTitle").html(html);
         }
     }
 }
 
 // Role
-function getRoleList() {
+cm.getRoleList = function() {
   return $.ajax({
           type: "GET",
-          url:ha.user.cellUrl + '__ctl/Role',
+          url:cm.user.cellUrl + '__ctl/Role',
           headers: {
-            'Authorization':'Bearer ' + ha.user.access_token,
+            'Authorization':'Bearer ' + cm.user.access_token,
             'Accept':'application/json'
           }
   })
 }
-function dispRoleList(json, id, multiFlag) {
+cm.dispRoleList = function(json, id, multiFlag) {
   var results = json.d.results;
   results.sort(function(val1, val2) {
     return (val1.Name < val2.Name ? 1 : -1);
@@ -509,7 +510,7 @@ function dispRoleList(json, id, multiFlag) {
     $("#" + id).append('<option value="' + objRole.Name + '(' + boxName + ')">' + objRole.Name + '(' + boxName + ')</option>');
   }
 }
-function dispAssignRole(type, flg) {
+cm.dispAssignRole = function(type, flg) {
     var panelId = "toggle";
     var settingId = "";
     if (flg) {
@@ -518,58 +519,68 @@ function dispAssignRole(type, flg) {
     }
 
     $("#" + panelId + "-panel3").empty();
-    setBackahead(flg);
+    cm.setBackahead(flg);
     var html = '<div class="panel-body">';
-    html += '<div id="dvAddAccLinkRole' + settingId + '">' + getMsg("I0014") + '</div>';
+    html += '<div id="dvAddAccLinkRole' + settingId + '">' + mg.getMsg("I0014") + '</div>';
     html += '<div id="dvSelectAddAccLinkRole' + settingId + '" style="margin-bottom: 10px;">';
-    html += '<select name="" id="ddlLinkRoleList' + settingId + '" onChange="changeRoleSelect(\'' + settingId + '\');"></select>';
+    html += '<select name="" id="ddlLinkRoleList' + settingId + '" onChange="cm.changeRoleSelect(\'' + settingId + '\');"></select>';
     html += '</div>';
     html += '<div class="modal-footer">';
     html += '<button type="button" class="btn btn-primary" id="b-linkrole-ok' + settingId + '" onClick="';
     switch (type) {
         case "acc":
-            html += 'ha.restAddAccountLinkRole(true);';
+            html += 'st.restAddAccountLinkRole(true);';
             break;
         case "rel":
-            html += 'ha.restAddRelationLinkRole(true);';
+            html += 'st.restAddRelationLinkRole(true);';
             break;
         case "ext":
-            html += 'ha.restAddExtCellLinkRole(true);';
+            html += 'sg.restAddExtCellLinkRole(true);';
             break;
     }
     html += '">Assign</button>';
     html += '</div></div>';
     $("#" + panelId + "-panel3").append(html);
-    getRoleList().done(function(data) {
-        dispRoleList(data, "ddlLinkRoleList" + settingId, false);
+    cm.getRoleList().done(function(data) {
+        cm.dispRoleList(data, "ddlLinkRoleList" + settingId, false);
     });
     
     $("#" + panelId + "-panel3").toggleClass('slide-on');
     $("#" + panelId + "-panel2").toggleClass('slide-on-holder');
-    setTitleMenu(getMsg("00005"), flg);
+    cm.setTitleMenu(mg.getMsg("00005"), flg);
 };
-function changeRoleSelect(settingId) {
+cm.changeRoleSelect = function(settingId) {
     var value = $("#ddlLinkRoleList" + settingId + " option:selected").val();
     if (value === "") {
         $("#b-linkrole-ok" + settingId).prop('disabled', true);
     } else {
-        ha.setLinkParam(value);
+        cm.setLinkParam(value);
         $("#b-linkrole-ok" + settingId).prop('disabled', false);
     }
 };
+cm.setLinkParam = function(value) {
+    var roleMatch = value.match(/(.+)\(/);
+    cm.linkName = roleMatch[1];
+    var boxMatch = value.match(/\((.+)\)/);
+    var boxName = boxMatch[1];
+    if (boxName === "[main]") {
+        boxName = null;
+    }
+    cm.linkBoxName = boxName;
+};
 
 // Relation
-function getRelationList() {
+cm.getRelationList = function() {
   return $.ajax({
           type: "GET",
-          url:ha.user.cellUrl + '__ctl/Relation',
+          url:cm.user.cellUrl + '__ctl/Relation',
           headers: {
-            'Authorization':'Bearer ' + ha.user.access_token,
+            'Authorization':'Bearer ' + cm.user.access_token,
             'Accept':'application/json'
           }
   })
 };
-function dispRelationList(json, id, multiFlag) {
+cm.dispRelationList = function(json, id, multiFlag) {
   var results = json.d.results;
   results.sort(function(val1, val2) {
     return (val1.Name < val2.Name ? 1 : -1);
@@ -599,16 +610,16 @@ function dispRelationList(json, id, multiFlag) {
 };
 
 // Initialization
-function populateProfileEditData() {
-  $("#editDisplayName").val(ha.user.profile.DisplayName);
+cm.populateProfileEditData = function() {
+  $("#editDisplayName").val(cm.user.profile.DisplayName);
   document.getElementById("popupEditDisplayNameErrorMsg").innerHTML = "";
-  $("#editDescription").val(ha.user.profile.Description);
+  $("#editDescription").val(cm.user.profile.Description);
   document.getElementById("popupEditDescriptionErrorMsg").innerHTML = "";
   document.getElementById("popupEditUserPhotoErrorMsg").innerHTML = "";
   
   $('#editImgFile').replaceWith($('#editImgFile').clone());
-  if (ha.user.profile.Image) {
-    $("#idImgFile").attr('src', ha.user.profile.Image);
+  if (cm.user.profile.Image) {
+    $("#idImgFile").attr('src', cm.user.profile.Image);
   } else {
     $("#idImgFile").attr('src', "../../appcell-resources/icons/profile_image.png");
   }
@@ -616,39 +627,39 @@ function populateProfileEditData() {
 };
 
 // File Save
-function updateCellProfile() {
+cm.updateCellProfile = function() {
   var displayName = $("#editDisplayName").val();
   var description = $("#editDescription").val();
   var fileData = null;
   var profileBoxImageName = $('#lblEditFileName').text();
-  var validDisplayName = validateDisplayName(displayName, "popupEditDisplayNameErrorMsg",'#editDisplayName');
+  var validDisplayName = cm.validateDisplayName(displayName, "popupEditDisplayNameErrorMsg",'#editDisplayName');
   if(validDisplayName){
     $('#popupEditDisplayNameErrorMsg').html('');
-    var validDesciption = validateDescription(description,"popupEditDescriptionErrorMsg");
+    var validDesciption = cm.validateDescription(description,"popupEditDescriptionErrorMsg");
     if (validDesciption){
       fileData = {
                    "DisplayName" : displayName,
                    "Description" : description,
-                   "Image" : imgBinaryFile,
+                   "Image" : cm.imgBinaryFile,
                    "ProfileImageName" : profileBoxImageName
       };
-      retrieveCollectionAPIResponse(fileData);
+      cm.retrieveCollectionAPIResponse(fileData);
     }
   }
 };
 
 // File Read
-function attachFile(popupImageErrorId, fileDialogId) {
+cm.attachFile = function(popupImageErrorId, fileDialogId) {
   var file = document.getElementById(fileDialogId).files[0];
-  ha.fileName = document.getElementById(fileDialogId).value;
+  cm.fileName = document.getElementById(fileDialogId).value;
   if (file) {
     var imageFileSize = file.size / 1024;
-    if (validateFileType(ha.fileName, imageFileSize, popupImageErrorId)) {
-      getAsBinaryString(file);
+    if (cm.validateFileType(cm.fileName, imageFileSize, popupImageErrorId)) {
+      cm.getAsBinaryString(file);
     }
   }
 };
-function getAsBinaryString(readFile) {
+cm.getAsBinaryString = function(readFile) {
 	try {
 		var reader = new FileReader();
 	} catch (e) {
@@ -657,37 +668,37 @@ function getAsBinaryString(readFile) {
 		return;
 	}
 	reader.readAsDataURL(readFile, "UTF-8");
-	reader.onload = loaded;
-	reader.onerror = errorHandler;
+	reader.onload = cm.loaded;
+	reader.onerror = cm.errorHandler;
 };
-function loaded(evt) {
-	imgBinaryFile = null;
-	imgBinaryFile = evt.target.result;
-        $("#idImgFile").attr('src', imgBinaryFile);
+cm.loaded = function(evt) {
+	cm.imgBinaryFile = null;
+	cm.imgBinaryFile = evt.target.result;
+        $("#idImgFile").attr('src', cm.imgBinaryFile);
 	//document.getElementById("fileID").value = '';
 };
-function errorHandler(evt) {
+cm.errorHandler = function(evt) {
 	if (evt.target.error.code == evt.target.error.NOT_READABLE_ERR) {
-		ha.spinner.stop();
+		cm.spinner.stop();
 		alert("Error reading file...");
 		//document.getElementById('successmsg').innerHTML = "Error reading file...";
 	}
 };
-function editDisplayNameBlurEvent() {
+cm.editDisplayNameBlurEvent = function() {
 	var displayName = $("#editDisplayName").val();
 	var displayNameSpan = "popupEditDisplayNameErrorMsg";
 	var txtDisplayName = "#editDisplayName";
-	validateDisplayName(displayName, displayNameSpan, txtDisplayName);
+	cm.validateDisplayName(displayName, displayNameSpan, txtDisplayName);
 };
-function editDescriptionBlurEvent() {
+cm.editDescriptionBlurEvent = function() {
 	document.getElementById("popupEditDescriptionErrorMsg").innerHTML = "";
 	var descriptionDetails = document.getElementById("editDescription").value;
 	var descriptionSpan = "popupEditDescriptionErrorMsg";
-	validateDescription(descriptionDetails, descriptionSpan);
+	cm.validateDescription(descriptionDetails, descriptionSpan);
 };
 
 // Validation Check
-function charCheck(check) {
+cm.charCheck = function(check) {
   var passLen = check.val().length;
   var msg = "";
   var bool = false;
@@ -707,7 +718,7 @@ function charCheck(check) {
 
   $('#b-change-password-ok').prop('disabled', !bool);
 };
-function validateFileType(filePath, imageSize, popupImageErrorId) {
+cm.validateFileType = function(filePath, imageSize, popupImageErrorId) {
 	var fileExtension = filePath.substring(filePath.lastIndexOf('.') + 1)
 			.toLowerCase();
 	if (fileExtension.toLowerCase() == "jpg"
@@ -719,13 +730,13 @@ function validateFileType(filePath, imageSize, popupImageErrorId) {
 		document.getElementById(popupImageErrorId).innerHTML = "";
 		return true;
 	} else {
-		imgBinaryFile = null;
+		cm.imgBinaryFile = null;
 		document.getElementById(popupImageErrorId).innerHTML = "";
 		document.getElementById(popupImageErrorId).innerHTML = "Failed to upload image; format not supported";
 		return false;
 	}
 };
-function validateDisplayName(displayName, displayNameSpan,txtID) {
+cm.validateDisplayName = function(displayName, displayNameSpan,txtID) {
 	var MINLENGTH = 1;
 	var MAXLENGTH = 128;
 	var letters = /^[一-龠ぁ-ゔ[ァ-ヴー々〆〤0-9a-zA-Z-_\s]+$/;
@@ -735,25 +746,25 @@ function validateDisplayName(displayName, displayNameSpan,txtID) {
 	//this.removeStatusIcons(txtID);
         document.getElementById(displayNameSpan).innerHTML = "";
 	if(lenDisplayName < MINLENGTH || displayName == undefined || displayName == null || displayName == "") {
-		document.getElementById(displayNameSpan).innerHTML =  getMsg("E0003");
+		document.getElementById(displayNameSpan).innerHTML =  mg.getMsg("E0003");
 		//this.showErrorIcon(txtID);
 		//uCellProfile.spinner.stop();
 		return false;
 	} else if (lenDisplayName >= MAXLENGTH) {
-		document.getElementById(displayNameSpan).innerHTML = getMsg("E0004");
+		document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0004");
 		//uCellProfile.spinner.stop();
 		//this.showErrorIcon(txtID);
 		return false;
 	} else if (lenDisplayName != 0 && ! (displayName.match(letters))){
-		document.getElementById(displayNameSpan).innerHTML = getMsg("E0005");
+		document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0005");
 		//this.showErrorIcon(txtID);
 		return false;
 	} else if (lenDisplayName != 0 && !(displayName.match(allowedLetters))) {
-		document.getElementById(displayNameSpan).innerHTML = getMsg("E0006");
+		document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0006");
 		//this.showErrorIcon(txtID);
 		return false;
 	} else if(lenDisplayName != 0 && (specialchar.toString().indexOf(displayName.substring(0,1)) >= 0)){
-		document.getElementById(displayNameSpan).innerHTML = getMsg("E0006");
+		document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0006");
 		//this.showErrorIcon(txtID);
 		//uCellProfile.spinner.stop();
 		return false;
@@ -761,110 +772,109 @@ function validateDisplayName(displayName, displayNameSpan,txtID) {
 	//this.showValidValueIcon(txtID);
 	return true;
 };
-function validateDescription(descriptionDetails, descriptionSpan) {
+cm.validateDescription = function(descriptionDetails, descriptionSpan) {
 	var isValidDescription = true;
 	var lenDescription = descriptionDetails.length;
 	if (lenDescription > 51200) {
 		isValidDescription = false;
-		document.getElementById(descriptionSpan).innerHTML = getMsg("E0021");
+		document.getElementById(descriptionSpan).innerHTML = mg.getMsg("E0021");
 	}
 	return isValidDescription;
 };
 
 // Logout
-function logout() {
+cm.logout = function() {
   sessionStorage.setItem("sessionData", null);
-  location.href = "./login.html";
+  var mode = sessionStorage.getItem("mode");
+  if (mode) {
+      location.href = "./login.html?mode=" + mode;
+  } else {
+      location.href = "./login.html";
+  }
 };
 
 // This method checks idle time
-function setIdleTime() {
-    setInterval(checkIdleTime, 1000);
+// Check 5 minutes before session expires
+cm.setIdleTime = function() {
+    cm.refreshToken();
+    setInterval(cm.checkIdleTime, 3300000);
     document.onclick = function() {
-      LASTACTIVITY = new Date().getTime();
-      refreshToken().done(function(data) {
-              ha.user.access_token = data.access_token;
-              ha.user.refresh_token = data.refresh_token;
-              sessionStorage.setItem("sessionData", JSON.stringify(ha.user));
-      });
+      cm.LASTACTIVITY = new Date().getTime();
     };
     document.onmousemove = function() {
-      LASTACTIVITY = new Date().getTime();
-      refreshToken().done(function(data) {
-              ha.user.access_token = data.access_token;
-              ha.user.refresh_token = data.refresh_token;
-              sessionStorage.setItem("sessionData", JSON.stringify(ha.user));
-      });
+      cm.LASTACTIVITY = new Date().getTime();
     };
     document.onkeypress = function() {
-      LASTACTIVITY = new Date().getTime();
-      refreshToken().done(function(data) {
-              ha.user.access_token = data.access_token;
-              ha.user.refresh_token = data.refresh_token;
-              sessionStorage.setItem("sessionData", JSON.stringify(ha.user));
-      });
+      cm.LASTACTIVITY = new Date().getTime();
     };
 }
-function checkIdleTime() {
-  if (new Date().getTime() > LASTACTIVITY + IDLE_TIMEOUT) {
-    if (sessionStorage.isResourceMgmt = "true") {
-      $('#modal-session-expired').modal('show');
-    }
+cm.checkIdleTime = function() {
+  if (new Date().getTime() > cm.LASTACTIVITY + cm.IDLE_TIMEOUT) {
+    $('#modal-session-expired').modal('show');
+  } else {
+      cm.refreshToken();
   }
 };
-function changePassCheck(newpass, confirm) {
+cm.refreshToken = function() {
+  cm.refreshTokenAPI().done(function(data) {
+      cm.user.access_token = data.access_token;
+      cm.user.refresh_token = data.refresh_token;
+      sessionStorage.setItem("sessionData", JSON.stringify(cm.user));
+  });
+};
+cm.changePassCheck = function(newpass, confirm) {
   if (newpass === confirm) {
     $('#confirmMessage').html("");
-    changePass(newpass);
+    cm.changePass(newpass);
   } else {
-    $('#confirmMessage').html(getMsg("E0002"));
+    $('#confirmMessage').html(mg.getMsg("E0002"));
   }
 };
 
 // API
-function refreshToken() {
+cm.refreshTokenAPI = function() {
     return $.ajax({
         type: "POST",
-        url: ha.user.cellUrl + '__auth',
+        url: cm.user.cellUrl + '__auth',
         processData: true,
         dataType: 'json',
         data: {
                grant_type: "refresh_token",
-               refresh_token: ha.user.refresh_token
+               refresh_token: cm.user.refresh_token
         },
         headers: {'Accept':'application/json'}
     })
 }
-//function getTargetToken(extCellUrl) {
+//cm.getTargetToken = function(extCellUrl) {
 //  return $.ajax({
 //                type: "POST",
-//                url: ha.user.cellUrl + '__auth',
+//                url: cm.user.cellUrl + '__auth',
 //                processData: true,
 //		dataType: 'json',
 //                data: {
 //                        grant_type: "password",
-//                        username: ha.user.userName,
-//			password: ha.user.pass,
-//                        dc_target: extCellUrl
+//                        username: cm.user.userName,
+//			password: cm.user.pass,
+//                        p_target: extCellUrl
 //                },
 //		headers: {'Accept':'application/json'}
 //         });
 //};
-function getTargetToken(extCellUrl) {
+cm.getTargetToken = function(extCellUrl) {
   return $.ajax({
                 type: "POST",
-                url: ha.user.cellUrl + '__auth',
+                url: cm.user.cellUrl + '__auth',
                 processData: true,
 		dataType: 'json',
                 data: {
                         grant_type: "refresh_token",
-                        refresh_token: ha.user.refresh_token,
-                        dc_target: extCellUrl
+                        refresh_token: cm.user.refresh_token,
+                        p_target: extCellUrl
                 },
 		headers: {'Accept':'application/json'}
          });
 };
-function getProfile(url) {
+cm.getProfile = function(url) {
     return $.ajax({
 	type: "GET",
 	url: url + '__/profile.json',
@@ -872,33 +882,33 @@ function getProfile(url) {
         headers: {'Accept':'application/json'}
     })
 };
-function getBoxList() {
+cm.getBoxList = function() {
   return $.ajax({
           type: "GET",
-          url: ha.user.cellUrl + '__ctl/Box',
+          url: cm.user.cellUrl + '__ctl/Box',
           headers: {
-            'Authorization':'Bearer ' + ha.user.access_token,
+            'Authorization':'Bearer ' + cm.user.access_token,
             'Accept':'application/json'
           }
   })
 }
-function getBoxStatus(boxName) {
+cm.getBoxStatus = function(boxName) {
   return $.ajax({
           type: "GET",
-          url: ha.user.cellUrl + boxName,
+          url: cm.user.cellUrl + boxName,
           headers: {
-            'Authorization':'Bearer ' + ha.user.access_token,
+            'Authorization':'Bearer ' + cm.user.access_token,
             'Accept':'application/json'
           }
   })
 }
-function changePass(newpass) {
+cm.changePass = function(newpass) {
   $.ajax({
           type: "PUT",
-          url: ha.user.cellUrl + '__mypassword',
+          url: cm.user.cellUrl + '__mypassword',
           headers: {
-            'Authorization':'Bearer ' + ha.user.access_token,
-            'X-Dc-Credential': newpass
+            'Authorization':'Bearer ' + cm.user.access_token,
+            'X-Personium-Credential': newpass
           }
   }).done(function(data) {
           $('#modal-relogin').modal('show');
@@ -907,43 +917,43 @@ function changePass(newpass) {
           alert("An error has occurred.\n" + res.message.value);
   });
 };
-function retrieveCollectionAPIResponse(json) {
+cm.retrieveCollectionAPIResponse = function(json) {
   $.ajax({
     type: "PUT",
-    url: ha.user.cellUrl + '__/profile.json',
+    url: cm.user.cellUrl + '__/profile.json',
     data: JSON.stringify(json),
     dataType: 'json',
     headers: {'Accept':'application/json',
-              'Authorization':'Bearer ' + ha.user.access_token}
+              'Authorization':'Bearer ' + cm.user.access_token}
   }).done(function(data) {
     $('#modal-edit-profile').modal('hide');
-    ha.user.profile.Image = imgBinaryFile;
-    ha.user.profile.DisplayName = json.DisplayName;
-    ha.user.profile.Description = json.Description;
-    editProfileHeaderMenu();
-    sessionStorage.setItem("sessionData", JSON.stringify(ha.user));
+    cm.user.profile.Image = cm.imgBinaryFile;
+    cm.user.profile.DisplayName = json.DisplayName;
+    cm.user.profile.Description = json.Description;
+    cm.editProfileHeaderMenu();
+    sessionStorage.setItem("sessionData", JSON.stringify(cm.user));
   }).fail(function(){
     alert("fail");
   });
 };
-function editProfileHeaderMenu() {
-    $("#imProfilePicture").attr('src', imgBinaryFile);
-    $("#tProfileDisplayName").html(ha.user.profile.DisplayName);
+cm.editProfileHeaderMenu = function() {
+    $("#imProfilePicture").attr('src', cm.imgBinaryFile);
+    $("#tProfileDisplayName").html(cm.user.profile.DisplayName);
 }
 
 // APP
-//function execApp(schema,boxName) {
+//cm.execApp = function(schema,boxName) {
 //    $.ajax({
 //        type: "GET",
 //        url: schema + "__/launch.json",
 //        headers: {
-//            'Authorization':'Bearer ' + ha.user.access_token,
+//            'Authorization':'Bearer ' + cm.user.access_token,
 //            'Accept':'application/json'
 //        }
 //    }).done(function(data) {
 //        var type = data.type;
 //        var launch = data[type];
-//        var target = ha.user.cellUrl + boxName;
+//        var target = cm.user.cellUrl + boxName;
 //        refreshToken().done(function(data) {
 //            switch (type) {
 //                case "web":
@@ -959,20 +969,20 @@ function editProfileHeaderMenu() {
 //        });
 //    });
 //};
-function execApp(schema,boxName) {
+cm.execApp = function(schema,boxName) {
     var childWindow = window.open('about:blank');
     $.ajax({
         type: "GET",
         url: schema + "__/launch.json",
         headers: {
-            'Authorization':'Bearer ' + ha.user.access_token,
+            'Authorization':'Bearer ' + cm.user.access_token,
             'Accept':'application/json'
         }
     }).done(function(data) {
         var type = data.type;
         var launch = data[type];
-        var target = ha.user.cellUrl + boxName;
-        refreshToken().done(function(data) {
+        var target = cm.user.cellUrl + boxName;
+        cm.refreshToken().done(function(data) {
             switch (type) {
                 case "web":
                     var url = launch;
@@ -1010,7 +1020,7 @@ function testAPI(evt) {
     var file = document.getElementById("testFile");
     var form_data = new FormData(file);
 
-    var url = ha.user.cellUrl;
+    var url = cm.user.cellUrl;
     //var url = "https://demo.personium.io/ksakamoto/";
     var urlArray = [];
     urlArray[0] = "https";
@@ -1053,7 +1063,7 @@ function testAPI(evt) {
                 //data: 'C:\Users\coe\Desktop\V1_1_2_bar_webdav_odata.bar',
                 processData: false,
                 headers: {
-                    'Authorization':'Bearer ' + ha.user.access_token,
+                    'Authorization':'Bearer ' + cm.user.access_token,
                     //'Content-type':'application/zip'
                     'Content-type':'application/zip'
                 }
@@ -1070,12 +1080,12 @@ function testAPI2() {
             //type: "GET",
             //url: 'https://demo.personium.io/HomeApplication/io_personium_demo_app-myboard',
             //headers: {
-            //    'Authorization':'Bearer ' + ha.user.access_token
+            //    'Authorization':'Bearer ' + cm.user.access_token
             //}
             type: "PROPFIND",
             url: 'https://demo.personium.io/HomeApplication/io_personium_demo_app-myboard/MyBoardBox/my-board.json',
             headers: {
-                'Authorization':'Bearer ' + ha.user.access_token,
+                'Authorization':'Bearer ' + cm.user.access_token,
                 'Depth': 1
             }
     }).done(function(data) {

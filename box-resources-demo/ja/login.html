@@ -13,17 +13,21 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
                 <!--<script src="https://demo.personium.io/HomeApplication/__/js/login.js"></script>
-                <script src="https://demo.personium.io/HomeApplication/__/js/message_ja.js"></script>-->
+                <script src="https://demo.personium.io/HomeApplication/__/js/message_ja.js"></script>
+                <script src="https://demo.personium.io/HomeApplication/__/js/demo.js"></script>-->
                 <script src="../../appcell-resources/js/login.js"></script>
                 <script src="../../appcell-resources/js/message_ja.js"></script>
+                <script src="../../appcell-resources/js/demo.js"></script>
 		<link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
                 <!--<link href='https://demo.personium.io/HomeApplication/__/css/common.css' rel='stylesheet' type='text/css'>
-                <link href='https://demo.personium.io/HomeApplication/__/css/login.css' rel='stylesheet' type='text/css'>-->
+                <link href='https://demo.personium.io/HomeApplication/__/css/login.css' rel='stylesheet' type='text/css'>
+                <link href='https://demo.personium.io/HomeApplication/__/css/demo.css' rel='stylesheet' type='text/css'>-->
                 <link href='../../appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
                 <link href='../../appcell-resources/css/login.css' rel='stylesheet' type='text/css'>
+                <link href='../../appcell-resources/css/demo.css' rel='stylesheet' type='text/css'>
 <script type="text/javascript">
     $(document).ready(function() {
-        lg.initTarget();
+        demo.initTarget();
     });
 </script>
 	</head>
@@ -84,17 +88,74 @@
                 <div class="modal-header login-header">
                     <h4 class="modal-title">ログインセル入力</h4>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body fontBlack">
                     <form>
                         <div class="form-group">
                             <div id="dvCellUrl">Cell URL</div>
-                            <input type="text" class="fontBlack" id="pCellUrl">
+                            <input type="text" class="fontBlack" id="pCellUrl" value="https://demo.personium.io/democell/">
                             <span id="errorCellUrl" style="color:red"></span>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="b-input-cell-ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-demo-start" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">デモ版ホームアプリへようこそ</h4>
+                </div>
+                <div class="modal-body fontBlack">
+                    デモ版ではホームアプリの使い方についてご説明致します。<br>
+                    まずはログインするセルURLを入力しましょう。<br>
+                    今回はデモ用のセルURL:<br>
+                    https://demo.personium.io/democell/<br>
+                    にログインしてみます。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-demo-start-ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-celllogin-start" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">ログイン対象セルの選択完了</h4>
+                </div>
+                <div class="modal-body fontBlack">
+                    これでログイン対象のセルへアクセス出来ました。<br>
+                    ではセルへログインしてみましょう。<br>
+                    今回のセルへのログインID及びPASSは<br>
+                    ID:me<br>
+                    PW:democell<br>
+                    になります。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-celllogin-start-ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-demoend-start" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title">お疲れ様でした。</h4>
+                </div>
+                <div class="modal-body fontBlack">
+                    以上でデモホームアプリの説明を終了します。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-demoend-start-ok">OK</button>
                 </div>
             </div>
         </div>
