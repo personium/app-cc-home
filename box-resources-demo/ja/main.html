@@ -119,7 +119,7 @@ ha.dispInsAppList = function() {
 ha.dispInsAppListSchema = function(schema, boxName) {
     cm.getProfile(schema).done(function(profData) {
         var dispName = profData.DisplayName;
-        var imageSrc = cm.notImage;
+        var imageSrc = cm.notAppImage;
         if (profData.Image) {
             imageSrc = profData.Image;
         }
@@ -127,7 +127,7 @@ ha.dispInsAppListSchema = function(schema, boxName) {
             var status = data.status;
             var html = '';
             if (status.indexOf('ready') >= 0) {
-                var html = '<div class="ins-app" align="center"><a class="ins-app-icon" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\');ha.dispEndDemo();" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
+                var html = '<div class="ins-app" align="center"><a href="javascript:void(0)" class="ins-app-icon" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\');ha.dispEndDemo();" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
                 $("#dashboard_ins").append(html);
             }
         });
@@ -272,8 +272,8 @@ ha.dispEndDemo = function() {
                     <h4 class="modal-title">アプリケーション</h4>
                 </div>
                 <div class="modal-body fontBlack">
-                    インストール済みのアプリはinstalledに<br>
-                    インストールしていないアプリはapplication listに表示されています。<br>
+                    インストール済みのアプリは「インストール済み」に<br>
+                    インストールしていないアプリは「アプリケーションリスト」に表示されています。<br>
                     <br>
                     今は何もインストールされていないので、MyBoardをインストールしてみましょう。
                 </div>
@@ -292,7 +292,7 @@ ha.dispEndDemo = function() {
                 </div>
                 <div class="modal-body fontBlack">
                     セルにMyBoardがインストールされました。<br>
-                    右上の×(閉じる)ボタンでホーム画面に戻り、アプリを起動してみましょう。
+                    左上の戻るボタンでホーム画面に戻り、アプリを起動してみましょう。
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="b-installed-start-ok">OK</button>

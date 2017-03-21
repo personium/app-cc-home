@@ -26,8 +26,8 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
   </head>
   <body>
-    <div class="container-fluid display-table" id="displayParentDiv">
-        <div class="row display-parent-div">
+    <div class="container-fluid display-table">
+        <div class="row display-parent-div" id="displayParentDiv">
             <div class="col-md-12 col-sm-12 display-table-cell v-align">
                 <!--<button type="button" class="slide-toggle">Slide Toggle</button> -->
                 <div class="row profile-menu">
@@ -91,7 +91,7 @@
                 <div class="modal-body">
                     <div id="dvAddExtCellLinkRelation">Select a external cell to assign</div>
                     <div id="dvSelectAddExtCellLinkRelation" style="margin-bottom: 10px;">
-                      <select name="" id="ddlExtCellLinkRelationList">
+                      <select class="form-control" name="" id="ddlExtCellLinkRelationList">
                         <option>Select a relation</option>
                       </select>
                     </div>
@@ -111,6 +111,7 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
                     <h4 class="modal-title" id="modal-confirmation-title"></h4>
                 </div>
                 <div class="modal-body">
