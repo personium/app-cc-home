@@ -92,7 +92,7 @@ st.slideToggle = function(id) {
 st.checkAccLinkRole = function() {
     var value = $("#ddlAddAccLinkRoleList option:selected").val();
     if (value === undefined) {
-        $("#popupAddAccountLinkRoleErrorMsg").html("Please select a role.");
+        $("#popupAddAccountLinkRoleErrorMsg").html(mg.getMsg("I0021"));
         return false;
     } else {
         $("#popupAddAccountLinkRoleErrorMsg").html("");
@@ -143,7 +143,7 @@ st.dispAccountList = function(json) {
 
     html += '<div class="list-group-item">';
     html += '<table style="width: 100%;"><tr>';
-    html += '<td style="width: 80%;"><a class="accountToggle ellipsisText" id="accountLinkToRoleToggle' + i + '" onClick="st.createAccountRole(\'' + acc.Name + '\',\'' + i + '\')">' + acc.Name + '&nbsp;<img class="image-circle-small" src="' + typeImg + '"></a></td>';
+    html += '<td style="width: 80%;"><a href="#" class="ellipsisText" id="accountLinkToRoleToggle' + i + '" onClick="st.createAccountRole(\'' + acc.Name + '\',\'' + i + '\')">' + acc.Name + '&nbsp;<img class="image-circle-small" src="' + typeImg + '"></a></td>';
     if (acc.Name !== cm.user.username) {
         html += '<td style="margin-right:10px;width: 10%;"><a class="edit-button list-group-item" href="#" onClick="st.createEditAccount(\'' + acc.Name + '\');return(false)">' + mg.getMsg("00003") + '</a></td>'
              + '<td style="width: 10%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelModal(\'' + acc.Name + '\');return(false)">' + mg.getMsg("00004") + '</a></td>';
@@ -151,7 +151,7 @@ st.dispAccountList = function(json) {
     html += '</tr></table></div>';
   }
   html += '<div class="list-group-item">';
-  html += '<a class="allToggle" onClick="st.createAddAccount()">＋ ' + mg.getMsg("00031") + '</a></div>';
+  html += '<a href="#" class="allToggle" onClick="st.createAddAccount()">＋ ' + mg.getMsg("00031") + '</a></div>';
   html += '</div>';
   $("#setting-panel1").append(html);
 }
@@ -188,12 +188,12 @@ st.createAddAccount = function() {
         html += '<label><input class="widthAuto" type="checkbox" id="addCheckAccountLinkRole" onChange="st.changeCheckAccountLinkRole(this);">' + mg.getMsg("I0015") + '</label>';
         html += '</div>';
         html += '<div id="dvSelectAddAccountLinkRole" style="margin-bottom: 10px;">';
-        html += '<select name="" id="ddlAddAccLinkRoleList" onblur="st.checkAccLinkRole();" multiple disabled><option>Select a role</option></select>';
+        html += '<select class="form-control" name="" id="ddlAddAccLinkRoleList" onblur="st.checkAccLinkRole();" multiple disabled><option>Select a role</option></select>';
         html += '<span class="popupAlertArea" style="color:red"><aside id="popupAddAccountLinkRoleErrorMsg"> </aside></span>';
         html += '</div>';
         html += '</div>';
         html += '<div class="modal-footer">';
-        html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">Cancel</button>';
+        html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + mg.getMsg("00045") + '</button>';
         html += '<button type="button" class="btn btn-primary" id="b-add-account-ok" onClick="st.addAccount();">Add</button>';
         html += '</div></div>';
         $("#setting-panel2").append(html);
@@ -303,8 +303,8 @@ st.createEditAccount = function(name) {
     html += '<div id="dvTextEditNewPassword" style="margin-bottom: 10px;"><input type="password" placeholder="' + mg.getMsg("I0005") + '" id="pEditNewPassword" onblur="st.blurNewPassword(this, \'b-edit-account-ok\', \'editChangeMessage\');"><span class="popupAlertArea" style="color:red"><aside id="editChangeMessage"> </aside></span></div>';
     html += '<div id="dvTextEditConfirm" style="margin-bottom: 10px;"><input type="password" placeholder="' + mg.getMsg("I0003") + '" id="pEditConfirm" onblur="st.blurConfirm(\'pEditNewPassword\', \'pEditConfirm\', \'editConfirmMessage\');"><span class="popupAlertArea" style="color:red"><aside id="editConfirmMessage"> </aside></span></div>';
     html += '<div class="modal-footer">';
-    html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">Cancel</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-edit-account-ok" onClick="st.editAccountOk();" disabled>Edit</button>';
+    html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + mg.getMsg("00045") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-account-ok" onClick="st.editAccountOk();" disabled>' + mg.getMsg("00003") + '</button>';
     html += '</div></div>';
     $("#setting-panel2").append(html);
     $("#setting-panel2").toggleClass('slide-on');
@@ -336,7 +336,7 @@ st.dispBoxList = function(json, id) {
   results.sort(function(val1, val2) {
     return (val1.Name < val2.Name ? 1 : -1);
   })
-  $("#" + id).append('<option value="">Please select a Box</option>');
+  $("#" + id).append('<option value="">' + mg.getMsg("I0023") + '</option>');
   $("#" + id).append('<option value="[main]">[main]</option>');
   for (var i in results) {
     var objBox = json.d.results[i];
@@ -407,7 +407,7 @@ st.editAccount = function() {
 st.createApplicationList = function() {
     $("#setting-panel1").remove();
     cm.setBackahead(true);
-    var html = '<div class="panel-body"><table><tr><td>installed<div id="insAppList"></div></td></tr><tr><td><hr>application list<div id="appList"></div></td></tr></div>';
+    var html = '<div class="panel-body"><table class="table table-striped"><tr><td>' + mg.getMsg("00047") + '</td></tr><tr><td><div id="insAppList"></div></td></tr><tr><td>' + mg.getMsg("00048") + '</td></tr><tr><td><div id="appList"></div></td></tr></div>';
     $("#setting-panel1").append(html);
     // install application list
     cm.getBoxList().done(function(data) {
@@ -453,12 +453,14 @@ st.dispInsAppListSetting = function() {
         st.dispInsAppListSchemaSetting(st.insAppList[i], st.insAppBoxList[i], i);
     }
 
-    ha.dispInsAppList();
+    if (typeof(ha) != "undefined") {
+        ha.dispInsAppList();
+    }
 };
 st.dispInsAppListSchemaSetting = function(schema, boxName, no) {
     cm.getProfile(schema).done(function(profData) {
         var dispName = profData.DisplayName;
-        var imageSrc = cm.notImage;
+        var imageSrc = cm.notAppImage;
         if (profData.Image) {
             imageSrc = profData.Image;
         }
@@ -467,18 +469,18 @@ st.dispInsAppListSchemaSetting = function(schema, boxName, no) {
             var html = '';
             if (status.indexOf('ready') >= 0) {
                 // ready
-                html = '<div class="ins-app" align="center"><a id="insAppNo_' + no + '" class="ins-app-icon" onClick="uninstallApp(\'' + schema + '\', \'' + boxName + '\')"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div>';
+                html = '<div class="ins-app" align="center"><a href="#" id="insAppNo_' + no + '" class="ins-app-icon" onClick="uninstallApp(\'' + schema + '\', \'' + boxName + '\')"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div>';
 
                 html += '</div>';
             } else if (status.indexOf('progress') >= 0) {
                 // progress
-                html = '<div class="ins-app" align="center"><a id="insAppNo_' + no + '" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div><div id="nowInstallParent_' + no + '" class="progress progress-striped active"><div name="nowInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';"></div></div></div>';
+                html = '<div class="ins-app" align="center"><a href="#" id="insAppNo_' + no + '" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div><div id="nowInstallParent_' + no + '" class="progress progress-striped active"><div name="nowInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';"></div></div></div>';
                 if (st.nowInstalledID === null) {
                     st.nowInstalledID = setInterval(st.checkBoxInstall, 1000);
                 }
             } else {
                 // failed
-                html = '<div class="ins-app" align="center"><a class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '(<font color="red"> ! </font>)</div></div>';
+                html = '<div class="ins-app" align="center"><a href="#" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '(<font color="red"> ! </font>)</div></div>';
             }
 
             $("#insAppList").append(html);
@@ -503,11 +505,11 @@ st.dispApplicationListSchema = function(schemaJson) {
     cm.getProfile(schema).done(function(profData) {
         var dispName = profData.DisplayName;
         var description = profData.Description;
-        var imageSrc = cm.notImage;
+        var imageSrc = cm.notAppImage;
         if (profData.Image) {
             imageSrc = profData.Image;
         }
-        var html = '<div class="ins-app" align="center"><a class="ins-app-icon" onClick="st.dispViewApp(\'' + schema + '\',\'' + dispName + '\',\'' + imageSrc + '\',\'' + description + '\',\'' + schemaJson.BarUrl + '\',\'' + schemaJson.BoxName + '\',true)"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
+        var html = '<div class="ins-app" align="center"><a href="#" class="ins-app-icon" onClick="st.dispViewApp(\'' + schema + '\',\'' + dispName + '\',\'' + imageSrc + '\',\'' + description + '\',\'' + schemaJson.BarUrl + '\',\'' + schemaJson.BoxName + '\',true)"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
         $("#appList").append(html);
    });
 };
@@ -517,7 +519,7 @@ st.dispViewApp = function(schema, dispName, imageSrc, description, barUrl, barBo
     var html = '<div class="panel-body">';
     html += '<div class="app-profile" id="dvAppProfileImage"><img class="image-circle" style="margin: auto;" id="imgAppProfileImage" src="' + imageSrc + '" alt="image" /><span style="margin-left: 10px;" id="txtAppName">' + dispName + '</span><br><br><br><h5>概要</h5><span id="txtDescription">' + description + '</span></div>';
     if (insFlag) {
-        html += '<br><br><div class="toggleButton" style="text-align:center;"><a class="appToggle list-group-item" href="#" onClick="st.confBarInstall(\'' + schema + '\',\'' + barUrl + '\',\'' + barBoxName + '\');return(false);">' + mg.getMsg("00040") + '</a></div>';
+        html += '<br><br><div class="toggleButton" style="text-align:center;"><a class="appToggle list-group-item" href="#" onClick="st.confBarInstall(\'' + schema + '\',\'' + barUrl + '\',\'' + barBoxName + '\', \'' + dispName + '\');return(false);">' + mg.getMsg("00040") + '</a></div>';
     } else {
         html += '<br><br><div class="toggleButton" style="text-align:center;"><a class="appToggle list-group-item" href="#" onClick="return(false);">' + mg.getMsg("00041") + '</a></div>';
     }
@@ -527,12 +529,12 @@ st.dispViewApp = function(schema, dispName, imageSrc, description, barUrl, barBo
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
 };
-st.confBarInstall = function(schema, barUrl, barBoxName) {
+st.confBarInstall = function(schema, barUrl, barBoxName, dispName) {
     st.barSchemaUrl = schema;
     st.barFileUrl = barUrl;
     st.barBoxName = barBoxName;
     $("#dvTextConfirmation").html(mg.getMsg("I0020"));
-    $("#modal-confirmation-title").html(mg.getMsg("00040"));
+    $("#modal-confirmation-title").html(dispName);
     $('#b-ins-bar-ok').css("display","");
     $('#modal-confirmation').modal('show');
 };
@@ -619,8 +621,8 @@ st.dispRoleList = function(json) {
     html += '<div class="list-group-item">';
     html += '<table class="table-fixed"><tr>';
     html += '<td style="width: 70%;"><p class="ellipsisText">' + objRole.Name + '(' + boxName + ')</p></td>';
-    html += '<td style="width: 15%;"><a class="edit-button list-group-item" href="#" onClick="st.createEditRole(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + mg.getMsg("00003") + '</a></td>';
-    html += '<td style="width: 15%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelRoleModal(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + mg.getMsg("00004") + '</a></td>';
+    html += '<td style="width: 15%;"><a href="#" class="edit-button list-group-item" href="#" onClick="st.createEditRole(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + mg.getMsg("00003") + '</a></td>';
+    html += '<td style="width: 15%;"><a href="#" class="del-button list-group-item" href="#" onClick="st.dispDelRoleModal(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + mg.getMsg("00004") + '</a></td>';
     html += '</tr>';
     html += '</table></div>';
   }
@@ -646,11 +648,11 @@ st.operationRole = function() {
     html += '<div id="dvAddRoleName">' + mg.getMsg("00035") + '</div>';
     html += '<div id="dvTextAddRoleName" style="margin-bottom: 10px;"><input type="text" id="addRoleName" value="' + name + '" onblur="st.addRoleNameBlurEvent();"><span class="popupAlertArea" style="color:red"><aside id="popupAddRoleNameErrorMsg"> </aside></span></div>';
     html += '<div id="dvAddRoleBox">' + mg.getMsg("I0017") + '</div>';
-    html += '<div id="dvSelectAddRoleBox" style="margin-bottom: 10px;"><select name="" id="ddlRoleBoxList"><option>Please select a Box.</option></select><span class="popupAlertArea" style="color:red"><aside id="addRoleBoxMessage"> </aside></span></div>';
+    html += '<div id="dvSelectAddRoleBox" style="margin-bottom: 10px;"><select class="form-control" name="" id="ddlRoleBoxList"><option>' + mg.getMsg("I0023") + '</option></select><span class="popupAlertArea" style="color:red"><aside id="addRoleBoxMessage"> </aside></span></div>';
     html += '<div class="modal-footer">';
-    html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">Cancel</button>';
+    html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + mg.getMsg("00045") + '</button>';
     if (st.updUser !== null) {
-        html += '<button type="button" class="btn btn-primary" id="b-add-role-ok" onClick="st.addRole();">Edit</button>';
+        html += '<button type="button" class="btn btn-primary text-capitalize" id="b-add-role-ok" onClick="st.addRole();">' + mg.getMsg("00003") + '</button>';
     } else {
         html += '<button type="button" class="btn btn-primary" id="b-add-role-ok" onClick="st.addRole();">Add</button>';
     }
@@ -707,7 +709,7 @@ st.addRole = function() {
   var name = $("#addRoleName").val();
   var box = $("#ddlRoleBoxList option:selected").val();
   if (box === "") {
-      $("#addRoleBoxMessage").html("Please Select Box");
+      $("#addRoleBoxMessage").html(mg.getMsg("I0023"));
       return false;
   } else if (box === "[main]") {
       box = null;
@@ -755,7 +757,7 @@ st.dispRelationList = function(json) {
     // relation list
     html += '<div class="list-group-item">';
     html += '<table style="width: 100%;"><tr>';
-    html += '<td style="width: 80%;"><a class="accountToggle" id="relationLinkToRoleToggle' + i + '" onClick="st.createRelationRole(\'' + objRelation.Name + '\',\'' + boxName + '\',\'' + i + '\')">';
+    html += '<td style="width: 80%;"><a href="#" id="relationLinkToRoleToggle' + i + '" onClick="st.createRelationRole(\'' + objRelation.Name + '\',\'' + boxName + '\',\'' + i + '\')">';
     html += '<table class="table-fixed"><tr><td><p class="ellipsisText">' + objRelation.Name + '(' + boxName + ')</p></td></tr></table>';
     html += '</a></td>';
     html += '<td style="width: 10%;"><a class="edit-button list-group-item" href="#" onClick="st.createEditRelation(\'' + objRelation.Name + '\',\'' + boxName + '\');return(false)">' + mg.getMsg("00003") + '</a></td>';
@@ -782,11 +784,11 @@ st.createAddRelation = function() {
         html += '<div id="dvAddRelationName">' + mg.getMsg("00035") + '</div>';
         html += '<div id="dvTextAddRelationName" style="margin-bottom: 10px;"><input type="text" id="addRelationName"><span class="popupAlertArea" style="color:red"><aside id="popupAddRelationNameErrorMsg"> </aside></span></div>';
         html += '<div id="dvAddRelationBox">' + mg.getMsg("I0016") + '</div>';
-        html += '<div id="dvSelectAddRelationBox" style="margin-bottom: 10px;"><select name="ddlRelationBoxList" id="ddlAddRelationBoxList"><option>Please select a Box.</option></select><span class="popupAlertArea" style="color:red"><aside id="addRelationBoxMessage"> </aside></span></div>';
+        html += '<div id="dvSelectAddRelationBox" style="margin-bottom: 10px;"><select class="form-control" name="ddlRelationBoxList" id="ddlAddRelationBoxList"><option>' + mg.getMsg("I0023") + '</option></select><span class="popupAlertArea" style="color:red"><aside id="addRelationBoxMessage"> </aside></span></div>';
         html += '<div id="dvCheckAddRelationLinkRole" style="margin-bottom: 10px;"><label><input  class="widthAuto" type="checkbox" id="addCheckRelationLinkRole" onChange="st.changeCheckRelationLinkRole(this);">' + mg.getMsg("I0015") + '</label></div>';
-        html += '<div id="dvSelectAddRelationLinkRole" style="margin-bottom: 10px;"><select name="" id="ddlAddRelLinkRoleList" multiple disabled><option>Select a role</option></select><span class="popupAlertArea" style="color:red"><aside id="popupAddRelationLinkRoleErrorMsg"> </aside></span></div>';
+        html += '<div id="dvSelectAddRelationLinkRole" style="margin-bottom: 10px;"><select class="form-control" name="" id="ddlAddRelLinkRoleList" multiple disabled><option>Select a role</option></select><span class="popupAlertArea" style="color:red"><aside id="popupAddRelationLinkRoleErrorMsg"> </aside></span></div>';
         html += '<div class="modal-footer">';
-        html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">Cancel</button>';
+        html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + mg.getMsg("00045") + '</button>';
         html += '<button type="button" class="btn btn-primary" id="b-add-relation-ok" onClick="st.addRelation();">Add</button>';
         html += '</div></div>';
         $("#setting-panel2").append(html);
@@ -900,10 +902,10 @@ st.createEditRelation = function(name, box) {
     html += '<div id="dvEditRelationName">' + mg.getMsg("00035") + '</div>';
     html += '<div id="dvTextEditRelationName" style="margin-bottom: 10px;"><input type="text" id="editRelationName" onblur="st.editRelationNameBlurEvent();" value="' + name + '"><span class="popupAlertArea" style="color:red"><aside id="popupEditRelationNameErrorMsg"> </aside></span></div>';
     html += '<div id="dvEditRelationBox">' + mg.getMsg("I0016") + '</div>';
-    html += '<div id="dvSelectEditRelationBox" style="margin-bottom: 10px;"><select id="ddlEditRelationBoxList" onChange="st.changeRelationSelect();"><option>Please select a Box.</option></select><span class="popupAlertArea" style="color:red"><aside id="editRelationBoxMessage"> </aside></span>';
+    html += '<div id="dvSelectEditRelationBox" style="margin-bottom: 10px;"><select class="form-control" id="ddlEditRelationBoxList" onChange="st.changeRelationSelect();"><option>' + mg.getMsg("I0023") + '</option></select><span class="popupAlertArea" style="color:red"><aside id="editRelationBoxMessage"> </aside></span>';
     html += '<div class="modal-footer">';
-    html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">Cancel</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-edit-relation-ok" onClick="st.editRelationOk();" disabled>Edit</button>';
+    html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + mg.getMsg("00045") + '</button>';
+    html += '<button type="button" class="btn btn-primary" id="b-edit-relation-ok" onClick="st.editRelationOk();" disabled>' + mg.getMsg("00003") + '</button>';
     html += '</div>';
     $("#setting-panel2").append(html);
     cm.getBoxList().done(function(data) {
@@ -1476,7 +1478,9 @@ st.updateProgress = function(no, id) {
         if (status.indexOf('ready') >= 0) {
             $("#nowInstallParent_" + no).remove();
             $("#insAppNo_" + no).on('click', function() { st.uninstallApp(st.insAppList[no],st.insAppBoxList[no]) });
-            ha.dispInsAppList();
+            if (typeof(ha) != "undefined") {
+                ha.dispInsAppList();
+            }
         } else if (status.indexOf('progress') >= 0) {
             $('#' + id).css("width", data.progress);
         } else {

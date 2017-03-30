@@ -112,7 +112,7 @@ ha.dispInsAppList = function() {
 ha.dispInsAppListSchema = function(schema, boxName) {
     cm.getProfile(schema).done(function(profData) {
         var dispName = profData.DisplayName;
-        var imageSrc = cm.notImage;
+        var imageSrc = cm.notAppImage;
         if (profData.Image) {
             imageSrc = profData.Image;
         }
@@ -120,8 +120,16 @@ ha.dispInsAppListSchema = function(schema, boxName) {
             var status = data.status;
             var html = '';
             if (status.indexOf('ready') >= 0) {
-                var html = '<div class="ins-app" align="center"><a class="ins-app-icon" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
-                $("#dashboard_ins").append(html);
+                var msgCnt = "";
+                cm.getNotCompMessageCnt(boxName).done(function(data) {
+                    if (data.d.__count > 0) {
+                        msgCnt = data.d.__count;
+                    }
+                }).always(function(data) {
+                    //var html = '<div class="ins-app" align="center"><a class="ins-app-icon" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
+                    var html = '<div class="ins-app" align="center"><a class="ins-app-icon" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"><span class="badge badgePos">' + msgCnt + '</span></a><div class="ins-app-name">' + dispName + '</div></div>';
+                    $("#dashboard_ins").append(html);
+                });
             }
         });
     });

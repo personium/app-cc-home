@@ -10,6 +10,7 @@ cm.user.nowTitle = {};
 cm.user.settingNowPage = 0;
 cm.user.settingNowTitle = {};
 cm.notImage = "https://demo.personium.io/HomeApplication/__/icons/profile_image.png";
+cm.notAppImage = "https://demo.personium.io/HomeApplication/__/icons/no_app_image.png";
 
 //Default timeout limit - 60 minutes.
 cm.IDLE_TIMEOUT =  3600000;
@@ -36,7 +37,7 @@ cm.createProfileHeaderMenu = function() {
     html += '</td><td width="70%" class="sizeBody1">';
     html += '<span id="tProfileDisplayName">' + cm.user.profile.DisplayName + '</span>';
     //html += '</td><td width="30%">&nbsp;</td>';
-    html += '</td><td rowspan="2" style="text-align:right;"><a onClick="cm.openSlide();">';
+    html += '</td><td rowspan="2" style="text-align:right;"><a href="#" onClick="cm.openSlide();">';
     html += '<img src="https://demo.personium.io/HomeApplication/__/icons/ico_menu.png">';
     //html += '<p class="headerAccountNameText">' + cm.user.userName + '</p>';
     //html += '<p class="headerAccountNameText">aiueokakikukekosasisuseso</p>▼';
@@ -89,21 +90,34 @@ cm.createTitleHeader = function(flg) {
         id = ".setting-header";
     }
 
-    var html = '<table class="table-fixed">';
-    html += '<tr style="vertical-align: middle;">';
+    var html = '';
     if (flg) {
-        html += '<td id="settingBackMenu" class="prev-icon" style="width: 10%;"></td>'
-        html += '<td id="settingBackTitle" align="left" style="width: 30%;white-space: nowrap;"></td>';
-        html += '<td id="settingTitleMenu" align="left" style="width: 50%;" class="title"></td>';
-        html += '<td style="width: 10%;"><a style="padding: 0;font-size: 28px;" onClick="cm.closeSetting();return false;">×</button></td>';
+        html += '<div class="col-xs-1" id="settingBackMenu"></div>';
+        html += '<div class="col-xs-2"><table class="table-fixed back-title"><tr style="vertical-align: middle;"><td class="ellipsisText" id="settingBackTitle" align="left"></td></tr></table></div>';
+        html += '<div class="col-xs-6 text-center title" id="settingTitleMenu"></div>';
+        html += '<div class="col-xs-3 text-right"></div>';
     } else {
-        html += '<td id="backMenu" class="prev-icon" style="width: 10%;"></td>'
-        html += '<td id="backTitle" align="left" style="width: 30%;white-space: nowrap;"></td>';
-        html += '<td id="titleMenu" align="left" class="title"></td>';
-        html += '<td class="menu-icon header-top pull-right"></td>';
+        html += '<div class="col-xs-1" id="backMenu"></div>';
+        html += '<div class="col-xs-2"><table class="table-fixed back-title"><tr style="vertical-align: middle;"><td class="ellipsisText" id="backTitle" align="left"></td></tr></table></div>';
+        html += '<div class="col-xs-6 text-center title" id="titleMenu"></div>';
+        html += '<div class="col-xs-3 text-right"></div>';
     }
-    
-    html += '</td></tr></table>';
+
+    //var html = '<table class="table-fixed">';
+    //html += '<tr style="vertical-align: middle;">';
+    //if (flg) {
+    //    html += '<td id="settingBackMenu" class="prev-icon" style="width: 10%;"></td>'
+    //    html += '<td id="settingBackTitle" align="left" style="width: 30%;white-space: nowrap;"></td>';
+    //    html += '<td id="settingTitleMenu" align="left" style="width: 50%;" class="title"></td>';
+    //    html += '<td style="width: 10%;"><a href="#" style="padding: 0;font-size: 28px;" onClick="cm.closeSetting();return false;">×</a></td>';
+    //} else {
+    //    html += '<td id="backMenu" class="prev-icon" style="width: 10%;"></td>'
+    //    html += '<td id="backTitle" align="left" style="width: 30%;white-space: nowrap;"></td>';
+    //    html += '<td id="titleMenu" align="left" class="title"></td>';
+    //    html += '<td class="menu-icon header-top pull-right"></td>';
+    //}
+    //
+    //html += '</td></tr></table>';
     $(id).html(html);
 }
 
@@ -122,20 +136,24 @@ cm.createSettingArea = function() {
     html += '<div class="modal-dialog">';
     html += '<div class="modal-content">';
     html += '<div class="modal-header login-header">';
+    html += '<button type="button" class="close" data-dismiss="modal">×</button>';
     html += '<h4 class="modal-title" id="modal-confirmation-title"></h4>';
     html += '</div>';
     html += '<div class="modal-body">';
     html += '<div id="dvTextConfirmation"></div>';
     html += '</div>';
     html += '<div class="modal-footer">';
-    html += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-edit-relconfirm-ok" style="display:none">Edit</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-edit-accconfirm-ok" style="display:none">Edit</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-del-acclinkrole-ok" style="display:none">Delete</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-del-role-ok" style="display:none">Delete</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-del-account-ok" style="display:none">Delete</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-del-relation-ok" style="display:none">Delete</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-del-rellinkrole-ok" style="display:none">Delete</button>';
+    html += '<button type="button" class="btn btn-default" data-dismiss="modal">' + mg.getMsg("00045") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-relconfirm-ok" style="display:none">' + mg.getMsg("00003") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-accconfirm-ok" style="display:none">' + mg.getMsg("00003") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-acclinkrole-ok" style="display:none">' + mg.getMsg("00004") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-role-ok" style="display:none">' + mg.getMsg("00004") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-account-ok" style="display:none">' + mg.getMsg("00004") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-relation-ok" style="display:none">' + mg.getMsg("00004") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-rellinkrole-ok" style="display:none">' + mg.getMsg("00004") + '</button>';
+    html += '<button type="button" class="btn btn-primary" id="b-del-extcell-ok" style="display:none">' + mg.getMsg("00004") + '</button>';
+    html += '<button type="button" class="btn btn-primary" id="b-del-extcelllinkrole-ok" style="display:none">' + mg.getMsg("00004") + '</button>';
+    html += '<button type="button" class="btn btn-primary" id="b-del-extcelllinkrelation-ok" style="display:none">' + mg.getMsg("00004") + '</button>';
     html += '<button type="button" class="btn btn-primary" id="b-ins-bar-ok" style="display:none">OK</button>';
     html += '</div>';
     html += '</div>';
@@ -186,7 +204,7 @@ cm.moveBackahead = function(flg) {
                 window.location.href = cm.user.prevUrl;
                 break;
             case 1:
-                $("#setting-panel1").toggleClass("slide-on");
+                cm.closeSetting();
                 break;
             default:
                 $("#setting-panel" + no).toggleClass("slide-on");
@@ -200,12 +218,11 @@ cm.moveBackahead = function(flg) {
             if (cm.user.settingNowPage > 1) {
                 $("#settingBackTitle").html(cm.user.settingNowTitle[cm.user.settingNowPage - 1]);
             } else {
-                $("#settingBackTitle").html("");
-                $("#settingBackMenu").css("display", "none");
+                $("#settingBackTitle").html("メニュー");
             }
         } else {
             $("#settingBackTitle").html("");
-            $("#settingBackMenu").css("display", "none");
+            $("#imSettingBack").css("display", "none");
         }
     } else {
         var no = cm.user.nowPage;
@@ -270,15 +287,15 @@ cm.createSideMenu = function() {
     // setting menu
     html += '<table class="menu-title"><tr>';
     html += '<td rowspan="4" class="sidemenu-itemEmpty">&nbsp;</td>';
-    html += '<td class="sidemenu-item sizeBody1"><a class="allToggle" id="accountToggle">' + mg.getMsg("00028") + '</a></td></tr>';
-    html += '<tr><td class="sidemenu-item sizeBody1"><a class="allToggle" id="applicationToggle">' + mg.getMsg("00039") + '</a></td></tr>';
-    html += '<tr><td class="sidemenu-item sizeBody1"><a class="allToggle" id="roleToggle">' + mg.getMsg("00032") + '</a></td></tr>';
-    html += '<tr><td class="sidemenu-lastitem sizeBody1"><a class="allToggle" id="relationToggle">' + mg.getMsg("00033") + '</a></td></tr>';
+    html += '<td class="sidemenu-item sizeBody1"><a class="allToggle" id="accountToggle" href="#">' + mg.getMsg("00028") + '</a></td></tr>';
+    html += '<tr><td class="sidemenu-item sizeBody1"><a class="allToggle" id="applicationToggle" href="#">' + mg.getMsg("00039") + '</a></td></tr>';
+    html += '<tr><td class="sidemenu-item sizeBody1"><a class="allToggle" id="roleToggle" href="#">' + mg.getMsg("00032") + '</a></td></tr>';
+    html += '<tr><td class="sidemenu-lastitem sizeBody1"><a class="allToggle" id="relationToggle" href="#">' + mg.getMsg("00033") + '</a></td></tr>';
     html += '</table>';
 
     // log out
     html += '<table class="menu-title"><tr>';
-    html += '<td class="sidemenu-itemEmpty">&nbsp;</td>';
+    html += '<td rowspan="4" class="sidemenu-itemEmpty">&nbsp;</td>';
     html += '<td class="sidemenu-item sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout">' + itemName.Logout + '</a></td>';
     html += '</tr></table></div>';
     html += '<div class="overlay" id="dvOverlay"></div>';
@@ -324,8 +341,8 @@ cm.createSideMenu = function() {
     html += '</span>';
     html += '</div>';
     html += '<div class="modal-footer">';
-    html += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-edit-profile-ok">Register</button>';
+    html += '<button type="button" class="btn btn-default" data-dismiss="modal">' + mg.getMsg("00045") + '</button>';
+    html += '<button type="button" class="btn btn-primary" id="b-edit-profile-ok">' + mg.getMsg("00044") + '</button>';
     html += '</div></div></div></div>';
     var modal = $(html);
     $(document.body).append(modal);
@@ -346,8 +363,8 @@ cm.createSideMenu = function() {
            '<span id="confirmMessage" style="color:red"></span>' +
            '</div>' +
            '<div class="modal-footer">' +
-           '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>' +
-           '<button type="button" class="btn btn-primary" id="b-change-password-ok" disabled>OK</button>' +
+           '<button type="button" class="btn btn-default" data-dismiss="modal">' + mg.getMsg("00045") + '</button>' +
+           '<button type="button" class="btn btn-primary" id="b-change-password-ok" disabled>' + mg.getMsg("00046") + '</button>' +
            '</div></div></div></div>';
 
     modal = $(html);
@@ -381,7 +398,7 @@ cm.createSideMenu = function() {
            mg.getMsg("I0002") +
            '</div>' +
            '<div class="modal-footer">' +
-           '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>' +
+           '<button type="button" class="btn btn-default" data-dismiss="modal">' + mg.getMsg("00045") + '</button>' +
            '<button type="button" class="btn btn-primary" id="b-logout-ok" >OK</button>' +
            '</div></div></div></div>';
     modal = $(html);
@@ -438,10 +455,10 @@ cm.openSlide = function() {
 // true: Settings false: Default
 cm.createBackMenu = function(moveUrl, flg) {
     if (flg) {
-        var html = '<a class="allToggle" style="float:left;" onClick="cm.moveBackahead(true);return false;"><img id="imBack" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a>';
+        var html = '<a href="#" class="allToggle prev-icon" style="float:left;" onClick="cm.moveBackahead(true);return false;"><img id="imSettingBack" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a>';
         $("#settingBackMenu").html(html);
     } else {
-        var html = '<a class="allToggle" style="float:left;" onClick="cm.moveBackahead();return false;"><img id="imBack" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a>';
+        var html = '<a href="#" class="allToggle" style="float:left;" onClick="cm.moveBackahead();return false;"><img id="imBack" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a>';
         $("#backMenu").html(html);
     }
     cm.user.prevUrl = moveUrl;
@@ -449,16 +466,19 @@ cm.createBackMenu = function(moveUrl, flg) {
 
 cm.setTitleMenu = function(title, flg) {
     if (flg) {
-        $("#settingTitleMenu").html('<p  class="ellipsisText">' + title + '</p>');
+        $("#settingTitleMenu").html('<p class="ellipsisText">' + title + '</p>');
         var titles = cm.user.settingNowTitle;
         titles[cm.user.settingNowPage] = title;
         cm.user.settingNowTitle = titles;
         if (cm.user.settingNowPage > 1) {
-            var html = '<p class="ellipsisText">' + cm.user.settingNowTitle[cm.user.settingNowPage - 1] + '</p>'
+            //var html = '<p class="ellipsisText">' + cm.user.settingNowTitle[cm.user.settingNowPage - 1] + '</p>';
+            var html = '<span style="white-space: nowrap;">' + cm.user.settingNowTitle[cm.user.settingNowPage - 1] + '</span>';
             $("#settingBackTitle").html(html);
-            $("#settingBackMenu").css("display", "");
+            $("#imSettingBack").css("display", "");
         } else {
-            $("#settingBackMenu").css("display", "none");
+            var html = '<span style="white-space: nowrap;">' + mg.getMsg("00026") + '</span>';
+            $("#settingBackTitle").html(html);
+            $("#imSettingBack").css("display", "");
         }
     } else {
         $("#titleMenu").html('<p  class="ellipsisText">' + title + '</p>');
@@ -497,7 +517,7 @@ cm.dispRoleList = function(json, id, multiFlag) {
   }
 
   if (!multiFlag) {
-      $("#" + id).append('<option value="">Please select a Role</option>');
+      $("#" + id).append('<option value="">' + mg.getMsg("I0021") + '</option>');
   }
   for (var i in results) {
     var objRole = json.d.results[i];
@@ -523,7 +543,7 @@ cm.dispAssignRole = function(type, flg) {
     var html = '<div class="panel-body">';
     html += '<div id="dvAddAccLinkRole' + settingId + '">' + mg.getMsg("I0014") + '</div>';
     html += '<div id="dvSelectAddAccLinkRole' + settingId + '" style="margin-bottom: 10px;">';
-    html += '<select name="" id="ddlLinkRoleList' + settingId + '" onChange="cm.changeRoleSelect(\'' + settingId + '\');"></select>';
+    html += '<select class="form-control" name="" id="ddlLinkRoleList' + settingId + '" onChange="cm.changeRoleSelect(\'' + settingId + '\');"></select>';
     html += '</div>';
     html += '<div class="modal-footer">';
     html += '<button type="button" class="btn btn-primary" id="b-linkrole-ok' + settingId + '" onClick="';
@@ -538,7 +558,7 @@ cm.dispAssignRole = function(type, flg) {
             html += 'sg.restAddExtCellLinkRole(true);';
             break;
     }
-    html += '">Assign</button>';
+    html += '">' + mg.getMsg("00049") + '</button>';
     html += '</div></div>';
     $("#" + panelId + "-panel3").append(html);
     cm.getRoleList().done(function(data) {
@@ -594,7 +614,7 @@ cm.dispRelationList = function(json, id, multiFlag) {
   }
 
   if (!multiFlag) {
-      $("#" + id).append('<option value="">Please select a Relation</option>');
+      $("#" + id).append('<option value="">' + mg.getMsg("I0022") + '</option>');
   }
 
   for (var i in results) {
@@ -759,10 +779,10 @@ cm.validateDisplayName = function(displayName, displayNameSpan,txtID) {
 		document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0005");
 		//this.showErrorIcon(txtID);
 		return false;
-	} else if (lenDisplayName != 0 && !(displayName.match(allowedLetters))) {
-		document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0006");
-		//this.showErrorIcon(txtID);
-		return false;
+	//} else if (lenDisplayName != 0 && !(displayName.match(allowedLetters))) {
+	//	document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0006");
+	//	//this.showErrorIcon(txtID);
+	//	return false;
 	} else if(lenDisplayName != 0 && (specialchar.toString().indexOf(displayName.substring(0,1)) >= 0)){
 		document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0006");
 		//this.showErrorIcon(txtID);
@@ -1000,6 +1020,16 @@ cm.execApp = function(schema,boxName) {
         childWindow.close();
         childWindow = null;
     });
+};
+cm.getNotCompMessageCnt = function(boxName) {
+    return $.ajax({
+                type: "GET",
+                url: cm.user.cellUrl + '__ctl/ReceivedMessage?$inlinecount=allpages&$filter=Type+ne+%27message%27+and+Status+eq+%27none%27',
+                headers: {
+                    'Authorization':'Bearer ' + cm.user.access_token,
+                    'Accept':'application/json'
+                }
+  });
 };
 
 // TEST

@@ -18,16 +18,18 @@
     <script src="../../appcell-resources/js/common.js"></script>
     <script src="../../appcell-resources/js/message_ja.js"></script>
     <script src="../../appcell-resources/js/socialgraph.js"></script>
+    <script src="../../appcell-resources/js/settings.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
     <!--<link href='https://demo.personium.io/HomeApplication/__/css/common.css' rel='stylesheet' type='text/css'>
     <link href='https://demo.personium.io/HomeApplication/__/css/socialgraph.css' rel='stylesheet' type='text/css'>-->
     <link href='../../appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
+    <link href='../../appcell-resources/css/settings.css' rel='stylesheet' type='text/css'>
     <link href='../../appcell-resources/css/socialgraph.css' rel='stylesheet' type='text/css'>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
   </head>
   <body>
-    <div class="container-fluid display-table" id="displayParentDiv">
-        <div class="row display-parent-div">
+    <div class="container-fluid display-table">
+        <div class="row display-parent-div" id="displayParentDiv">
             <div class="col-md-12 col-sm-12 display-table-cell v-align">
                 <!--<button type="button" class="slide-toggle">Slide Toggle</button> -->
                 <div class="row profile-menu">
@@ -91,15 +93,15 @@
                 <div class="modal-body">
                     <div id="dvAddExtCellLinkRelation">割り当てる外部セルを選択して下さい。</div>
                     <div id="dvSelectAddExtCellLinkRelation" style="margin-bottom: 10px;">
-                      <select name="" id="ddlExtCellLinkRelationList">
+                      <select class="form-control" name="" id="ddlExtCellLinkRelationList">
                         <option>Select a relation</option>
                       </select>
                     </div>
                     
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="b-add-extcelllinkrelation-ok">Assign</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
+                    <button type="button" class="btn btn-primary" id="b-add-extcelllinkrelation-ok">割り当て</button>
                 </div>
             </div>
         </div>
@@ -111,6 +113,7 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
                     <h4 class="modal-title" id="modal-confirmation-title"></h4>
                 </div>
                 <div class="modal-body">

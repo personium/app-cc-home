@@ -252,7 +252,7 @@ demo.initSettings = function() {
 demo.createApplicationList = function() {
     $("#setting-panel1").remove();
     cm.setBackahead(true);
-    var html = '<div class="panel-body"><table><tr><td>installed<div id="insAppList"></div></td></tr><tr><td><hr>application list<div id="appList"></div></td></tr></div>';
+    var html = '<div class="panel-body"><table class="table table-striped"><tr><td>' + mg.getMsg("00047") + '</td></tr><tr><td><div id="insAppList"></div></td></tr><tr><td>' + mg.getMsg("00048") + '</td></tr><tr><td><div id="appList"></div></td></tr></div>';
     $("#setting-panel1").append(html);
     // install application list
     cm.getBoxList().done(function(data) {

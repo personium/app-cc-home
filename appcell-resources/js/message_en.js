@@ -45,6 +45,12 @@ mg.msgStr["00040"] = "Install";
 mg.msgStr["00041"] = "Uninstall";
 mg.msgStr["00042"] = "Details";
 mg.msgStr["00043"] = "Edit Role";
+mg.msgStr["00044"] = "Register";
+mg.msgStr["00045"] = "Cancel";
+mg.msgStr["00046"] = "Update";
+mg.msgStr["00047"] = "installed";
+mg.msgStr["00048"] = "application list";
+mg.msgStr["00049"] = "Assign";
 
 // INFO
 mg.msgStr["I0001"] = "You have successfully changed your password!<br>Please login again.";
@@ -67,6 +73,10 @@ mg.msgStr["I0017"] = "Select a Box that this role is to use";
 mg.msgStr["I0018"] = "Assign (s)";
 mg.msgStr["I0019"] = "You do not have view permission.";
 mg.msgStr["I0020"] = "Perform the installation. Is it OK?";
+mg.msgStr["I0021"] = "Please select a Role";
+mg.msgStr["I0022"] = "Please select a Relation";
+mg.msgStr["I0023"] = "Please select a Box";
+mg.msgStr["I0024"] = "Please select a External Cell";
 
 // WARNING
 mg.msgStr["W0001"] = "Expiration date of the session has expired.<br>Please login again.";

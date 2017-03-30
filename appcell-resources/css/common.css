@@ -27,7 +27,7 @@ body{
 }
 
 .profile-menu {
-    paddint: 0px;
+    padding: 0px;
     height: 124px;
     color: #ffffff;
     padding-top: 16px;
@@ -76,7 +76,7 @@ body{
 
 .menu-title {
     border-top: 1px solid #c7c7c7;
-    border-bottom: 1px solid #c7c7c7;
+    /*border-bottom: 1px solid #c7c7c7;*/
     width: 100%;
 }
 
@@ -134,7 +134,7 @@ a.ins-app-icon {
   display: block;
 }
 a.ins-app-icon:hover {
-  background-color: rgba(128,200,128,0.9);
+  /*background-color: rgba(128,200,128,0.9);*/
   -webkit-box-shadow: 1px 8px 4px 4px rgba(200, 200, 200, 0.54);
   -moz-box-shadow:    1px 8px 4px 4px rgba(200, 200, 200, 0.54);
   box-shadow:         1px 8px 4px 4px rgba(200, 200, 200, 0.54);
@@ -451,10 +451,13 @@ textarea {
 }
 
 .title {
-    width:60%;
-    font-size: 27px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    font-size: 24px;
+}
+
+.back-title {
+    height:38px;
+    font-size: 12px;
+    vertical-align: middle;
 }
 
 .menu-icon {
@@ -603,7 +606,12 @@ a.toggle{
         height:24px;
     }
     .title {
-        font-size: 18px;
+        font-size: 14px;
+    }
+    .back-title {
+        height:24px;
+        font-size: 7px;
+        vertical-align: middle;
     }
     .menu-icon {
         width:24px;
@@ -637,7 +645,7 @@ a.toggle{
         color: #333333;
     }
     .profile-menu {
-        paddint: 0px;
+        padding: 0px;
         height: 62px;
         color: #ffffff;
         padding-top: 8px;
