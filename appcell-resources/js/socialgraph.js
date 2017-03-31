@@ -103,7 +103,7 @@ sg.dispExtCellList = function(json) {
       objSel.removeChild(objSel.firstChild);
     }
   }
-  $("#ddlExtCellLinkRelationList").append('<option value="">Please select a External Cell</option>');
+  $("#ddlExtCellLinkRelationList").append('<option value="">' + mg.getMsg("I0024") + '</option>');
 
   var results = json.d.results;
   results.sort(function(val1, val2) {
@@ -466,13 +466,13 @@ sg.dispRelationList = function(json) {
     // External Cell Relation List
     html = '<div class="list-group-item relation-menu">';
     html += '<table style="width: 100%;"><tr>';
-    html += '<td><a class="accountToggle" id="relationLinkToRoleToggle' + i + '" onClick="sg.slideToggle(\'extCellRelMenu' + i + '\')">';
-    html += '<table><tr><td>' + objRelation.Name + '(' + boxName + ')</td></tr></table>';
+    html += '<td style="width: 100%;"><a class="accountToggle" id="relationLinkToRoleToggle' + i + '" onClick="sg.slideToggle(\'extCellRelMenu' + i + '\')">';
+    html += '<table class="table-fixed"><tr><td><p class="ellipsisText">' + objRelation.Name + '(' + boxName + ')</p></td></tr></table>';
     //html += '<table><tr><td>' + boxName + '</td></tr></table>';
     html += '</a></td>';
     html += '</tr></table></div>';
-    html += '<nav id="extCellRelMenu' + i + '"><ul class="extCellRelMenu"><div name="dvExtCellRelList" id="' + extRelID + '"></div><div>';
-    html += '<a class="list-group-item" href="#" onClick="sg.setLinkParamName(\'' + objRelation.Name + '\',\'' + boxName + '\')" data-toggle="modal" data-target="#modal-add-extcelllinkrelation">＋ ' + mg.getMsg("00022") + '</a></div></ul></nav>';
+    html += '<nav id="extCellRelMenu' + i + '"><ul class="extCellRelMenu"><div name="dvExtCellRelList" id="' + extRelID + '"></div><div class="list-group-item">';
+    html += '<a class="allToggle" href="#" onClick="sg.setLinkParamName(\'' + objRelation.Name + '\',\'' + boxName + '\')" data-toggle="modal" data-target="#modal-add-extcelllinkrelation">＋ ' + mg.getMsg("00022") + '</a></div></ul></nav>';
     $("#dvExtCellList").append(html);
     sg.getRelLinkExtCell(objRelation.Name, relBoxName);
   }
@@ -494,17 +494,17 @@ sg.createAddExtCell = function() {
     $("#toggle-panel1").empty();
     cm.setBackahead();
     cm.getRoleList().done(function(data) {
-        var html = '<div class="panel-body">';
+        var html = '<div class="modal-body">';
         html += '<div id="dvSelectedCell">URL</div>';
         html += '<div id="dvTextSelectedCell" style="margin-bottom: 10px;"><input type="text" id="addExtCellUrl" onblur="sg.blurAddExtCellUrl();"><span class="popupAlertArea" style="color:red"><aside id="popupAddExtCellUrlErrorMsg"> </aside></span></div>';
         html += '<div id="dvCheckAddExtCellLinkRoleAndRelation" style="margin-bottom: 10px;"><label><input type="checkbox" id="addCheckExtCellLinkRoleAndRelation" onChange="sg.changeCheckExtCellLinkRoleAndRelation(this);">' + mg.getMsg("I0018") + '</label></div>';
         html += '<div id="dvSelectAddExtCellLink" style="margin-bottom: 10px;"><table>';
         html += '<tr><td><label><input type="radio" name="addRadioExtCellLink" id="addRadioExtCellLinkRole" onChange="sg.changeRadioExtCellLink();" value="role" disabled>' + mg.getMsg("00032") + '</label></td><td><label><input type="radio" name="addRadioExtCellLink" id="addRadioExtCellLinkRelation" onChange="sg.changeRadioExtCellLink();" value="relation" disabled>' + mg.getMsg("00033") + '</label></td></tr>';
-        html += '<tr><td colspan="2"><select name="" id="ddlAddExtCellLinkRoleList" multiple disabled><option>Select a role</option></select><select name="" id="ddlAddExtCellLinkRelationList" multiple disabled style="display:none;"><option>Select a relation</option></select></td></tr>';
+        html += '<tr><td colspan="2"><select class="form-control" name="" id="ddlAddExtCellLinkRoleList" multiple disabled><option>Select a role</option></select><select class="form-control" name="" id="ddlAddExtCellLinkRelationList" multiple disabled style="display:none;"><option>Select a relation</option></select></td></tr>';
         html += '<tr><td colspan="2"><span class="popupAlertArea" style="color:red"><aside id="popupAddExtCellLinkErrorMsg"> </aside></span></td></tr>';
         html += '</table></div>';
         html += '<div class="modal-footer">';
-        html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead();">Cancel</button>';
+        html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead();">' + mg.getMsg("00045") + '</button>';
         html += '<button type="button" class="btn btn-primary" id="b-add-extcell-ok" onClick="sg.addExtCell();">Add</button>';
         html += '</div></div>';
         $("#toggle-panel1").append(html);
@@ -923,6 +923,7 @@ $(document).ready(function() {
     cm.createTitleHeader();
     cm.createBackMenu("main.html");
     cm.setTitleMenu(mg.getMsg("00009"));
+    st.initSettings();
     $("#dashboard").append('<div class="panel list-group toggle-panel" id="toggle-panel1"></div>');
 
     // Initialization

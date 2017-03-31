@@ -119,7 +119,7 @@ ha.dispInsAppList = function() {
 ha.dispInsAppListSchema = function(schema, boxName) {
     cm.getProfile(schema).done(function(profData) {
         var dispName = profData.DisplayName;
-        var imageSrc = cm.notImage;
+        var imageSrc = cm.notAppImage;
         if (profData.Image) {
             imageSrc = profData.Image;
         }
@@ -127,7 +127,7 @@ ha.dispInsAppListSchema = function(schema, boxName) {
             var status = data.status;
             var html = '';
             if (status.indexOf('ready') >= 0) {
-                var html = '<div class="ins-app" align="center"><a class="ins-app-icon" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\');ha.dispEndDemo();" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
+                var html = '<div class="ins-app" align="center"><a href="javascript:void(0)" class="ins-app-icon" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\');ha.dispEndDemo();" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
                 $("#dashboard_ins").append(html);
             }
         });
@@ -272,8 +272,8 @@ ha.dispEndDemo = function() {
                     <h4 class="modal-title">Application</h4>
                 </div>
                 <div class="modal-body fontBlack">
-                    Installed applications are installed in "installed" <br>
-                    Applications not installed are listed in "application list". <br>
+                    Installed applications are installed in 「installed」 <br>
+                    Applications not installed are listed in 「application list」. <br>
                     <br>
                     Now that I have not installed anything, let's install MyBoard.
                 </div>
@@ -292,7 +292,7 @@ ha.dispEndDemo = function() {
                 </div>
                 <div class="modal-body fontBlack">
                     MyBoard has been installed in the cell.<br>
-                    Let's return to the home screen with × (close) button on the upper right and start up the application.
+                    Let's go back to the home screen with the back button on the upper left and start up the application.
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="b-installed-start-ok">OK</button>
