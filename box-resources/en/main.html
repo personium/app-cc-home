@@ -130,6 +130,8 @@ ha.dispInsAppListSchema = function(schema, boxName) {
                     var html = '<div class="ins-app" align="center"><a class="ins-app-icon" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"><span class="badge badgePos">' + msgCnt + '</span></a><div class="ins-app-name">' + dispName + '</div></div>';
                     $("#dashboard_ins").append(html);
                 });
+                var html = '<div class="ins-app" align="center"><a href="javascript:void(0)" class="ins-app-icon" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
+                $("#dashboard_ins").append(html);
             }
         });
     });
