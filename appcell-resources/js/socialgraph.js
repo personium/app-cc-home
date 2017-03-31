@@ -573,10 +573,10 @@ sg.validateName = function (displayName, displayNameSpan,txtID) {
                 document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0005");
                 //this.showErrorIcon(txtID);
                 return false;
-        } else if (lenDisplayName != 0 && !(displayName.match(allowedLetters))) {
-                document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0006");
-                //this.showErrorIcon(txtID);
-                return false;
+        //} else if (lenDisplayName != 0 && !(displayName.match(allowedLetters))) {
+        //        document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0006");
+        //        //this.showErrorIcon(txtID);
+        //        return false;
         } else if(lenDisplayName != 0 && (specialchar.toString().indexOf(displayName.substring(0,1)) >= 0)){
                 document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0006");
                 //this.showErrorIcon(txtID);

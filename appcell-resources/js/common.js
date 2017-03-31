@@ -151,6 +151,9 @@ cm.createSettingArea = function() {
     html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-account-ok" style="display:none">' + mg.getMsg("00004") + '</button>';
     html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-relation-ok" style="display:none">' + mg.getMsg("00004") + '</button>';
     html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-rellinkrole-ok" style="display:none">' + mg.getMsg("00004") + '</button>';
+    html += '<button type="button" class="btn btn-primary" id="b-del-extcell-ok" style="display:none">' + mg.getMsg("00004") + '</button>';
+    html += '<button type="button" class="btn btn-primary" id="b-del-extcelllinkrole-ok" style="display:none">' + mg.getMsg("00004") + '</button>';
+    html += '<button type="button" class="btn btn-primary" id="b-del-extcelllinkrelation-ok" style="display:none">' + mg.getMsg("00004") + '</button>';
     html += '<button type="button" class="btn btn-primary" id="b-ins-bar-ok" style="display:none">OK</button>';
     html += '</div>';
     html += '</div>';
@@ -555,7 +558,7 @@ cm.dispAssignRole = function(type, flg) {
             html += 'sg.restAddExtCellLinkRole(true);';
             break;
     }
-    html += '">Assign</button>';
+    html += '">' + mg.getMsg("00049") + '</button>';
     html += '</div></div>';
     $("#" + panelId + "-panel3").append(html);
     cm.getRoleList().done(function(data) {
@@ -776,10 +779,10 @@ cm.validateDisplayName = function(displayName, displayNameSpan,txtID) {
 		document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0005");
 		//this.showErrorIcon(txtID);
 		return false;
-	} else if (lenDisplayName != 0 && !(displayName.match(allowedLetters))) {
-		document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0006");
-		//this.showErrorIcon(txtID);
-		return false;
+	//} else if (lenDisplayName != 0 && !(displayName.match(allowedLetters))) {
+	//	document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0006");
+	//	//this.showErrorIcon(txtID);
+	//	return false;
 	} else if(lenDisplayName != 0 && (specialchar.toString().indexOf(displayName.substring(0,1)) >= 0)){
 		document.getElementById(displayNameSpan).innerHTML = mg.getMsg("E0006");
 		//this.showErrorIcon(txtID);
@@ -1017,6 +1020,16 @@ cm.execApp = function(schema,boxName) {
         childWindow.close();
         childWindow = null;
     });
+};
+cm.getNotCompMessageCnt = function(boxName) {
+    return $.ajax({
+                type: "GET",
+                url: cm.user.cellUrl + '__ctl/ReceivedMessage?$inlinecount=allpages&$filter=Type+ne+%27message%27+and+Status+eq+%27none%27',
+                headers: {
+                    'Authorization':'Bearer ' + cm.user.access_token,
+                    'Accept':'application/json'
+                }
+  });
 };
 
 // TEST
