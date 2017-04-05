@@ -51,7 +51,7 @@ mg.msgStr["00046"] = "変更";
 mg.msgStr["00047"] = "インストール済み";
 mg.msgStr["00048"] = "アプリケーションリスト";
 mg.msgStr["00049"] = "割り当て";
-mg.msgStr["00050"] = "App Market";
+mg.msgStr["00050"] = "App マーケット";
 
 // INFO
 mg.msgStr["I0001"] = "パスワードを変更しました。<br>ログインし直して下さい。";
