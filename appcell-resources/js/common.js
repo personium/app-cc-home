@@ -44,7 +44,7 @@ cm.createProfileHeaderMenu = function() {
     html += '</a></td></tr>';
     html += '<tr><td class="sizeCaption">';
     //html += '<p class="ellipsisText">' + cm.user.cellUrl + '</p>';
-    html += '<p>Account: ' + cm.user.userName + '</p>';
+    html += '<p>' + mg.getMsg("00028") + ': ' + cm.user.userName + '</p>';
     html += '</td></tr>';
     $(".profile-menu").html(html);
 
