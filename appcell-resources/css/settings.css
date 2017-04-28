@@ -1,16 +1,3 @@
-header {
-    background: rgba(255,255,255,0.5);
-    box-shadow: 0 1px 12px rgba(0, 0, 0, 0.04);
-    display: inline-block !important;
-    line-height: 23px;
-    padding: 15px;
-    transition: all 0.5s ease 0s;
-    width: 100%;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-}
 
 .setting-menu {
     position: absolute;
@@ -39,7 +26,7 @@ a.appToggle{
     text-align:center;
 }
 
-.appToggle:after{
+.appToggle::after{
     text-align:center;
     width: 10px;
     height: 10px;

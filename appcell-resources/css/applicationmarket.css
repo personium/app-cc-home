@@ -8,3 +8,10 @@
 .ellipsisText{
     overflow: visible;
 }
+
+#installed-app {
+  background-color: #ededff;
+}
+#all-app {
+
+}

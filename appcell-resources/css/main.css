@@ -1,71 +1,15 @@
+/* メインページのみ特殊対応 */
 body{
-    background: #ffffff;
+    background: #EDEDFF;
 }
 
-div.p-app {
-  float: left;
-  width: 208px;
-  font-family: Raleway;
-  margin-bottom: 30px;
-  color: #efd;
-}
-
-a.p-app-icon {
-  width: 48px;
-  height: 48px;
-  display: block;
-  background-color: rgba(128,200,128,0.9);
-}
-a.p-app-icon:hover {
-  background-color: rgba(128,200,128,0.9);
-  -webkit-box-shadow: 1px 8px 4px 4px rgba(200, 200, 200, 0.54);
-  -moz-box-shadow:    1px 8px 4px 4px rgba(200, 200, 200, 0.54);
-  box-shadow:         1px 8px 4px 4px rgba(200, 200, 200, 0.54);
-}
-
-img.p-app-icon {
-  width: 48px;
-  height: 48px;
-  -webkit-filter: invert(100%);
-  filter: invert(100%);
-}
-div.p-app-name {
-  text-align: center;
-  margin: 10px 0px 0px 0px;
-  /*text-shadow:    1px 4px 2px rgba(50, 50, 50, 0.54);*/
-  color: #333333;
-  font-size: 21px;
-}
-
-a:focus,a:hover,a{
+a,
+a:focus,
+a:hover {
     outline:none;
     text-decoration: none;
 }
-li,ul{
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
 
-.header-rightside .nav > li > a:focus,
-.header-rightside .nav > li > a:hover {
-    background: none;
-    text-decoration: none;
-}
-
-header {
-    background: rgba(255,255,255,0.5);
-    box-shadow: 0 1px 12px rgba(0, 0, 0, 0.04);
-    display: inline-block !important;
-    line-height: 23px;
-    padding: 15px;
-    transition: all 0.5s ease 0s;
-    width: 100%;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-}
 
 .navbar-default {
     background-color: #ffffff;
@@ -77,16 +21,6 @@ header {
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
-}
-
-.user-header {
-    margin-bottom: 30px;
-}
-
-.user-dashboard {
-    padding: 0px 40px;
-    /*background: -webkit-linear-gradient(45deg,  #fafafa 5%,#fafafa 99%); /* Chrome10+,Safari5.1+ */
-    background: #ffffff;
 }
 
 .user-dashboard h1 {
@@ -108,61 +42,106 @@ header {
     display: none;
 }
 
-.badgePos {
+header {
+  padding: 32px 0 28px;
+}
+
+/* カラー定義 */
+#main-menu {
+  background-color: #ededff;
+}
+#main-mySercvice,
+#main-info {
+  background-color: #ffffff;
+}
+#main-info {
+  border-top: 8px solid #ededed;
+}
+#main-info::before {
+  content: "";
   display: block;
-  position: relative;
-  top: -60px;
-  right: -25px;
-  width:27px;
-  height: 21px;
+  width: 100%;
+  height: 1px;
+  background-color: #d4d4d4;
+}
+
+/* お知らせ */
+#main-info h2 {
+  margin: 20px 16px 4px;
+}
+.info-list {
+  /* border-top: 1px solid #d4d4d4; */
+}
+.info-list > li {
+  border-bottom: 1px solid #d4d4d4;
+}
+.info-list > li:last-child {
+  border-bottom: 0 none;
+}
+.info-list > li > a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 16px 20px;
+  color: #333333;
+}
+.info-list > li > a > * {
+  flex: 0 0 auto;
+}
+
+.info-icon img {
+  width: 40px;
+  height: 40px;
+}
+.info-list > li > a > .info-subject {
+  flex: 1 1 auto;
+  margin: 0 16px;
+  overflow: hidden;
+}
+.info-subject .sizeCaption {
+  color: #6d6d6d;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+#info-readmore {
+  display: block;
+  margin: 12px 0;
+  padding: 8px;
+  text-align: center;
+  color: #333333;
 }
 
 /*Main CSS(Device)*/
 
 @media (max-width: 767px) {
-    div.p-app {
-      float: left;
-      width: 104px;
-      font-family: Raleway;
-      margin-bottom: 30px;
-      color: #efd;
-    }
-    a.p-app-icon {
-      width: 38px;
-      height: 38px;
-      display: block;
-      background-color: rgba(128,200,128,0.9);
-    }
-    img.p-app-icon {
-      width: 38px;
-      height: 38px;
-      -webkit-filter: invert(100%);
-      filter: invert(100%);
-    }
-    div.p-app-name {
-      text-align: center;
-      margin: 10px 0px 0px 0px;
-      /*text-shadow:    1px 4px 2px rgba(50, 50, 50, 0.54);*/
-      color: #333333;
-      font-size: 14px;
-    }
-    .user-dashboard {
-        padding: 0px 20px;
-        /*background: -webkit-linear-gradient(45deg,  #fafafa 5%,#fafafa 99%); /* Chrome10+,Safari5.1+ */
-        background: #ffffff;
-    }
-    .service-header {
-        font-size: 14px;
-        margin-top: 16px;
-        margin-bottom: 16px;
-        color: #333333;
-    }
-    .badgePos {
-      display: block;
-      position: relative;
-      top: -50px;
-      right: -25px;
-      width:27px;
-      height: 21px;
-    }
+  header {
+    padding: 32px 0 28px;
+  }
+
+  /* 同じクラス名で土台と画像を装飾している */
+  div.p-app-icon,
+  div.ins-app-icon {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+    background-color: lightblue;
+    border-radius: 8px;
+    position: relative;
+  }
+  img.p-app-icon,
+  img.ins-app-icon {
+    width: 52px;
+    height: 52px;
+  }
+  .p-app-name,
+  .ins-app-name {
+    font-size: 14px;
+  }
+
+  .info-icon img {
+    width: 40px;
+    height: 40px;
+  }
 }
