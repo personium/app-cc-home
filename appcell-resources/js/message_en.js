@@ -51,6 +51,7 @@ mg.msgStr["00046"] = "Update";
 mg.msgStr["00047"] = "installed";
 mg.msgStr["00048"] = "application list";
 mg.msgStr["00049"] = "Assign";
+mg.msgStr["00050"] = "App Market";
 
 // INFO
 mg.msgStr["I0001"] = "You have successfully changed your password!<br>Please login again.";
