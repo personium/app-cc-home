@@ -1,9 +1,8 @@
 var am = {};
 
 $(document).ready(function() {
-    cm.createProfileHeaderMenu();
+    am.createTitleHeader();
     cm.createSideMenu();
-    cm.createTitleHeader();
     cm.createBackMenu("main.html");
     cm.setTitleMenu(mg.getMsg("00050"));
     st.initSettings();
@@ -19,7 +18,7 @@ $(document).ready(function() {
 });
 
 am.createApplicationList = function() {
-    var html = '<div class="panel-body"><table class="table table-striped"><tr><td>' + mg.getMsg("00047") + '</td></tr><tr><td><div id="insAppList1"></div></td></tr><tr><td>' + mg.getMsg("00048") + '</td></tr><tr><td><div id="appList1"></div></td></tr></div>';
+    var html = '<div class="panel-body" id="app-panel"><section class="dashboard-block" id="installed-app"><h2>' + mg.getMsg("00047") + '</h2><div id="insAppList1"></div></section><section class="dashboard-block" id="all-app"><h2>' + mg.getMsg("00048") + '</h2><div id="appList1"></div></section></div>';
     $("#dashboard").append(html);
     // install application list
     cm.getBoxList().done(function(data) {
@@ -69,21 +68,22 @@ am.dispInsAppListSchemaSetting = function(schema, boxName, no) {
             var html = '';
             if (status.indexOf('ready') >= 0) {
                 // ready
-                html = '<div class="ins-app" align="center"><a href="#" id="insAppNo_' + no + '" class="ins-app-icon" onClick="uninstallApp(\'' + schema + '\', \'' + boxName + '\')"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div>';
-
-                html += '</div>';
+                html = '<a href="#" id="insAppNo_' + no + '" class="ins-app-icon" onClick="uninstallApp(\'' + schema + '\', \'' + boxName + '\')"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div>';
             } else if (status.indexOf('progress') >= 0) {
                 // progress
-                html = '<div class="ins-app" align="center"><a href="#" id="insAppNo_' + no + '" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div><div id="nowInstallParent_' + no + '" class="progress progress-striped active"><div name="nowInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';"></div></div></div>';
+                html = '<a href="#" id="insAppNo_' + no + '" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div><div id="nowInstallParent_' + no + '" class="progress progress-striped active"><div name="nowInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';"></div></div>';
                 if (am.nowInstalledID === null) {
                     am.nowInstalledID = setInterval(am.checkBoxInstall, 1000);
                 }
             } else {
                 // failed
-                html = '<div class="ins-app" align="center"><a href="#" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '(<font color="red"> ! </font>)</div></div>';
+                html = '<a href="#" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '(<font color="red"> ! </font>)</div>';
             }
 
-            $("#insAppList1").append(html);
+            $("#insAppList1").append('<a class="ins-app" id="ins-app_' + no + '"></a>');
+            var insAppId = 'ins-app_' + no;
+            $('#' + insAppId).append(html);
+
         });
     });
 };
@@ -96,11 +96,11 @@ am.dispApplicationList = function(json) {
     for (var i in results) {
       var schema = results[i].SchemaUrl;
       if (am.insAppList.indexOf(schema) < 0) {
-          am.dispApplicationListSchema(results[i]);
+          am.dispApplicationListSchema(results[i],i);
       }
     }
 };
-am.dispApplicationListSchema = function(schemaJson) {
+am.dispApplicationListSchema = function(schemaJson, no) {
     var schema = schemaJson.SchemaUrl;
     cm.getProfile(schema).done(function(profData) {
         var dispName = profData.DisplayName;
@@ -109,8 +109,10 @@ am.dispApplicationListSchema = function(schemaJson) {
         if (profData.Image) {
             imageSrc = profData.Image;
         }
-        var html = '<div class="ins-app" align="center"><a href="#" class="ins-app-icon" onClick="am.dispViewApp(\'' + schema + '\',\'' + dispName + '\',\'' + imageSrc + '\',\'' + description + '\',\'' + schemaJson.BarUrl + '\',\'' + schemaJson.BoxName + '\',true)"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
-        $("#appList1").append(html);
+        $("#appList1").append('<a class="p-app" id="p-app_' + no + '"></a>');
+        var pAppId = 'p-app_' + no;
+        var html = '<a href="#" class="ins-app-icon" onClick="am.dispViewApp(\'' + schema + '\',\'' + dispName + '\',\'' + imageSrc + '\',\'' + description + '\',\'' + schemaJson.BarUrl + '\',\'' + schemaJson.BoxName + '\',true)"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div>';
+        $('#' + pAppId).append(html);
    });
 };
 am.dispViewApp = function(schema, dispName, imageSrc, description, barUrl, barBoxName, insFlag) {
@@ -129,3 +131,13 @@ am.dispViewApp = function(schema, dispName, imageSrc, description, barUrl, barBo
     cm.setTitleMenu(mg.getMsg("00042"));
 
 };
+
+am.createTitleHeader = function() {
+    var html = '';
+    html += '<div class="col-xs-1" id="backMenu"></div>';
+    html += '<div class="col-xs-2"><table class="table-fixed back-title"><tr style="vertical-align: middle;"><td class="ellipsisText" id="backTitle" align="left"></td></tr></table></div>';
+    html += '<div class="col-xs-6 text-center title" id="titleMenu"></div>';
+    html += '<div class="col-xs-3 text-right"><a href="#" onClick="cm.openSlide();"><img src="https://demo.personium.io/HomeApplication/__/icons/ico_menu.png"></a></div>';
+
+    $(".header-menu").html(html);
+}
