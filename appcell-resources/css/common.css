@@ -199,7 +199,7 @@ div.ins-app-icon .badge {
   align-items: center;
   padding: 16px 20px;
   padding-right: 32px;
-  background-image: url("../icons/parts_list.png");
+  background-image: url("https://demo.personium.io/HomeApplication/__/icons/parts_list.png");
   background-position: center right;
   background-size: 24px;
   background-repeat: no-repeat;
@@ -299,6 +299,7 @@ div.ins-app-icon .badge {
 }
 
 .profile-menu {
+/*
   padding: 0px;
   height: 124px;
   color: #ffffff;
@@ -307,6 +308,7 @@ div.ins-app-icon .badge {
   padding-left: 32px;
   padding-right: 32px;
   background: #1a247f;
+*/
 }
 
 .overlay {
@@ -617,7 +619,7 @@ div.ins-app-icon .badge {
     overflow-x: hidden;
     margin: 0px;
     /*min-height:1000px; */
-    background: #ffffff;
+    /*background: #ffffff; */
   }
 
   .navbar {

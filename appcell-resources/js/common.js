@@ -30,22 +30,16 @@ cm.createProfileHeaderMenu = function() {
     }
 
     // create a profile menu in to "profile-menu" class
-    var html = '<div class="header-rightside">';
-    html += '<table class="list-inline table-fixed">';
-    html += '<tr><td rowspan="2" class="profile-header">';
+    var html = '<div>';
     html += '<img class="icon-profile" id="imProfilePicture" src="' + cm.imgBinaryFile + '" alt="user">';
-    html += '</td><td width="70%" class="sizeBody1">';
-    html += '<span id="tProfileDisplayName">' + cm.user.profile.DisplayName + '</span>';
-    //html += '</td><td width="30%">&nbsp;</td>';
-    html += '</td><td rowspan="2" style="text-align:right;"><a href="#" onClick="cm.openSlide();">';
+    html += '</div>';
+    html += '<div class="header-body">';
+    html += '<div id="tProfileDisplayName" class="sizeBody">' + cm.user.profile.DisplayName + '</div>';
+    html += '<div class="sizeCaption">' + mg.getMsg("00028") + ': ' + cm.user.userName +  '</div>';
+    html += '</div>';
+    html += '<a href="#" onClick="cm.openSlide();">';
     html += '<img src="https://demo.personium.io/HomeApplication/__/icons/ico_menu.png">';
-    //html += '<p class="headerAccountNameText">' + cm.user.userName + '</p>';
-    //html += '<p class="headerAccountNameText">aiueokakikukekosasisuseso</p>▼';
-    html += '</a></td></tr>';
-    html += '<tr><td class="sizeCaption">';
-    //html += '<p class="ellipsisText">' + cm.user.cellUrl + '</p>';
-    html += '<p>' + mg.getMsg("00028") + ': ' + cm.user.userName + '</p>';
-    html += '</td></tr>';
+    html += '</a>';
     $(".profile-menu").html(html);
 
     // Processing when resized
