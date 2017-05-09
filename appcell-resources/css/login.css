@@ -80,6 +80,11 @@ h1{
     border: 0px none;
 }
 
+.fontBlack {
+    color: #000000 !important;
+    font-weight: inherit !important;
+}
+
 #tProfileDisplayName {
     font-size: 24px;
     margin: 16px 0 24px;
