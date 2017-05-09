@@ -407,7 +407,7 @@ st.editAccount = function() {
 st.createApplicationList = function() {
     $("#setting-panel1").remove();
     cm.setBackahead(true);
-    var html = '<div class="panel-body"><table class="table table-striped"><tr><td>' + mg.getMsg("00047") + '</td></tr><tr><td><div id="insAppList"></div></td></tr><tr><td>' + mg.getMsg("00048") + '</td></tr><tr><td><div id="appList"></div></td></tr></div>';
+    var html = '<div class="panel-body" id="app-panel"><section class="dashboard-block" id="installed-app"><h2>' + mg.getMsg("00047") + '</h2><div id="insAppList"></div></section><section class="dashboard-block" id="all-app"><h2>' + mg.getMsg("00048") + '</h2><div id="appList"></div></section></div>';
     $("#setting-panel1").append(html);
     // install application list
     cm.getBoxList().done(function(data) {
@@ -469,21 +469,20 @@ st.dispInsAppListSchemaSetting = function(schema, boxName, no) {
             var html = '';
             if (status.indexOf('ready') >= 0) {
                 // ready
-                html = '<div class="ins-app" align="center"><a href="#" id="insAppNo_' + no + '" class="ins-app-icon" onClick="uninstallApp(\'' + schema + '\', \'' + boxName + '\')"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div>';
-
-                html += '</div>';
+                html = '<a href="#" id="insAppNo_' + no + '" class="ins-app-icon" onClick="uninstallApp(\'' + schema + '\', \'' + boxName + '\')"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div>';
             } else if (status.indexOf('progress') >= 0) {
                 // progress
-                html = '<div class="ins-app" align="center"><a href="#" id="insAppNo_' + no + '" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div><div id="nowInstallParent_' + no + '" class="progress progress-striped active"><div name="nowInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';"></div></div></div>';
+                html = '<a href="#" id="insAppNo_' + no + '" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div><div id="nowInstallParent_' + no + '" class="progress progress-striped active"><div name="nowInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';"></div></div>';
                 if (st.nowInstalledID === null) {
                     st.nowInstalledID = setInterval(st.checkBoxInstall, 1000);
                 }
             } else {
                 // failed
-                html = '<div class="ins-app" align="center"><a href="#" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '(<font color="red"> ! </font>)</div></div>';
+                html = '<a href="#" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '(<font color="red"> ! </font>)</div>';
             }
-
-            $("#insAppList").append(html);
+            $("#insAppList").append('<a class="ins-app" id="ins-app-' + no + '"></a>');
+            var insAppId = 'ins-app-' + no;
+            $('#' + insAppId).append(html);
         });
     });
 };
@@ -496,11 +495,11 @@ st.dispApplicationList = function(json) {
     for (var i in results) {
       var schema = results[i].SchemaUrl;
       if (st.insAppList.indexOf(schema) < 0) {
-          st.dispApplicationListSchema(results[i]);
+          st.dispApplicationListSchema(results[i],i);
       }
     }
 };
-st.dispApplicationListSchema = function(schemaJson) {
+st.dispApplicationListSchema = function(schemaJson, no) {
     var schema = schemaJson.SchemaUrl;
     cm.getProfile(schema).done(function(profData) {
         var dispName = profData.DisplayName;
@@ -509,19 +508,21 @@ st.dispApplicationListSchema = function(schemaJson) {
         if (profData.Image) {
             imageSrc = profData.Image;
         }
-        var html = '<div class="ins-app" align="center"><a href="#" class="ins-app-icon" onClick="st.dispViewApp(\'' + schema + '\',\'' + dispName + '\',\'' + imageSrc + '\',\'' + description + '\',\'' + schemaJson.BarUrl + '\',\'' + schemaJson.BoxName + '\',true)"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
-        $("#appList").append(html);
+        $("#appList").append('<a class="p-app" id="p-app-' + no + '"></a>');
+        var pAppId = 'p-app-' + no;
+        var html = '<a href="#" class="ins-app-icon" onClick="st.dispViewApp(\'' + schema + '\',\'' + dispName + '\',\'' + imageSrc + '\',\'' + description + '\',\'' + schemaJson.BarUrl + '\',\'' + schemaJson.BoxName + '\',true)"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div>';
+        $('#' + pAppId).append(html);
    });
 };
 st.dispViewApp = function(schema, dispName, imageSrc, description, barUrl, barBoxName, insFlag) {
     $("#setting-panel2").empty();
     cm.setBackahead(true);
     var html = '<div class="panel-body">';
-    html += '<div class="app-profile" id="dvAppProfileImage"><img class="image-circle" style="margin: auto;" id="imgAppProfileImage" src="' + imageSrc + '" alt="image" /><span style="margin-left: 10px;" id="txtAppName">' + dispName + '</span><br><br><br><h5>概要</h5><span id="txtDescription">' + description + '</span></div>';
+    html += '<div class="app-info"><div class="app-icon"><img src="' + imageSrc + '"></div><div class="app-data"><div>' + dispName + '</div><div>提供元：</div></div></div><section class="detail-section"><h2>概要</h2><div class="overview">' + description + '</div>';
     if (insFlag) {
-        html += '<br><br><div class="toggleButton" style="text-align:center;"><a class="appToggle list-group-item" href="#" onClick="st.confBarInstall(\'' + schema + '\',\'' + barUrl + '\',\'' + barBoxName + '\', \'' + dispName + '\');return(false);">' + mg.getMsg("00040") + '</a></div>';
+        html += '<div class="app-install"><button class="round-btn"href="#" onClick="st.confBarInstall(\'' + schema + '\',\'' + barUrl + '\',\'' + barBoxName + '\', \'' + dispName + '\');return(false);">' + mg.getMsg("00040") + '</button></div></section>';
     } else {
-        html += '<br><br><div class="toggleButton" style="text-align:center;"><a class="appToggle list-group-item" href="#" onClick="return(false);">' + mg.getMsg("00041") + '</a></div>';
+        html += '<div class="app-install"><button class="round-btn"href="#" onClick="return(false);">' + mg.getMsg("00041") + '</button></div></section>';
     }
 
     $("#setting-panel2").append(html);

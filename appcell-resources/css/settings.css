@@ -36,3 +36,66 @@ a.appToggle{
 .widthAuto {
     width: auto !important;
 }
+
+#installed-app {
+  background-color: #ededff;
+}
+
+.panel-body {
+  padding: 0px;
+}
+
+.header-menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 32px 0 14px;
+  background-color: #4d6ce8;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.user-dashboard {
+    position: relative;
+}
+
+a.p-app,
+a.ins-app {
+  display: inline-block;
+  text-align: center;
+  padding: 8px 0;
+  margin: 0 8px;
+  width: 120px;
+}
+
+.app-info {
+  display: flex;
+  flex-direction: row;
+  margin: 20px 16px;
+}
+.app-info > * {
+  flex: 0 0 auto;
+}
+.app-info .app-icon {
+  width: 88px;
+  height: 88px;
+  margin-right: 8px;
+}
+.app-info .app-icon img {
+  width: inherit;
+  height: inherit;
+}
+.app-info .app-data {
+  flex: 1 1 auto;
+}
+
+.detail-section {
+  border: 0 none;
+  margin: 20px 16px;
+}
+.overview {
+  margin: 20px 0 40px;
+}
+.app-install {
+  text-align: center;
+}

@@ -31,7 +31,9 @@ cm.createProfileHeaderMenu = function() {
 
     // create a profile menu in to "profile-menu" class
     var html = '<div>';
+    html += '<a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">';
     html += '<img class="icon-profile" id="imProfilePicture" src="' + cm.imgBinaryFile + '" alt="user">';
+    html += '</a>';
     html += '</div>';
     html += '<div class="header-body">';
     html += '<div id="tProfileDisplayName" class="sizeBody">' + cm.user.profile.DisplayName + '</div>';
@@ -209,14 +211,6 @@ cm.moveBackahead = function(flg) {
         cm.user.settingNowPage = no - 1;
         if (cm.user.settingNowPage >= 1) {
             cm.setTitleMenu(cm.user.settingNowTitle[cm.user.settingNowPage], true);
-            if (cm.user.settingNowPage > 1) {
-                $("#settingBackTitle").html(cm.user.settingNowTitle[cm.user.settingNowPage - 1]);
-            } else {
-                $("#settingBackTitle").html("メニュー");
-            }
-        } else {
-            $("#settingBackTitle").html("");
-            $("#imSettingBack").css("display", "none");
         }
     } else {
         var no = cm.user.nowPage;
@@ -236,13 +230,6 @@ cm.moveBackahead = function(flg) {
         cm.user.nowPage = no - 1;
         if (cm.user.nowPage >= 0) {
             cm.setTitleMenu(cm.user.nowTitle[cm.user.nowPage]);
-            if (cm.user.nowPage > 0) {
-                $("#backTitle").html(cm.user.nowTitle[cm.user.nowPage - 1]);
-            } else {
-                $("#backTitle").html("");
-            }
-        } else {
-            $("#backTitle").html("");
         }
     }
 }
@@ -464,25 +451,11 @@ cm.setTitleMenu = function(title, flg) {
         var titles = cm.user.settingNowTitle;
         titles[cm.user.settingNowPage] = title;
         cm.user.settingNowTitle = titles;
-        if (cm.user.settingNowPage > 1) {
-            //var html = '<p class="ellipsisText">' + cm.user.settingNowTitle[cm.user.settingNowPage - 1] + '</p>';
-            var html = '<span style="white-space: nowrap;">' + cm.user.settingNowTitle[cm.user.settingNowPage - 1] + '</span>';
-            $("#settingBackTitle").html(html);
-            $("#imSettingBack").css("display", "");
-        } else {
-            var html = '<span style="white-space: nowrap;">' + mg.getMsg("00026") + '</span>';
-            $("#settingBackTitle").html(html);
-            $("#imSettingBack").css("display", "");
-        }
     } else {
         $("#titleMenu").html('<p  class="ellipsisText">' + title + '</p>');
         var titles = cm.user.nowTitle;
         titles[cm.user.nowPage] = title;
         cm.user.nowTitle = titles;
-        if (cm.user.nowPage > 0) {
-            var html = '<p class="ellipsisText">' + cm.user.nowTitle[cm.user.nowPage - 1] + '</p>'
-            $("#backTitle").html(html);
-        }
     }
 }
 
