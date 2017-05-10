@@ -133,6 +133,7 @@ a.ins-app {
   padding: 8px 0;
   margin: 0 8px;
   width: 120px;
+  max-width: calc(33% - 18px);
 }
 a.p-app:hover,
 a.ins-app:hover {
@@ -201,7 +202,7 @@ div.ins-app-icon .badge {
   padding-right: 32px;
   background-image: url("https://demo.personium.io/HomeApplication/__/icons/parts_list.png");
   background-position: center right;
-  background-size: 24px;
+  background-size: 20px 14px;
   background-repeat: no-repeat;
   color: #333333;
 }
