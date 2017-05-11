@@ -2,53 +2,68 @@ var lg = {};
 lg.notImage = "https://demo.personium.io/HomeApplication/__/icons/profile_image.png";
 
 lg.initTarget = function() {
-  var mode = "local";
-  var match = location.search.match(/mode=(.*?)(&|$)/);
-  if (match) {
-      mode = decodeURIComponent(match[1]);
-  }
+    var mode = "local";
+    var match = location.search.match(/mode=(.*?)(&|$)/);
+    if (match) {
+        mode = decodeURIComponent(match[1]);
+    }
 
-  if (mode === "global") {
-      match = location.search.match(/target=(.*?)(&|$)/);
-      var target = "";
-      if (match) {
-          // target
-          target = decodeURIComponent(match[1]);
-          if (target.slice(-1) != "/") {
-              target += "/";
-          }
-          $('#errorCellUrl').html(mg.getMsg("E0022"));
-      } else {
-          // no target
-          target = sessionStorage.getItem("targetCellUrl");
-          $('#errorCellUrl').html("");
-      }
+    if (mode === "global") {
+        match = location.search.match(/target=(.*?)(&|$)/);
+        var target = "";
+        if (match) {
+            // target
+            target = decodeURIComponent(match[1]);
+            if (target.slice(-1) != "/") {
+                target += "/";
+            }
+            $('#errorCellUrl').html(mg.getMsg("E0022"));
+        } else {
+            // no target
+            target = sessionStorage.getItem("targetCellUrl");
+            $('#errorCellUrl').html("");
+        }
 
-      lg.targetCellLogin(target);
-  } else {
-      lg.rootUrl = lg.cellUrl();
-      lg.loadProfile();
+        lg.targetCellLogin(target);
+    } else {
+        lg.rootUrl = lg.cellUrl();
+        lg.loadProfile();
 
-      sessionStorage.setItem("mode", "local");
-      sessionStorage.setItem("targetCellUrl", lg.rootUrl);
-  }
+        sessionStorage.setItem("mode", "local");
+        sessionStorage.setItem("targetCellUrl", lg.rootUrl);
+    }
 
-  $('#b-input-cell-ok').on('click', function () {
-     $('#modal-input-cell').modal('hide');
-  });
-  $('#modal-input-cell').on('hidden.bs.modal', function() {
-     lg.targetCellLogin($("#pCellUrl").val());
-  });
-  $("#bLogin").on("click", function(e){
-     // send id pw to cell and get access token
-     lg.sendAccountNamePw($("#iAccountName").val(), $("#iAccountPw").val());
-  });
-  $("#gLogin").on("click", function(e) {
-     //var url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=102363313215-408im4hc7mtsgrda4ratkro2thn58bcd.apps.googleusercontent.com&response_type=code+id_token&scope=openid%20email%20profile&redirect_uri=https%3A%2F%2Fdemo.personium.io%2FoidcTest%2Foidc%2Fdav%2Findex2.html&state=abc&display=popup&nonce=personium";
-     var url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=102363313215-408im4hc7mtsgrda4ratkro2thn58bcd.apps.googleusercontent.com&response_type=code+id_token&scope=openid%20email%20profile&redirect_uri=http%3A%2F%2Fpersonium.io%2Fdemo%2Fhome-app%2Fbox-resources%2Fja%2Fhomeapp_google_auth.html&state=abc&display=popup&nonce=personium";
+    $('#b-input-cell-ok').on('click', function () {
+        $('#modal-input-cell').modal('hide');
+    });
+    $('#modal-input-cell').on('hidden.bs.modal', function() {
+        lg.targetCellLogin($("#pCellUrl").val());
+    });
+    $("#bLogin").on("click", function(e){
+        // send id pw to cell and get access token
+        lg.sendAccountNamePw($("#iAccountName").val(), $("#iAccountPw").val());
+    });
+    $("#gLogin").on("click", function(e) {
+        //var url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=102363313215-408im4hc7mtsgrda4ratkro2thn58bcd.apps.googleusercontent.com&response_type=code+id_token&scope=openid%20email%20profile&redirect_uri=https%3A%2F%2Fdemo.personium.io%2FoidcTest%2Foidc%2Fdav%2Findex2.html&state=abc&display=popup&nonce=personium";
+        var url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=102363313215-408im4hc7mtsgrda4ratkro2thn58bcd.apps.googleusercontent.com&response_type=code+id_token&scope=openid%20email%20profile&redirect_uri=http%3A%2F%2Fpersonium.io%2Fdemo%2Fhome-app%2Fbox-resources%2Fja%2Fhomeapp_google_auth.html&state=abc&display=popup&nonce=personium";
 
-     window.location.href = url;
-  });
+        window.location.href = url;
+    });
+
+    document.onkeypress = function(e) {
+        e = e ? e : event;
+        var keyCode= e.charCode ? e.charCode : ((e.which) ? e.which : e.keyCode);
+        var elem = e.target ? e.target : e.srcElement;
+        // KeyCode:13 = Enter
+        if(Number(keyCode) == 13) {
+            if ($('#modal-input-cell').css('display') == 'none') {
+                document.getElementById('bLogin').click();
+            } else {
+                document.getElementById('b-input-cell-ok').click();
+            }
+            return false;
+        }
+    }
 
 };
 
