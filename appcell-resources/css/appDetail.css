@@ -1,0 +1,31 @@
+.app-info {
+  display: flex;
+  flex-direction: row;
+  margin: 20px 16px;
+}
+.app-info > * {
+  flex: 0 0 auto;
+}
+.app-info .app-icon {
+  width: 88px;
+  height: 88px;
+  margin-right: 8px;
+}
+.app-info .app-icon img {
+  width: inherit;
+  height: inherit;
+}
+.app-info .app-data {
+  flex: 1 1 auto;
+}
+
+section {
+  border: 0 none;
+  margin: 20px 16px;
+}
+.overview {
+  margin: 20px 0 40px;
+}
+.app-install {
+  text-align: center;
+}
