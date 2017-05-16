@@ -16,9 +16,10 @@
     <script src="https://demo.personium.io/HomeApplication/__/js/message_ja.js"></script>
     <script src="https://demo.personium.io/HomeApplication/__/js/applicationmarket.js"></script>-->
     <script src="../../appcell-resources/js/common.js"></script>
-    <script src="../../appcell-resources/js/message_ja.js"></script>
+    <script src="../../appcell-resources/js/message_en.js"></script>
     <script src="../../appcell-resources/js/applicationmarket.js"></script>
     <script src="../../appcell-resources/js/settings.js"></script>
+    <script src="../../appcell-resources/js/demo.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
     <!--<link href='https://demo.personium.io/HomeApplication/__/css/common.css' rel='stylesheet' type='text/css'>
     <link href='https://demo.personium.io/HomeApplication/__/css/applicationmarket.css' rel='stylesheet' type='text/css'>-->
@@ -26,6 +27,11 @@
     <link href='../../appcell-resources/css/settings.css' rel='stylesheet' type='text/css'>
     <link href='../../appcell-resources/css/applicationmarket.css' rel='stylesheet' type='text/css'>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+<script type="text/javascript">
+    $(document).ready(function() {
+        demo.initAppMarket();
+    });
+</script>
   </head>
   <body>
     <div class="container-fluid display-table">
@@ -40,5 +46,24 @@
             </div>
         </div>
     </div>
+
+    <div id="modal-applicationlist-start" class="modal fade" role="dialog" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header login-header">
+                        <h4 class="modal-title">Application</h4>
+                    </div>
+                    <div class="modal-body fontBlack">
+                        Installed applications are displayed in "installed", <br>
+                        Applications not installed are displayed in "Application list". <br>
+                        <br>
+                        Now I have not installed anything, so let's install MyBoard.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="b-applicationlist-start-ok">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
   </body>
 </html>

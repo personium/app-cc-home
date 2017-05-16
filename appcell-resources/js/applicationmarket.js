@@ -1,6 +1,6 @@
 var am = {};
 
-$(document).ready(function() {
+am.initAppMarket = function() {
     am.createTitleHeader();
     cm.createSideMenu();
     cm.createBackMenu("main.html");
@@ -15,7 +15,7 @@ $(document).ready(function() {
       $(this).toggleClass("active");
       $(".appInsMenu").slideToggle();
     });
-});
+}
 
 am.createApplicationList = function() {
     var html = '<div class="panel-body" id="app-panel"><section class="dashboard-block" id="installed-app"><h2>' + mg.getMsg("00047") + '</h2><div id="insAppList1"></div></section><section class="dashboard-block" id="all-app"><h2>' + mg.getMsg("00048") + '</h2><div id="appList1"></div></section></div>';
