@@ -134,6 +134,8 @@ a.ins-app {
   margin: 0 8px;
   width: 120px;
   max-width: calc(33% - 18px);
+  text-decoration: none;
+  cursor: pointer;
 }
 a.p-app:hover,
 a.ins-app:hover {
@@ -313,18 +315,15 @@ div.ins-app-icon .badge {
 }
 
 .overlay {
-  position: absolute;
-  background: rgba(0,0,0,0);
+  background: rgba(0,0,0,0.4);
+  cursor: hand;
+  display: none;
   width: 100%;
   height: 100%;
+  position: fixed;
   top: 0px;
-  z-index: 1;
-  display: block;
-  visibility: visible;
-  z-index: -1;
-
-  -webkit-transition: all .5s ease;
-  transition: all .5s ease;
+  left: 0px;
+  z-index: 0;
 }
 
 .overlay-on {
@@ -332,27 +331,50 @@ div.ins-app-icon .badge {
   z-index: 0;
 }
 
-.slide-menu {
-  position: absolute;
-  background: #ffffff;
-  width:70%;
+.slide-nav {
+  background-color: #ffffff;
   height: 100%;
-  left: 100%;
+  position: fixed;
   top: 0px;
+  right: -280px;
+  width: 280px;
   z-index: 1;
+}
 
-  -webkit-transition: all .5s ease;
-  transition: all .5s ease;
+.slide-nav ul {
+  background-color: #ffffff;
+}
+
+.slide-nav li {
+  background-image: url("https://demo.personium.io/HomeApplication/__/icons/parts_list.png");
+  background-size: 20px;
+  background-position: right;
+  background-repeat: no-repeat;
+  border-bottom: 1px solid #c7c7c7;
+  color: #333333;
+  line-height: 48px;
+  margin-left: 30px;
+}
+
+.slide-nav li.menu-title {
+  background-image: none;
+  border: 0;
+  margin: 0;
+  padding-left: 16px;
+}
+
+.slide-nav li.menu-separator {
+  margin: 0;
+  padding-left: 30px;
+}
+
+.slide-nav li a{
+  color: #333333;
+  display: block;
 }
 
 .profile-header {
   width:112px;
-}
-
-.menu-title {
-  border-top: 1px solid #c7c7c7;
-  /*border-bottom: 1px solid #c7c7c7;*/
-  width: 100%;
 }
 
 .sidemenu-list {

@@ -39,6 +39,9 @@ lg.initTarget = function() {
     $('#modal-input-cell').on('hidden.bs.modal', function() {
         lg.targetCellLogin($("#pCellUrl").val());
     });
+    $('#modal-input-cell').on('shown.bs.modal', function() {
+        $('#pCellUrl').focus();
+    });
     $("#bLogin").on("click", function(e){
         // send id pw to cell and get access token
         lg.sendAccountNamePw($("#iAccountName").val(), $("#iAccountPw").val());
@@ -76,7 +79,7 @@ lg.targetCellLogin = function(cellUrl) {
 
             sessionStorage.setItem("targetCellUrl", lg.rootUrl);
             sessionStorage.setItem("mode", "global");
-
+            $('#iAccountName').focus();
             lg.loadProfile();
         } else {
             $("#pCellUrl").val(cellUrl)

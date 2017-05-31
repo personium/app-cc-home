@@ -918,9 +918,8 @@ sg.restDeleteExtCellLinkRelation = function() {
 };
 
 $(document).ready(function() {
-    cm.createProfileHeaderMenu();
     cm.createSideMenu();
-    cm.createTitleHeader();
+    cm.createTitleHeader(false, true);
     cm.createBackMenu("main.html");
     cm.setTitleMenu(mg.getMsg("00009"));
     st.initSettings();

@@ -11,7 +11,7 @@ demo.initAppMarket = function() {
   demoSession = JSON.parse(sessionStorage.getItem("demoSession"));
   demo.showModal("#modal-applicationlist-start");
 
-  am.createTitleHeader();
+  cm.createTitleHeader(false, true);
   cm.createSideMenu();
   cm.createBackMenu("main.html");
   cm.setTitleMenu(mg.getMsg("00050"));
@@ -121,8 +121,9 @@ demo.initMain = function() {
      sessionStorage.setItem("demoSession", JSON.stringify(demoSession));
   });
   $('#dvOverlay').on('click', function() {
-     $(".overlay").removeClass('overlay-on');
-     $(".slide-menu").removeClass('slide-on');
+//     $(".overlay").removeClass('overlay-on');
+//     $(".slide-menu").removeClass('slide-on');
+     demo.toggleSlide();
      demo.showModal('#modal-appmarket-start');
      demoSession.moveAppMarket = true;
   });
@@ -150,7 +151,7 @@ demo.createProfileHeaderMenu = function() {
     html += '<div id="tProfileDisplayName" class="sizeBody">' + cm.user.profile.DisplayName + '</div>';
     html += '<div class="sizeCaption">' + mg.getMsg("00028") + ': ' + cm.user.userName +  '</div>';
     html += '</div>';
-    html += '<a href="#" onClick="demo.openSlide();">';
+    html += '<a href="#" onClick="demo.toggleSlide();">';
     html += '<img src="https://demo.personium.io/HomeApplication/__/icons/ico_menu.png">';
     html += '</a>';
     $(".profile-menu").html(html);
@@ -189,11 +190,26 @@ demo.createProfileHeaderMenu = function() {
     });
 }
 
-demo.openSlide = function() {
-    $(".overlay").toggleClass('overlay-on');
-    $(".slide-menu").toggleClass('slide-on');
-    if (!demoSession.sideMenu) {
-        demo.showModal('#modal-sidemenu-start');
+demo.toggleSlide = function() {
+//    $(".overlay").toggleClass('overlay-on');
+//    $(".slide-menu").toggleClass('slide-on');
+
+    var menu = $('.slide-nav');
+    var overlay = $('.overlay');
+    var menuWidth = menu.outerWidth();
+
+    menu.toggleClass('open');
+    if(menu.hasClass('open')){
+        // show menu
+        menu.animate({'right' : 0 }, 300);
+        overlay.fadeIn();
+        if (!demoSession.sideMenu) {
+            demo.showModal('#modal-sidemenu-start');
+        }
+    } else {
+        // hide menu
+        menu.animate({'right' : -menuWidth }, 300);
+        overlay.fadeOut();
     }
 }
 
@@ -205,7 +221,7 @@ demo.initSettings = function() {
     // Create Setting Area
     cm.createSettingArea();
     // Create Title Header
-    cm.createTitleHeader(true);
+    cm.createTitleHeader(true, false);
     // Create Back Button
     cm.createBackMenu("main.html", true);
     // Set Title
@@ -273,34 +289,26 @@ demo.createSideMenu = function() {
     itemName.Photo = mg.getMsg("00015");
     itemName.Relogin = mg.getMsg("00016");
 
-    var html = '<div class="slide-menu"><nav>';
+    var html = '<div class="slide-menu">';
+    html += '<nav class="slide-nav">';
+    html += '<ul>';
+
     // Menu Title
-    html += '<div style="margin:10px;"><span class="commonLabel">' + mg.getMsg("00026") + '</span></div>';
-
+    html += '<li class="menu-title">' + mg.getMsg("00026") + '</li>';
     // profile edit
-    html += '<table class="menu-title">';
-    html += '<tr>';
-    html += '<td rowspan="2" class="sidemenu-itemEmpty">&nbsp;</td>';
-    html += '<td valign="middle" class="sidemenu-item sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">' + itemName.EditProf + '</a></td>';
-    html += '</tr><tr>';
-    html += '<td class="sidemenu-lastitem sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-change-password">' + itemName.ChgPass + '</a></td>';
-    html += '</tr><tr>';
-    html += '</tr></table>';
-
+    html += '<li><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">' + itemName.EditProf + '</a></li>';
+    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-change-password">' + itemName.ChgPass + '</a></li>';
     // setting menu
-    html += '<table class="menu-title"><tr>';
-    html += '<td rowspan="4" class="sidemenu-itemEmpty">&nbsp;</td>';
-    html += '<td class="sidemenu-item sizeBody1"><a class="allToggle" id="accountToggle" href="#">' + mg.getMsg("00028") + '</a></td></tr>';
-    html += '<tr><td class="sidemenu-item sizeBody1"><a class="allToggle" id="applicationToggle" href="#">' + mg.getMsg("00039") + '</a></td></tr>';
-    html += '<tr><td class="sidemenu-item sizeBody1"><a class="allToggle" id="roleToggle" href="#">' + mg.getMsg("00032") + '</a></td></tr>';
-    html += '<tr><td class="sidemenu-lastitem sizeBody1"><a class="allToggle" id="relationToggle" href="#">' + mg.getMsg("00033") + '</a></td></tr>';
-    html += '</table>';
-
+    html += '<li><a class="allToggle" id="accountToggle" href="#">' + mg.getMsg("00028") + '</a></li>';
+    html += '<li><a class="allToggle" id="applicationToggle" href="#">' + mg.getMsg("00039") + '</a></li>';
+    html += '<li><a class="allToggle" id="roleToggle" href="#">' + mg.getMsg("00032") + '</a></li>';
+    html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="#">' + mg.getMsg("00033") + '</a></li>';
     // log out
-    html += '<table class="menu-title"><tr>';
-    html += '<td rowspan="4" class="sidemenu-itemEmpty">&nbsp;</td>';
-    html += '<td class="sidemenu-item sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout">' + itemName.Logout + '</a></td>';
-    html += '</tr></table></div>';
+    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout">' + itemName.Logout + '</a></li>';
+
+    html += '</ul>';
+    html += '</nav>';
+    html += '</div>';
     html += '<div class="overlay" id="dvOverlay"></div>';
 
     $(".display-parent-div").append(html);
@@ -366,7 +374,7 @@ demo.createSideMenu = function() {
 demo.createApplicationList = function() {
     $("#dashboard").empty();
     $("#dashboard").append('<div class="panel list-group toggle-panel" id="toggle-panel1"></div>');
-    var html = '<div class="panel-body" id="app-panel"><section class="dashboard-block" id="installed-app"><h2>' + mg.getMsg("00047") + '</h2><div id="insAppList1"></div></section><section class="dashboard-block" id="all-app"><h2>' + mg.getMsg("00048") + '</h2><div id="appList1"></div></section></div>';
+    var html = '<div class="panel-body" id="app-panel"><table class="table table-striped"><tr><td>' + mg.getMsg("00047") + '</td></tr><tr><td><div id="insAppList1"></div></td></tr><tr><td>' + mg.getMsg("00048") + '</td></tr><tr><td><div id="appList1"></div></td></tr></div>';
     $("#dashboard").append(html);
     // install application list
     cm.getBoxList().done(function(data) {

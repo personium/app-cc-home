@@ -39,7 +39,7 @@ cm.createProfileHeaderMenu = function() {
     html += '<div id="tProfileDisplayName" class="sizeBody">' + cm.user.profile.DisplayName + '</div>';
     html += '<div class="sizeCaption">' + mg.getMsg("00028") + ': ' + cm.user.userName +  '</div>';
     html += '</div>';
-    html += '<a href="#" onClick="cm.openSlide();">';
+    html += '<a href="#" onClick="cm.toggleSlide();">';
     html += '<img src="https://demo.personium.io/HomeApplication/__/icons/ico_menu.png">';
     html += '</a>';
     $(".profile-menu").html(html);
@@ -79,42 +79,31 @@ cm.createProfileHeaderMenu = function() {
 }
 
 // Create title header in "header-menu" class
-// true: Settings false: Default
-cm.createTitleHeader = function(flg) {
-    var id = ".header-menu";
-    if (flg) {
-        id = ".setting-header";
+// settingFlg true: Settings false: Default
+// menuFlg true: show menu false: hide menu
+cm.createTitleHeader = function(settingFlg, menuFlg) {
+    var setHtmlId = ".header-menu";
+    var backMenuId = "backMenu";
+    var backTitleId = "backTitle";
+    var titleMenuId = "titleMenu";
+    if (settingFlg) {
+        setHtmlId = ".setting-header";
+        backMenuId = "settingBackMenu";
+        backTitleId = "settingBackTitle";
+        titleMenuId = "settingTitleMenu";
     }
 
-    var html = '';
-    if (flg) {
-        html += '<div class="col-xs-1" id="settingBackMenu"></div>';
-        html += '<div class="col-xs-2"><table class="table-fixed back-title"><tr style="vertical-align: middle;"><td class="ellipsisText" id="settingBackTitle" align="left"></td></tr></table></div>';
-        html += '<div class="col-xs-6 text-center title" id="settingTitleMenu"></div>';
-        html += '<div class="col-xs-3 text-right"></div>';
-    } else {
-        html += '<div class="col-xs-1" id="backMenu"></div>';
-        html += '<div class="col-xs-2"><table class="table-fixed back-title"><tr style="vertical-align: middle;"><td class="ellipsisText" id="backTitle" align="left"></td></tr></table></div>';
-        html += '<div class="col-xs-6 text-center title" id="titleMenu"></div>';
-        html += '<div class="col-xs-3 text-right"></div>';
+    var menuHtml = '';
+    if (menuFlg) {
+        menuHtml = '<a href="#" onClick="cm.toggleSlide();"><img src="https://demo.personium.io/HomeApplication/__/icons/ico_menu.png"></a>';
     }
 
-    //var html = '<table class="table-fixed">';
-    //html += '<tr style="vertical-align: middle;">';
-    //if (flg) {
-    //    html += '<td id="settingBackMenu" class="prev-icon" style="width: 10%;"></td>'
-    //    html += '<td id="settingBackTitle" align="left" style="width: 30%;white-space: nowrap;"></td>';
-    //    html += '<td id="settingTitleMenu" align="left" style="width: 50%;" class="title"></td>';
-    //    html += '<td style="width: 10%;"><a href="#" style="padding: 0;font-size: 28px;" onClick="cm.closeSetting();return false;">×</a></td>';
-    //} else {
-    //    html += '<td id="backMenu" class="prev-icon" style="width: 10%;"></td>'
-    //    html += '<td id="backTitle" align="left" style="width: 30%;white-space: nowrap;"></td>';
-    //    html += '<td id="titleMenu" align="left" class="title"></td>';
-    //    html += '<td class="menu-icon header-top pull-right"></td>';
-    //}
-    //
-    //html += '</td></tr></table>';
-    $(id).html(html);
+    var html = '<div class="col-xs-1" id="' + backMenuId + '"></div>';
+        html += '<div class="col-xs-2"><table class="table-fixed back-title"><tr style="vertical-align: middle;"><td class="ellipsisText" id="' + backTitleId + '" align="left"></td></tr></table></div>';
+        html += '<div class="col-xs-6 text-center title" id="' + titleMenuId + '"></div>';
+        html += '<div class="col-xs-3 text-right">' + menuHtml + '</div>';
+
+    $(setHtmlId).html(html);
 }
 
 cm.closeSetting = function() {
@@ -245,40 +234,26 @@ cm.createSideMenu = function() {
     itemName.Photo = mg.getMsg("00015");
     itemName.Relogin = mg.getMsg("00016");
 
-    var html = '<div class="slide-menu"><nav>';
+    var html = '<div class="slide-menu">';
+    html += '<nav class="slide-nav">';
+    html += '<ul>';
+
     // Menu Title
-    html += '<div style="margin:10px;"><span class="commonLabel">' + mg.getMsg("00026") + '</span></div>';
-
+    html += '<li class="menu-title">' + mg.getMsg("00026") + '</li>';
     // profile edit
-    html += '<table class="menu-title">';
-    //html += '<tr class="sidemenu-list v-align-m">';
-    html += '<tr>';
-    //html += '<td rowspan="3" class="sidemenu-itemEmpty">&nbsp;</td><td valign="middle" class="sidemenu-item sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">' + itemName.EditProf + '<img class="moveIcon" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a></td>';
-    html += '<td rowspan="2" class="sidemenu-itemEmpty">&nbsp;</td>';
-    html += '<td valign="middle" class="sidemenu-item sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">' + itemName.EditProf + '</a></td>';
-    //html += '</tr><tr class="sidemenu-list v-align-m">';
-    html += '</tr><tr>';
-    //html += '<td class="sidemenu-item sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-change-password">' + itemName.ChgPass + '<img class="moveIcon" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a></td>';
-    html += '<td class="sidemenu-lastitem sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-change-password">' + itemName.ChgPass + '</a></td>';
-    //html += '</tr><tr class="sidemenu-list v-align-m">';
-    html += '</tr><tr>';
-    //html += '<td class="sidemenu-lastitem sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout">' + itemName.Logout + '<img class="moveIcon" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a></td>';
-    html += '</tr></table>';
-
+    html += '<li><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">' + itemName.EditProf + '</a></li>';
+    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-change-password">' + itemName.ChgPass + '</a></li>';
     // setting menu
-    html += '<table class="menu-title"><tr>';
-    html += '<td rowspan="4" class="sidemenu-itemEmpty">&nbsp;</td>';
-    html += '<td class="sidemenu-item sizeBody1"><a class="allToggle" id="accountToggle" href="#">' + mg.getMsg("00028") + '</a></td></tr>';
-    html += '<tr><td class="sidemenu-item sizeBody1"><a class="allToggle" id="applicationToggle" href="#">' + mg.getMsg("00039") + '</a></td></tr>';
-    html += '<tr><td class="sidemenu-item sizeBody1"><a class="allToggle" id="roleToggle" href="#">' + mg.getMsg("00032") + '</a></td></tr>';
-    html += '<tr><td class="sidemenu-lastitem sizeBody1"><a class="allToggle" id="relationToggle" href="#">' + mg.getMsg("00033") + '</a></td></tr>';
-    html += '</table>';
-
+    html += '<li><a class="allToggle" id="accountToggle" href="#">' + mg.getMsg("00028") + '</a></li>';
+    html += '<li><a class="allToggle" id="applicationToggle" href="#">' + mg.getMsg("00039") + '</a></li>';
+    html += '<li><a class="allToggle" id="roleToggle" href="#">' + mg.getMsg("00032") + '</a></li>';
+    html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="#">' + mg.getMsg("00033") + '</a></li>';
     // log out
-    html += '<table class="menu-title"><tr>';
-    html += '<td rowspan="4" class="sidemenu-itemEmpty">&nbsp;</td>';
-    html += '<td class="sidemenu-item sizeBody1"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout">' + itemName.Logout + '</a></td>';
-    html += '</tr></table></div>';
+    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout">' + itemName.Logout + '</a></li>';
+
+    html += '</ul>';
+    html += '</nav>';
+    html += '</div>';
     html += '<div class="overlay" id="dvOverlay"></div>';
 
     $(".display-parent-div").append(html);
@@ -419,17 +394,33 @@ cm.createSideMenu = function() {
     });
     $('#b-edit-profile-ok').on('click', function () { cm.updateCellProfile(); });
     $('#dvOverlay').on('click', function() {
-        $(".overlay").removeClass('overlay-on');
-        $(".slide-menu").removeClass('slide-on');
+//        $(".overlay").removeClass('overlay-on');
+//        $(".slide-menu").removeClass('slide-on');
+        cm.toggleSlide();
     });
 
     // Time Out Set
     cm.setIdleTime();
 }
 
-cm.openSlide = function() {
-    $(".overlay").toggleClass('overlay-on');
-    $(".slide-menu").toggleClass('slide-on');
+cm.toggleSlide = function() {
+//    $(".overlay").toggleClass('overlay-on');
+//    $(".slide-menu").toggleClass('slide-on');
+
+    var menu = $('.slide-nav');
+    var overlay = $('.overlay');
+    var menuWidth = menu.outerWidth();
+
+    menu.toggleClass('open');
+    if(menu.hasClass('open')){
+        // show menu
+        menu.animate({'right' : 0 }, 300);
+        overlay.fadeIn();
+    } else {
+        // hide menu
+        menu.animate({'right' : -menuWidth }, 300);
+        overlay.fadeOut();
+    }
 }
 
 // Create Backahead

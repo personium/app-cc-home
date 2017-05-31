@@ -1,7 +1,7 @@
 var am = {};
 
 am.initAppMarket = function() {
-    am.createTitleHeader();
+    cm.createTitleHeader(false, true);
     cm.createSideMenu();
     cm.createBackMenu("main.html");
     cm.setTitleMenu(mg.getMsg("00050"));
@@ -131,13 +131,3 @@ am.dispViewApp = function(schema, dispName, imageSrc, description, barUrl, barBo
     cm.setTitleMenu(mg.getMsg("00042"));
 
 };
-
-am.createTitleHeader = function() {
-    var html = '';
-    html += '<div class="col-xs-1" id="backMenu"></div>';
-    html += '<div class="col-xs-2"><table class="table-fixed back-title"><tr style="vertical-align: middle;"><td class="ellipsisText" id="backTitle" align="left"></td></tr></table></div>';
-    html += '<div class="col-xs-6 text-center title" id="titleMenu"></div>';
-    html += '<div class="col-xs-3 text-right"><a href="#" onClick="cm.openSlide();"><img src="https://demo.personium.io/HomeApplication/__/icons/ico_menu.png"></a></div>';
-
-    $(".header-menu").html(html);
-}

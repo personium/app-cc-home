@@ -15,7 +15,7 @@ st.initSettings = function() {
     // Create Setting Area
     cm.createSettingArea();
     // Create Title Header
-    cm.createTitleHeader(true);
+    cm.createTitleHeader(true, false);
     // Create Back Button
     cm.createBackMenu("main.html", true);
     // Set Title

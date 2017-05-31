@@ -75,3 +75,7 @@ a.ins-app {
 .app-install {
   text-align: center;
 }
+
+section:last-of-type {
+  border-bottom: 0 none;
+}
