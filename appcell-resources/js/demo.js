@@ -162,7 +162,7 @@ demo.createProfileHeaderMenu = function() {
             var $target = $(this);
 
             // get a account name
-            var html = cm.user.userName + 'Å•';
+            var html = cm.user.userName + '‚ñº';
 
             // Duplicate the current state
             var $clone = $target.clone();
@@ -181,7 +181,7 @@ demo.createProfileHeaderMenu = function() {
             // Replace sentences that exceed the display area
             while((html.length > 0) && ($clone.width() > $target.width())) {
                 html = html.substr(0, html.length - 1);
-                $clone.html(html + '...Å•');
+                $clone.html(html + '...‚ñº');
             }
 
             $target.html($clone.html());
@@ -335,7 +335,7 @@ demo.createSideMenu = function() {
            '<div class="modal-dialog">' +
            '<div class="modal-content">' +
            '<div class="modal-header login-header">' +
-           '<button type="button" class="close" data-dismiss="modal">Å~</button>' +
+           '<button type="button" class="close" data-dismiss="modal">√ó</button>' +
            '<h4 class="modal-title">' + itemName.Logout + '</h4>' +
            '</div>' +
            '<div class="modal-body">' +
