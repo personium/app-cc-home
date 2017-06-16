@@ -20,7 +20,7 @@
       var cellUrl = sessionStorage.getItem("targetCellUrl");
       $.ajax({
           type: "POST",
-          url: cellUrl + "__auth",
+          url: cellUrl + "__token",
           data: {
               grant_type: 'urn:x-personium:oidc:google',
               id_token: token

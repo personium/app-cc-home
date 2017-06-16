@@ -813,7 +813,7 @@ cm.changePassCheck = function(newpass, confirm) {
 cm.refreshTokenAPI = function() {
     return $.ajax({
         type: "POST",
-        url: cm.user.cellUrl + '__auth',
+        url: cm.user.cellUrl + '__token',
         processData: true,
         dataType: 'json',
         data: {
@@ -826,7 +826,7 @@ cm.refreshTokenAPI = function() {
 //cm.getTargetToken = function(extCellUrl) {
 //  return $.ajax({
 //                type: "POST",
-//                url: cm.user.cellUrl + '__auth',
+//                url: cm.user.cellUrl + '__token',
 //                processData: true,
 //		dataType: 'json',
 //                data: {
@@ -841,7 +841,7 @@ cm.refreshTokenAPI = function() {
 cm.getTargetToken = function(extCellUrl) {
   return $.ajax({
                 type: "POST",
-                url: cm.user.cellUrl + '__auth',
+                url: cm.user.cellUrl + '__token',
                 processData: true,
 		dataType: 'json',
                 data: {
