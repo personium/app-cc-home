@@ -443,26 +443,22 @@ demo.execApp = function(schema,boxName) {
             'Accept':'application/json'
         }
     }).done(function(data) {
-        var type = data.type;
-        var launch = data[type];
+        var launchObj = data.personal;
+        var launch = launchObj.web;
         var target = cm.user.cellUrl + boxName;
         cm.refreshTokenAPI().done(function(data) {
-            switch (type) {
-                case "web":
-                    var url = launch;
-                    url += '#target=' + target;
-                    url += '&token=' + data.access_token;
-                    url += '&ref=' + data.refresh_token;
-                    url += '&expires=' + data.expires_in;
-                    url += '&refexpires=' + data.refresh_token_expires_in;
-                    childWindow.location.href = url;
-                    childWindow = null;
-                    if (launch.indexOf('MyBoard')) {
-                        demoSession.sideMenu = true;
-                        sessionStorage.setItem("demoSession", JSON.stringify(demoSession));
-                        demo.showModal('#modal-logout-start');
-                    }
-                    break;
+            var url = launch;
+            url += '#target=' + target;
+            url += '&token=' + data.access_token;
+            url += '&ref=' + data.refresh_token;
+            url += '&expires=' + data.expires_in;
+            url += '&refexpires=' + data.refresh_token_expires_in;
+            childWindow.location.href = url;
+            childWindow = null;
+            if (launch.indexOf('MyBoard')) {
+                demoSession.sideMenu = true;
+                sessionStorage.setItem("demoSession", JSON.stringify(demoSession));
+                demo.showModal('#modal-logout-start');
             }
         });
     }).fail(function(data) {
