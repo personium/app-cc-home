@@ -823,6 +823,36 @@ cm.refreshTokenAPI = function() {
         headers: {'Accept':'application/json'}
     })
 }
+cm.appRefreshTokenAPI = function(appCellUrl, appCellToken) {
+    return $.ajax({
+        type: "POST",
+        url: cm.user.cellUrl + '__token',
+        processData: true,
+        dataType: 'json',
+        data: {
+               grant_type: "refresh_token",
+               refresh_token: cm.user.refresh_token,
+               client_id: appCellUrl,
+               client_secret: appCellToken
+        },
+        headers: {'Accept':'application/json'}
+    })
+}
+cm.appGetTargetToken = function(appCellUrl, id, pw) {
+  return $.ajax({
+                type: "POST",
+                url: appCellUrl + '__token',
+                processData: true,
+		dataType: 'json',
+                data: {
+                        grant_type: "password",
+			username: id,
+			password: pw,
+                        p_target: cm.user.cellUrl
+                },
+		headers: {'Accept':'application/json'}
+         });
+}
 //cm.getTargetToken = function(extCellUrl) {
 //  return $.ajax({
 //                type: "POST",
@@ -957,29 +987,34 @@ cm.execApp = function(schema,boxName) {
             'Accept':'application/json'
         }
     }).done(function(data) {
-        var type = data.type;
-        var launch = data[type];
+        var launchObj = data.personal;
+        var launch = launchObj.web;
         var target = cm.user.cellUrl + boxName;
-        cm.refreshTokenAPI().done(function(data) {
-            switch (type) {
-                case "web":
-                    var url = launch;
-                    url += '#target=' + target;
-                    url += '&token=' + data.access_token;
-                    url += '&ref=' + data.refresh_token;
-                    url += '&expires=' + data.expires_in;
-                    url += '&refexpires=' + data.refresh_token_expires_in;
-                    childWindow.location.href = url;
-                    childWindow = null;
-                    break;
-            }
+        cm.appGetTargetToken(schema, launchObj.appTokenId, launchObj.appTokenPw).done(function(appToken) {
+            cm.appRefreshTokenAPI(schema, appToken.access_token).done(function(refTokenApp) {
+                var url = launch;
+                url += '#target=' + target;
+                url += '&token=' + refTokenApp.access_token;
+                url += '&ref=' + refTokenApp.refresh_token;
+                url += '&expires=' + refTokenApp.expires_in;
+                url += '&refexpires=' + refTokenApp.refresh_token_expires_in;
+                childWindow.location.href = url;
+                childWindow = null;
+            }).fail(function(refTokenApp) {
+                childWindow.close();
+                childWindow = null;
+            });
+        }).fail(function(appToken) {
+            childWindow.close();
+            childWindow = null;
         });
     }).fail(function(data) {
         childWindow.close();
         childWindow = null;
     });
 };
-cm.getNotCompMessageCnt = function(boxName) {
+
+cm.getNotCompMessageCnt = function() {
     return $.ajax({
                 type: "GET",
                 url: cm.user.cellUrl + '__ctl/ReceivedMessage?$inlinecount=allpages&$filter=Type+ne+%27message%27+and+Status+eq+%27none%27',

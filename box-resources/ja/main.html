@@ -108,11 +108,22 @@ ha.dispInsAppListSchema = function(schema, boxName) {
             var status = data.status;
             var html = '';
             if (status.indexOf('ready') >= 0) {
-                var msgCnt = "";
-                cm.getNotCompMessageCnt(boxName).done(function(data) {
+                var msgCnt = '';
+                cm.getNotCompMessageCnt().done(function(data) {
                     if (data.d.__count > 0) {
-                        msgCnt = data.d.__count;
+                        var count = 0;
+                        for (i in data.d.results) {
+                           var res = data.d.results[i];
+                           if (boxName == res["_Box.Name"]) {
+                               count++;
+                           }
+                        }
+                        if (count > 0) {
+                           msgCnt = count;
+                        }
                     }
+                }).fail(function(data) {
+                    console.log("fail");
                 }).always(function(data) {
                     //var html = '<div class="ins-app" align="center"><a class="ins-app-icon" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
                     var html = '<a class="ins-app" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank">'
