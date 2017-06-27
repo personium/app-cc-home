@@ -142,7 +142,7 @@ lg.populateProfile = function(profile) {
 lg.sendAccountNamePw = function(username, pw) {
 	$.ajax({
 		type: "POST",
-		url: lg.rootUrl + '__auth',
+		url: lg.rootUrl + '__token',
 		processData: true,
 		dataType: 'json',
 		data: {
