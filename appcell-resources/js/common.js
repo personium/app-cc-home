@@ -930,7 +930,6 @@ cm.retrieveCollectionAPIResponse = function(json) {
     type: "PUT",
     url: cm.user.cellUrl + '__/profile.json',
     data: JSON.stringify(json),
-    dataType: 'json',
     headers: {'Accept':'application/json',
               'Authorization':'Bearer ' + cm.user.access_token}
   }).done(function(data) {
