@@ -14,16 +14,14 @@ lg.initTarget = function() {
         if (match) {
             // target
             target = decodeURIComponent(match[1]);
-            if (target.slice(-1) != "/") {
-                target += "/";
-            }
             $('#errorCellUrl').html(mg.getMsg("E0022"));
         } else {
-            // no target
+            // Cell URL is not provided in the URL's parameter, try to get the previously used cell URL from session.
             target = sessionStorage.getItem("targetCellUrl");
             $('#errorCellUrl').html("");
         }
 
+        // Call the following function explicitly in order to prompt the user to enter the cell URL.
         lg.targetCellLogin(target);
     } else {
         lg.rootUrl = lg.cellUrl();
@@ -70,12 +68,13 @@ lg.initTarget = function() {
 
 };
 
-lg.targetCellLogin = function(cellUrl) {
+lg.targetCellLogin = function(tempUrl) {
+    // Do the best to prepare a proper cell URL
+    var cellUrl = lg.cellUrlWithEndingSlash(tempUrl);
+
     lg.getCell(cellUrl).done(function(data, status, xhr) {
         if (xhr.responseText.match(/urn:x-personium:xmlns/)) {
-            var i = cellUrl.indexOf("/", 8); // first slash
-            i = cellUrl.indexOf("/", i + 1);  // second slash
-            lg.rootUrl = cellUrl.substring(0, i + 1);
+            lg.rootUrl = cellUrl;
 
             sessionStorage.setItem("targetCellUrl", lg.rootUrl);
             sessionStorage.setItem("mode", "global");
@@ -92,31 +91,51 @@ lg.targetCellLogin = function(cellUrl) {
 };
 
 lg.cellUrl = function() {
-  var u = location.href;
-  //return "https://demo.personium.io/HomeApplication/";
-  //return "https://demo.personium.io/Friend/";
-  if (u.indexOf("file:") == 0) {
-     //return "https://demo.personium.io/akio-shimono/";
-     //return "https://demo.personium.io/kyouhei-sakamoto/";
-     return "https://demo.personium.io/HomeApplication/";
-  }
-  var i = u.indexOf("/", 8); // first slash
-  i = u.indexOf("/", i + 1);  // second slash
-  return u.substring(0, i + 1);
+    var u = location.href;
+    //return "https://demo.personium.io/HomeApplication/";
+    //return "https://demo.personium.io/Friend/";
+    if (u.indexOf("file:") == 0) {
+        //return "https://demo.personium.io/akio-shimono/";
+        //return "https://demo.personium.io/kyouhei-sakamoto/";
+        return "https://demo.personium.io/HomeApplication/";
+    }
+
+    var cellUrl = lg.cellUrlWithEndingSlash(u);
+
+    return cellUrl;
+};
+
+lg.cellUrlWithEndingSlash = function(tempUrl) {
+    var i = tempUrl.indexOf("/", 8); // search after "http://" or "https://"
+
+    if (i == -1) {
+        $('#errorCellUrl').html(mg.getMsg("E0018"));
+        return tempUrl;
+    }
+
+    if (tempUrl.slice(-1) != "/") {
+        tempUrl += "/";
+    }
+
+    i = tempUrl.indexOf("/", i + 1);
+
+    var cellUrl = tempUrl.substring(0, i + 1);
+
+    return cellUrl;
 };
 
 lg.loadProfile = function() {
-	$.ajax({
-		type: "GET",
-		url: lg.rootUrl + '__/profile.json',
-		dataType: 'json',
-		headers: {'Accept':'application/json'}
-	}).done(function(data) {
-	        lg.profile = data;
+    $.ajax({
+        type: "GET",
+        url: lg.rootUrl + '__/profile.json',
+        dataType: 'json',
+        headers: {'Accept':'application/json'}
+    }).done(function(data) {
+            lg.profile = data;
                 sessionStorage.setItem("myProfile", lg.profile);
-		lg.populateProfile(data);
-	}).fail(function(){
-		alert("Do not have a profile.");
+        lg.populateProfile(data);
+    }).fail(function(){
+        alert("Do not have a profile.");
                 var noProfile = {
                     Description: "",
                     DisplayName: "Guest",
@@ -126,32 +145,32 @@ lg.loadProfile = function() {
                 };
                 lg.profile = noProfile;
                 sessionStorage.setItem("myProfile", lg.profile);
-		lg.populateProfile(noProfile);
-	});
+        lg.populateProfile(noProfile);
+    });
 };
 lg.populateProfile = function(profile) {
-	$("#tProfileDisplayName").html(profile.DisplayName);
-	document.title = "" + profile.DisplayName;
+    $("#tProfileDisplayName").html(profile.DisplayName);
+    document.title = "" + profile.DisplayName;
         if (profile.Image) {
-	    $("#imProfile").attr("src", profile.Image);
+        $("#imProfile").attr("src", profile.Image);
         } else {
             $("#imProfile").attr("src", lg.notImage);
         }
 };
 
 lg.sendAccountNamePw = function(username, pw) {
-	$.ajax({
-		type: "POST",
-		url: lg.rootUrl + '__token',
-		processData: true,
-		dataType: 'json',
-		data: {
-			grant_type: "password",
-			username: username,
-			password: pw
-		},
-		headers: {'Accept':'application/json'}
-	}).done(function(data) {
+    $.ajax({
+        type: "POST",
+        url: lg.rootUrl + '__token',
+        processData: true,
+        dataType: 'json',
+        data: {
+            grant_type: "password",
+            username: username,
+            password: pw
+        },
+        headers: {'Accept':'application/json'}
+    }).done(function(data) {
                 data.username=username;
                 data.cellUrl = lg.rootUrl;
                 var i = lg.rootUrl.indexOf("/"); // first slash
@@ -162,8 +181,8 @@ lg.sendAccountNamePw = function(username, pw) {
                 sessionStorage.setItem("sessionData", JSON.stringify(data));
                 location.href = "main.html";
                 //location.href = "main.html#" + JSON.stringify(data);
-	}).fail(function(){
-		//alert("fail");
+    }).fail(function(){
+        //alert("fail");
                 $("#error_area").removeClass('frames_active');
                 $("#error_area").removeClass('frames_hide');
                 $("#error_msg").html(mg.getMsg("E0001"));
@@ -172,7 +191,7 @@ lg.sendAccountNamePw = function(username, pw) {
                 })
                 //$("#error_area").addClass('frames_active');
                 //lg.reAnimation();
-	});
+    });
 };
 
 lg.reAnimation = function() {
