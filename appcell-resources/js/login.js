@@ -70,7 +70,7 @@ lg.initTarget = function() {
 
 lg.targetCellLogin = function(tempUrl) {
     // Do the best to prepare a proper cell URL
-    var cellUrl = lg.cellUrlWithEndingSlash(tempUrl);
+    var cellUrl = ut.cellUrlWithEndingSlash(tempUrl, true);
 
     lg.getCell(cellUrl).done(function(data, status, xhr) {
         if (xhr.responseText.match(/urn:x-personium:xmlns/)) {
@@ -100,28 +100,9 @@ lg.cellUrl = function() {
         return "https://demo.personium.io/HomeApplication/";
     }
 
-    var cellUrl = lg.cellUrlWithEndingSlash(u);
+    var tempUrl = ut.cellUrlWithEndingSlash(u, true);
 
-    return cellUrl;
-};
-
-lg.cellUrlWithEndingSlash = function(tempUrl) {
-    var i = tempUrl.indexOf("/", 8); // search after "http://" or "https://"
-
-    if (i == -1) {
-        $('#errorCellUrl').html(mg.getMsg("E0018"));
-        return tempUrl;
-    }
-
-    if (tempUrl.slice(-1) != "/") {
-        tempUrl += "/";
-    }
-
-    i = tempUrl.indexOf("/", i + 1);
-
-    var cellUrl = tempUrl.substring(0, i + 1);
-
-    return cellUrl;
+    return tempUrl;
 };
 
 lg.loadProfile = function() {
