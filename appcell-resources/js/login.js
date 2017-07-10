@@ -17,7 +17,7 @@ lg.initTarget = function() {
             $('#errorCellUrl').html(mg.getMsg("E0022"));
         } else {
             // Cell URL is not provided in the URL's parameter, try to get the previously used cell URL from session.
-            target = sessionStorage.getItem("targetCellUrl");
+            target = sessionStorage.getItem("targetCellUrl") || "";
             $('#errorCellUrl').html("");
         }
 
