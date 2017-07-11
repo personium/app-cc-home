@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Personium Cell</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="../../appcell-resources/js/utils.js"></script>
                 <script type="text/javascript">
 //自分のURLを取得
 // cell URLを取得してそれを
@@ -18,9 +19,9 @@ var cellUrl = function() {
   if (u.indexOf("file:") == 0) {
      return "https://demo.personium.io/akio-shimono/";
   }
-  var i = u.indexOf("/", 8); // first slash
-  i = u.indexOf("/", i + 1);  // second slash
-  return u.substring(0, i + 1);
+  var tempUrl = ut.cellUrlWithEndingSlash(u);
+  
+  return tempUrl;
 };
 
 var toUrl = appUrl + '?cell=' + cellUrl();
