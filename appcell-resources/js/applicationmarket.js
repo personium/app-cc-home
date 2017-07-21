@@ -4,7 +4,7 @@ am.initAppMarket = function() {
     cm.createTitleHeader(false, true);
     cm.createSideMenu();
     cm.createBackMenu("main.html");
-    cm.setTitleMenu(mg.getMsg("00050"));
+    cm.setTitleMenu(tran.msg("AppMarket"));
     st.initSettings();
     $("#dashboard").append('<div class="panel list-group toggle-panel" id="toggle-panel1"></div>');
 
@@ -18,7 +18,7 @@ am.initAppMarket = function() {
 }
 
 am.createApplicationList = function() {
-    var html = '<div class="panel-body" id="app-panel"><section class="dashboard-block" id="installed-app"><h2>' + mg.getMsg("00047") + '</h2><div id="insAppList1"></div></section><section class="dashboard-block" id="all-app"><h2>' + mg.getMsg("00048") + '</h2><div id="appList1"></div></section></div>';
+    var html = '<div class="panel-body" id="app-panel"><section class="dashboard-block" id="installed-app"><h2>' + tran.msg("Installed") + '</h2><div id="insAppList1"></div></section><section class="dashboard-block" id="all-app"><h2>' + tran.msg("ApplicationList") + '</h2><div id="appList1"></div></section></div>';
     $("#dashboard").append(html);
     // install application list
     cm.getBoxList().done(function(data) {
@@ -121,13 +121,13 @@ am.dispViewApp = function(schema, dispName, imageSrc, description, barUrl, barBo
     var html = '<div class="panel-body">';
     html += '<div class="app-info"><div class="app-icon"><img src="' + imageSrc + '"></div><div class="app-data"><div>' + dispName + '</div><div>提供元：</div></div></div><section class="detail-section"><h2>概要</h2><div class="overview">' + description + '</div>';
     if (insFlag) {
-        html += '<div class="app-install"><button class="round-btn"href="#" onClick="st.confBarInstall(\'' + schema + '\',\'' + barUrl + '\',\'' + barBoxName + '\', \'' + dispName + '\');return(false);">' + mg.getMsg("00040") + '</button></div></section>';
+        html += '<div class="app-install"><button class="round-btn"href="#" onClick="st.confBarInstall(\'' + schema + '\',\'' + barUrl + '\',\'' + barBoxName + '\', \'' + dispName + '\');return(false);">' + tran.msg("Install") + '</button></div></section>';
     } else {
-        html += '<div class="app-install"><button class="round-btn"href="#" onClick="return(false);">' + mg.getMsg("00041") + '</button></div></section>';
+        html += '<div class="app-install"><button class="round-btn"href="#" onClick="return(false);">' + tran.msg("Uninstall") + '</button></div></section>';
     }
 
     $("#toggle-panel1").append(html);
     $("#toggle-panel1").toggleClass('slide-on');
-    cm.setTitleMenu(mg.getMsg("00042"));
+    cm.setTitleMenu(tran.msg("Details"));
 
 };
