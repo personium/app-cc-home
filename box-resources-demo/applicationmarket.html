@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,28 +12,29 @@
     <![endif]-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    <!--<script src="https://demo.personium.io/HomeApplication/__/js/common.js"></script>
-    <script src="https://demo.personium.io/HomeApplication/__/js/message_ja.js"></script>
-    <script src="https://demo.personium.io/HomeApplication/__/js/applicationmarket.js"></script>-->
-    <script src="../../appcell-resources/js/common.js"></script>
-    <script src="../../appcell-resources/js/message_en.js"></script>
-    <script src="../../appcell-resources/js/applicationmarket.js"></script>
-    <script src="../../appcell-resources/js/settings.js"></script>
-    <script src="../../appcell-resources/js/demo.js"></script>
+    <script src="../appcell-resources/js/i18next-1.6.3.js"></script>
+    <script src="../appcell-resources/js/load.i18n.js"></script>
+    <script src="../appcell-resources/js/common.js"></script>
+    <script src="../appcell-resources/js/applicationmarket.js"></script>
+    <script src="../appcell-resources/js/settings.js"></script>
+    <script src="../appcell-resources/js/demo.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
     <!--<link href='https://demo.personium.io/HomeApplication/__/css/common.css' rel='stylesheet' type='text/css'>
     <link href='https://demo.personium.io/HomeApplication/__/css/applicationmarket.css' rel='stylesheet' type='text/css'>-->
-    <link href='../../appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
-    <link href='../../appcell-resources/css/settings.css' rel='stylesheet' type='text/css'>
-    <link href='../../appcell-resources/css/applicationmarket.css' rel='stylesheet' type='text/css'>
+    <link href='../appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
+    <link href='../appcell-resources/css/settings.css' rel='stylesheet' type='text/css'>
+    <link href='../appcell-resources/css/applicationmarket.css' rel='stylesheet' type='text/css'>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(window).load(function() {
         demo.initAppMarket();
+
+        $("#tutorialTitle").html(tran.msg("Demo.applicationTitle"));
+        $("#tutorial").html(tran.msg("Demo.applicationTutorial"));
     });
 </script>
   </head>
-  <body>
+  <body id="translate">
     <div class="container-fluid display-table">
         <div class="row display-parent-div" id="displayParentDiv">
             <div class="col-md-12 col-sm-12 display-table-cell v-align">
@@ -51,9 +52,9 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header login-header">
-                        <h4 class="modal-title">Application</h4>
+                        <h4 id="tutorialTitle" class="modal-title" data-i18n="Demo.applicationTitle">Application</h4>
                     </div>
-                    <div class="modal-body fontBlack">
+                    <div class="modal-body fontBlack" id="tutorial">
                         Installed applications are displayed in "installed", <br>
                         Applications not installed are displayed in "Application list". <br>
                         <br>

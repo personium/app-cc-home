@@ -287,7 +287,7 @@ st.dispDelAccountRoleModal = function(accName, roleName, boxName, no) {
       cm.linkBoxName = boxName
     }
     st.linkAccNameNo = no;
-    $("#dvTextConfirmation").html(ut.getMsgFormat(tran.msg("removeAssociationRole"), roleName, boxName));
+    $("#dvTextConfirmation").html(tran.msg("removeAssociationRole", {value1:roleName, value2:boxName}));
     $("#modal-confirmation-title").html(tran.msg("DeleteAssigningRole"));
     $('#b-del-acclinkrole-ok').css("display","");
     $('#modal-confirmation').modal('show');
@@ -319,7 +319,7 @@ st.editAccountOk = function() {
 };
 st.dispDelModal = function(name) {
     st.updUser = name;
-    $("#dvTextConfirmation").html(ut.getMsgFormat(tran.msg("confirmDeleteAccount"), name));
+    $("#dvTextConfirmation").html(tran.msg("confirmDeleteAccount", {value: name}));
     $('#modal-confirmation-title').html(tran.msg("DeleteAccount"));
     $('#b-del-account-ok').css("display","");
     $('#modal-confirmation').modal('show');
@@ -695,7 +695,7 @@ st.dispDelRoleModal = function(name, box) {
     } else {
       st.updBox = box;
     }
-    $('#dvTextConfirmation').html(ut.getMsgFormat(tran.msg("confirmDeleteRole"), name, box));
+    $('#dvTextConfirmation').html(tran.msg("confirmDeleteRole", {value1:name, value2:box}));
     $('#modal-confirmation-title').html(tran.msg("DeleteRole"));
     $('#b-del-role-ok').css("display","");
     $('#modal-confirmation').modal('show');
@@ -895,7 +895,7 @@ st.dispDelRelationRoleModal = function(relName, relBoxName, roleName, boxName, n
       cm.linkBoxName = boxName
     }
     st.linkRelNameNo = no;
-    $("#dvTextConfirmation").html(ut.getMsgFormat(tran.msg("removeAssociationRole"), roleName, boxName));
+    $("#dvTextConfirmation").html(tran.msg("removeAssociationRole", {value1:roleName, value2:boxName}));
     $("#modal-confirmation-title").html(tran.msg("DeleteAssigningRole"));
     $('#b-del-rellinkrole-ok').css("display","");
     $('#modal-confirmation').modal('show');
@@ -941,7 +941,7 @@ st.dispDelRelationModal = function(name, box) {
     } else {
       st.updBox = box;
     }
-    $('#dvTextConfirmation').html(ut.getMsgFormat(tran.msg("confirmDeleteRelation"), name, box));
+    $('#dvTextConfirmation').html(tran.msg("confirmDeleteRelation", {value1:name, value2:box}));
     $('#modal-confirmation-title').html(tran.msg("DeleteRelation"));
     $('#b-del-relation-ok').css("display","");
     $('#modal-confirmation').modal('show');
