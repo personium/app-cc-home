@@ -50,15 +50,15 @@ sg.getExternalCellInfo = function(uri) {
   var arrUri = uri.split("/");
   if (arrUri.length < 6) {
       var arrExtCellInfo = new Array();
-	    arrExtCellInfo.push(arrUri[2]);
-	    var externalCellName = arrUri[3];
-	    if (externalCellName != undefined && externalCellName.length == 0) {
-	        externalCellName = undefined;
-	    }
+      arrExtCellInfo.push(arrUri[2]);
+      var externalCellName = arrUri[3];
+      if (externalCellName != undefined && externalCellName.length == 0) {
+          externalCellName = undefined;
+      }
       arrExtCellInfo.push(externalCellName);
-	    return arrExtCellInfo;
-	}
-	return false;
+      return arrExtCellInfo;
+  }
+  return false;
 };
 sg.checkExtCellLinkRole = function() {
     var value = $("#ddlAddExtCellLinkRoleList option:selected").val();
@@ -147,7 +147,8 @@ sg.checkUrlCell = function(url) {
       sg.restCreateExtCellAPI(jsonData);
     }
   }).fail(function(data) {
-    alert("The specified cell does not exist.");
+    //alert("The specified cell does not exist.");
+    document.getElementById("popupAddExtCellUrlErrorMsg").innerHTML = tran.msg("notExistTargetCell");
   });
 }
 sg.dispDelExtCellModal = function() {
@@ -167,8 +168,6 @@ sg.urlBlurEvent = function() {
         var extCellName = extCellInfo[1];
         var extCellURL = extCellInfo[0];
         if (sg.validateSchemaURL(schemaURL, "popupAddExtCellUrlErrorMsg", "#addExtCellUrl")
-          && sg.validateURL(extCellURL, "popupAddExtCellUrlErrorMsg", "#addExtCellUrl")
-          && sg.validateExternalCellName(extCellName)
           && sg.doesUrlContainSlash(schemaURL, "popupAddExtCellUrlErrorMsg", "#addExtCellUrl", tran.msg("errorValidateEndWithExternalCell"))) {
 
           return true;
@@ -550,42 +549,6 @@ sg.changeRadioExtCellLink = function() {
 };
 
 // Validation Check
-sg.validateName = function (displayName, displayNameSpan,txtID) {
-        var MINLENGTH = 1;
-        var MAXLENGTH = 128;
-        var letters = /[0-9a-zA-Z-_!\$\*=\^`\{\|\}~\.@]+$/;
-        var specialchar = /^[-_!\$\*=\^`\{\|\}~\.@]*$/;
-        var allowedLetters = /[0-9a-zA-Z-_!\$\*=\^`\{\|\}~\.@]+$/;
-        var lenDisplayName = displayName.length;
-        //this.removeStatusIcons(txtID);
-        document.getElementById(displayNameSpan).innerHTML = "";
-        if(lenDisplayName < MINLENGTH || displayName == undefined || displayName == null || displayName == "") {
-                document.getElementById(displayNameSpan).innerHTML =  tran.msg("pleaseEnterName");
-                //this.showErrorIcon(txtID);
-                //uCellProfile.spinner.stop();
-                return false;
-        } else if (lenDisplayName >= MAXLENGTH) {
-                document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateNameLength");
-                //uCellProfile.spinner.stop();
-                //this.showErrorIcon(txtID);
-                return false;
-        } else if (lenDisplayName != 0 && ! (displayName.match(letters))){
-                document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateSpecialCharacters");
-                //this.showErrorIcon(txtID);
-                return false;
-        //} else if (lenDisplayName != 0 && !(displayName.match(allowedLetters))) {
-        //        document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateStartNameSpecialCharacters");
-        //        //this.showErrorIcon(txtID);
-        //        return false;
-        } else if(lenDisplayName != 0 && (specialchar.toString().indexOf(displayName.substring(0,1)) >= 0)){
-                document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateStartNameSpecialCharacters");
-                //this.showErrorIcon(txtID);
-                //uCellProfile.spinner.stop();
-                return false;
-        }
-        //this.showValidValueIcon(txtID);
-        return true;
-};
 sg.validateSchemaURL = function(schemaURL, schemaSpan, txtID) {
   var isHttp = schemaURL.substring(0, 5);
   var isHttps = schemaURL.substring(0, 6);
@@ -605,21 +568,13 @@ sg.validateSchemaURL = function(schemaURL, schemaSpan, txtID) {
   if (schemaURL == "" || schemaURL == null || schemaURL == undefined) {
     //removeStatusIcons(txtID);
     return true;
-	} else if ((isHttp != "http:" && isHttps != "https:")
+  } else if ((isHttp != "http:" && isHttps != "https:")
             || (minURLLength <= 8)) {
     document.getElementById(schemaSpan).innerHTML = validMessage;
     //showErrorIcon(txtID);
     return false;
   } else if (urlLength > 1024) {
     document.getElementById(schemaSpan).innerHTML = tran.msg("maxUrlLengthError");
-    //showErrorIcon(txtID);
-    return false;
-  } else if (domainName.match(startHyphenUnderscore)) {
-    document.getElementById(schemaSpan).innerHTML = tran.msg("domainNameNotStartSpecialCharacter");
-    //showErrorIcon(txtID);
-    return false;
-  } else if (!(domainName.match(letters))) {
-    document.getElementById(schemaSpan).innerHTML = tran.msg("errorValidateSpecialCharacters");
     //showErrorIcon(txtID);
     return false;
   } else if (isDot == -1) {
@@ -634,58 +589,6 @@ sg.validateSchemaURL = function(schemaURL, schemaSpan, txtID) {
   //showValidValueIcon(txtID);
   document.getElementById(schemaSpan).innerHTML = "";
   return true;
-};
-sg.validateURL = function(domainName,errorSpan,txtID) {
-	var letters = /^[0-9a-zA-Z-_.]+$/;
-	var startHyphenUnderscore = /^[-_!@#$%^&*()=+]/;
-	if (domainName == undefined){
-		document.getElementById(errorSpan).innerHTML = tran.msg("invalidURL");
-		//cellpopup.showErrorIcon(txtID);
-		return false;
-	}
-	var lenCellName = domainName.length;
-	if (domainName.match(startHyphenUnderscore)) {
-		document.getElementById(errorSpan).innerHTML = tran.msg("domainNameNotStartSpecialCharacter");
-		//cellpopup.showErrorIcon(txtID);
-		return false;
-	} else if (lenCellName != 0 && !(domainName.match(letters))) {
-		document.getElementById(errorSpan).innerHTML = tran.msg("errorValidateSpecialCharacters");
-		//cellpopup.showErrorIcon(txtID);
-		return false;
-	} 
-	document.getElementById(errorSpan).innerHTML = "";
-	//cellpopup.showValidValueIcon(txtID);
-	return true;
-};
-sg.validateExternalCellName = function(cellName) {
-	if (cellName == undefined) {
-		//cellpopup.showErrorIcon('#txtUrl');
-		document.getElementById("popupAddExtCellUrlErrorMsg").innerHTML = tran.msg("pleaseEnterExternalCellName");
-		return false;
-	}
-	var letters = /^[0-9a-zA-Z-_]+$/;
-	var startHyphenUnderscore = /^[-_]/;
-	var lenCellName = cellName.length;
-	if (lenCellName < 1) {
-		document.getElementById("popupAddExtCellUrlErrorMsg").innerHTML = tran.msg("pleaseValidExternalCellUrl");
-		//cellpopup.showErrorIcon('#txtUrl');
-		return false;
-	} else if (lenCellName > 128) {
-		document.getElementById("popupAddExtCellUrlErrorMsg").innerHTML = tran.msg("maxExternalCellNameLengthError");
-		//cellpopup.showErrorIcon('#txtUrl');
-		return false;
-	} else if (cellName.match(startHyphenUnderscore)) {
-          document.getElementById("popupAddExtCellUrlErrorMsg").innerHTML = tran.msg("errorValidateStartExternalCellNameSpecialCharacters");
-          //cellpopup.showErrorIcon('#txtUrl');
-          return false;
-	} else if (lenCellName != 0 && !(cellName.match(letters))) {
-		document.getElementById("popupAddExtCellUrlErrorMsg").innerHTML = tran.msg("errorValidateSpecialCharacters");
-		//cellpopup.showErrorIcon('#txtUrl');
-		return false;
-	}
-	document.getElementById("popupAddExtCellUrlErrorMsg").innerHTML = "";
-	//cellpopup.showValidValueIcon('#txtUrl');
-	return true;
 };
 sg.doesUrlContainSlash = function(schemaURL, schemaSpan,txtID,message) {
 	if (schemaURL != undefined) {
