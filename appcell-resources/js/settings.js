@@ -22,7 +22,7 @@ st.initSettings = function() {
     cm.setTitleMenu(tran.msg("Settings"), true);
 
     $('#b-edit-accconfirm-ok').on('click', function () { 
-        st.editAccountOk();
+        st.sendAjaxEditAccount();
     });
     $('#b-del-account-ok').on('click', function () { st.restDeleteAccountAPI(); });
     $('#b-del-role-ok').on('click', function () { st.restDeleteRoleAPI(); });
@@ -304,14 +304,14 @@ st.createEditAccount = function(name) {
     html += '<div id="dvTextEditConfirm" style="margin-bottom: 10px;"><input type="password" placeholder="' + tran.msg("confirmNewPass") + '" id="pEditConfirm" onblur="st.blurConfirm(\'pEditNewPassword\', \'pEditConfirm\', \'editConfirmMessage\');"><span class="popupAlertArea" style="color:red"><aside id="editConfirmMessage"> </aside></span></div>';
     html += '<div class="modal-footer">';
     html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + tran.msg("Cancel") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-account-ok" onClick="st.editAccount();" disabled>' + tran.msg("Edit") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-account-ok" onClick="st.validateEditedInfo();" disabled>' + tran.msg("Edit") + '</button>';
     html += '</div></div>';
     $("#setting-panel2").append(html);
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
     cm.setTitleMenu(tran.msg("EditAccount"), true);
 };
-st.editAccountOk = function() {
+st.sendAjaxEditAccount = function() {
     var keyName = st.updUser;
     var jsonData = {
                     "Name" : $("#editAccountName").val()
@@ -355,11 +355,7 @@ st.addAccountNameBlurEvent = function() {
 st.editAccountNameBlurEvent = function() {
         var name = $("#editAccountName").val();
         var nameSpan = "popupEditAccountNameErrorMsg";
-        if (st.validateName(name, nameSpan, "-_!\$\*=^`\{\|\}~.@", "")) {
-            $('#b-edit-account-ok').prop('disabled', false);
-        } else {
-            $('#b-edit-account-ok').prop('disabled', true);
-        }
+        $('#b-edit-account-ok').prop('disabled', !st.validateName(name, nameSpan, "-_!\$\*=^`\{\|\}~.@", ""));
 };
 st.addAccount = function() {
   var name = $("#addAccountName").val();
@@ -388,7 +384,7 @@ st.addAccount = function() {
 
   return false;
 };
-st.editAccount = function() {
+st.validateEditedInfo = function() {
   var name = $("#editAccountName").val();
   if (st.validateName(name, "popupEditAccountNameErrorMsg", "-_!\$\*=^`\{\|\}~.@", "")) {
     var pass = $("#pEditNewPassword").val();
@@ -704,11 +700,7 @@ st.dispDelRoleModal = function(name, box) {
 st.addRoleNameBlurEvent = function() {
         var name = $("#addRoleName").val();
         var nameSpan = "popupAddRoleNameErrorMsg";
-        if (st.validateName(name, nameSpan, "-_", "")) {
-            $('#b-add-role-ok').prop('disabled', false);
-        } else {
-            $('#b-add-role-ok').prop('disabled', true);
-        }
+        $('#b-add-role-ok').prop('disabled', !st.validateName(name, nameSpan, "-_", ""));
 };
 st.addRole = function() {
   var name = $("#addRoleName").val();
@@ -809,18 +801,10 @@ st.createAddRelation = function() {
 st.addRelationNameBlurEvent = function() {
         var name = $("#addRelationName").val();
         var nameSpan = "popupAddRelationNameErrorMsg";
-        if (st.validateName(name, nameSpan, "-_\+:", "-\+")) {
-            $('#b-add-relation-ok').prop('disabled', false);
-        } else {
-            $('#b-add-relation-ok').prop('disabled', true);
-        }
+        $('#b-add-relation-ok').prop('disabled', !st.validateName(name, nameSpan, "-_\+:", "-\+"));
 };
 st.changeCheckRelationLinkRole = function(obj) {
-    if (obj.checked) {
-        $("#ddlAddRelLinkRoleList").prop('disabled', false);
-    } else {
-        $("#ddlAddRelLinkRoleList").prop('disabled', true);
-    }
+    $("#ddlAddRelLinkRoleList").prop('disabled', !obj.checked);
 };
 st.createRelationRole = function(relName, boxName, no) {
     var relBoxName = boxName;
@@ -952,11 +936,7 @@ st.dispDelRelationModal = function(name, box) {
 st.editRelationNameBlurEvent = function() {
         var name = $("#editRelationName").val();
         var nameSpan = "popupEditRelationNameErrorMsg";
-        if (st.validateName(name, nameSpan, "-_\+:", "-\+")) {
-            $('#b-edit-relation-ok').prop('disabled', false);
-        } else {
-            $('#b-edit-relation-ok').prop('disabled', true);
-        }
+        $('#b-edit-relation-ok').prop('disabled', !st.validateName(name, nameSpan, "-_\+:", "-\+"));
 };
 st.changeRelationSelect = function() {
     var value = $("#ddlEditRelationBoxList option:selected").val();
