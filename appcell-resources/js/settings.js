@@ -22,7 +22,7 @@ st.initSettings = function() {
     cm.setTitleMenu(tran.msg("Settings"), true);
 
     $('#b-edit-accconfirm-ok').on('click', function () { 
-        st.editAccount();
+        st.sendAjaxEditAccount();
     });
     $('#b-del-account-ok').on('click', function () { st.restDeleteAccountAPI(); });
     $('#b-del-role-ok').on('click', function () { st.restDeleteRoleAPI(); });
@@ -304,18 +304,21 @@ st.createEditAccount = function(name) {
     html += '<div id="dvTextEditConfirm" style="margin-bottom: 10px;"><input type="password" placeholder="' + tran.msg("confirmNewPass") + '" id="pEditConfirm" onblur="st.blurConfirm(\'pEditNewPassword\', \'pEditConfirm\', \'editConfirmMessage\');"><span class="popupAlertArea" style="color:red"><aside id="editConfirmMessage"> </aside></span></div>';
     html += '<div class="modal-footer">';
     html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + tran.msg("Cancel") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-account-ok" onClick="st.editAccountOk();" disabled>' + tran.msg("Edit") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-account-ok" onClick="st.validateEditedInfo();" disabled>' + tran.msg("Edit") + '</button>';
     html += '</div></div>';
     $("#setting-panel2").append(html);
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
     cm.setTitleMenu(tran.msg("EditAccount"), true);
 };
-st.editAccountOk = function() {
-    $('#dvTextConfirmation').html(tran.msg("confirmChangeContentEnter"));
-    $('#modal-confirmation-title').html(tran.msg("EditAccount"));
-    $('#b-edit-accconfirm-ok').css("display","");
-    $('#modal-confirmation').modal('show');
+st.sendAjaxEditAccount = function() {
+    var keyName = st.updUser;
+    var jsonData = {
+                    "Name" : $("#editAccountName").val()
+    };
+
+    st.restEditAccountAPI(jsonData, $("#pEditNewPassword").val(), keyName);
+    return true;
 };
 st.dispDelModal = function(name) {
     st.updUser = name;
@@ -347,20 +350,16 @@ st.dispBoxList = function(json, id) {
 st.addAccountNameBlurEvent = function() {
         var name = $("#addAccountName").val();
         var nameSpan = "popupAddAccountNameErrorMsg";
-        var txtname = "#addAccountName";
-        st.validateName(name, nameSpan, txtname);
+        st.validateName(name, nameSpan, "-_!\$\*=^`\{\|\}~.@", "")
 };
 st.editAccountNameBlurEvent = function() {
         var name = $("#editAccountName").val();
         var nameSpan = "popupEditAccountNameErrorMsg";
-        var txtname = "#editAccountName";
-        if (st.validateName(name, nameSpan, txtname)) {
-            $('#b-edit-account-ok').prop('disabled', false);
-        }
+        $('#b-edit-account-ok').prop('disabled', !st.validateName(name, nameSpan, "-_!\$\*=^`\{\|\}~.@", ""));
 };
 st.addAccount = function() {
   var name = $("#addAccountName").val();
-  if (st.validateName(name, "popupAddAccountNameErrorMsg")) {
+  if (st.validateName(name, "popupAddAccountNameErrorMsg", "-_!\$\*=^`\{\|\}~.@", "")) {
     var pass = $("#pAddNewPassword").val();
     if (st.passInputCheck(pass, "addChangeMessage")
      && st.changePassCheck(pass, $("#pAddConfirm").val(), "addConfirmMessage")) {
@@ -385,18 +384,16 @@ st.addAccount = function() {
 
   return false;
 };
-st.editAccount = function() {
-  var keyName = st.updUser;
+st.validateEditedInfo = function() {
   var name = $("#editAccountName").val();
-  if (st.validateName(name, "popupEditAccountNameErrorMsg")) {
+  if (st.validateName(name, "popupEditAccountNameErrorMsg", "-_!\$\*=^`\{\|\}~.@", "")) {
     var pass = $("#pEditNewPassword").val();
-    if (st.changePassCheck($("#pEditNewPassword").val(), $("#pEditConfirm").val(), "editConfirmMessage")) {
-        var jsonData = {
-                        "Name" : name
-        };
-
-        st.restEditAccountAPI(jsonData, pass, keyName);
-        return true;
+    if (st.passInputCheck(pass, "editChangeMessage")
+     && st.changePassCheck(pass, $("#pEditConfirm").val(), "editConfirmMessage")) {
+        $('#dvTextConfirmation').html(tran.msg("confirmChangeContentEnter"));
+        $('#modal-confirmation-title').html(tran.msg("EditAccount"));
+        $('#b-edit-accconfirm-ok').css("display","");
+        $('#modal-confirmation').modal('show');
     }
   }
 
@@ -655,7 +652,7 @@ st.operationRole = function() {
     if (st.updUser !== null) {
         html += '<button type="button" class="btn btn-primary text-capitalize" id="b-add-role-ok" onClick="st.addRole();">' + tran.msg("Edit") + '</button>';
     } else {
-        html += '<button type="button" class="btn btn-primary" id="b-add-role-ok" onClick="st.addRole();">' + tran.msg("Create") + '</button>';
+        html += '<button type="button" class="btn btn-primary" id="b-add-role-ok" onClick="st.addRole();" disabled>' + tran.msg("Create") + '</button>';
     }
     
     html += '</div></div>';
@@ -703,8 +700,7 @@ st.dispDelRoleModal = function(name, box) {
 st.addRoleNameBlurEvent = function() {
         var name = $("#addRoleName").val();
         var nameSpan = "popupAddRoleNameErrorMsg";
-        var txtname = "#addRoleName";
-        st.validateName(name, nameSpan, txtname);
+        $('#b-add-role-ok').prop('disabled', !st.validateName(name, nameSpan, "-_", ""));
 };
 st.addRole = function() {
   var name = $("#addRoleName").val();
@@ -805,19 +801,10 @@ st.createAddRelation = function() {
 st.addRelationNameBlurEvent = function() {
         var name = $("#addRelationName").val();
         var nameSpan = "popupAddRelationNameErrorMsg";
-        var txtname = "#addRelationName";
-        if (st.validateName(name, nameSpan, txtname, "\+:", "_:")) {
-            $('#b-add-relation-ok').prop('disabled', false);
-        } else {
-            $('#b-add-relation-ok').prop('disabled', true);
-        }
+        $('#b-add-relation-ok').prop('disabled', !st.validateName(name, nameSpan, "-_\+:", "-\+"));
 };
 st.changeCheckRelationLinkRole = function(obj) {
-    if (obj.checked) {
-        $("#ddlAddRelLinkRoleList").prop('disabled', false);
-    } else {
-        $("#ddlAddRelLinkRoleList").prop('disabled', true);
-    }
+    $("#ddlAddRelLinkRoleList").prop('disabled', !obj.checked);
 };
 st.createRelationRole = function(relName, boxName, no) {
     var relBoxName = boxName;
@@ -949,12 +936,7 @@ st.dispDelRelationModal = function(name, box) {
 st.editRelationNameBlurEvent = function() {
         var name = $("#editRelationName").val();
         var nameSpan = "popupEditRelationNameErrorMsg";
-        var txtname = "#editRelationName";
-        if (st.validateName(name, nameSpan, txtname, "\+:", "_:")) {
-            $('#b-edit-relation-ok').prop('disabled', false);
-        } else {
-            $('#b-edit-relation-ok').prop('disabled', true);
-        }
+        $('#b-edit-relation-ok').prop('disabled', !st.validateName(name, nameSpan, "-_\+:", "-\+"));
 };
 st.changeRelationSelect = function() {
     var value = $("#ddlEditRelationBoxList option:selected").val();
@@ -1102,102 +1084,49 @@ st.restEditRelationAPI = function(json) {
 };
 
 // Validation Check
-st.validateName = function (displayName, displayNameSpan,txtID, addSpecial, notStartChar) {
-        var addSpecialChar = "";
-        var addNotStartChar = "-_";
+st.validateName = function (displayName, displayNameSpan, addSpecial, addStart) {
+        var specialChar = "a-zA-Z0-9";
+        var startChar = "a-zA-Z0-9";
         if (addSpecial) {
-            addSpecialChar = addSpecial;
+            specialChar += addSpecial;
         }
-        if (notStartChar) {
-            addNotStartChar = notStartChar;
+        if (addStart) {
+            startChar += addStart;
         }
 
         var MINLENGTH = 1;
         var MAXLENGTH = 128;
-        //var letters = /^[一-龠ぁ-ゔ[ァ-ヴー々〆〤0-9０-９a-zA-ZＡ-Ｚ-_]+$/;
-        var letters = new RegExp("^[一-龠ぁ-ゔ[ァ-ヴー々〆〤0-9０-９a-zA-ZＡ-Ｚ-_" + addSpecialChar + "]+$");
-        //var specialchar = /^[]/;
-        var specialchar = new RegExp("^[" + addNotStartChar + "]");
-        //var allowedLetters = /^[0-9a-zA-Z-_]+$/;
-        var allowedLetters = new RegExp("^[0-9a-zA-Z-_" + addSpecialChar + "]+$");
+
         var lenDisplayName = displayName.length;
-        document.getElementById(displayNameSpan).innerHTML = "";
         if(lenDisplayName < MINLENGTH || displayName == undefined || displayName == null || displayName == "") {
                 document.getElementById(displayNameSpan).innerHTML =  tran.msg("pleaseEnterName");
                 return false;
-        } else if (lenDisplayName >= MAXLENGTH) {
-                document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateNameLength");
-                return false;
-        } else if (lenDisplayName != 0 && !(displayName.match(letters))){
-                document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateSpecialCharacters");
-                return false;
-        } else if (lenDisplayName != 0 && !(displayName.match(allowedLetters))) {
-                document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateStartNameSpecialCharacters");
-                return false;
-        } else if(lenDisplayName != 0 && displayName.match(specialchar)){
-                document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateStartNameSpecialCharacters");
-                return false;
         }
-        return true;
-};
-st.validateSchemaURL = function(schemaURL, schemaSpan, txtID) {
-  var isHttp = schemaURL.substring(0, 5);
-  var isHttps = schemaURL.substring(0, 6);
-  var minURLLength = schemaURL.length;
-  var validMessage = tran.msg("pleaseValidSchemaURL");
-  var letters = /^[0-9a-zA-Z-_.\/]+$/;
-  var startHyphenUnderscore = /^[-_!@#$%^&*()=+]/;
-  var urlLength = schemaURL.length;
-  var schemaSplit = schemaURL.split("/");
-  var isDot = -1;
-  if(schemaURL.split("/").length > 2) {
-    if (schemaSplit[2].length>0) {
-      isDot = schemaSplit[2].indexOf(".");
-    }
-  }
-  var domainName = schemaURL.substring(8, urlLength);
-  if (schemaURL == "" || schemaURL == null || schemaURL == undefined) {
-    return true;
-	} else if ((isHttp != "http:" && isHttps != "https:")
-            || (minURLLength <= 8)) {
-    document.getElementById(schemaSpan).innerHTML = validMessage;
-    return false;
-  } else if (urlLength > 1024) {
-    document.getElementById(schemaSpan).innerHTML = tran.msg("maxUrlLengthError");
-    return false;
-  } else if (domainName.match(startHyphenUnderscore)) {
-    document.getElementById(schemaSpan).innerHTML = tran.msg("errorValidateStartDomainNameSpecialCharacters");
-    return false;
-  } else if (!(domainName.match(letters))) {
-    document.getElementById(schemaSpan).innerHTML = tran.msg("errorValidateSpecialCharacters");
-    return false;
-  } else if (isDot == -1) {
-    document.getElementById(schemaSpan).innerHTML = validMessage;
-    return false;
-  } else if ((domainName.indexOf(".."))>-1 || (domainName.indexOf("//"))>-1) {
-    document.getElementById(schemaSpan).innerHTML = validMessage;
-    return false;
-  }
-  document.getElementById(schemaSpan).innerHTML = "";
-  return true;
-};
-st.validateURL = function(domainName,errorSpan,txtID) {
-	var letters = /^[0-9a-zA-Z-_.]+$/;
-	var startHyphenUnderscore = /^[-_!@#$%^&*()=+]/;
-	if (domainName == undefined){
-		document.getElementById(errorSpan).innerHTML = tran.msg("invalidURL");
-		return false;
-	}
-	var lenCellName = domainName.length;
-	if (domainName.match(startHyphenUnderscore)) {
-		document.getElementById(errorSpan).innerHTML = tran.msg("errorValidateStartDomainNameSpecialCharacters");
-		return false;
-	} else if (lenCellName != 0 && !(domainName.match(letters))) {
-		document.getElementById(errorSpan).innerHTML = tran.msg("errorValidateSpecialCharacters");
-		return false;
-	} 
-	document.getElementById(errorSpan).innerHTML = "";
-	return true;
+
+        var letters = new RegExp("^([" + startChar + "]([" + specialChar + "]){0,127})?$");
+        var startReg = new RegExp("^[" + startChar + "]")
+        var multibyteChar = new RegExp("[^\x00-\x7F]+");
+        document.getElementById(displayNameSpan).innerHTML = "";
+
+        if(displayName.match(letters)) {
+            return true;
+        } else if (lenDisplayName > MAXLENGTH) {
+            document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateNameLength");
+            return false;
+        } else if (displayName.match(multibyteChar)) {
+            document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateMultibyte");
+            return false;
+        } else if (!displayName.match(startReg)) {
+            if (addStart) {
+                document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateFirstPossibleSpecialCharacters", {value: addStart});
+            } else {
+                document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateStartNameSpecialCharacters");
+            }
+            return false;
+        } else {
+            document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateSpecialCharacters", {value: addSpecial});
+            return false;
+        }
 };
 st.doesUrlContainSlash = function(schemaURL, schemaSpan,txtID,message) {
 	if (schemaURL != undefined) {

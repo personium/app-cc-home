@@ -714,41 +714,21 @@ cm.validateFileType = function(filePath, imageSize, popupImageErrorId) {
 		return false;
 	}
 };
-cm.validateDisplayName = function(displayName, displayNameSpan,txtID) {
+cm.validateDisplayName = function(displayName, displayNameSpan) {
 	var MINLENGTH = 1;
-	var MAXLENGTH = 128;
-	var letters = /^[一-龠ぁ-ゔ[ァ-ヴー々〆〤0-9a-zA-Z-_\s]+$/;
-	var specialchar = /^[-_\s]*$/;
-	var allowedLetters = /^[0-9a-zA-Z-_\s]+$/;
-	var lenDisplayName = displayName.length;
-	//this.removeStatusIcons(txtID);
-        document.getElementById(displayNameSpan).innerHTML = "";
-	if(lenDisplayName < MINLENGTH || displayName == undefined || displayName == null || displayName == "") {
-		document.getElementById(displayNameSpan).innerHTML =  tran.msg("pleaseEnterName");
-		//this.showErrorIcon(txtID);
-		//uCellProfile.spinner.stop();
-		return false;
-	} else if (lenDisplayName >= MAXLENGTH) {
-		document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateNameLength");
-		//uCellProfile.spinner.stop();
-		//this.showErrorIcon(txtID);
-		return false;
-	} else if (lenDisplayName != 0 && ! (displayName.match(letters))){
-		document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateSpecialCharacters");
-		//this.showErrorIcon(txtID);
-		return false;
-	//} else if (lenDisplayName != 0 && !(displayName.match(allowedLetters))) {
-	//	document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateStartNameSpecialCharacters");
-	//	//this.showErrorIcon(txtID);
-	//	return false;
-	} else if(lenDisplayName != 0 && (specialchar.toString().indexOf(displayName.substring(0,1)) >= 0)){
-		document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateStartNameSpecialCharacters");
-		//this.showErrorIcon(txtID);
-		//uCellProfile.spinner.stop();
-		return false;
+        var lenDisplayName = displayName.length;
+        if(lenDisplayName < MINLENGTH || displayName == undefined || displayName == null || displayName == "") {
+            $("#" + displayNameSpan).html(tran.msg("pleaseEnterName"));
+            return false;
 	}
-	//this.showValidValueIcon(txtID);
-	return true;
+
+	var MAXLENGTH = 128;
+        $("#" + displayNameSpan).html("");
+        if (lenDisplayName > MAXLENGTH) {
+            $("#" + displayNameSpan).html(tran.msg("errorValidateNameLength"));
+            return false;
+        }
+        return true;
 };
 cm.validateDescription = function(descriptionDetails, descriptionSpan) {
 	var isValidDescription = true;
