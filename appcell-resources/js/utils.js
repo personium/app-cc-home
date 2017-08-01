@@ -18,13 +18,3 @@ ut.cellUrlWithEndingSlash = function(tempUrl, raiseError=false) {
 
     return cellUrl;
 };
-
-ut.getMsgFormat = function(msg) {
-    var str = msg;
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            str = str.replace(new RegExp("\\(" + i + "\\)"), arguments[i]);
-        }
-    }
-    return str;
-};

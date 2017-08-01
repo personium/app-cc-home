@@ -151,7 +151,7 @@ sg.checkUrlCell = function(url) {
   });
 }
 sg.dispDelExtCellModal = function() {
-    $("#dvTextConfirmation").html(ut.getMsgFormat(tran.msg("confirmDeleteExternalCell"), sg.linkExtCellUrl));
+    $("#dvTextConfirmation").html(tran.msg("confirmDeleteExternalCell", {value:sg.linkExtCellUrl}));
     $("#modal-confirmation-title").html(tran.msg("DeleteExternalCell"));
     $('#b-del-extcell-ok').css("display","");
     $('#b-cancel').css("display","");
@@ -185,7 +185,7 @@ sg.dispDelExtCellRoleModal = function(url, roleName, boxName, no) {
       cm.linkBoxName = boxName
     }
     sg.linkExtCellNo = no;
-    $("#dvTextConfirmation").html(ut.getMsgFormat(tran.msg("removeAssociationRole"), roleName, boxName));
+    $("#dvTextConfirmation").html(tran.msg("removeAssociationRole", {value1:roleName, value2:boxName}));
     $("#modal-confirmation-title").html(tran.msg("DeleteAssigningRole"));
     $('#b-cancel').css("display","");
     $('#b-del-extcelllinkrole-ok').css("display","");
@@ -422,7 +422,7 @@ sg.dispDelExtCellRelationModal = function(url, relationName, boxName, no) {
       cm.linkBoxName = boxName
     }
     sg.linkExtCellNo = no;
-    $("#dvTextConfirmation").html(ut.getMsgFormat(tran.msg("confirmDeleteRelationAssign"), relationName, boxName));
+    $("#dvTextConfirmation").html(tran.msg("confirmDeleteRelationAssign", {value1:relationName, value2:boxName}));
     $("#modal-confirmation-title").html(tran.msg("DeleteAssigningRelation"));
     $('#b-cancel').css("display","");
     $('#b-del-extcelllinkrelation-ok').css("display","");
