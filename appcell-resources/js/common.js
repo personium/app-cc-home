@@ -228,6 +228,7 @@ cm.createSideMenu = function() {
     var itemName = {};
     itemName.EditProf = i18next.t("EditProfile");
     itemName.ChgPass = i18next.t("ChangePass");
+    itemName.ChgLng = i18next.t("ChangeLng");
     itemName.Logout = i18next.t("Logout");
     itemName.DispName = i18next.t("DisplayName");
     itemName.Description = i18next.t("Description");
@@ -248,6 +249,8 @@ cm.createSideMenu = function() {
     html += '<li><a class="allToggle" id="applicationToggle" href="#">' + i18next.t("Application") + '</a></li>';
     html += '<li><a class="allToggle" id="roleToggle" href="#">' + i18next.t("Role") + '</a></li>';
     html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="#">' + i18next.t("Relation") + '</a></li>';
+    // change language
+    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-chgLng">' + itemName.ChgLng + '</a></li>'
     // log out
     html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout">' + itemName.Logout + '</a></li>';
 
@@ -342,6 +345,30 @@ cm.createSideMenu = function() {
     modal = $(html);
     $(document.body).append(modal);
 
+    // Change Language
+    html = '<div id="modal-chgLng" class="modal fade" role="dialog">' +
+           '<div class="modal-dialog">' +
+           '<div class="modal-content">' +
+           '<div class="modal-header login-header">' +
+           '<button type="button" class="close" data-dismiss="modal">×</button>' +
+           '<h4 class="modal-title">' + itemName.ChgLng + '</h4>' +
+           '</div>' +
+           '<div class="modal-body">' +
+           i18next.t("changeLanguageDescription") +
+           '<select class="form-control" id="selectLng">' +
+           '<option value="en">' + i18next.t("English") + '</option>' +
+           '<option value="ja">' + i18next.t("Japanese") + '</option>' +
+           '</select>' +
+           '<span id="selectLngMessage" style="color:red"></span>' +
+           '</div>' +
+           '<div class="modal-footer">' +
+           '<button type="button" class="btn btn-default" data-dismiss="modal">' + i18next.t("Cancel") + '</button>' +
+           '<button type="button" class="btn btn-primary" id="b-setlng-ok" >' + i18next.t("Setup") + '</button>' +
+           '</div></div></div></div>';
+    modal = $(html);
+    $(document.body).append(modal);
+    $("#selectLng").val(i18next.language);
+
     // Log Out
     html = '<div id="modal-logout" class="modal fade" role="dialog">' +
            '<div class="modal-dialog">' +
@@ -397,6 +424,12 @@ cm.createSideMenu = function() {
 //        $(".overlay").removeClass('overlay-on');
 //        $(".slide-menu").removeClass('slide-on');
         cm.toggleSlide();
+    });
+    $("#b-setlng-ok").on('click', function() {
+        $("#selectLng option:selected").each(function(index, option) {
+            i18next.changeLanguage($(option).val())
+            window.location.reload();
+        });
     });
 
     // Time Out Set
