@@ -19,7 +19,7 @@ st.initSettings = function() {
     // Create Back Button
     cm.createBackMenu("main.html", true);
     // Set Title
-    cm.setTitleMenu(tran.msg("Settings"), true);
+    cm.setTitleMenu(i18next.t("Settings"), true);
 
     $('#b-edit-accconfirm-ok').on('click', function () { 
         st.sendAjaxEditAccount();
@@ -92,7 +92,7 @@ st.slideToggle = function(id) {
 st.checkAccLinkRole = function() {
     var value = $("#ddlAddAccLinkRoleList option:selected").val();
     if (value === undefined) {
-        $("#popupAddAccountLinkRoleErrorMsg").html(tran.msg("selectRole"));
+        $("#popupAddAccountLinkRoleErrorMsg").html(i18next.t("selectRole"));
         return false;
     } else {
         $("#popupAddAccountLinkRoleErrorMsg").html("");
@@ -111,7 +111,7 @@ st.createAccountList = function() {
     st.getAccountList().done(function(data) {
         st.dispAccountList(data);
         $(".setting-menu").toggleClass('slide-on');
-        cm.setTitleMenu(tran.msg("Account"), true);
+        cm.setTitleMenu(i18next.t("Account"), true);
     });
 };
 // アカウントリストの取得
@@ -145,13 +145,13 @@ st.dispAccountList = function(json) {
     html += '<table style="width: 100%;"><tr>';
     html += '<td style="width: 80%;"><a href="#" class="ellipsisText" id="accountLinkToRoleToggle' + i + '" onClick="st.createAccountRole(\'' + acc.Name + '\',\'' + i + '\')">' + acc.Name + '&nbsp;<img class="image-circle-small" src="' + typeImg + '"></a></td>';
     if (acc.Name !== cm.user.username) {
-        html += '<td style="margin-right:10px;width: 10%;"><a class="edit-button list-group-item" href="#" onClick="st.createEditAccount(\'' + acc.Name + '\');return(false)">' + tran.msg("Edit") + '</a></td>'
-             + '<td style="width: 10%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelModal(\'' + acc.Name + '\');return(false)">' + tran.msg("Del") + '</a></td>';
+        html += '<td style="margin-right:10px;width: 10%;"><a class="edit-button list-group-item" href="#" onClick="st.createEditAccount(\'' + acc.Name + '\');return(false)">' + i18next.t("Edit") + '</a></td>'
+             + '<td style="width: 10%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelModal(\'' + acc.Name + '\');return(false)">' + i18next.t("Del") + '</a></td>';
     }
     html += '</tr></table></div>';
   }
   html += '<div class="list-group-item">';
-  html += '<a href="#" class="allToggle" onClick="st.createAddAccount()">＋ ' + tran.msg("CreateAccount") + '</a></div>';
+  html += '<a href="#" class="allToggle" onClick="st.createAddAccount()">＋ ' + i18next.t("CreateAccount") + '</a></div>';
   html += '</div>';
   $("#setting-panel1").append(html);
 }
@@ -166,26 +166,26 @@ st.createAddAccount = function() {
     cm.setBackahead(true);
     cm.getRoleList().done(function(data) {
         var html = '<div class="modal-body">';
-        html += '<div id="dvAddName">' + tran.msg("Name") + '</div>';
+        html += '<div id="dvAddName">' + i18next.t("Name") + '</div>';
         html += '<div id="dvTextAddName" style="margin-bottom: 10px;">';
         html += '<input type="text" id="addAccountName" onblur="st.addAccountNameBlurEvent();">';
         html += '<span class="popupAlertArea" style="color:red">';
         html += '<aside id="popupAddAccountNameErrorMsg"> </aside>';
         html += '</span></div>';
-        html += '<div id="dvAddPassword">' + tran.msg("Password") + '</div>';
+        html += '<div id="dvAddPassword">' + i18next.t("Password") + '</div>';
         html += '<div id="dvTextAddNewPassword" style="margin-bottom: 10px;">';
-        html += '<input type="password" placeholder="' + tran.msg("newPassPlaceHolder") + '" id="pAddNewPassword" onblur="st.blurNewPassword(this, \'b-add-account-ok\', \'addChangeMessage\');">';
+        html += '<input type="password" placeholder="' + i18next.t("newPassPlaceHolder") + '" id="pAddNewPassword" onblur="st.blurNewPassword(this, \'b-add-account-ok\', \'addChangeMessage\');">';
         html += '<span class="popupAlertArea" style="color:red">';
         html += '<aside id="addChangeMessage"> </aside>';
         html += '</span></div>';
-        html += '<div id="dvAddConfirm">' + tran.msg("confirmNewPass") + '</div>';
+        html += '<div id="dvAddConfirm">' + i18next.t("confirmNewPass") + '</div>';
         html += '<div id="dvTextAddConfirm" style="margin-bottom: 10px;">';
-        html += '<input type="password" placeholder="' + tran.msg("confirmNewPass") + '" id="pAddConfirm" onblur="st.blurConfirm(\'pAddNewPassword\', \'pAddConfirm\', \'addConfirmMessage\');">';
+        html += '<input type="password" placeholder="' + i18next.t("confirmNewPass") + '" id="pAddConfirm" onblur="st.blurConfirm(\'pAddNewPassword\', \'pAddConfirm\', \'addConfirmMessage\');">';
         html += '<span class="popupAlertArea" style="color:red">';
         html += '<aside id="addConfirmMessage"> </aside>';
         html += '</span></div>';
         html += '<div id="dvCheckAddAccountLinkRole" style="margin-bottom: 10px;">';
-        html += '<label><input class="widthAuto" type="checkbox" id="addCheckAccountLinkRole" onChange="st.changeCheckAccountLinkRole(this);">' + tran.msg("AssignRoleMulti") + '</label>';
+        html += '<label><input class="widthAuto" type="checkbox" id="addCheckAccountLinkRole" onChange="st.changeCheckAccountLinkRole(this);">' + i18next.t("AssignRoleMulti") + '</label>';
         html += '</div>';
         html += '<div id="dvSelectAddAccountLinkRole" style="margin-bottom: 10px;">';
         html += '<select class="form-control" name="" id="ddlAddAccLinkRoleList" onblur="st.checkAccLinkRole();" multiple disabled><option>Select a role</option></select>';
@@ -193,15 +193,15 @@ st.createAddAccount = function() {
         html += '</div>';
         html += '</div>';
         html += '<div class="modal-footer">';
-        html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + tran.msg("Cancel") + '</button>';
-        html += '<button type="button" class="btn btn-primary" id="b-add-account-ok" onClick="st.addAccount();">' + tran.msg("Create") + '</button>';
+        html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + i18next.t("Cancel") + '</button>';
+        html += '<button type="button" class="btn btn-primary" id="b-add-account-ok" onClick="st.addAccount();">' + i18next.t("Create") + '</button>';
         html += '</div></div>';
         $("#setting-panel2").append(html);
         cm.dispRoleList(data, "ddlAddAccLinkRoleList", true);
     });
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
-    cm.setTitleMenu(tran.msg("CreateAccount"), true);
+    cm.setTitleMenu(i18next.t("CreateAccount"), true);
 };
 // 登録パスワードチェック
 st.blurNewPassword = function(obj, btnId, msgId) {
@@ -269,12 +269,12 @@ st.dispAccountRoleList = function(json, accName, no) {
     html += '<div class="list-group-item">';
     html += '<table class="table-fixed"><tr>';
     html += '<td style="width: 85%;"><p class="ellipsisText">' + name + '(' + boxName + ')</p></td>';
-    html += '<td colspan="2" style="width: 15%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelAccountRoleModal(\'' + accName + '\',\'' + name + '\',\'' + boxName + '\',\'' + no + '\');return(false)">' + tran.msg("Detach") + '</a></td>';
+    html += '<td colspan="2" style="width: 15%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelAccountRoleModal(\'' + accName + '\',\'' + name + '\',\'' + boxName + '\',\'' + no + '\');return(false)">' + i18next.t("Detach") + '</a></td>';
     html += '</tr>';
     html += '</table></div>';
   }
   html += '<div class="list-group-item">';
-  html += '<a class="allToggle" href="#" onClick="cm.dispAssignRole(\'acc\', true)">＋ ' + tran.msg("AssigningRoles") + '</a></div>';
+  html += '<a class="allToggle" href="#" onClick="cm.dispAssignRole(\'acc\', true)">＋ ' + i18next.t("AssigningRoles") + '</a></div>';
   html += '</div>';
   $("#setting-panel2").append(html);
 }
@@ -287,8 +287,8 @@ st.dispDelAccountRoleModal = function(accName, roleName, boxName, no) {
       cm.linkBoxName = boxName
     }
     st.linkAccNameNo = no;
-    $("#dvTextConfirmation").html(tran.msg("removeAssociationRole", {value1:roleName, value2:boxName}));
-    $("#modal-confirmation-title").html(tran.msg("DeleteAssigningRole"));
+    $("#dvTextConfirmation").html(i18next.t("removeAssociationRole", {value1:roleName, value2:boxName}));
+    $("#modal-confirmation-title").html(i18next.t("DeleteAssigningRole"));
     $('#b-del-acclinkrole-ok').css("display","");
     $('#modal-confirmation').modal('show');
 }
@@ -297,19 +297,19 @@ st.createEditAccount = function(name) {
     $("#setting-panel2").empty();
     cm.setBackahead(true);
     var html = '<div class="modal-body">';
-    html += '<div id="dvEditName">' + tran.msg("Name") + '</div>';
+    html += '<div id="dvEditName">' + i18next.t("Name") + '</div>';
     html += '<div id="dvTextEditName" style="margin-bottom: 10px;"><input type="text" id="editAccountName" onblur="st.editAccountNameBlurEvent();" value="' + name + '"><span class="popupAlertArea" style="color:red"><aside id="popupEditAccountNameErrorMsg"> </aside></span></div>';
-    html += '<div id="dvEditPassword">' + tran.msg("Password") + '</div>';
-    html += '<div id="dvTextEditNewPassword" style="margin-bottom: 10px;"><input type="password" placeholder="' + tran.msg("newPassPlaceHolder") + '" id="pEditNewPassword" onblur="st.blurNewPassword(this, \'b-edit-account-ok\', \'editChangeMessage\');"><span class="popupAlertArea" style="color:red"><aside id="editChangeMessage"> </aside></span></div>';
-    html += '<div id="dvTextEditConfirm" style="margin-bottom: 10px;"><input type="password" placeholder="' + tran.msg("confirmNewPass") + '" id="pEditConfirm" onblur="st.blurConfirm(\'pEditNewPassword\', \'pEditConfirm\', \'editConfirmMessage\');"><span class="popupAlertArea" style="color:red"><aside id="editConfirmMessage"> </aside></span></div>';
+    html += '<div id="dvEditPassword">' + i18next.t("Password") + '</div>';
+    html += '<div id="dvTextEditNewPassword" style="margin-bottom: 10px;"><input type="password" placeholder="' + i18next.t("newPassPlaceHolder") + '" id="pEditNewPassword" onblur="st.blurNewPassword(this, \'b-edit-account-ok\', \'editChangeMessage\');"><span class="popupAlertArea" style="color:red"><aside id="editChangeMessage"> </aside></span></div>';
+    html += '<div id="dvTextEditConfirm" style="margin-bottom: 10px;"><input type="password" placeholder="' + i18next.t("confirmNewPass") + '" id="pEditConfirm" onblur="st.blurConfirm(\'pEditNewPassword\', \'pEditConfirm\', \'editConfirmMessage\');"><span class="popupAlertArea" style="color:red"><aside id="editConfirmMessage"> </aside></span></div>';
     html += '<div class="modal-footer">';
-    html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + tran.msg("Cancel") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-account-ok" onClick="st.validateEditedInfo();" disabled>' + tran.msg("Edit") + '</button>';
+    html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + i18next.t("Cancel") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-account-ok" onClick="st.validateEditedInfo();" disabled>' + i18next.t("Edit") + '</button>';
     html += '</div></div>';
     $("#setting-panel2").append(html);
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
-    cm.setTitleMenu(tran.msg("EditAccount"), true);
+    cm.setTitleMenu(i18next.t("EditAccount"), true);
 };
 st.sendAjaxEditAccount = function() {
     var keyName = st.updUser;
@@ -322,8 +322,8 @@ st.sendAjaxEditAccount = function() {
 };
 st.dispDelModal = function(name) {
     st.updUser = name;
-    $("#dvTextConfirmation").html(tran.msg("confirmDeleteAccount", {value: name}));
-    $('#modal-confirmation-title').html(tran.msg("DeleteAccount"));
+    $("#dvTextConfirmation").html(i18next.t("confirmDeleteAccount", {value: name}));
+    $('#modal-confirmation-title').html(i18next.t("DeleteAccount"));
     $('#b-del-account-ok').css("display","");
     $('#modal-confirmation').modal('show');
 }
@@ -339,7 +339,7 @@ st.dispBoxList = function(json, id) {
   results.sort(function(val1, val2) {
     return (val1.Name < val2.Name ? 1 : -1);
   })
-  $("#" + id).append('<option value="">' + tran.msg("selectBox") + '</option>');
+  $("#" + id).append('<option value="">' + i18next.t("selectBox") + '</option>');
   $("#" + id).append('<option value="[main]">[main]</option>');
   for (var i in results) {
     var objBox = json.d.results[i];
@@ -390,8 +390,8 @@ st.validateEditedInfo = function() {
     var pass = $("#pEditNewPassword").val();
     if (st.passInputCheck(pass, "editChangeMessage")
      && st.changePassCheck(pass, $("#pEditConfirm").val(), "editConfirmMessage")) {
-        $('#dvTextConfirmation').html(tran.msg("confirmChangeContentEnter"));
-        $('#modal-confirmation-title').html(tran.msg("EditAccount"));
+        $('#dvTextConfirmation').html(i18next.t("confirmChangeContentEnter"));
+        $('#modal-confirmation-title').html(i18next.t("EditAccount"));
         $('#b-edit-accconfirm-ok').css("display","");
         $('#modal-confirmation').modal('show');
     }
@@ -404,7 +404,7 @@ st.validateEditedInfo = function() {
 st.createApplicationList = function() {
     $("#setting-panel1").remove();
     cm.setBackahead(true);
-    var html = '<div class="panel-body" id="app-panel"><section class="dashboard-block" id="installed-app"><h2>' + tran.msg("Installed") + '</h2><div id="insAppList"></div></section><section class="dashboard-block" id="all-app"><h2>' + tran.msg("ApplicationList") + '</h2><div id="appList"></div></section></div>';
+    var html = '<div class="panel-body" id="app-panel"><section class="dashboard-block" id="installed-app"><h2>' + i18next.t("Installed") + '</h2><div id="insAppList"></div></section><section class="dashboard-block" id="all-app"><h2>' + i18next.t("ApplicationList") + '</h2><div id="appList"></div></section></div>';
     $("#setting-panel1").append(html);
     // install application list
     cm.getBoxList().done(function(data) {
@@ -427,7 +427,7 @@ st.createApplicationList = function() {
         st.getApplicationList().done(function(data) {
             st.dispApplicationList(data);
             $(".setting-menu").toggleClass('slide-on');
-            cm.setTitleMenu(tran.msg("Application"), true);
+            cm.setTitleMenu(i18next.t("Application"), true);
         }).fail(function(data) {
             alert(data);
         });
@@ -517,13 +517,13 @@ st.dispViewApp = function(schema, dispName, imageSrc, description, barUrl, barBo
     var html = '<div class="panel-body">';
     html += '<div class="app-info"><div class="app-icon"><img src="' + imageSrc + '"></div><div class="app-data"><div>' + dispName + '</div><div>提供元：</div></div></div><section class="detail-section"><h2>概要</h2><div class="overview">' + description + '</div>';
     if (insFlag) {
-        html += '<div class="app-install"><button class="round-btn"href="#" onClick="st.confBarInstall(\'' + schema + '\',\'' + barUrl + '\',\'' + barBoxName + '\', \'' + dispName + '\');return(false);">' + tran.msg("Install") + '</button></div></section>';
+        html += '<div class="app-install"><button class="round-btn"href="#" onClick="st.confBarInstall(\'' + schema + '\',\'' + barUrl + '\',\'' + barBoxName + '\', \'' + dispName + '\');return(false);">' + i18next.t("Install") + '</button></div></section>';
     } else {
-        html += '<div class="app-install"><button class="round-btn"href="#" onClick="return(false);">' + tran.msg("Uninstall") + '</button></div></section>';
+        html += '<div class="app-install"><button class="round-btn"href="#" onClick="return(false);">' + i18next.t("Uninstall") + '</button></div></section>';
     }
 
     $("#setting-panel2").append(html);
-    cm.setTitleMenu(tran.msg("Details"), true);
+    cm.setTitleMenu(i18next.t("Details"), true);
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
 };
@@ -531,7 +531,7 @@ st.confBarInstall = function(schema, barUrl, barBoxName, dispName) {
     st.barSchemaUrl = schema;
     st.barFileUrl = barUrl;
     st.barBoxName = barBoxName;
-    $("#dvTextConfirmation").html(tran.msg("confirmInstallation"));
+    $("#dvTextConfirmation").html(i18next.t("confirmInstallation"));
     $("#modal-confirmation-title").html(dispName);
     $('#b-ins-bar-ok').css("display","");
     $('#modal-confirmation').modal('show');
@@ -596,7 +596,7 @@ st.createRoleList = function() {
     cm.getRoleList().done(function(data) {
         st.dispRoleList(data);
         $(".setting-menu").toggleClass('slide-on');
-        cm.setTitleMenu(tran.msg("Role"), true);
+        cm.setTitleMenu(i18next.t("Role"), true);
     });
 };
 st.dispRoleList = function(json) {
@@ -619,14 +619,14 @@ st.dispRoleList = function(json) {
     html += '<div class="list-group-item">';
     html += '<table class="table-fixed"><tr>';
     html += '<td style="width: 70%;"><p class="ellipsisText">' + objRole.Name + '(' + boxName + ')</p></td>';
-    html += '<td style="width: 15%;"><a href="#" class="edit-button list-group-item" href="#" onClick="st.createEditRole(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + tran.msg("Edit") + '</a></td>';
-    html += '<td style="width: 15%;"><a href="#" class="del-button list-group-item" href="#" onClick="st.dispDelRoleModal(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + tran.msg("Del") + '</a></td>';
+    html += '<td style="width: 15%;"><a href="#" class="edit-button list-group-item" href="#" onClick="st.createEditRole(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + i18next.t("Edit") + '</a></td>';
+    html += '<td style="width: 15%;"><a href="#" class="del-button list-group-item" href="#" onClick="st.dispDelRoleModal(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + i18next.t("Del") + '</a></td>';
     html += '</tr>';
     html += '</table></div>';
   }
 
   html += '<div class="list-group-item">';
-  html += '<a class="allToggle" href="#" onClick="st.createAddRole()">＋ ' + tran.msg("CreateRole") + '</a></div>';
+  html += '<a class="allToggle" href="#" onClick="st.createAddRole()">＋ ' + i18next.t("CreateRole") + '</a></div>';
   html += '</div>';
   $("#setting-panel1").append(html);
 };
@@ -643,16 +643,16 @@ st.operationRole = function() {
     $("#setting-panel2").empty();
     cm.setBackahead(true);
     var html = '<div class="modal-body">';
-    html += '<div id="dvAddRoleName">' + tran.msg("Name") + '</div>';
+    html += '<div id="dvAddRoleName">' + i18next.t("Name") + '</div>';
     html += '<div id="dvTextAddRoleName" style="margin-bottom: 10px;"><input type="text" id="addRoleName" value="' + name + '" onblur="st.addRoleNameBlurEvent();"><span class="popupAlertArea" style="color:red"><aside id="popupAddRoleNameErrorMsg"> </aside></span></div>';
-    html += '<div id="dvAddRoleBox">' + tran.msg("selectBoxRole") + '</div>';
-    html += '<div id="dvSelectAddRoleBox" style="margin-bottom: 10px;"><select class="form-control" name="" id="ddlRoleBoxList"><option>' + tran.msg("selectBox") + '</option></select><span class="popupAlertArea" style="color:red"><aside id="addRoleBoxMessage"> </aside></span></div>';
+    html += '<div id="dvAddRoleBox">' + i18next.t("selectBoxRole") + '</div>';
+    html += '<div id="dvSelectAddRoleBox" style="margin-bottom: 10px;"><select class="form-control" name="" id="ddlRoleBoxList"><option>' + i18next.t("selectBox") + '</option></select><span class="popupAlertArea" style="color:red"><aside id="addRoleBoxMessage"> </aside></span></div>';
     html += '<div class="modal-footer">';
-    html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + tran.msg("Cancel") + '</button>';
+    html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + i18next.t("Cancel") + '</button>';
     if (st.updUser !== null) {
-        html += '<button type="button" class="btn btn-primary text-capitalize" id="b-add-role-ok" onClick="st.addRole();">' + tran.msg("Edit") + '</button>';
+        html += '<button type="button" class="btn btn-primary text-capitalize" id="b-add-role-ok" onClick="st.addRole();">' + i18next.t("Edit") + '</button>';
     } else {
-        html += '<button type="button" class="btn btn-primary" id="b-add-role-ok" onClick="st.addRole();" disabled>' + tran.msg("Create") + '</button>';
+        html += '<button type="button" class="btn btn-primary" id="b-add-role-ok" onClick="st.addRole();" disabled>' + i18next.t("Create") + '</button>';
     }
     
     html += '</div></div>';
@@ -671,9 +671,9 @@ st.operationRole = function() {
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
     if (st.updUser !== null) {
-        cm.setTitleMenu(tran.msg("EditRole"), true);
+        cm.setTitleMenu(i18next.t("EditRole"), true);
     } else {
-        cm.setTitleMenu(tran.msg("CreateRole"), true);
+        cm.setTitleMenu(i18next.t("CreateRole"), true);
     }
 };
 st.createEditRole = function(name, box) {
@@ -692,8 +692,8 @@ st.dispDelRoleModal = function(name, box) {
     } else {
       st.updBox = box;
     }
-    $('#dvTextConfirmation').html(tran.msg("confirmDeleteRole", {value1:name, value2:box}));
-    $('#modal-confirmation-title').html(tran.msg("DeleteRole"));
+    $('#dvTextConfirmation').html(i18next.t("confirmDeleteRole", {value1:name, value2:box}));
+    $('#modal-confirmation-title').html(i18next.t("DeleteRole"));
     $('#b-del-role-ok').css("display","");
     $('#modal-confirmation').modal('show');
 }
@@ -706,7 +706,7 @@ st.addRole = function() {
   var name = $("#addRoleName").val();
   var box = $("#ddlRoleBoxList option:selected").val();
   if (box === "") {
-      $("#addRoleBoxMessage").html(tran.msg("selectBox"));
+      $("#addRoleBoxMessage").html(i18next.t("selectBox"));
       return false;
   } else if (box === "[main]") {
       box = null;
@@ -731,7 +731,7 @@ st.createRelationList = function() {
     cm.getRelationList().done(function(data) {
         st.dispRelationList(data, null, false);
         $(".setting-menu").toggleClass('slide-on');
-        cm.setTitleMenu(tran.msg("Relation"), true);
+        cm.setTitleMenu(i18next.t("Relation"), true);
     });
 };
 st.dispRelationList = function(json) {
@@ -757,13 +757,13 @@ st.dispRelationList = function(json) {
     html += '<td style="width: 80%;"><a href="#" id="relationLinkToRoleToggle' + i + '" onClick="st.createRelationRole(\'' + objRelation.Name + '\',\'' + boxName + '\',\'' + i + '\')">';
     html += '<table class="table-fixed"><tr><td><p class="ellipsisText">' + objRelation.Name + '(' + boxName + ')</p></td></tr></table>';
     html += '</a></td>';
-    html += '<td style="width: 10%;"><a class="edit-button list-group-item" href="#" onClick="st.createEditRelation(\'' + objRelation.Name + '\',\'' + boxName + '\');return(false)">' + tran.msg("Edit") + '</a></td>';
-    html += '<td style="width: 10%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelRelationModal(\'' + objRelation.Name + '\',\'' + boxName + '\');return(false)">' + tran.msg("Del") + '</a></td>';
+    html += '<td style="width: 10%;"><a class="edit-button list-group-item" href="#" onClick="st.createEditRelation(\'' + objRelation.Name + '\',\'' + boxName + '\');return(false)">' + i18next.t("Edit") + '</a></td>';
+    html += '<td style="width: 10%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelRelationModal(\'' + objRelation.Name + '\',\'' + boxName + '\');return(false)">' + i18next.t("Del") + '</a></td>';
     html += '</tr></table></div>';
   }
 
   html += '<div class="list-group-item">';
-  html += '<a class="allToggle" href="#" onClick="st.createAddRelation()">＋ ' + tran.msg("CreateRelation") + '</a></div>';
+  html += '<a class="allToggle" href="#" onClick="st.createAddRelation()">＋ ' + i18next.t("CreateRelation") + '</a></div>';
   html += '</div>';
   $("#setting-panel1").append(html);
 };
@@ -778,15 +778,15 @@ st.createAddRelation = function() {
     cm.setBackahead(true);
     cm.getRoleList().done(function(data) {
         var html = '<div class="modal-body">';
-        html += '<div id="dvAddRelationName">' + tran.msg("Name") + '</div>';
+        html += '<div id="dvAddRelationName">' + i18next.t("Name") + '</div>';
         html += '<div id="dvTextAddRelationName" style="margin-bottom: 10px;"><input type="text" id="addRelationName" onblur="st.addRelationNameBlurEvent();"><span class="popupAlertArea" style="color:red"><aside id="popupAddRelationNameErrorMsg"> </aside></span></div>';
-        html += '<div id="dvAddRelationBox">' + tran.msg("boxUsedRelation") + '</div>';
-        html += '<div id="dvSelectAddRelationBox" style="margin-bottom: 10px;"><select class="form-control" name="ddlRelationBoxList" id="ddlAddRelationBoxList"><option>' + tran.msg("selectBox") + '</option></select><span class="popupAlertArea" style="color:red"><aside id="addRelationBoxMessage"> </aside></span></div>';
-        html += '<div id="dvCheckAddRelationLinkRole" style="margin-bottom: 10px;"><label><input  class="widthAuto" type="checkbox" id="addCheckRelationLinkRole" onChange="st.changeCheckRelationLinkRole(this);">' + tran.msg("AssignRoleMulti") + '</label></div>';
+        html += '<div id="dvAddRelationBox">' + i18next.t("boxUsedRelation") + '</div>';
+        html += '<div id="dvSelectAddRelationBox" style="margin-bottom: 10px;"><select class="form-control" name="ddlRelationBoxList" id="ddlAddRelationBoxList"><option>' + i18next.t("selectBox") + '</option></select><span class="popupAlertArea" style="color:red"><aside id="addRelationBoxMessage"> </aside></span></div>';
+        html += '<div id="dvCheckAddRelationLinkRole" style="margin-bottom: 10px;"><label><input  class="widthAuto" type="checkbox" id="addCheckRelationLinkRole" onChange="st.changeCheckRelationLinkRole(this);">' + i18next.t("AssignRoleMulti") + '</label></div>';
         html += '<div id="dvSelectAddRelationLinkRole" style="margin-bottom: 10px;"><select class="form-control" name="" id="ddlAddRelLinkRoleList" multiple disabled><option>Select a role</option></select><span class="popupAlertArea" style="color:red"><aside id="popupAddRelationLinkRoleErrorMsg"> </aside></span></div>';
         html += '<div class="modal-footer">';
-        html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + tran.msg("Cancel") + '</button>';
-        html += '<button type="button" class="btn btn-primary" id="b-add-relation-ok" onClick="st.addRelation();" disabled>' + tran.msg("Create") + '</button>';
+        html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + i18next.t("Cancel") + '</button>';
+        html += '<button type="button" class="btn btn-primary" id="b-add-relation-ok" onClick="st.addRelation();" disabled>' + i18next.t("Create") + '</button>';
         html += '</div></div>';
         $("#setting-panel2").append(html);
         cm.dispRoleList(data, "ddlAddRelLinkRoleList", true);
@@ -796,7 +796,7 @@ st.createAddRelation = function() {
     });
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
-    cm.setTitleMenu(tran.msg("CreateRelation"), true);
+    cm.setTitleMenu(i18next.t("CreateRelation"), true);
 };
 st.addRelationNameBlurEvent = function() {
         var name = $("#addRelationName").val();
@@ -859,12 +859,12 @@ st.dispRelationRoleList = function(json, relName, relBoxName, no) {
     html += '<div class="list-group-item">';
     html += '<table style="width: 100%;"><tr>';
     html += '<td style="width: 90%;"><table class="table-fixed"><tr><td><p class="ellipsisText">' + name + '(' + boxName + ')</p></td></tr></table></td>';
-    html += '<td style="width: 10%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelRelationRoleModal(\'' + relName + '\',\'' + relBoxName + '\',\'' + name + '\',\'' + boxName + '\',\'' + no + '\');return(false)">' + tran.msg("Detach") + '</a></td>';
+    html += '<td style="width: 10%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelRelationRoleModal(\'' + relName + '\',\'' + relBoxName + '\',\'' + name + '\',\'' + boxName + '\',\'' + no + '\');return(false)">' + i18next.t("Detach") + '</a></td>';
     html += '</tr></table></div>';
   }
 
   html += '<div class="list-group-item">';
-  html += '<a class="allToggle" href="#" onClick="cm.dispAssignRole(\'rel\', true)">＋ ' + tran.msg("AssigningRoles") + '</a></div>';
+  html += '<a class="allToggle" href="#" onClick="cm.dispAssignRole(\'rel\', true)">＋ ' + i18next.t("AssigningRoles") + '</a></div>';
   html += '</div>';
   $("#setting-panel2").append(html);
 }
@@ -882,8 +882,8 @@ st.dispDelRelationRoleModal = function(relName, relBoxName, roleName, boxName, n
       cm.linkBoxName = boxName
     }
     st.linkRelNameNo = no;
-    $("#dvTextConfirmation").html(tran.msg("removeAssociationRole", {value1:roleName, value2:boxName}));
-    $("#modal-confirmation-title").html(tran.msg("DeleteAssigningRole"));
+    $("#dvTextConfirmation").html(i18next.t("removeAssociationRole", {value1:roleName, value2:boxName}));
+    $("#modal-confirmation-title").html(i18next.t("DeleteAssigningRole"));
     $('#b-del-rellinkrole-ok').css("display","");
     $('#modal-confirmation').modal('show');
 }
@@ -897,13 +897,13 @@ st.createEditRelation = function(name, box) {
     $("#setting-panel2").empty();
     cm.setBackahead(true);
     var html = '<div class="modal-body">';
-    html += '<div id="dvEditRelationName">' + tran.msg("Name") + '</div>';
+    html += '<div id="dvEditRelationName">' + i18next.t("Name") + '</div>';
     html += '<div id="dvTextEditRelationName" style="margin-bottom: 10px;"><input type="text" id="editRelationName" onblur="st.editRelationNameBlurEvent();" value="' + name + '"><span class="popupAlertArea" style="color:red"><aside id="popupEditRelationNameErrorMsg"> </aside></span></div>';
-    html += '<div id="dvEditRelationBox">' + tran.msg("boxUsedRelation") + '</div>';
-    html += '<div id="dvSelectEditRelationBox" style="margin-bottom: 10px;"><select class="form-control" id="ddlEditRelationBoxList" onChange="st.changeRelationSelect();"><option>' + tran.msg("selectBox") + '</option></select><span class="popupAlertArea" style="color:red"><aside id="editRelationBoxMessage"> </aside></span>';
+    html += '<div id="dvEditRelationBox">' + i18next.t("boxUsedRelation") + '</div>';
+    html += '<div id="dvSelectEditRelationBox" style="margin-bottom: 10px;"><select class="form-control" id="ddlEditRelationBoxList" onChange="st.changeRelationSelect();"><option>' + i18next.t("selectBox") + '</option></select><span class="popupAlertArea" style="color:red"><aside id="editRelationBoxMessage"> </aside></span>';
     html += '<div class="modal-footer">';
-    html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + tran.msg("Cancel") + '</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-edit-relation-ok" onClick="st.editRelationOk();" disabled>' + tran.msg("Edit") + '</button>';
+    html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + i18next.t("Cancel") + '</button>';
+    html += '<button type="button" class="btn btn-primary" id="b-edit-relation-ok" onClick="st.editRelationOk();" disabled>' + i18next.t("Edit") + '</button>';
     html += '</div>';
     $("#setting-panel2").append(html);
     cm.getBoxList().done(function(data) {
@@ -913,11 +913,11 @@ st.createEditRelation = function(name, box) {
 
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
-    cm.setTitleMenu(tran.msg("EditRelation"), true);
+    cm.setTitleMenu(i18next.t("EditRelation"), true);
 }
 st.editRelationOk = function() {
-    $('#dvTextConfirmation').html(tran.msg("confirmChangeContentEnter"));
-    $('#modal-confirmation-title').html(tran.msg("EditRelation"));
+    $('#dvTextConfirmation').html(i18next.t("confirmChangeContentEnter"));
+    $('#modal-confirmation-title').html(i18next.t("EditRelation"));
     $('#b-edit-relconfirm-ok').css("display","");
     $('#modal-confirmation').modal('show');
 };
@@ -928,8 +928,8 @@ st.dispDelRelationModal = function(name, box) {
     } else {
       st.updBox = box;
     }
-    $('#dvTextConfirmation').html(tran.msg("confirmDeleteRelation", {value1:name, value2:box}));
-    $('#modal-confirmation-title').html(tran.msg("DeleteRelation"));
+    $('#dvTextConfirmation').html(i18next.t("confirmDeleteRelation", {value1:name, value2:box}));
+    $('#modal-confirmation-title').html(i18next.t("DeleteRelation"));
     $('#b-del-relation-ok').css("display","");
     $('#modal-confirmation').modal('show');
 }
@@ -950,7 +950,7 @@ st.addRelation = function() {
   var name = $("#addRelationName").val();
   var box = $("#ddlAddRelationBoxList option:selected").val();
   if (box === "") {
-      $("#addRelationBoxMessage").html(tran.msg("selectBox"));
+      $("#addRelationBoxMessage").html(i18next.t("selectBox"));
       return false;
   } else if (box === "[main]") {
       box = null;
@@ -974,7 +974,7 @@ st.addRelation = function() {
 st.checkRelationLinkRole = function() {
     var value = $("#ddlAddRelLinkRoleList option:selected").val();
     if (value === undefined) {
-        $("#popupAddRelationLinkErrorMsg").html(tran.msg("selectRole"));
+        $("#popupAddRelationLinkErrorMsg").html(i18next.t("selectRole"));
         return false;
     } else {
         $("#popupAddRelationLinkErrorMsg").html("");
@@ -1046,7 +1046,7 @@ st.editRelation = function() {
     var name = $("#editRelationName").val();
     var box = $("#ddlEditRelationBoxList option:selected").val();
     if (box === "") {
-        $("#addRelationBoxMessage").html(tran.msg("selectBox"));
+        $("#addRelationBoxMessage").html(i18next.t("selectBox"));
         return false;
     } else if (box === "[main]") {
         box = null;
@@ -1099,7 +1099,7 @@ st.validateName = function (displayName, displayNameSpan, addSpecial, addStart) 
 
         var lenDisplayName = displayName.length;
         if(lenDisplayName < MINLENGTH || displayName == undefined || displayName == null || displayName == "") {
-                document.getElementById(displayNameSpan).innerHTML =  tran.msg("pleaseEnterName");
+                document.getElementById(displayNameSpan).innerHTML =  i18next.t("pleaseEnterName");
                 return false;
         }
 
@@ -1111,20 +1111,20 @@ st.validateName = function (displayName, displayNameSpan, addSpecial, addStart) 
         if(displayName.match(letters)) {
             return true;
         } else if (lenDisplayName > MAXLENGTH) {
-            document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateNameLength");
+            document.getElementById(displayNameSpan).innerHTML = i18next.t("errorValidateNameLength");
             return false;
         } else if (displayName.match(multibyteChar)) {
-            document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateMultibyte");
+            document.getElementById(displayNameSpan).innerHTML = i18next.t("errorValidateMultibyte");
             return false;
         } else if (!displayName.match(startReg)) {
             if (addStart) {
-                document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateFirstPossibleSpecialCharacters", {value: addStart});
+                document.getElementById(displayNameSpan).innerHTML = i18next.t("errorValidateFirstPossibleSpecialCharacters", {value: addStart});
             } else {
-                document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateStartNameSpecialCharacters");
+                document.getElementById(displayNameSpan).innerHTML = i18next.t("errorValidateStartNameSpecialCharacters");
             }
             return false;
         } else {
-            document.getElementById(displayNameSpan).innerHTML = tran.msg("errorValidateSpecialCharacters", {value: addSpecial});
+            document.getElementById(displayNameSpan).innerHTML = i18next.t("errorValidateSpecialCharacters", {value: addSpecial});
             return false;
         }
 };
@@ -1145,10 +1145,10 @@ st.charCheck = function(check, displayNameSpan) {
 
   if (passLen !== 0) {
     if (passLen < 6 || passLen > 36) {
-      msg = tran.msg("pleaseBetweenCharacter");
+      msg = i18next.t("pleaseBetweenCharacter");
       bool = false;
     } else if (check.val().match(/[^0-9a-zA-Z_-]+/)) {
-      msg = tran.msg("pleaseCharacterType");
+      msg = i18next.t("pleaseCharacterType");
       bool = false;
     }
 
@@ -1160,7 +1160,7 @@ st.charCheck = function(check, displayNameSpan) {
 st.changePassCheck = function(newpass, confirm, displayNameSpan) {
   $('#' + displayNameSpan).html("");
   if (newpass !== confirm) {
-    $('#' + displayNameSpan).html(tran.msg("passwordNotMatch"));
+    $('#' + displayNameSpan).html(i18next.t("passwordNotMatch"));
     return false
   }
 
@@ -1169,7 +1169,7 @@ st.changePassCheck = function(newpass, confirm, displayNameSpan) {
 st.passInputCheck = function(newpass, displayNameSpan) {
   $('#' + displayNameSpan).html("");
   if (newpass.length == 0) {
-    $('#' + displayNameSpan).html(tran.msg("pleaseEnterPassword"));
+    $('#' + displayNameSpan).html(i18next.t("pleaseEnterPassword"));
     return false;
   }
 

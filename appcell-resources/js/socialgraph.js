@@ -63,7 +63,7 @@ sg.getExternalCellInfo = function(uri) {
 sg.checkExtCellLinkRole = function() {
     var value = $("#ddlAddExtCellLinkRoleList option:selected").val();
     if (value === undefined) {
-        $("#popupAddExtCellLinkErrorMsg").html(tran.msg("selectRole"));
+        $("#popupAddExtCellLinkErrorMsg").html(i18next.t("selectRole"));
         return false;
     } else {
         $("#popupAddExtCellLinkErrorMsg").html("");
@@ -73,7 +73,7 @@ sg.checkExtCellLinkRole = function() {
 sg.checkExtCellLinkRelation = function() {
     var value = $("#ddlAddExtCellLinkRelationList option:selected").val();
     if (value === undefined) {
-        $("#popupAddExtCellLinkErrorMsg").html(tran.msg("selectRelation"));
+        $("#popupAddExtCellLinkErrorMsg").html(i18next.t("selectRelation"));
         return false;
     } else {
         $("#popupAddExtCellLinkErrorMsg").html("");
@@ -103,7 +103,7 @@ sg.dispExtCellList = function(json) {
       objSel.removeChild(objSel.firstChild);
     }
   }
-  $("#ddlExtCellLinkRelationList").append('<option value="">' + tran.msg("selectExternalCell") + '</option>');
+  $("#ddlExtCellLinkRelationList").append('<option value="">' + i18next.t("selectExternalCell") + '</option>');
 
   var results = json.d.results;
   results.sort(function(val1, val2) {
@@ -148,12 +148,12 @@ sg.checkUrlCell = function(url) {
     }
   }).fail(function(data) {
     //alert("The specified cell does not exist.");
-    document.getElementById("popupAddExtCellUrlErrorMsg").innerHTML = tran.msg("notExistTargetCell");
+    document.getElementById("popupAddExtCellUrlErrorMsg").innerHTML = i18next.t("notExistTargetCell");
   });
 }
 sg.dispDelExtCellModal = function() {
-    $("#dvTextConfirmation").html(tran.msg("confirmDeleteExternalCell", {value:sg.linkExtCellUrl}));
-    $("#modal-confirmation-title").html(tran.msg("DeleteExternalCell"));
+    $("#dvTextConfirmation").html(i18next.t("confirmDeleteExternalCell", {value:sg.linkExtCellUrl}));
+    $("#modal-confirmation-title").html(i18next.t("DeleteExternalCell"));
     $('#b-del-extcell-ok').css("display","");
     $('#b-cancel').css("display","");
     $('#modal-confirmation').modal('show');
@@ -162,13 +162,13 @@ sg.urlBlurEvent = function() {
         var schemaURL = $("#addExtCellUrl").val();
         var extCellInfo = sg.getExternalCellInfo(schemaURL);
         if (extCellInfo == false) {
-            $("#popupAddExtCellUrlErrorMsg").html(tran.msg("invalidURL"));
+            $("#popupAddExtCellUrlErrorMsg").html(i18next.t("invalidURL"));
             return false;
         }
         var extCellName = extCellInfo[1];
         var extCellURL = extCellInfo[0];
         if (sg.validateSchemaURL(schemaURL, "popupAddExtCellUrlErrorMsg", "#addExtCellUrl")
-          && sg.doesUrlContainSlash(schemaURL, "popupAddExtCellUrlErrorMsg", "#addExtCellUrl", tran.msg("errorValidateEndWithExternalCell"))) {
+          && sg.doesUrlContainSlash(schemaURL, "popupAddExtCellUrlErrorMsg", "#addExtCellUrl", i18next.t("errorValidateEndWithExternalCell"))) {
 
           return true;
         }
@@ -184,8 +184,8 @@ sg.dispDelExtCellRoleModal = function(url, roleName, boxName, no) {
       cm.linkBoxName = boxName
     }
     sg.linkExtCellNo = no;
-    $("#dvTextConfirmation").html(tran.msg("removeAssociationRole", {value1:roleName, value2:boxName}));
-    $("#modal-confirmation-title").html(tran.msg("DeleteAssigningRole"));
+    $("#dvTextConfirmation").html(i18next.t("removeAssociationRole", {value1:roleName, value2:boxName}));
+    $("#modal-confirmation-title").html(i18next.t("DeleteAssigningRole"));
     $('#b-cancel').css("display","");
     $('#b-del-extcelllinkrole-ok').css("display","");
     $('#modal-confirmation').modal('show');
@@ -275,7 +275,7 @@ sg.appendRelationLinkExtCell = function(url, dispName, description, imageSrc, ex
         if (splitID.length > 2) {
             boxName = splitID[2];
         }
-        html += '<td style="width: 10%;"><a class="del-button list-group-item" style="top:25%" href="#" onClick="sg.dispDelExtCellRelationModal(\'' + url + '\',\'' + relName + '\',\'' + boxName + '\');return(false)">' + tran.msg("Del") + '</a></td>';
+        html += '<td style="width: 10%;"><a class="del-button list-group-item" style="top:25%" href="#" onClick="sg.dispDelExtCellRelationModal(\'' + url + '\',\'' + relName + '\',\'' + boxName + '\');return(false)">' + i18next.t("Del") + '</a></td>';
     } else {
         html += '<td style="width: 10%;"></td>';
     }
@@ -295,9 +295,9 @@ sg.createExtCellProfile = function(url, dispName, description, imagesrc) {
     cm.setBackahead();
     var html = '<div class="panel-body">';
     html += '<div class="extcell-profile" id="dvExtProfileImage"><img class="image-circle-large" style="margin: auto;" id="imgExtProfileImage" src="' + imagesrc + '" alt="image" /><span id="txtExtUrl">' + url + '</span><h5><span id="txtDescription">' + description + '</span></h5></div>';
-    html += '<div class="toggleButton"><a class="toggle list-group-item" href="#" onClick="sg.showExtPublicBoxList();return(false);">' + tran.msg("WatchPublicBOX") + '</a></div>';
-    html += '<div class="toggleButton"><a class="toggle list-group-item" href="#" onClick="sg.createRoleList(\'' + url + '\');return(false);">' + tran.msg("RoleList") + '</a></div>';
-    html += '<div class="toggleButton"><a class="toggle list-group-item" href="#" onClick="sg.dispDelExtCellModal();return(false);">' + tran.msg("DeleteExternalCell") + '</a></div>';
+    html += '<div class="toggleButton"><a class="toggle list-group-item" href="#" onClick="sg.showExtPublicBoxList();return(false);">' + i18next.t("WatchPublicBOX") + '</a></div>';
+    html += '<div class="toggleButton"><a class="toggle list-group-item" href="#" onClick="sg.createRoleList(\'' + url + '\');return(false);">' + i18next.t("RoleList") + '</a></div>';
+    html += '<div class="toggleButton"><a class="toggle list-group-item" href="#" onClick="sg.dispDelExtCellModal();return(false);">' + i18next.t("DeleteExternalCell") + '</a></div>';
     html += '</div>';
     $("#toggle-panel1").append(html);
     $("#toggle-panel1,.panel-default").toggleClass('slide-on');
@@ -316,7 +316,7 @@ sg.createRoleList = function(url) {
         sg.dispExtCellRoleList(data, sg.linkExtCellUrl);
         $("#toggle-panel2").toggleClass('slide-on');
         $("#toggle-panel1").toggleClass('slide-on-holder');
-        cm.setTitleMenu(tran.msg("RoleList"));
+        cm.setTitleMenu(i18next.t("RoleList"));
     });
 };
 sg.getExtCellRoleList = function(url) {
@@ -355,15 +355,15 @@ sg.dispExtCellRoleList = function(json, exturl) {
     html += '<div class="list-group-item">';
     html += '<table class="table-fixed"><tr>';
     html += '<td style="width: 85%;"><p class="ellipsisText">' + name + '(' + boxName + ')</p></td>';
-    html += '<td colspan="2" style="width: 15%;"><a class="del-button list-group-item" href="#" onClick="sg.dispDelExtCellRoleModal(\'' + exturl + '\',\'' + name + '\',\'' + boxName + '\');return(false)">' + tran.msg("Del") + '</a></td>';
+    html += '<td colspan="2" style="width: 15%;"><a class="del-button list-group-item" href="#" onClick="sg.dispDelExtCellRoleModal(\'' + exturl + '\',\'' + name + '\',\'' + boxName + '\');return(false)">' + i18next.t("Del") + '</a></td>';
     //html += '</tr><tr>';
     //html += '<td>' + boxName + '</td>';
     html += '</tr></table></div>';
     //$("#dvExtCellLinkRole").append(html);
   }
   html += '<div class="list-group-item">';
-  html += '<a class="allToggle" href="#" onClick="cm.dispAssignRole(\'ext\')">＋ ' + tran.msg("AddRole") + '</a></div>';
-  //html = '<a class="list-group-item" href="#" data-toggle="modal" data-target="#modal-add-extcelllinkrole">＋ ' + tran.msg("AddRole") + '</a>';
+  html += '<a class="allToggle" href="#" onClick="cm.dispAssignRole(\'ext\')">・｡ｦ' + i18next.t("AddRole") + '</a></div>';
+  //html = '<a class="list-group-item" href="#" data-toggle="modal" data-target="#modal-add-extcelllinkrole">・｡ｦ' + i18next.t("AddRole") + '</a>';
   html += '</div>';
   $("#toggle-panel2").append(html);
 };
@@ -383,8 +383,8 @@ sg.showExtPublicBoxList = function() {
         }).done(function(data) {
                   sg.checkBoxPublic(data);
         }).fail(function(data) {
-                  $('#dvTextConfirmation').html(tran.msg("notPermissionView"));
-                  $('#modal-confirmation-title').html(tran.msg("WatchPublicBOX"));
+                  $('#dvTextConfirmation').html(i18next.t("notPermissionView"));
+                  $('#modal-confirmation-title').html(i18next.t("WatchPublicBOX"));
                   $('#b-cancel').css("display","");
                   $('#modal-confirmation').modal('show');
         });
@@ -400,7 +400,7 @@ sg.checkBoxPublic = function(json) {
       return (val1.Name < val2.Name ? 1 : -1);
     })
     var html = '<div class="panel-body">';
-    html += '<p>' + tran.msg("Document") + '</p><HR>';
+    html += '<p>' + i18next.t("Document") + '</p><HR>';
     for (var i in results) {
         var boxName = json.d.results[i].Name;
         html += '<p style="margin-top: 10px;">' + boxName + '</p>';
@@ -409,7 +409,7 @@ sg.checkBoxPublic = function(json) {
     $("#toggle-panel2").append(html);
     $("#toggle-panel2").toggleClass('slide-on');
     $("#toggle-panel1").toggleClass('slide-on-holder');
-    cm.setTitleMenu(tran.msg("WatchPublicBOX"));
+    cm.setTitleMenu(i18next.t("WatchPublicBOX"));
     //$('#modal-public-extbox').modal('show');
 };
 sg.dispDelExtCellRelationModal = function(url, relationName, boxName, no) {
@@ -421,8 +421,8 @@ sg.dispDelExtCellRelationModal = function(url, relationName, boxName, no) {
       cm.linkBoxName = boxName
     }
     sg.linkExtCellNo = no;
-    $("#dvTextConfirmation").html(tran.msg("confirmDeleteRelationAssign", {value1:relationName, value2:boxName}));
-    $("#modal-confirmation-title").html(tran.msg("DeleteAssigningRelation"));
+    $("#dvTextConfirmation").html(i18next.t("confirmDeleteRelationAssign", {value1:relationName, value2:boxName}));
+    $("#modal-confirmation-title").html(i18next.t("DeleteAssigningRelation"));
     $('#b-cancel').css("display","");
     $('#b-del-extcelllinkrelation-ok').css("display","");
     $('#modal-confirmation').modal('show');
@@ -471,18 +471,18 @@ sg.dispRelationList = function(json) {
     html += '</a></td>';
     html += '</tr></table></div>';
     html += '<nav id="extCellRelMenu' + i + '"><ul class="extCellRelMenu"><div name="dvExtCellRelList" id="' + extRelID + '"></div><div class="list-group-item">';
-    html += '<a class="allToggle" href="#" onClick="sg.setLinkParamName(\'' + objRelation.Name + '\',\'' + boxName + '\')" data-toggle="modal" data-target="#modal-add-extcelllinkrelation">＋ ' + tran.msg("AddExternalCell") + '</a></div></ul></nav>';
+    html += '<a class="allToggle" href="#" onClick="sg.setLinkParamName(\'' + objRelation.Name + '\',\'' + boxName + '\')" data-toggle="modal" data-target="#modal-add-extcelllinkrelation">＋' + i18next.t("AddExternalCell") + '</a></div></ul></nav>';
     $("#dvExtCellList").append(html);
     sg.getRelLinkExtCell(objRelation.Name, relBoxName);
   }
 
   // Independent
   html = '<div class="list-group-item relation-menu">';
-  html += '<a class="accountToggle" id="relationLinkToRoleToggle" onClick="sg.slideToggle(\'extCellRelMenu\')">' + tran.msg("Independent") + '</a>';
+  html += '<a class="accountToggle" id="relationLinkToRoleToggle" onClick="sg.slideToggle(\'extCellRelMenu\')">' + i18next.t("Independent") + '</a>';
   html += '</div>';
   html += '<nav id="extCellRelMenu"><ul class="extCellRelMenu"><div name="dvExtCellRelList" id="dvExtCellRelList"></div>';
-  //html += '<div><a class="list-group-item" href="#" data-toggle="modal" data-target="#modal-add-extcell">＋ ' + tran.msg("CreateExternalCell") + '</a></div>';
-  html += '<div class="list-group-item"><a class="allToggle" href="#" onClick="sg.createAddExtCell()">＋ ' + tran.msg("CreateExternalCell") + '</a></div>';
+  //html += '<div><a class="list-group-item" href="#" data-toggle="modal" data-target="#modal-add-extcell">＋' + i18next.t("CreateExternalCell") + '</a></div>';
+  html += '<div class="list-group-item"><a class="allToggle" href="#" onClick="sg.createAddExtCell()">＋' + i18next.t("CreateExternalCell") + '</a></div>';
   html += '</ul></nav>';
   $("#dvExtCellList").append(html);
   sg.getExtCellList();
@@ -496,22 +496,22 @@ sg.createAddExtCell = function() {
         var html = '<div class="modal-body">';
         html += '<div id="dvSelectedCell">URL</div>';
         html += '<div id="dvTextSelectedCell" style="margin-bottom: 10px;"><input type="text" id="addExtCellUrl" onblur="sg.blurAddExtCellUrl();"><span class="popupAlertArea" style="color:red"><aside id="popupAddExtCellUrlErrorMsg"> </aside></span></div>';
-        html += '<div id="dvCheckAddExtCellLinkRoleAndRelation" style="margin-bottom: 10px;"><label><input type="checkbox" id="addCheckExtCellLinkRoleAndRelation" onChange="sg.changeCheckExtCellLinkRoleAndRelation(this);">' + tran.msg("AssignMulti") + '</label></div>';
+        html += '<div id="dvCheckAddExtCellLinkRoleAndRelation" style="margin-bottom: 10px;"><label><input type="checkbox" id="addCheckExtCellLinkRoleAndRelation" onChange="sg.changeCheckExtCellLinkRoleAndRelation(this);">' + i18next.t("AssignMulti") + '</label></div>';
         html += '<div id="dvSelectAddExtCellLink" style="margin-bottom: 10px;"><table>';
-        html += '<tr><td><label><input type="radio" name="addRadioExtCellLink" id="addRadioExtCellLinkRole" onChange="sg.changeRadioExtCellLink();" value="role" disabled>' + tran.msg("Role") + '</label></td><td><label><input type="radio" name="addRadioExtCellLink" id="addRadioExtCellLinkRelation" onChange="sg.changeRadioExtCellLink();" value="relation" disabled>' + tran.msg("Relation") + '</label></td></tr>';
+        html += '<tr><td><label><input type="radio" name="addRadioExtCellLink" id="addRadioExtCellLinkRole" onChange="sg.changeRadioExtCellLink();" value="role" disabled>' + i18next.t("Role") + '</label></td><td><label><input type="radio" name="addRadioExtCellLink" id="addRadioExtCellLinkRelation" onChange="sg.changeRadioExtCellLink();" value="relation" disabled>' + i18next.t("Relation") + '</label></td></tr>';
         html += '<tr><td colspan="2"><select class="form-control" name="" id="ddlAddExtCellLinkRoleList" multiple disabled><option>Select a role</option></select><select class="form-control" name="" id="ddlAddExtCellLinkRelationList" multiple disabled style="display:none;"><option>Select a relation</option></select></td></tr>';
         html += '<tr><td colspan="2"><span class="popupAlertArea" style="color:red"><aside id="popupAddExtCellLinkErrorMsg"> </aside></span></td></tr>';
         html += '</table></div>';
         html += '<div class="modal-footer">';
-        html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead();">' + tran.msg("Cancel") + '</button>';
-        html += '<button type="button" class="btn btn-primary" id="b-add-extcell-ok" onClick="sg.addExtCell();">' + tran.msg("Add") + '</button>';
+        html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead();">' + i18next.t("Cancel") + '</button>';
+        html += '<button type="button" class="btn btn-primary" id="b-add-extcell-ok" onClick="sg.addExtCell();">' + i18next.t("Add") + '</button>';
         html += '</div></div>';
         $("#toggle-panel1").append(html);
         cm.dispRoleList(data, "ddlAddExtCellLinkRoleList", true);
         cm.getRelationList().done(function(data) {
             cm.dispRelationList(data, "ddlAddExtCellLinkRelationList", true);
             $("#toggle-panel1,.panel-default").toggleClass('slide-on');
-            cm.setTitleMenu(tran.msg("CreateExternalCell"));
+            cm.setTitleMenu(i18next.t("CreateExternalCell"));
         });
     });
 };
@@ -553,7 +553,7 @@ sg.validateSchemaURL = function(schemaURL, schemaSpan, txtID) {
   var isHttp = schemaURL.substring(0, 5);
   var isHttps = schemaURL.substring(0, 6);
   var minURLLength = schemaURL.length;
-  var validMessage = tran.msg("pleaseValidSchemaURL");
+  var validMessage = i18next.t("pleaseValidSchemaURL");
   var letters = /^[0-9a-zA-Z-_.\/]+$/;
   var startHyphenUnderscore = /^[-_!@#$%^&*()=+]/;
   var urlLength = schemaURL.length;
@@ -574,7 +574,7 @@ sg.validateSchemaURL = function(schemaURL, schemaSpan, txtID) {
     //showErrorIcon(txtID);
     return false;
   } else if (urlLength > 1024) {
-    document.getElementById(schemaSpan).innerHTML = tran.msg("maxUrlLengthError");
+    document.getElementById(schemaSpan).innerHTML = i18next.t("maxUrlLengthError");
     //showErrorIcon(txtID);
     return false;
   } else if (isDot == -1) {
@@ -820,11 +820,11 @@ sg.restDeleteExtCellLinkRelation = function() {
     });
 };
 
-$(window).load(function() {
+sg.initSocialGraph = function() {
     cm.createSideMenu();
     cm.createTitleHeader(false, true);
     cm.createBackMenu("main.html");
-    cm.setTitleMenu(tran.msg("Community"));
+    cm.setTitleMenu(i18next.t("Community"));
     st.initSettings();
     $("#dashboard").append('<div class="panel list-group toggle-panel" id="toggle-panel1"></div>');
 
@@ -918,7 +918,7 @@ $(window).load(function() {
       $(this).toggleClass("active");
       $(".extcellMenu").slideToggle();
     });
-});
+};
 
 // API DEBUG
 //sg.testAPI = function() {

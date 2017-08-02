@@ -14,7 +14,7 @@ lg.initTarget = function() {
         if (match) {
             // target
             target = decodeURIComponent(match[1]);
-            $('#errorCellUrl').html(tran.msg("notExistTargetCell"));
+            $('#errorCellUrl').html(i18next.t("notExistTargetCell"));
         } else {
             // Cell URL is not provided in the URL's parameter, try to get the previously used cell URL from session.
             target = sessionStorage.getItem("targetCellUrl") || "";
@@ -166,7 +166,7 @@ lg.sendAccountNamePw = function(username, pw) {
         //alert("fail");
                 $("#error_area").removeClass('frames_active');
                 $("#error_area").removeClass('frames_hide');
-                $("#error_msg").html(tran.msg("incorrectAccountOrPass"));
+                $("#error_msg").html(i18next.t("incorrectAccountOrPass"));
                 $("#error_area").addClass('frames_active').on('transitionend', function() {
                     $(this).addClass('frames_hide');
                 })

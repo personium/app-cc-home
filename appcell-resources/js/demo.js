@@ -14,7 +14,7 @@ demo.initAppMarket = function() {
   cm.createTitleHeader(false, true);
   cm.createSideMenu();
   cm.createBackMenu("main.html");
-  cm.setTitleMenu(tran.msg("AppMarket"));
+  cm.setTitleMenu(i18next.t("AppMarket"));
   demo.initSettings();
   $("#dashboard").append('<div class="panel list-group toggle-panel" id="toggle-panel1"></div>');
 
@@ -149,7 +149,7 @@ demo.createProfileHeaderMenu = function() {
     html += '</div>';
     html += '<div class="header-body">';
     html += '<div id="tProfileDisplayName" class="sizeBody">' + cm.user.profile.DisplayName + '</div>';
-    html += '<div class="sizeCaption">' + tran.msg("Account") + ': ' + cm.user.userName +  '</div>';
+    html += '<div class="sizeCaption">' + i18next.t("Account") + ': ' + cm.user.userName +  '</div>';
     html += '</div>';
     html += '<a href="#" onClick="demo.toggleSlide();">';
     html += '<img src="https://demo.personium.io/HomeApplication/__/icons/ico_menu.png">';
@@ -225,7 +225,7 @@ demo.initSettings = function() {
     // Create Back Button
     cm.createBackMenu("main.html", true);
     // Set Title
-    cm.setTitleMenu(tran.msg("Settings"), true);
+    cm.setTitleMenu(i18next.t("Settings"), true);
     cm.setIdleTime();
 
     $('#b-edit-accconfirm-ok').on('click', function () { 
@@ -281,28 +281,28 @@ demo.initSettings = function() {
 
 demo.createSideMenu = function() {
     var itemName = {};
-    itemName.EditProf = tran.msg("EditProfile");
-    itemName.ChgPass = tran.msg("ChangePass");
-    itemName.Logout = tran.msg("Logout");
-    itemName.DispName = tran.msg("DisplayName");
-    itemName.Description = tran.msg("Description");
-    itemName.Photo = tran.msg("ProfileImage");
-    itemName.Relogin = tran.msg("Re-Login");
+    itemName.EditProf = i18next.t("EditProfile");
+    itemName.ChgPass = i18next.t("ChangePass");
+    itemName.Logout = i18next.t("Logout");
+    itemName.DispName = i18next.t("DisplayName");
+    itemName.Description = i18next.t("Description");
+    itemName.Photo = i18next.t("ProfileImage");
+    itemName.Relogin = i18next.t("Re-Login");
 
     var html = '<div class="slide-menu">';
     html += '<nav class="slide-nav">';
     html += '<ul>';
 
     // Menu Title
-    html += '<li class="menu-title">' + tran.msg("Menu") + '</li>';
+    html += '<li class="menu-title">' + i18next.t("Menu") + '</li>';
     // profile edit
     html += '<li><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">' + itemName.EditProf + '</a></li>';
     html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-change-password">' + itemName.ChgPass + '</a></li>';
     // setting menu
-    html += '<li><a class="allToggle" id="accountToggle" href="#">' + tran.msg("Account") + '</a></li>';
-    html += '<li><a class="allToggle" id="applicationToggle" href="#">' + tran.msg("Application") + '</a></li>';
-    html += '<li><a class="allToggle" id="roleToggle" href="#">' + tran.msg("Role") + '</a></li>';
-    html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="#">' + tran.msg("Relation") + '</a></li>';
+    html += '<li><a class="allToggle" id="accountToggle" href="#">' + i18next.t("Account") + '</a></li>';
+    html += '<li><a class="allToggle" id="applicationToggle" href="#">' + i18next.t("Application") + '</a></li>';
+    html += '<li><a class="allToggle" id="roleToggle" href="#">' + i18next.t("Role") + '</a></li>';
+    html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="#">' + i18next.t("Relation") + '</a></li>';
     // log out
     html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout">' + itemName.Logout + '</a></li>';
 
@@ -322,7 +322,7 @@ demo.createSideMenu = function() {
            '<h4 class="modal-title">' + itemName.Relogin + '</h4>' +
            '</div>' +
            '<div class="modal-body">' +
-           tran.msg("successChangePass") +
+           i18next.t("successChangePass") +
            '</div>' +
            '<div class="modal-footer">' +
            '<button type="button" class="btn btn-primary" id="b-relogin-ok" >OK</button>' +
@@ -339,10 +339,10 @@ demo.createSideMenu = function() {
            '<h4 class="modal-title">' + itemName.Logout + '</h4>' +
            '</div>' +
            '<div class="modal-body">' +
-           tran.msg("logoutConfirm") +
+           i18next.t("logoutConfirm") +
            '</div>' +
            '<div class="modal-footer">' +
-           '<button type="button" class="btn btn-default" data-dismiss="modal">' + tran.msg("Cancel") + '</button>' +
+           '<button type="button" class="btn btn-default" data-dismiss="modal">' + i18next.t("Cancel") + '</button>' +
            '<button type="button" class="btn btn-primary" id="b-logout-ok" >OK</button>' +
            '</div></div></div></div>';
     modal = $(html);
@@ -356,7 +356,7 @@ demo.createSideMenu = function() {
            '<h4 class="modal-title">' + itemName.Relogin + '</h4>' +
            '</div>' +
            '<div class="modal-body">' +
-           tran.msg("expiredSession") +
+           i18next.t("expiredSession") +
            '</div>' +
            '<div class="modal-footer">' +
            '<button type="button" class="btn btn-primary" id="b-session-relogin-ok" >OK</button>' +
@@ -374,7 +374,7 @@ demo.createSideMenu = function() {
 demo.createApplicationList = function() {
     $("#dashboard").empty();
     $("#dashboard").append('<div class="panel list-group toggle-panel" id="toggle-panel1"></div>');
-    var html = '<div class="panel-body" id="app-panel"><table class="table table-striped"><tr><td>' + tran.msg("Installed") + '</td></tr><tr><td><div id="insAppList1"></div></td></tr><tr><td>' + tran.msg("ApplicationList") + '</td></tr><tr><td><div id="appList1"></div></td></tr></div>';
+    var html = '<div class="panel-body" id="app-panel"><table class="table table-striped"><tr><td>' + i18next.t("Installed") + '</td></tr><tr><td><div id="insAppList1"></div></td></tr><tr><td>' + i18next.t("ApplicationList") + '</td></tr><tr><td><div id="appList1"></div></td></tr></div>';
     $("#dashboard").append(html);
     // install application list
     cm.getBoxList().done(function(data) {
