@@ -4,7 +4,7 @@ ut.cellUrlWithEndingSlash = function(tempUrl, raiseError=false) {
     var i = tempUrl.indexOf("/", 8); // search after "http://" or "https://"
 
     if (raiseError && i == -1) {
-        $('#errorCellUrl').html(tran.msg("pleaseValidExternalCellUrl"));
+        $('#errorCellUrl').html(i18next.t("pleaseValidExternalCellUrl"));
         return tempUrl;
     }
 

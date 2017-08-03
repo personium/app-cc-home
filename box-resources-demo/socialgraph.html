@@ -5,24 +5,31 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Personium Cell</title>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/8.4.3/i18next.min.js"></script>
+        <script src="https://unpkg.com/i18next-xhr-backend/i18nextXHRBackend.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/2.0.0/i18nextBrowserLanguageDetector.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-        <script src="../appcell-resources/js/i18next-1.6.3.js"></script>
         <script src="../appcell-resources/js/load.i18n.js"></script>
         <script src="../appcell-resources/js/utils.js"></script>
-        <script src="../appcell-resources/js/common.js"></script>
         <script src="../appcell-resources/js/socialgraph.js"></script>
+        <script src="../appcell-resources/js/common.js"></script>
         <script src="../appcell-resources/js/settings.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
         <link href='../appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
         <link href='../appcell-resources/css/settings.css' rel='stylesheet' type='text/css'>
         <link href='../appcell-resources/css/socialgraph.css' rel='stylesheet' type='text/css'>
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+    <script type="text/javascript">
+        function init() {
+            sg.initSocialGraph();
+        };
+    </script>
     </head>
     <body id="translate">
         <div class="container-fluid display-table">

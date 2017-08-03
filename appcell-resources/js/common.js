@@ -37,7 +37,7 @@ cm.createProfileHeaderMenu = function() {
     html += '</div>';
     html += '<div class="header-body">';
     html += '<div id="tProfileDisplayName" class="sizeBody">' + cm.user.profile.DisplayName + '</div>';
-    html += '<div class="sizeCaption">' + tran.msg("Account") + ': ' + cm.user.userName +  '</div>';
+    html += '<div class="sizeCaption">' + i18next.t("Account") + ': ' + cm.user.userName +  '</div>';
     html += '</div>';
     html += '<a href="#" onClick="cm.toggleSlide();">';
     html += '<img src="https://demo.personium.io/HomeApplication/__/icons/ico_menu.png">';
@@ -128,17 +128,17 @@ cm.createSettingArea = function() {
     html += '<div id="dvTextConfirmation"></div>';
     html += '</div>';
     html += '<div class="modal-footer">';
-    html += '<button type="button" class="btn btn-default" data-dismiss="modal">' + tran.msg("Cancel") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-relconfirm-ok" style="display:none">' + tran.msg("Edit") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-accconfirm-ok" style="display:none">' + tran.msg("Edit") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-acclinkrole-ok" style="display:none">' + tran.msg("Del") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-role-ok" style="display:none">' + tran.msg("Del") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-account-ok" style="display:none">' + tran.msg("Del") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-relation-ok" style="display:none">' + tran.msg("Del") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-rellinkrole-ok" style="display:none">' + tran.msg("Del") + '</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-del-extcell-ok" style="display:none">' + tran.msg("Del") + '</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-del-extcelllinkrole-ok" style="display:none">' + tran.msg("Del") + '</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-del-extcelllinkrelation-ok" style="display:none">' + tran.msg("Del") + '</button>';
+    html += '<button type="button" class="btn btn-default" data-dismiss="modal">' + i18next.t("Cancel") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-relconfirm-ok" style="display:none">' + i18next.t("Edit") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-accconfirm-ok" style="display:none">' + i18next.t("Edit") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-acclinkrole-ok" style="display:none">' + i18next.t("Del") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-role-ok" style="display:none">' + i18next.t("Del") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-account-ok" style="display:none">' + i18next.t("Del") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-relation-ok" style="display:none">' + i18next.t("Del") + '</button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-rellinkrole-ok" style="display:none">' + i18next.t("Del") + '</button>';
+    html += '<button type="button" class="btn btn-primary" id="b-del-extcell-ok" style="display:none">' + i18next.t("Del") + '</button>';
+    html += '<button type="button" class="btn btn-primary" id="b-del-extcelllinkrole-ok" style="display:none">' + i18next.t("Del") + '</button>';
+    html += '<button type="button" class="btn btn-primary" id="b-del-extcelllinkrelation-ok" style="display:none">' + i18next.t("Del") + '</button>';
     html += '<button type="button" class="btn btn-primary" id="b-ins-bar-ok" style="display:none">OK</button>';
     html += '</div>';
     html += '</div>';
@@ -226,28 +226,31 @@ cm.moveBackahead = function(flg) {
 // create side menu
 cm.createSideMenu = function() {
     var itemName = {};
-    itemName.EditProf = tran.msg("EditProfile");
-    itemName.ChgPass = tran.msg("ChangePass");
-    itemName.Logout = tran.msg("Logout");
-    itemName.DispName = tran.msg("DisplayName");
-    itemName.Description = tran.msg("Description");
-    itemName.Photo = tran.msg("ProfileImage");
-    itemName.Relogin = tran.msg("ReLogin");
+    itemName.EditProf = i18next.t("EditProfile");
+    itemName.ChgPass = i18next.t("ChangePass");
+    itemName.ChgLng = i18next.t("ChangeLng");
+    itemName.Logout = i18next.t("Logout");
+    itemName.DispName = i18next.t("DisplayName");
+    itemName.Description = i18next.t("Description");
+    itemName.Photo = i18next.t("ProfileImage");
+    itemName.Relogin = i18next.t("ReLogin");
 
     var html = '<div class="slide-menu">';
     html += '<nav class="slide-nav">';
     html += '<ul>';
 
     // Menu Title
-    html += '<li class="menu-title">' + tran.msg("Menu") + '</li>';
+    html += '<li class="menu-title">' + i18next.t("Menu") + '</li>';
     // profile edit
     html += '<li><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">' + itemName.EditProf + '</a></li>';
     html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-change-password">' + itemName.ChgPass + '</a></li>';
     // setting menu
-    html += '<li><a class="allToggle" id="accountToggle" href="#">' + tran.msg("Account") + '</a></li>';
-    html += '<li><a class="allToggle" id="applicationToggle" href="#">' + tran.msg("Application") + '</a></li>';
-    html += '<li><a class="allToggle" id="roleToggle" href="#">' + tran.msg("Role") + '</a></li>';
-    html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="#">' + tran.msg("Relation") + '</a></li>';
+    html += '<li><a class="allToggle" id="accountToggle" href="#">' + i18next.t("Account") + '</a></li>';
+    html += '<li><a class="allToggle" id="applicationToggle" href="#">' + i18next.t("Application") + '</a></li>';
+    html += '<li><a class="allToggle" id="roleToggle" href="#">' + i18next.t("Role") + '</a></li>';
+    html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="#">' + i18next.t("Relation") + '</a></li>';
+    // change language
+    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-chgLng">' + itemName.ChgLng + '</a></li>'
     // log out
     html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout">' + itemName.Logout + '</a></li>';
 
@@ -297,8 +300,8 @@ cm.createSideMenu = function() {
     html += '</span>';
     html += '</div>';
     html += '<div class="modal-footer">';
-    html += '<button type="button" class="btn btn-default" data-dismiss="modal">' + tran.msg("Cancel") + '</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-edit-profile-ok">' + tran.msg("Register") + '</button>';
+    html += '<button type="button" class="btn btn-default" data-dismiss="modal">' + i18next.t("Cancel") + '</button>';
+    html += '<button type="button" class="btn btn-primary" id="b-edit-profile-ok">' + i18next.t("Register") + '</button>';
     html += '</div></div></div></div>';
     var modal = $(html);
     $(document.body).append(modal);
@@ -313,14 +316,14 @@ cm.createSideMenu = function() {
            '<h4 class="modal-title">' + itemName.ChgPass + '</h4>' +
            '</div>' +
            '<div class="modal-body">' +
-           '<input type="password" placeholder="' + tran.msg("newPassPlaceHolder") + '" id="pNewPassword">' +
+           '<input type="password" placeholder="' + i18next.t("newPassPlaceHolder") + '" id="pNewPassword">' +
            '<span id="changeMessage" style="color:red"></span>' +
-           '<input type="password" placeholder="' + tran.msg("confirmNewPass") + '" id="pConfirm">' +
+           '<input type="password" placeholder="' + i18next.t("confirmNewPass") + '" id="pConfirm">' +
            '<span id="confirmMessage" style="color:red"></span>' +
            '</div>' +
            '<div class="modal-footer">' +
-           '<button type="button" class="btn btn-default" data-dismiss="modal">' + tran.msg("Cancel") + '</button>' +
-           '<button type="button" class="btn btn-primary" id="b-change-password-ok" disabled>' + tran.msg("Update") + '</button>' +
+           '<button type="button" class="btn btn-default" data-dismiss="modal">' + i18next.t("Cancel") + '</button>' +
+           '<button type="button" class="btn btn-primary" id="b-change-password-ok" disabled>' + i18next.t("Update") + '</button>' +
            '</div></div></div></div>';
 
     modal = $(html);
@@ -334,13 +337,37 @@ cm.createSideMenu = function() {
            '<h4 class="modal-title">' + itemName.Relogin + '</h4>' +
            '</div>' +
            '<div class="modal-body">' +
-           tran.msg("successChangePass") +
+           i18next.t("successChangePass") +
            '</div>' +
            '<div class="modal-footer">' +
            '<button type="button" class="btn btn-primary" id="b-relogin-ok" >OK</button>' +
            '</div></div></div></div>';
     modal = $(html);
     $(document.body).append(modal);
+
+    // Change Language
+    html = '<div id="modal-chgLng" class="modal fade" role="dialog">' +
+           '<div class="modal-dialog">' +
+           '<div class="modal-content">' +
+           '<div class="modal-header login-header">' +
+           '<button type="button" class="close" data-dismiss="modal">×</button>' +
+           '<h4 class="modal-title">' + itemName.ChgLng + '</h4>' +
+           '</div>' +
+           '<div class="modal-body">' +
+           i18next.t("changeLanguageDescription") +
+           '<select class="form-control" id="selectLng">' +
+           '<option value="en">' + i18next.t("English") + '</option>' +
+           '<option value="ja">' + i18next.t("Japanese") + '</option>' +
+           '</select>' +
+           '<span id="selectLngMessage" style="color:red"></span>' +
+           '</div>' +
+           '<div class="modal-footer">' +
+           '<button type="button" class="btn btn-default" data-dismiss="modal">' + i18next.t("Cancel") + '</button>' +
+           '<button type="button" class="btn btn-primary" id="b-setlng-ok" >' + i18next.t("Setup") + '</button>' +
+           '</div></div></div></div>';
+    modal = $(html);
+    $(document.body).append(modal);
+    $("#selectLng").val(i18next.language);
 
     // Log Out
     html = '<div id="modal-logout" class="modal fade" role="dialog">' +
@@ -351,10 +378,10 @@ cm.createSideMenu = function() {
            '<h4 class="modal-title">' + itemName.Logout + '</h4>' +
            '</div>' +
            '<div class="modal-body">' +
-           tran.msg("logoutConfirm") +
+           i18next.t("logoutConfirm") +
            '</div>' +
            '<div class="modal-footer">' +
-           '<button type="button" class="btn btn-default" data-dismiss="modal">' + tran.msg("Cancel") + '</button>' +
+           '<button type="button" class="btn btn-default" data-dismiss="modal">' + i18next.t("Cancel") + '</button>' +
            '<button type="button" class="btn btn-primary" id="b-logout-ok" >OK</button>' +
            '</div></div></div></div>';
     modal = $(html);
@@ -368,7 +395,7 @@ cm.createSideMenu = function() {
            '<h4 class="modal-title">' + itemName.Relogin + '</h4>' +
            '</div>' +
            '<div class="modal-body">' +
-           tran.msg("expiredSession") +
+           i18next.t("expiredSession") +
            '</div>' +
            '<div class="modal-footer">' +
            '<button type="button" class="btn btn-primary" id="b-session-relogin-ok" >OK</button>' +
@@ -397,6 +424,12 @@ cm.createSideMenu = function() {
 //        $(".overlay").removeClass('overlay-on');
 //        $(".slide-menu").removeClass('slide-on');
         cm.toggleSlide();
+    });
+    $("#b-setlng-ok").on('click', function() {
+        $("#selectLng option:selected").each(function(index, option) {
+            i18next.changeLanguage($(option).val())
+            window.location.reload();
+        });
     });
 
     // Time Out Set
@@ -475,7 +508,7 @@ cm.dispRoleList = function(json, id, multiFlag) {
   }
 
   if (!multiFlag) {
-      $("#" + id).append('<option value="">' + tran.msg("selectRole") + '</option>');
+      $("#" + id).append('<option value="">' + i18next.t("selectRole") + '</option>');
   }
   for (var i in results) {
     var objRole = json.d.results[i];
@@ -499,7 +532,7 @@ cm.dispAssignRole = function(type, flg) {
     $("#" + panelId + "-panel3").empty();
     cm.setBackahead(flg);
     var html = '<div class="panel-body">';
-    html += '<div id="dvAddAccLinkRole' + settingId + '">' + tran.msg("selectRoleAssign") + '</div>';
+    html += '<div id="dvAddAccLinkRole' + settingId + '">' + i18next.t("selectRoleAssign") + '</div>';
     html += '<div id="dvSelectAddAccLinkRole' + settingId + '" style="margin-bottom: 10px;">';
     html += '<select class="form-control" name="" id="ddlLinkRoleList' + settingId + '" onChange="cm.changeRoleSelect(\'' + settingId + '\');"></select>';
     html += '</div>';
@@ -516,7 +549,7 @@ cm.dispAssignRole = function(type, flg) {
             html += 'sg.restAddExtCellLinkRole(true);';
             break;
     }
-    html += '">' + tran.msg("Assign") + '</button>';
+    html += '">' + i18next.t("Assign") + '</button>';
     html += '</div></div>';
     $("#" + panelId + "-panel3").append(html);
     cm.getRoleList().done(function(data) {
@@ -525,7 +558,7 @@ cm.dispAssignRole = function(type, flg) {
     
     $("#" + panelId + "-panel3").toggleClass('slide-on');
     $("#" + panelId + "-panel2").toggleClass('slide-on-holder');
-    cm.setTitleMenu(tran.msg("AssigningRoles"), flg);
+    cm.setTitleMenu(i18next.t("AssigningRoles"), flg);
 };
 cm.changeRoleSelect = function(settingId) {
     var value = $("#ddlLinkRoleList" + settingId + " option:selected").val();
@@ -572,7 +605,7 @@ cm.dispRelationList = function(json, id, multiFlag) {
   }
 
   if (!multiFlag) {
-      $("#" + id).append('<option value="">' + tran.msg("selectRelation") + '</option>');
+      $("#" + id).append('<option value="">' + i18next.t("selectRelation") + '</option>');
   }
 
   for (var i in results) {
@@ -684,10 +717,10 @@ cm.charCheck = function(check) {
   if (passLen !== 0) {
     bool = true;
     if (passLen < 6 || passLen > 36) {
-      msg = tran.msg("pleaseBetweenCharacter");
+      msg = i18next.t("pleaseBetweenCharacter");
       bool = false;
     } else if (check.val().match(/[^0-9a-zA-Z_-]+/)) {
-      msg = tran.msg("pleaseCharacterType");
+      msg = i18next.t("pleaseCharacterType");
       bool = false;
     }
 
@@ -718,14 +751,14 @@ cm.validateDisplayName = function(displayName, displayNameSpan) {
 	var MINLENGTH = 1;
         var lenDisplayName = displayName.length;
         if(lenDisplayName < MINLENGTH || displayName == undefined || displayName == null || displayName == "") {
-            $("#" + displayNameSpan).html(tran.msg("pleaseEnterName"));
+            $("#" + displayNameSpan).html(i18next.t("pleaseEnterName"));
             return false;
 	}
 
 	var MAXLENGTH = 128;
         $("#" + displayNameSpan).html("");
         if (lenDisplayName > MAXLENGTH) {
-            $("#" + displayNameSpan).html(tran.msg("errorValidateNameLength"));
+            $("#" + displayNameSpan).html(i18next.t("errorValidateNameLength"));
             return false;
         }
         return true;
@@ -735,7 +768,7 @@ cm.validateDescription = function(descriptionDetails, descriptionSpan) {
 	var lenDescription = descriptionDetails.length;
 	if (lenDescription > 51200) {
 		isValidDescription = false;
-		document.getElementById(descriptionSpan).innerHTML = tran.msg("errorValidateMaxLengthOver");
+		document.getElementById(descriptionSpan).innerHTML = i18next.t("errorValidateMaxLengthOver");
 	}
 	return isValidDescription;
 };
@@ -785,7 +818,7 @@ cm.changePassCheck = function(newpass, confirm) {
     $('#confirmMessage').html("");
     cm.changePass(newpass);
   } else {
-    $('#confirmMessage').html(tran.msg("passwordNotMatch"));
+    $('#confirmMessage').html(i18next.t("passwordNotMatch"));
   }
 };
 
