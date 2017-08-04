@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<!--
+	Twenty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="ja">
+
+	<base href="http://personium.io/"/>
+	<head>
+		<title>Personium | Open Source PDS/BaaS Software.</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="This page contains the introduction of 'Personium', the open source software for Personal Data Store (PDS) and Backend-as-a-Service (BaaS). " />
+		<meta name="keywords" content="BaaS,Personal,Data,Open" />
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-wide.css" />
+			<link rel="stylesheet" href="css/style-noscript.css" />
+			<link rel="shortcut icon" href="css/images/favicon.ico">
+		</noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie/v9.css" /><![endif]-->
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/jquery.scrolly.min.js"></script>
+		<script src="js/jquery.scrollgress.min.js"></script>
+		<script src="bower_components/i18next/i18next.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+					m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-57274327-1', 'auto');
+			ga('send', 'pageview');
+
+			i18n.init(function(t) {
+				$("#translate").i18n();
+			});
+		</script>
+	</head>
+
+	<body class="index"  id="translate">
+		<div id="page-wrapper">
+			<header id="header" class="container">
+				<h1 id="logo"><a href="./" class="btn fit scrolly" onclick="ga('send', 'event', 'inner', 'click', '#');">Personium</a></h1>
+				<nav id="nav">
+					<ul>
+						<li class="current"><a href="./#cta" class="button fit scrolly" onclick="ga('send', 'event', 'inner', 'click', '#cta');">Resources</a></li>
+						<li class ="current"><a href="./demo/#main">Demo</a></li>
+						<li class="submenu">
+							<a href="" >Languages</a>
+							<ul>
+								<li><a href="demo/home-app?setLng=en-US#main">English</a></li>
+								<li><a href="demo/home-app?setLng=ja#main">Japanese</a></li>
+							</ul>
+						</li>
+						<li><a href="https://github.com/personium/" class="button special" target="_blank" rel="external" onclick="ga('send', 'event', 'outer', 'click', 'https://github.com/personium/');">Fork me on GitHub</a></li>
+					</ul>
+				</nav>
+			</header>
+
+			<div id="main-wrapper">
+				<div class="wrapper style3">
+				   <h2 data-i18n="homeapp-title"></h2>
+				   <h2 data-i18n="homeapp-overview"></h2><br>
+				   <p data-i18n="[html]home-app-description"></p>
+
+				   <p data-i18n="[html]home-app-url-tutorial"></p>
+				   <p data-i18n="[html]home-app-url"></p>
+
+				</div>
+			</div>
+
+
+			<!-- Footer -->
+				<footer id="footer">
+
+					<ul class="icons">
+						<li><a href="#" class="icon circle fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="#" class="icon circle fa-google-plus"><span class="label">Google+</span></a></li>
+						<li><a href="#" class="icon circle fa-github"><span class="label">Github</span></a></li>
+					</ul>
+
+				<ul class="copyright">
+					<li>Design: <a href="http://html5up.net" rel="external" target="_blank" rel="external" onclick="ga('send', 'event', 'outer', 'click', 'http://html5up.net');">HTML5 UP</a></li>
+				</ul>
+
+				</footer>
+
+		</div>
+
+	</body>
+</html>
