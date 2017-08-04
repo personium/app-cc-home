@@ -1,6 +1,18 @@
 var cm = {};
 cm.imgBinaryFile = null;
 cm.user = JSON.parse(sessionStorage.getItem("sessionData"));
+
+// Logout
+cm.logout = function() {
+  sessionStorage.setItem("sessionData", null);
+  var mode = sessionStorage.getItem("mode");
+  if (mode) {
+      location.href = "./login.html?mode=" + mode;
+  } else {
+      location.href = "./login.html";
+  }
+};
+
 if (!cm.user) {
   //location.href = "./login.html";
   cm.logout();
@@ -773,17 +785,6 @@ cm.validateDescription = function(descriptionDetails, descriptionSpan) {
 	return isValidDescription;
 };
 
-// Logout
-cm.logout = function() {
-  sessionStorage.setItem("sessionData", null);
-  var mode = sessionStorage.getItem("mode");
-  if (mode) {
-      location.href = "./login.html?mode=" + mode;
-  } else {
-      location.href = "./login.html";
-  }
-};
-
 // This method checks idle time
 // Check 5 minutes before session expires
 cm.setIdleTime = function() {
@@ -1005,6 +1006,7 @@ cm.execApp = function(schema,boxName) {
         cm.appGetTargetToken(schema, launchObj.appTokenId, launchObj.appTokenPw).done(function(appToken) {
             cm.appRefreshTokenAPI(schema, appToken.access_token).done(function(refTokenApp) {
                 var url = launch;
+                url += '?lng=' + i18next.language;
                 url += '#target=' + target;
                 url += '&token=' + refTokenApp.access_token;
                 url += '&ref=' + refTokenApp.refresh_token;
