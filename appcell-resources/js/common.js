@@ -291,9 +291,11 @@ cm.createSideMenu = function() {
     html += '</span>';
     html += '<div id="dvPhoto" data-i18n="ProfileImage"></div>';
     html += '<div id="dvBrowseButtonSection">';
-    html += '<input type="file" class="fileUpload" onchange="cm.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile">';
+    html += '<input type="file" class="fileUpload" onchange="cm.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile" style="display: none">';
+    html += '<button class="btn btn-primary" id="editImgButton" type="button" data-i18n="SelectFile"></button>';
+    html += '<label id="editImgLbl" style="margin-left:10px;"></label>';
     html += '</div>';
-    html += '<div id="dvBoxProfileImage">';
+    html += '<div id="dvBoxProfileImage" style="margin-top: 10px;">';
     html += '<figure id="figEditCellProfile" class="boxProfileImage">';
     html += '<img class="image-circle-large" style="margin: auto;" id="idImgFile" src="#" alt="image" />';
     html += '</figure>';
@@ -307,7 +309,7 @@ cm.createSideMenu = function() {
     html += '<button type="button" class="btn btn-primary" id="b-edit-profile-ok" data-i18n="Register"></button>';
     html += '</div></div></div></div>';
     var modal = $(html);
-    $(document.body).append(modal);
+    $(document.body).append(modal).localize();
 
     // Change Password
     html = '<div id="modal-change-password" class="modal fade" role="dialog">' +
@@ -428,6 +430,9 @@ cm.createSideMenu = function() {
             updateContent();
             $("#modal-chgLng").modal("hide");
         });
+    });
+    $("#editImgButton,#editImgLbl").on('click', function() {
+        $("#editImgFile").click();
     });
     $("#modal-chgLng").on("show.bs.modal", function () {
         $("#selectLng").val(i18next.language);
@@ -638,6 +643,7 @@ cm.populateProfileEditData = function() {
   document.getElementById("popupEditDescriptionErrorMsg").innerHTML = "";
   document.getElementById("popupEditUserPhotoErrorMsg").innerHTML = "";
   
+  $("#editImgLbl").html("");
   $('#editImgFile').replaceWith($('#editImgFile').clone());
   if (cm.user.profile.Image) {
     $("#idImgFile").attr('src', cm.user.profile.Image);
@@ -676,6 +682,7 @@ cm.attachFile = function(popupImageErrorId, fileDialogId) {
   if (file) {
     var imageFileSize = file.size / 1024;
     if (cm.validateFileType(cm.fileName, imageFileSize, popupImageErrorId)) {
+      $("#editImgLbl").html(ut.getName(cm.fileName));
       cm.getAsBinaryString(file);
     }
   }
