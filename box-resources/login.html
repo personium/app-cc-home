@@ -25,9 +25,6 @@
 <script type="text/javascript">
     function init() {
         lg.initTarget();
-
-        $("#iAccountName").attr("placeholder", i18next.t("accountNamePlaceHolder"));
-        $("#iAccountPw").attr("placeholder", i18next.t("accountPassPlaceHolder"));
     }
 </script>
     </head>
@@ -41,11 +38,11 @@
 
             <div class="login-form-controls">
                 <div>
-                    <input id="iAccountName" type="text" placeholder="Please enter the account name." value=""/>
+                    <input id="iAccountName" type="text" data-i18n="[placeholder]accountNamePlaceHolder" placeholder="Please enter the account name." value=""/>
                 </div>
 
                 <div>
-                    <input id="iAccountPw" type="password" placeholder="Please enter a password." value=""/>
+                    <input id="iAccountPw" type="password" data-i18n="[placeholder]accountPassPlaceHolder" placeholder="Please enter a password." value=""/>
                 </div>
                 <div>
                     <button class="login_btn round-btn" id="bLogin"><span data-i18n="Login">LOGIN</span></button>

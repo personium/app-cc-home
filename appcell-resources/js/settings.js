@@ -19,7 +19,7 @@ st.initSettings = function() {
     // Create Back Button
     cm.createBackMenu("main.html", true);
     // Set Title
-    cm.setTitleMenu(i18next.t("Settings"), true);
+    cm.setTitleMenu("Settings", true);
 
     $('#b-edit-accconfirm-ok').on('click', function () { 
         st.sendAjaxEditAccount();
@@ -111,7 +111,7 @@ st.createAccountList = function() {
     st.getAccountList().done(function(data) {
         st.dispAccountList(data);
         $(".setting-menu").toggleClass('slide-on');
-        cm.setTitleMenu(i18next.t("Account"), true);
+        cm.setTitleMenu("Account", true);
     });
 };
 // アカウントリストの取得
@@ -201,7 +201,7 @@ st.createAddAccount = function() {
     });
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
-    cm.setTitleMenu(i18next.t("CreateAccount"), true);
+    cm.setTitleMenu("CreateAccount", true);
 };
 // 登録パスワードチェック
 st.blurNewPassword = function(obj, btnId, msgId) {
@@ -287,7 +287,7 @@ st.dispDelAccountRoleModal = function(accName, roleName, boxName, no) {
       cm.linkBoxName = boxName
     }
     st.linkAccNameNo = no;
-    $("#dvTextConfirmation").html(i18next.t("removeAssociationRole", {value1:roleName, value2:boxName}));
+    $("#dvTextConfirmation").html(i18next.t("removeAssociationRole", {value1:roleName, value2:boxName})).localize();
     $("#modal-confirmation-title").html(i18next.t("DeleteAssigningRole"));
     $('#b-del-acclinkrole-ok').css("display","");
     $('#modal-confirmation').modal('show');
@@ -309,7 +309,7 @@ st.createEditAccount = function(name) {
     $("#setting-panel2").append(html);
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
-    cm.setTitleMenu(i18next.t("EditAccount"), true);
+    cm.setTitleMenu("EditAccount", true);
 };
 st.sendAjaxEditAccount = function() {
     var keyName = st.updUser;
@@ -427,7 +427,7 @@ st.createApplicationList = function() {
         st.getApplicationList().done(function(data) {
             st.dispApplicationList(data);
             $(".setting-menu").toggleClass('slide-on');
-            cm.setTitleMenu(i18next.t("Application"), true);
+            cm.setTitleMenu("Application", true);
         }).fail(function(data) {
             alert(data);
         });
@@ -523,7 +523,7 @@ st.dispViewApp = function(schema, dispName, imageSrc, description, barUrl, barBo
     }
 
     $("#setting-panel2").append(html);
-    cm.setTitleMenu(i18next.t("Details"), true);
+    cm.setTitleMenu("Details", true);
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
 };
@@ -532,7 +532,8 @@ st.confBarInstall = function(schema, barUrl, barBoxName, dispName) {
     st.barFileUrl = barUrl;
     st.barBoxName = barBoxName;
     $("#dvTextConfirmation").html(i18next.t("confirmInstallation"));
-    $("#modal-confirmation-title").html(dispName);
+    //$("#modal-confirmation-title").html(dispName);
+    $("#modal-confirmation-title").attr("data-i18n", dispName).localize();
     $('#b-ins-bar-ok').css("display","");
     $('#modal-confirmation').modal('show');
 };
@@ -596,7 +597,7 @@ st.createRoleList = function() {
     cm.getRoleList().done(function(data) {
         st.dispRoleList(data);
         $(".setting-menu").toggleClass('slide-on');
-        cm.setTitleMenu(i18next.t("Role"), true);
+        cm.setTitleMenu("Role", true);
     });
 };
 st.dispRoleList = function(json) {
@@ -671,9 +672,9 @@ st.operationRole = function() {
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
     if (st.updUser !== null) {
-        cm.setTitleMenu(i18next.t("EditRole"), true);
+        cm.setTitleMenu("EditRole", true);
     } else {
-        cm.setTitleMenu(i18next.t("CreateRole"), true);
+        cm.setTitleMenu("CreateRole", true);
     }
 };
 st.createEditRole = function(name, box) {
@@ -731,7 +732,7 @@ st.createRelationList = function() {
     cm.getRelationList().done(function(data) {
         st.dispRelationList(data, null, false);
         $(".setting-menu").toggleClass('slide-on');
-        cm.setTitleMenu(i18next.t("Relation"), true);
+        cm.setTitleMenu("Relation", true);
     });
 };
 st.dispRelationList = function(json) {
@@ -796,7 +797,7 @@ st.createAddRelation = function() {
     });
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
-    cm.setTitleMenu(i18next.t("CreateRelation"), true);
+    cm.setTitleMenu("CreateRelation", true);
 };
 st.addRelationNameBlurEvent = function() {
         var name = $("#addRelationName").val();
@@ -882,7 +883,7 @@ st.dispDelRelationRoleModal = function(relName, relBoxName, roleName, boxName, n
       cm.linkBoxName = boxName
     }
     st.linkRelNameNo = no;
-    $("#dvTextConfirmation").html(i18next.t("removeAssociationRole", {value1:roleName, value2:boxName}));
+    $("#dvTextConfirmation").html(i18next.t("removeAssociationRole", {value1:roleName, value2:boxName})).localize();
     $("#modal-confirmation-title").html(i18next.t("DeleteAssigningRole"));
     $('#b-del-rellinkrole-ok').css("display","");
     $('#modal-confirmation').modal('show');
@@ -913,7 +914,7 @@ st.createEditRelation = function(name, box) {
 
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
-    cm.setTitleMenu(i18next.t("EditRelation"), true);
+    cm.setTitleMenu("EditRelation", true);
 }
 st.editRelationOk = function() {
     $('#dvTextConfirmation').html(i18next.t("confirmChangeContentEnter"));
