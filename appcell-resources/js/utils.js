@@ -19,7 +19,7 @@ ut.cellUrlWithEndingSlash = function(tempUrl, raiseError=false) {
     return cellUrl;
 };
 
-// ファイルパスからファイル名を取得する
+// Get file name from file path
 ut.getName = function(path) {
   var collectionName = path;
   var recordsCount = 0;
