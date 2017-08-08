@@ -109,7 +109,9 @@ ha.dispInsAppList = function() {
 
 ha.dispInsAppListSchema = function(schema, boxName) {
     cm.getProfile(schema).done(function(profData) {
-        var dispName = profData.DisplayName;
+        var dispName = boxName + "_DisplayName";
+        cm.i18nAddProfile("en", "translation", boxName, profData);
+        cm.i18nAddProfile("ja", "translation", boxName, profData);
         var imageSrc = cm.notAppImage;
         if (profData.Image) {
             imageSrc = profData.Image;
@@ -141,9 +143,9 @@ ha.dispInsAppListSchema = function(schema, boxName) {
                              + '<img src = "' + imageSrc + '" class="ins-app-icon">'
                              + '<span class="badge">' + msgCnt + '</span>'
                              + '</div>'
-                             + '<div class="ins-app-name">' + dispName + '</div>'
+                             + '<div class="ins-app-name" data-i18n="' + dispName + '"></div>'
                              + '</a>';
-                    $("#dashboard_ins").append(html);
+                    $("#dashboard_ins").append(html).localize();
                 });
             }
         });
