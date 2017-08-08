@@ -14,7 +14,8 @@ lg.initTarget = function() {
         if (match) {
             // target
             target = decodeURIComponent(match[1]);
-            $('#errorCellUrl').html(i18next.t("notExistTargetCell"));
+            //$('#errorCellUrl').html(i18next.t("notExistTargetCell"));
+            $('#errorCellUrl').attr("data-i18n", "notExistTargetCell").localize().show();
         } else {
             // Cell URL is not provided in the URL's parameter, try to get the previously used cell URL from session.
             target = sessionStorage.getItem("targetCellUrl") || "";
@@ -70,7 +71,10 @@ lg.initTarget = function() {
 
 lg.targetCellLogin = function(tempUrl) {
     // Do the best to prepare a proper cell URL
-    var cellUrl = ut.cellUrlWithEndingSlash(tempUrl, true);
+    var cellUrl = "";
+    if (tempUrl) {
+        cellUrl = ut.cellUrlWithEndingSlash(tempUrl, true);
+    }
 
     lg.getCell(cellUrl).done(function(data, status, xhr) {
         if (xhr.responseText.match(/urn:x-personium:xmlns/)) {

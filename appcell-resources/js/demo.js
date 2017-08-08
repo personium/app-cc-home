@@ -14,7 +14,7 @@ demo.initAppMarket = function() {
   cm.createTitleHeader(false, true);
   cm.createSideMenu();
   cm.createBackMenu("main.html");
-  cm.setTitleMenu(i18next.t("AppMarket"));
+  cm.setTitleMenu("AppMarket");
   demo.initSettings();
   $("#dashboard").append('<div class="panel list-group toggle-panel" id="toggle-panel1"></div>');
 
@@ -225,7 +225,7 @@ demo.initSettings = function() {
     // Create Back Button
     cm.createBackMenu("main.html", true);
     // Set Title
-    cm.setTitleMenu(i18next.t("Settings"), true);
+    cm.setTitleMenu("Settings", true);
     cm.setIdleTime();
 
     $('#b-edit-accconfirm-ok').on('click', function () { 

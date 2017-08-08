@@ -49,12 +49,13 @@ cm.createProfileHeaderMenu = function() {
     html += '</div>';
     html += '<div class="header-body">';
     html += '<div id="tProfileDisplayName" class="sizeBody">' + cm.user.profile.DisplayName + '</div>';
-    html += '<div class="sizeCaption">' + i18next.t("Account") + ': ' + cm.user.userName +  '</div>';
+    html += '<div id="accountTitle" class="sizeCaption" data-i18n="AccountTitle"></div>';
     html += '</div>';
     html += '<a href="#" onClick="cm.toggleSlide();">';
     html += '<img src="https://demo.personium.io/HomeApplication/__/icons/ico_menu.png">';
     html += '</a>';
     $(".profile-menu").html(html);
+    $('#accountTitle').attr("data-i18n-options", ["{ \"title\": \"", cm.user.userName, "\" }"].join(''));
 
     // Processing when resized
     $(window).on('load resize', function(){
@@ -140,17 +141,17 @@ cm.createSettingArea = function() {
     html += '<div id="dvTextConfirmation"></div>';
     html += '</div>';
     html += '<div class="modal-footer">';
-    html += '<button type="button" class="btn btn-default" data-dismiss="modal">' + i18next.t("Cancel") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-relconfirm-ok" style="display:none">' + i18next.t("Edit") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-accconfirm-ok" style="display:none">' + i18next.t("Edit") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-acclinkrole-ok" style="display:none">' + i18next.t("Del") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-role-ok" style="display:none">' + i18next.t("Del") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-account-ok" style="display:none">' + i18next.t("Del") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-relation-ok" style="display:none">' + i18next.t("Del") + '</button>';
-    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-rellinkrole-ok" style="display:none">' + i18next.t("Del") + '</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-del-extcell-ok" style="display:none">' + i18next.t("Del") + '</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-del-extcelllinkrole-ok" style="display:none">' + i18next.t("Del") + '</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-del-extcelllinkrelation-ok" style="display:none">' + i18next.t("Del") + '</button>';
+    html += '<button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Cancel"></button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-relconfirm-ok" style="display:none" data-i18n="Edit"></button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-accconfirm-ok" style="display:none" data-i18n="Edit"></button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-acclinkrole-ok" style="display:none" data-i18n="Del"></button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-role-ok" style="display:none" data-i18n="Del"></button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-account-ok" style="display:none" data-i18n="Del"></button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-relation-ok" style="display:none" data-i18n="Del"></button>';
+    html += '<button type="button" class="btn btn-primary text-capitalize" id="b-del-rellinkrole-ok" style="display:none" data-i18n="Del"></button>';
+    html += '<button type="button" class="btn btn-primary" id="b-del-extcell-ok" style="display:none" data-i18n="Del"></button>';
+    html += '<button type="button" class="btn btn-primary" id="b-del-extcelllinkrole-ok" style="display:none" data-i18n="Del"></button>';
+    html += '<button type="button" class="btn btn-primary" id="b-del-extcelllinkrelation-ok" style="display:none" data-i18n="Del"></button>';
     html += '<button type="button" class="btn btn-primary" id="b-ins-bar-ok" style="display:none">OK</button>';
     html += '</div>';
     html += '</div>';
@@ -237,34 +238,24 @@ cm.moveBackahead = function(flg) {
 
 // create side menu
 cm.createSideMenu = function() {
-    var itemName = {};
-    itemName.EditProf = i18next.t("EditProfile");
-    itemName.ChgPass = i18next.t("ChangePass");
-    itemName.ChgLng = i18next.t("ChangeLng");
-    itemName.Logout = i18next.t("Logout");
-    itemName.DispName = i18next.t("DisplayName");
-    itemName.Description = i18next.t("Description");
-    itemName.Photo = i18next.t("ProfileImage");
-    itemName.Relogin = i18next.t("ReLogin");
-
     var html = '<div class="slide-menu">';
     html += '<nav class="slide-nav">';
     html += '<ul>';
 
     // Menu Title
-    html += '<li class="menu-title">' + i18next.t("Menu") + '</li>';
+    html += '<li class="menu-title" data-i18n="Menu"></li>';
     // profile edit
-    html += '<li><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">' + itemName.EditProf + '</a></li>';
-    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-change-password">' + itemName.ChgPass + '</a></li>';
+    html += '<li><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile" data-i18n="EditProfile"></a></li>';
+    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-change-password" data-i18n="ChangePass"></a></li>';
     // setting menu
-    html += '<li><a class="allToggle" id="accountToggle" href="#">' + i18next.t("Account") + '</a></li>';
-    html += '<li><a class="allToggle" id="applicationToggle" href="#">' + i18next.t("Application") + '</a></li>';
-    html += '<li><a class="allToggle" id="roleToggle" href="#">' + i18next.t("Role") + '</a></li>';
-    html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="#">' + i18next.t("Relation") + '</a></li>';
+    html += '<li><a class="allToggle" id="accountToggle" href="#" data-i18n="Account"></a></li>';
+    html += '<li><a class="allToggle" id="applicationToggle" href="#" data-i18n="Application"></a></li>';
+    html += '<li><a class="allToggle" id="roleToggle" href="#" data-i18n="Role"></a></li>';
+    html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="#" data-i18n="Relation"></a></li>';
     // change language
-    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-chgLng">' + itemName.ChgLng + '</a></li>'
+    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-chgLng" data-i18n="ChangeLng"></a></li>'
     // log out
-    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout">' + itemName.Logout + '</a></li>';
+    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout" data-i18n="Logout"></a></li>';
 
     html += '</ul>';
     html += '</nav>';
@@ -281,28 +272,30 @@ cm.createSideMenu = function() {
     html += '<div class="modal-content">';
     html += '<div class="modal-header login-header">';
     html += '<button type="button" class="close" data-dismiss="modal">×</button>';
-    html += '<h4 class="modal-title">' + itemName.EditProf + '</h4>';
+    html += '<h4 class="modal-title" data-i18n="EditProfile"></h4>';
     html += '</div>';
     html += '<div class="modal-body">';
-    html += '<div id="dvDisplayName">' + itemName.DispName + '</div>';
+    html += '<div id="dvDisplayName" data-i18n="DisplayName"></div>';
     html += '<div id="dvTextDisplayName">';
     html += '<input type="text" id="editDisplayName" onblur="cm.editDisplayNameBlurEvent();">';
     html += '</div>';
     html += '<span class="popupAlertArea" style="color:red">';
     html += '<aside id="popupEditDisplayNameErrorMsg"></aside>';
     html += '</span>';
-    html += '<div id="dvDescription">' + itemName.Description + '</div>';
+    html += '<div id="dvDescription" data-i18n="Description"></div>';
     html += '<div id="dvTextDescription">';
     html += '<textarea onblur="cm.editDescriptionBlurEvent();" name="" cols="" rows=""  id="editDescription"></textarea>';
     html += '</div>';
     html += '<span style="padding-top: 3px;height:11px;color:red;">';
     html += '<aside id="popupEditDescriptionErrorMsg"></aside>';
     html += '</span>';
-    html += '<div id="dvPhoto">' + itemName.Photo + '</div>';
+    html += '<div id="dvPhoto" data-i18n="ProfileImage"></div>';
     html += '<div id="dvBrowseButtonSection">';
-    html += '<input type="file" class="fileUpload" onchange="cm.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile">';
+    html += '<input type="file" class="fileUpload" onchange="cm.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile" style="display: none">';
+    html += '<button class="btn btn-primary" id="editImgButton" type="button" data-i18n="SelectFile"></button>';
+    html += '<label id="editImgLbl" style="margin-left:10px;"></label>';
     html += '</div>';
-    html += '<div id="dvBoxProfileImage">';
+    html += '<div id="dvBoxProfileImage" style="margin-top: 10px;">';
     html += '<figure id="figEditCellProfile" class="boxProfileImage">';
     html += '<img class="image-circle-large" style="margin: auto;" id="idImgFile" src="#" alt="image" />';
     html += '</figure>';
@@ -312,11 +305,11 @@ cm.createSideMenu = function() {
     html += '</span>';
     html += '</div>';
     html += '<div class="modal-footer">';
-    html += '<button type="button" class="btn btn-default" data-dismiss="modal">' + i18next.t("Cancel") + '</button>';
-    html += '<button type="button" class="btn btn-primary" id="b-edit-profile-ok">' + i18next.t("Register") + '</button>';
+    html += '<button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Cancel"></button>';
+    html += '<button type="button" class="btn btn-primary" id="b-edit-profile-ok" data-i18n="Register"></button>';
     html += '</div></div></div></div>';
     var modal = $(html);
-    $(document.body).append(modal);
+    $(document.body).append(modal).localize();
 
     // Change Password
     html = '<div id="modal-change-password" class="modal fade" role="dialog">' +
@@ -325,17 +318,17 @@ cm.createSideMenu = function() {
            '<div class="modal-content">' +
            '<div class="modal-header login-header">' +
            '<button type="button" class="close" data-dismiss="modal">×</button>' +
-           '<h4 class="modal-title">' + itemName.ChgPass + '</h4>' +
+           '<h4 class="modal-title" data-i18n="ChangePass"></h4>' +
            '</div>' +
            '<div class="modal-body">' +
-           '<input type="password" placeholder="' + i18next.t("newPassPlaceHolder") + '" id="pNewPassword">' +
+           '<input type="password" data-i18n="[placeholder]newPassPlaceHolder" id="pNewPassword">' +
            '<span id="changeMessage" style="color:red"></span>' +
-           '<input type="password" placeholder="' + i18next.t("confirmNewPass") + '" id="pConfirm">' +
+           '<input type="password" data-i18n="[placeholder]confirmNewPass" id="pConfirm">' +
            '<span id="confirmMessage" style="color:red"></span>' +
            '</div>' +
            '<div class="modal-footer">' +
-           '<button type="button" class="btn btn-default" data-dismiss="modal">' + i18next.t("Cancel") + '</button>' +
-           '<button type="button" class="btn btn-primary" id="b-change-password-ok" disabled>' + i18next.t("Update") + '</button>' +
+           '<button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Cancel"></button>' +
+           '<button type="button" class="btn btn-primary" id="b-change-password-ok" data-i18n="Update" disabled></button>' +
            '</div></div></div></div>';
 
     modal = $(html);
@@ -346,10 +339,9 @@ cm.createSideMenu = function() {
            '<div class="modal-dialog">' +
            '<div class="modal-content">' +
            '<div class="modal-header login-header">' +
-           '<h4 class="modal-title">' + itemName.Relogin + '</h4>' +
+           '<h4 class="modal-title" data-i18n="ReLogin"></h4>' +
            '</div>' +
-           '<div class="modal-body">' +
-           i18next.t("successChangePass") +
+           '<div class="modal-body" data-i18n="successChangePass">' +
            '</div>' +
            '<div class="modal-footer">' +
            '<button type="button" class="btn btn-primary" id="b-relogin-ok" >OK</button>' +
@@ -363,23 +355,22 @@ cm.createSideMenu = function() {
            '<div class="modal-content">' +
            '<div class="modal-header login-header">' +
            '<button type="button" class="close" data-dismiss="modal">×</button>' +
-           '<h4 class="modal-title">' + itemName.ChgLng + '</h4>' +
+           '<h4 class="modal-title" data-i18n="ChangeLng"></h4>' +
            '</div>' +
            '<div class="modal-body">' +
-           i18next.t("changeLanguageDescription") +
+           '<span data-i18n="changeLanguageDescription"></span>' +
            '<select class="form-control" id="selectLng">' +
-           '<option value="en">' + i18next.t("English") + '</option>' +
-           '<option value="ja">' + i18next.t("Japanese") + '</option>' +
+           '<option value="en" data-i18n="English"></option>' +
+           '<option value="ja" data-i18n="Japanese"></option>' +
            '</select>' +
            '<span id="selectLngMessage" style="color:red"></span>' +
            '</div>' +
            '<div class="modal-footer">' +
-           '<button type="button" class="btn btn-default" data-dismiss="modal">' + i18next.t("Cancel") + '</button>' +
-           '<button type="button" class="btn btn-primary" id="b-setlng-ok" >' + i18next.t("Setup") + '</button>' +
+           '<button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Cancel"></button>' +
+           '<button type="button" class="btn btn-primary" id="b-setlng-ok" data-i18n="Setup"></button>' +
            '</div></div></div></div>';
     modal = $(html);
     $(document.body).append(modal);
-    $("#selectLng").val(i18next.language);
 
     // Log Out
     html = '<div id="modal-logout" class="modal fade" role="dialog">' +
@@ -387,13 +378,11 @@ cm.createSideMenu = function() {
            '<div class="modal-content">' +
            '<div class="modal-header login-header">' +
            '<button type="button" class="close" data-dismiss="modal">×</button>' +
-           '<h4 class="modal-title">' + itemName.Logout + '</h4>' +
+           '<h4 class="modal-title" data-i18n="Logout"></h4>' +
            '</div>' +
-           '<div class="modal-body">' +
-           i18next.t("logoutConfirm") +
-           '</div>' +
+           '<div class="modal-body" data-i18n="logoutConfirm"></div>' +
            '<div class="modal-footer">' +
-           '<button type="button" class="btn btn-default" data-dismiss="modal">' + i18next.t("Cancel") + '</button>' +
+           '<button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Cancel"></button>' +
            '<button type="button" class="btn btn-primary" id="b-logout-ok" >OK</button>' +
            '</div></div></div></div>';
     modal = $(html);
@@ -404,11 +393,9 @@ cm.createSideMenu = function() {
            '<div class="modal-dialog">' +
            '<div class="modal-content">' +
            '<div class="modal-header login-header">' +
-           '<h4 class="modal-title">' + itemName.Relogin + '</h4>' +
+           '<h4 class="modal-title" data-i18n="ReLogin"></h4>' +
            '</div>' +
-           '<div class="modal-body">' +
-           i18next.t("expiredSession") +
-           '</div>' +
+           '<div class="modal-body" data-i18n="expiredSession"></div>' +
            '<div class="modal-footer">' +
            '<button type="button" class="btn btn-primary" id="b-session-relogin-ok" >OK</button>' +
            '</div></div></div></div>';
@@ -440,8 +427,15 @@ cm.createSideMenu = function() {
     $("#b-setlng-ok").on('click', function() {
         $("#selectLng option:selected").each(function(index, option) {
             i18next.changeLanguage($(option).val())
-            window.location.reload();
+            updateContent();
+            $("#modal-chgLng").modal("hide");
         });
+    });
+    $("#editImgButton,#editImgLbl").on('click', function() {
+        $("#editImgFile").click();
+    });
+    $("#modal-chgLng").on("show.bs.modal", function () {
+        $("#selectLng").val(i18next.language);
     });
 
     // Time Out Set
@@ -481,14 +475,23 @@ cm.createBackMenu = function(moveUrl, flg) {
     cm.user.prevUrl = moveUrl;
 }
 
+// true: SettingTitle false: MainTitle
 cm.setTitleMenu = function(title, flg) {
     if (flg) {
-        $("#settingTitleMenu").html('<p class="ellipsisText">' + title + '</p>');
+        if (i18next.exists(title)) {
+            $("#settingTitleMenu").html('<p class="ellipsisText" data-i18n="' + title + '"></p>').localize();
+        } else {
+            $("#settingTitleMenu").html('<p class="ellipsisText">' + title + '</p>');
+        }
         var titles = cm.user.settingNowTitle;
         titles[cm.user.settingNowPage] = title;
         cm.user.settingNowTitle = titles;
     } else {
-        $("#titleMenu").html('<p  class="ellipsisText">' + title + '</p>');
+        if (i18next.exists(title)) {
+            $("#titleMenu").html('<p class="ellipsisText" data-i18n="' + title + '"></p>').localize();
+        } else {
+            $("#titleMenu").html('<p class="ellipsisText">' + title + '</p>');
+        }
         var titles = cm.user.nowTitle;
         titles[cm.user.nowPage] = title;
         cm.user.nowTitle = titles;
@@ -520,7 +523,7 @@ cm.dispRoleList = function(json, id, multiFlag) {
   }
 
   if (!multiFlag) {
-      $("#" + id).append('<option value="">' + i18next.t("selectRole") + '</option>');
+      $("#" + id).append('<option value="" data-i18n="selectRole"></option>');
   }
   for (var i in results) {
     var objRole = json.d.results[i];
@@ -544,7 +547,7 @@ cm.dispAssignRole = function(type, flg) {
     $("#" + panelId + "-panel3").empty();
     cm.setBackahead(flg);
     var html = '<div class="panel-body">';
-    html += '<div id="dvAddAccLinkRole' + settingId + '">' + i18next.t("selectRoleAssign") + '</div>';
+    html += '<div id="dvAddAccLinkRole' + settingId + '" data-i18n="selectRoleAssign"></div>';
     html += '<div id="dvSelectAddAccLinkRole' + settingId + '" style="margin-bottom: 10px;">';
     html += '<select class="form-control" name="" id="ddlLinkRoleList' + settingId + '" onChange="cm.changeRoleSelect(\'' + settingId + '\');"></select>';
     html += '</div>';
@@ -561,16 +564,16 @@ cm.dispAssignRole = function(type, flg) {
             html += 'sg.restAddExtCellLinkRole(true);';
             break;
     }
-    html += '">' + i18next.t("Assign") + '</button>';
+    html += '" data-i18n="Assign"></button>';
     html += '</div></div>';
-    $("#" + panelId + "-panel3").append(html);
+    $("#" + panelId + "-panel3").append(html).localize();
     cm.getRoleList().done(function(data) {
         cm.dispRoleList(data, "ddlLinkRoleList" + settingId, false);
     });
     
     $("#" + panelId + "-panel3").toggleClass('slide-on');
     $("#" + panelId + "-panel2").toggleClass('slide-on-holder');
-    cm.setTitleMenu(i18next.t("AssigningRoles"), flg);
+    cm.setTitleMenu("AssigningRoles", flg);
 };
 cm.changeRoleSelect = function(settingId) {
     var value = $("#ddlLinkRoleList" + settingId + " option:selected").val();
@@ -617,7 +620,7 @@ cm.dispRelationList = function(json, id, multiFlag) {
   }
 
   if (!multiFlag) {
-      $("#" + id).append('<option value="">' + i18next.t("selectRelation") + '</option>');
+      $("#" + id).append('<option value="" data-i18n="selectRelation"></option>');
   }
 
   for (var i in results) {
@@ -640,6 +643,7 @@ cm.populateProfileEditData = function() {
   document.getElementById("popupEditDescriptionErrorMsg").innerHTML = "";
   document.getElementById("popupEditUserPhotoErrorMsg").innerHTML = "";
   
+  $("#editImgLbl").html("");
   $('#editImgFile').replaceWith($('#editImgFile').clone());
   if (cm.user.profile.Image) {
     $("#idImgFile").attr('src', cm.user.profile.Image);
@@ -678,6 +682,7 @@ cm.attachFile = function(popupImageErrorId, fileDialogId) {
   if (file) {
     var imageFileSize = file.size / 1024;
     if (cm.validateFileType(cm.fileName, imageFileSize, popupImageErrorId)) {
+      $("#editImgLbl").html(ut.getName(cm.fileName));
       cm.getAsBinaryString(file);
     }
   }
@@ -783,6 +788,20 @@ cm.validateDescription = function(descriptionDetails, descriptionSpan) {
 		document.getElementById(descriptionSpan).innerHTML = i18next.t("errorValidateMaxLengthOver");
 	}
 	return isValidDescription;
+};
+
+cm.i18nAddProfile = function(lng , ns, boxName, json) {
+    if (json.DisplayName[lng]) {
+        i18next.addResource(lng, ns, boxName + "_DisplayName", json.DisplayName[lng]);
+    } else {
+        i18next.addResource(lng, ns, boxName + "_DisplayName", json.DisplayName);
+    }
+
+    if (json.Description[lng]) {
+        i18next.addResource(lng, ns, boxName + "_Description", json.Description[lng]);
+    } else {
+        i18next.addResource(lng, ns, boxName + "_Description", json.Description);
+    }
 };
 
 // This method checks idle time
