@@ -280,7 +280,7 @@ sg.appendRelationLinkExtCell = function(url, dispName, description, imageSrc, ex
         html += '<td style="width: 10%;"></td>';
     }
     html += '</tr></table></div>';
-    $("#" + extRelID).append(html);
+    $("#" + extRelID).append(html).localize();
 };
 sg.showExtCellProfile = function(url, dispName, description, imagesrc) {
     sg.linkExtCellUrl = url;
