@@ -58,9 +58,10 @@ am.dispInsAppListSetting = function() {
 };
 am.dispInsAppListSchemaSetting = function(schema, boxName, no) {
     cm.getProfile(schema).done(function(profData) {
-        var dispName = boxName + "_DisplayName";
-        cm.i18nAddProfile("en", "translation", boxName, profData);
-        cm.i18nAddProfile("ja", "translation", boxName, profData);
+        var profTrans = "profTrans";
+        var dispName = profTrans + ":" + boxName + "_DisplayName";
+        cm.i18nAddProfile("en", profTrans, boxName, profData);
+        cm.i18nAddProfile("ja", profTrans, boxName, profData);
         var imageSrc = cm.notAppImage;
         if (profData.Image) {
             imageSrc = profData.Image;
@@ -104,9 +105,10 @@ am.dispApplicationList = function(json) {
 am.dispApplicationListSchema = function(schemaJson, no) {
     var schema = schemaJson.SchemaUrl;
     cm.getProfile(schema).done(function(profData) {
-        var dispName = schemaJson.BoxName + "_DisplayName";
-        cm.i18nAddProfile("en", "translation", schemaJson.BoxName, profData);
-        cm.i18nAddProfile("ja", "translation", schemaJson.BoxName, profData);
+        var profTrans = "profTrans";
+        var dispName = profTrans + ":" + schemaJson.BoxName + "_DisplayName";
+        cm.i18nAddProfile("en", profTrans, schemaJson.BoxName, profData);
+        cm.i18nAddProfile("ja", profTrans, schemaJson.BoxName, profData);
         var description = schemaJson.BoxName + "_Description";
         var imageSrc = cm.notAppImage;
         if (profData.Image) {

@@ -426,8 +426,7 @@ cm.createSideMenu = function() {
     });
     $("#b-setlng-ok").on('click', function() {
         $("#selectLng option:selected").each(function(index, option) {
-            i18next.changeLanguage($(option).val())
-            updateContent();
+            i18next.changeLanguage($(option).val(), function(err, t) {updateContent();})
             $("#modal-chgLng").modal("hide");
         });
     });

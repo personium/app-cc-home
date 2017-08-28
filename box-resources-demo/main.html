@@ -109,9 +109,10 @@ ha.dispInsAppList = function() {
 
 ha.dispInsAppListSchema = function(schema, boxName) {
     cm.getProfile(schema).done(function(profData) {
-        var dispName = boxName + "_DisplayName";
-        cm.i18nAddProfile("en", "translation", boxName, profData);
-        cm.i18nAddProfile("ja", "translation", boxName, profData);
+        var profTrans = "profTrans";
+        var dispName = profTrans + ":" + boxName + "_DisplayName";
+        cm.i18nAddProfile("en", profTrans, boxName, profData);
+        cm.i18nAddProfile("ja", profTrans, boxName, profData);
         var imageSrc = cm.notAppImage;
         if (profData.Image) {
             imageSrc = profData.Image;
