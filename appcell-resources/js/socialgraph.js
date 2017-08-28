@@ -260,14 +260,32 @@ sg.appendRelationLinkExtCellAfter = function(extUrl, extRelID) {
       });
 };
 sg.appendRelationLinkExtCell = function(url, dispName, description, imageSrc, extRelID, delFlag) {
-    var html = '<div class="list-group-item">';
-    html += '<table style="width: 100%;"><tr>';
-    //html += '<td style="width: 90%;"><a class="accountToggle" onClick="sg.showRoleList(\'' + url + '\')"">';
-    html += '<td style="width: 90%;"><a class="allToggle" onClick="sg.createExtCellProfile(\'' + url + '\',\'' + dispName + '\',\'' + description + '\',\'' + imageSrc + '\')"">';
-    html += '<table class="table-fixed"><tr><td rowspan="2" style="width: 25%;"><img class="image-circle" src="' + imageSrc + '" alt="user"></td>';
-    html += '<td>' + dispName + '</td></tr>';
-    html += '<tr><td><p class="ellipsisText"><font color="LightGray">' + description + '</font></p></td>';
-    html += '</a></td></tr></table>';
+    var aTag = $('<a>', {
+        class: 'allToggle',
+        onClick: 'sg.createExtCellProfile(this)'
+    });
+    var tempHTML = [
+        '<table class="table-fixed">',
+            '<tr>',
+                '<td rowspan="2" style="width: 25%;"><img class="image-circle" src="' + imageSrc + '" alt="user"></td>',
+                '<td>' + dispName + '</td>',
+            '</tr>',
+            '<tr>',
+                '<td><p class="ellipsisText"><font color="LightGray">' + description + '</font></p></td>',
+            '</tr>',
+        '</table>'
+    ].join("");
+    aTag
+        .data('url', url)
+        .data('dispName', dispName)
+        .data('description', description)
+        .data('imageSrc', imageSrc)
+        .append(tempHTML);
+    var firstCell = $('<td>', {
+        style: 'width: 90%;'
+    }).append($(aTag));
+
+    var html='';
     if (delFlag) {
         var splitID = extRelID.split("-");
         var relName = splitID[1];
@@ -275,12 +293,23 @@ sg.appendRelationLinkExtCell = function(url, dispName, description, imageSrc, ex
         if (splitID.length > 2) {
             boxName = splitID[2];
         }
-        html += '<td style="width: 10%;"><a class="del-button list-group-item" style="top:25%" href="#" onClick="sg.dispDelExtCellRelationModal(\'' + url + '\',\'' + relName + '\',\'' + boxName + '\');return(false)" data-i18n="Del"></a></td>';
-    } else {
-        html += '<td style="width: 10%;"></td>';
+        html = '<a class="del-button list-group-item" style="top:25%" href="#" onClick="sg.dispDelExtCellRelationModal(\'' + url + '\',\'' + relName + '\',\'' + boxName + '\');return(false)" data-i18n="Del"></a>';
     }
-    html += '</tr></table></div>';
-    $("#" + extRelID).append(html).localize();
+    var secondCell = $('<td>', {
+        style: 'width: 10%;'
+    }).append(html);
+
+    var aRow = $('<tr>').append($(firstCell), $(secondCell));
+
+    var aTable = $('<table>', {
+        style: 'width: 100%;'
+    }).append($(aRow));
+
+    var aDiv = $('<div>', {
+        class: 'list-group-item'
+    }).append($(aTable));
+
+    $("#" + extRelID).append($(aDiv)).localize();
 };
 sg.showExtCellProfile = function(url, dispName, description, imagesrc) {
     sg.linkExtCellUrl = url;
@@ -289,7 +318,11 @@ sg.showExtCellProfile = function(url, dispName, description, imagesrc) {
     $("#txtDescription").html(description);
     $('#modal-profile-extcell').modal('show');
 };
-sg.createExtCellProfile = function(url, dispName, description, imagesrc) {
+sg.createExtCellProfile = function(aDom) {
+    // url, dispName, description, imagesrc
+    var url = $(aDom).data('url');
+    var description = $(aDom).data('description');
+    var imagesrc = $(aDom).data('imageSrc');
     sg.linkExtCellUrl = url;
     $("#toggle-panel1").empty();
     cm.setBackahead();
@@ -301,7 +334,7 @@ sg.createExtCellProfile = function(url, dispName, description, imagesrc) {
     html += '</div>';
     $("#toggle-panel1").append(html).localize();
     $("#toggle-panel1,.panel-default").toggleClass('slide-on');
-    cm.setTitleMenu(dispName);
+    cm.setTitleMenu($(aDom).data('dispName'));
 };
 sg.showRoleList = function(url) {
     sg.linkExtCellUrl = url;
@@ -591,16 +624,16 @@ sg.validateSchemaURL = function(schemaURL, schemaSpan, txtID) {
   return true;
 };
 sg.doesUrlContainSlash = function(schemaURL, schemaSpan,txtID,message) {
-	if (schemaURL != undefined) {
-		if (!schemaURL.endsWith("/")) {
-			document.getElementById(schemaSpan).innerHTML = message;
-			//cellpopup.showErrorIcon(txtID);
-			return false;
-		}
-		document.getElementById(schemaSpan).innerHTML = "";
-		//cellpopup.showValidValueIcon(txtID);
-		return true;
-	}
+    if (schemaURL != undefined) {
+        if (!schemaURL.endsWith("/")) {
+            document.getElementById(schemaSpan).innerHTML = message;
+            //cellpopup.showErrorIcon(txtID);
+            return false;
+        }
+        document.getElementById(schemaSpan).innerHTML = "";
+        //cellpopup.showValidValueIcon(txtID);
+        return true;
+    }
 };
 
 // API
