@@ -41,7 +41,6 @@ sg.setLinkParamName = function(relName, relBoxName) {
 };
 sg.setLinkUrl = function(url, no) {
   sg.linkExtCellUrl = url;
-  sg.linkExtCellNo = no;
 };
 
 // ExternalCell
@@ -183,7 +182,6 @@ sg.dispDelExtCellRoleModal = function(url, roleName, boxName, no) {
     } else {
       cm.linkBoxName = boxName
     }
-    sg.linkExtCellNo = no;
     $("#dvTextConfirmation").html(i18next.t("removeAssociationRole", {value1:roleName, value2:boxName}));
     $("#modal-confirmation-title").html(i18next.t("DeleteAssigningRole"));
     $('#b-cancel').css("display","");
@@ -197,21 +195,23 @@ sg.dispExtCellLinkRelation = function(json, extUrl) {
   })
 
   if (results.length === 0) {
-      var dispName = sg.getName(extUrl);
-      var description = "";
-      var imageSrc = cm.notImage;
-      var extRelID = "dvExtCellRelList";
+      var profObj = {
+          DisplayName: sg.getName(extUrl),
+          Description: "",
+          Image: cm.notImage
+      }
+      var extRelObj = {ID: "dvExtCellRelList"};
       cm.getProfile(extUrl).done(function(profData) {
           if (profData !== null) {
-              dispName = profData.DisplayName;
-              description = profData.Description;
+              profObj.DisplayName = profData.DisplayName;
+              profObj.Description = profData.Description;
               if (profData.Image) {
-                  imageSrc = profData.Image;
+                  profObj.Image = profData.Image;
               }
           }
-          sg.appendRelationLinkExtCell(extUrl, dispName, description, imageSrc, extRelID, false);
+          sg.appendRelationLinkExtCell(extUrl, profObj, extRelObj, false);
       }).fail(function() {
-          sg.appendRelationLinkExtCell(extUrl, dispName, description, imageSrc, extRelID, false);
+          sg.appendRelationLinkExtCell(extUrl, profObj, extRelObj, false);
       });
   }
 };
@@ -222,44 +222,46 @@ sg.dispRelationLinkExtCell = function(json, relName, relBoxName) {
     })
 
     // External Cell Link Relation List Initialization
-    var extRelID = "";
+    var extRelObj = {};
     if (relBoxName === null) {
-      extRelID = "dvExt-" + relName;
+      extRelObj.ID = "dvExt" + relName;
+      extRelObj.Name = relName;
     } else {
-      extRelID = "dvExt-" + relName + "-" + relBoxName;
+      extRelObj.ID = "dvExt" + relName + relBoxName;
+      extRelObj.Name = relName;
+      extRelObj.BoxName = relBoxName;
     }
-    $("#" + extRelID).empty();
+    $("#" + extRelObj.ID).empty();
 
     for (var i in results) {
       var uri = results[i].uri;
       var matchUrl = uri.match(/\(\'(.+)\'\)/);
       var extUrl = matchUrl[1];
 
-      sg.appendRelationLinkExtCellAfter(extUrl, extRelID);
+      sg.appendRelationLinkExtCellAfter(extUrl, extRelObj);
     }
     
 };
-sg.appendRelationLinkExtCellAfter = function(extUrl, extRelID) {
+sg.appendRelationLinkExtCellAfter = function(extUrl, extRelObj) {
+    var profObj = {
+        DisplayName: sg.getName(extUrl),
+        Description: "",
+        Image: cm.notImage
+    }
     cm.getProfile(extUrl).done(function(profData) {
-          var dispName = sg.getName(extUrl);
-          var description = "";
-          var imageSrc = cm.notImage;
           if (profData !== null) {
-              dispName = profData.DisplayName;
-              description = profData.Description;
+              profObj.DisplayName = profData.DisplayName;
+              profObj.Description = profData.Description;
               if (profData.Image) {
-                  imageSrc = profData.Image;
+                  profObj.Image = profData.Image;
               }
           }
-          sg.appendRelationLinkExtCell(extUrl, dispName, description, imageSrc, extRelID, true);
+          sg.appendRelationLinkExtCell(extUrl, profObj, extRelObj, true);
       }).fail(function() {
-          var dispName = sg.getName(extUrl);
-          var description = "";
-          var imageSrc = cm.notImage;
-          sg.appendRelationLinkExtCell(extUrl, dispName, description, imageSrc, extRelID, true);
+          sg.appendRelationLinkExtCell(extUrl, profObj, extRelObj, true);
       });
 };
-sg.appendRelationLinkExtCell = function(url, dispName, description, imageSrc, extRelID, delFlag) {
+sg.appendRelationLinkExtCell = function(url, profObj, extRelObj, delFlag) {
     var aTag = $('<a>', {
         class: 'allToggle',
         onClick: 'sg.createExtCellProfile(this)'
@@ -267,19 +269,19 @@ sg.appendRelationLinkExtCell = function(url, dispName, description, imageSrc, ex
     var tempHTML = [
         '<table class="table-fixed">',
             '<tr>',
-                '<td rowspan="2" style="width: 25%;"><img class="image-circle" src="' + imageSrc + '" alt="user"></td>',
-                '<td>' + dispName + '</td>',
+                '<td rowspan="2" style="width: 25%;"><img class="image-circle" src="' + profObj.Image + '" alt="user"></td>',
+                '<td>' + profObj.DisplayName + '</td>',
             '</tr>',
             '<tr>',
-                '<td><p class="ellipsisText"><font color="LightGray">' + description + '</font></p></td>',
+                '<td><p class="ellipsisText"><font color="LightGray">' + profObj.Description + '</font></p></td>',
             '</tr>',
         '</table>'
     ].join("");
     aTag
         .data('url', url)
-        .data('dispName', dispName)
-        .data('description', description)
-        .data('imageSrc', imageSrc)
+        .data('dispName', profObj.DisplayName)
+        .data('description', profObj.Description)
+        .data('imageSrc', profObj.Image)
         .append(tempHTML);
     var firstCell = $('<td>', {
         style: 'width: 90%;'
@@ -287,17 +289,24 @@ sg.appendRelationLinkExtCell = function(url, dispName, description, imageSrc, ex
 
     var html='';
     if (delFlag) {
-        var splitID = extRelID.split("-");
-        var relName = splitID[1];
         var boxName = "[main]";
-        if (splitID.length > 2) {
-            boxName = splitID[2];
+        if (extRelObj.BoxName) {
+            boxName = extRelObj.BoxName;
         }
-        html = '<a class="del-button list-group-item" style="top:25%" href="#" onClick="sg.dispDelExtCellRelationModal(\'' + url + '\',\'' + relName + '\',\'' + boxName + '\');return(false)" data-i18n="Del"></a>';
+        var anotherTag = $('<a>', {
+            class: 'del-button list-group-item', 
+            style: 'top:25%;', 
+            onClick: 'sg.dispDelExtCellRelationModal(this)',
+            'data-i18n': 'Del'
+        });
+        anotherTag
+                  .data('url', url)
+                  .data('relName', extRelObj.Name)
+                  .data('boxName', boxName);
     }
     var secondCell = $('<td>', {
         style: 'width: 10%;'
-    }).append(html);
+    }).append($(anotherTag));
 
     var aRow = $('<tr>').append($(firstCell), $(secondCell));
 
@@ -309,7 +318,7 @@ sg.appendRelationLinkExtCell = function(url, dispName, description, imageSrc, ex
         class: 'list-group-item'
     }).append($(aTable));
 
-    $("#" + extRelID).append($(aDiv)).localize();
+    $("#" + extRelObj.ID).append($(aDiv)).localize();
 };
 sg.showExtCellProfile = function(url, dispName, description, imagesrc) {
     sg.linkExtCellUrl = url;
@@ -445,16 +454,18 @@ sg.checkBoxPublic = function(json) {
     cm.setTitleMenu("WatchPublicBOX");
     //$('#modal-public-extbox').modal('show');
 };
-sg.dispDelExtCellRelationModal = function(url, relationName, boxName, no) {
+sg.dispDelExtCellRelationModal = function(aDom) {
+    var url = $(aDom).data('url');
+    var relName = $(aDom).data('relName');
+    var boxName = $(aDom).data('boxName');
     sg.linkExtCellUrl = url;
-    sg.linkRelationName = relationName;
+    sg.linkRelationName = relName;
     if (boxName === "[main]") {
       cm.linkBoxName = null;
     } else {
-      cm.linkBoxName = boxName
+      cm.linkBoxName = boxName;
     }
-    sg.linkExtCellNo = no;
-    $("#dvTextConfirmation").html(i18next.t("confirmDeleteRelationAssign", {value1:relationName, value2:boxName}));
+    $("#dvTextConfirmation").html(i18next.t("confirmDeleteRelationAssign", {value1:relName, value2:boxName}));
     $("#modal-confirmation-title").html(i18next.t("DeleteAssigningRelation"));
     $('#b-cancel').css("display","");
     $('#b-del-extcelllinkrelation-ok').css("display","");
@@ -490,9 +501,9 @@ sg.dispRelationList = function(json) {
     var relBoxName = boxName;
     if (boxName === null) {
       boxName = "[main]";
-      extRelID = "dvExt-" + objRelation.Name;
+      extRelID = "dvExt" + objRelation.Name;
     } else {
-      extRelID = "dvExt-" + objRelation.Name + "-" + boxName;
+      extRelID = "dvExt" + objRelation.Name + boxName;
     }
 
     // External Cell Relation List
@@ -814,7 +825,6 @@ sg.restAddExtCellLinkRelation = function(moveFlag) {
   }).done(function(data) {
     sg.getRelLinkExtCell(linkName, linkBoxName);
     //cm.getProfile(sg.linkExtCellUrl)
-    //sg.getExtCellRelationList(sg.linkExtCellUrl, sg.linkExtCellNo);
     $("#modal-add-extcelllinkrelation").modal("hide");
     if (moveFlag) {
         cm.moveBackahead();
@@ -845,7 +855,6 @@ sg.restDeleteExtCellLinkRelation = function() {
     }).done(function(data) {
       sg.getRelLinkExtCell(sg.linkRelationName, cm.linkBoxName);
       sg.getExtCellList();
-      //sg.getExtCellRelationList(sg.linkExtCellUrl, sg.linkExtCellNo);
       $("#modal-confirmation").modal("hide");
     }).fail(function(data) {
       var res = JSON.parse(data.responseText);
