@@ -405,7 +405,6 @@ sg.dispExtCellRoleList = function(json, exturl) {
   }
   html += '<div class="list-group-item">';
   html += '<a class="allToggle" href="#" onClick="cm.dispAssignRole(\'ext\')" data-i18n="AddRolePlus"></a></div>';
-  //html = '<a class="list-group-item" href="#" data-toggle="modal" data-target="#modal-add-extcelllinkrole">＋ ' + i18next.t("AddRole") + '</a>';
   html += '</div>';
   $("#toggle-panel2").append(html).localize();
 };
@@ -525,7 +524,6 @@ sg.dispRelationList = function(json) {
   html += '<a class="accountToggle" id="relationLinkToRoleToggle" onClick="sg.slideToggle(\'extCellRelMenu\')" data-i18n="Independent"></a>';
   html += '</div>';
   html += '<nav id="extCellRelMenu"><ul class="extCellRelMenu"><div name="dvExtCellRelList" id="dvExtCellRelList"></div>';
-  //html += '<div><a class="list-group-item" href="#" data-toggle="modal" data-target="#modal-add-extcell">＋' + i18next.t("CreateExternalCell") + '</a></div>';
   html += '<div class="list-group-item"><a class="allToggle" href="#" onClick="sg.createAddExtCell()" data-i18n="CreateExternalCellPlus"></a></div>';
   html += '</ul></nav>';
   $("#dvExtCellList").append(html).localize();

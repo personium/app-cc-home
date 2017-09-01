@@ -151,9 +151,9 @@ st.dispAccountList = function(json) {
     html += '</tr></table></div>';
   }
   html += '<div class="list-group-item">';
-  html += '<a href="#" class="allToggle" onClick="st.createAddAccount()">＋ ' + i18next.t("CreateAccount") + '</a></div>';
+  html += '<a href="#" class="allToggle" onClick="st.createAddAccount()" data-i18n="CreateAccountPlus"></a></div>';
   html += '</div>';
-  $("#setting-panel1").append(html);
+  $("#setting-panel1").append(html).localize();
 }
 // 割り当て先アカウント名設定
 st.setLinkAccName = function(accName, no) {
@@ -274,9 +274,9 @@ st.dispAccountRoleList = function(json, accName, no) {
     html += '</table></div>';
   }
   html += '<div class="list-group-item">';
-  html += '<a class="allToggle" href="#" onClick="cm.dispAssignRole(\'acc\', true)">＋ ' + i18next.t("AssigningRoles") + '</a></div>';
+  html += '<a class="allToggle" href="#" onClick="cm.dispAssignRole(\'acc\', true)" data-i18n="AssigningRolesPlus"></a></div>';
   html += '</div>';
-  $("#setting-panel2").append(html);
+  $("#setting-panel2").append(html).localize();
 }
 st.dispDelAccountRoleModal = function(accName, roleName, boxName, no) {
     st.linkAccName = accName;
@@ -627,9 +627,9 @@ st.dispRoleList = function(json) {
   }
 
   html += '<div class="list-group-item">';
-  html += '<a class="allToggle" href="#" onClick="st.createAddRole()">＋ ' + i18next.t("CreateRole") + '</a></div>';
+  html += '<a class="allToggle" href="#" onClick="st.createAddRole()" data-i18n="CreateRolePlus"></a></div>';
   html += '</div>';
-  $("#setting-panel1").append(html);
+  $("#setting-panel1").append(html).localize();
 };
 st.createAddRole = function() {
     st.updUser = null;
@@ -764,9 +764,9 @@ st.dispRelationList = function(json) {
   }
 
   html += '<div class="list-group-item">';
-  html += '<a class="allToggle" href="#" onClick="st.createAddRelation()">＋ ' + i18next.t("CreateRelation") + '</a></div>';
+  html += '<a class="allToggle" href="#" onClick="st.createAddRelation()" data-i18n="CreateRelationPlus"></a></div>';
   html += '</div>';
-  $("#setting-panel1").append(html);
+  $("#setting-panel1").append(html).localize();
 };
 st.setLinkRelName = function(relName, boxName, no) {
     st.linkRelName = relName;
@@ -865,9 +865,9 @@ st.dispRelationRoleList = function(json, relName, relBoxName, no) {
   }
 
   html += '<div class="list-group-item">';
-  html += '<a class="allToggle" href="#" onClick="cm.dispAssignRole(\'rel\', true)">＋ ' + i18next.t("AssigningRoles") + '</a></div>';
+  html += '<a class="allToggle" href="#" onClick="cm.dispAssignRole(\'rel\', true)" data-i18n="AssigningRolesPlus"></a></div>';
   html += '</div>';
-  $("#setting-panel2").append(html);
+  $("#setting-panel2").append(html).localize();
 }
 st.dispDelRelationRoleModal = function(relName, relBoxName, roleName, boxName, no) {
     st.linkRelName = relName;
