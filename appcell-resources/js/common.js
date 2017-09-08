@@ -14,7 +14,6 @@ cm.logout = function() {
 };
 
 if (!cm.user) {
-  //location.href = "./login.html";
   cm.logout();
 }
 cm.user.nowPage = 0;
@@ -647,7 +646,7 @@ cm.populateProfileEditData = function() {
   if (cm.user.profile.Image) {
     $("#idImgFile").attr('src', cm.user.profile.Image);
   } else {
-    $("#idImgFile").attr('src', "../../appcell-resources/icons/profile_image.png");
+    $("#idImgFile").attr('src', "https://demo.personium.io/HomeApplication/__/appcell-resources/icons/profile_image.png");
   }
 
 };
