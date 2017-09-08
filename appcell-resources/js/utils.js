@@ -34,15 +34,15 @@ ut.cellUrlWithEndingSlash = function(tempUrl, raiseError=false) {
  *     hello.png
  */
 ut.getName = function(path) {
-    if ((typeof url === "undefined") || url == null || url == "") {
+    if ((typeof path === "undefined") || path == null || path == "") {
         return "";
     };
 
     let name;
-    if (_.contains(url, "\\")) {
-        name = _.last(_.compact(url.split("\\")));
+    if (_.contains(path, "\\")) {
+        name = _.last(_.compact(path.split("\\")));
     }else{
-        name = _.last(_.compact(url.split("/")));
+        name = _.last(_.compact(path.split("/")));
     }
     return name;
 };

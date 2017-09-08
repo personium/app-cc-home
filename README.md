@@ -1,4 +1,5 @@
 # home-app
+This version of HomeApp allows you to install it directly onto your cell.
 
 ## App CellとBox側での役割分担
 

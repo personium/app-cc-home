@@ -6,7 +6,7 @@ $(document).ready(function() {
             fallbackLng: 'en',
             debug: true,
             backend: {
-                loadPath: '../appcell-resources/locales/{{lng}}/translation.json'
+                loadPath: 'https://demo.personium.io/HomeApplication/__/appcell-resources/locales/{{lng}}/translation.json'
                ,crossDomain: true
             }
         }, function(err, t) {
