@@ -19,23 +19,30 @@ ut.cellUrlWithEndingSlash = function(tempUrl, raiseError=false) {
     return cellUrl;
 };
 
-// Get file name from file path
+/*
+ * Retrieve cell name from cell URL
+ * OR
+ * file name from file path (windows, linux)
+ * Parameter:
+ *     1. ended with "/", "https://demo.personium.io/debug-user1/"
+ *     2. ended without "/", "https://demo.personium.io/debug-user1"
+ *     3. window path "c:\\home\hoge\hello.png"
+ *     4. linux path "/home/hoge/hello.png"
+ * Return:
+ *     debug-user1
+ *     OR
+ *     hello.png
+ */
 ut.getName = function(path) {
-  var collectionName = path;
-  var recordsCount = 0;
-  if (collectionName != undefined) {
-          recordsCount = collectionName.length;
-          var lastIndex = collectionName.lastIndexOf("/");
-          if (lastIndex < 0) {
-              lastIndex = collectionName.lastIndexOf("\\");
-          }
-          if (recordsCount - lastIndex === 1) {
-                  collectionName = path.substring(0, recordsCount - 1);
-                  recordsCount = collectionName.length;
-                  lastIndex = collectionName.lastIndexOf("/");
-          }
-          
-          collectionName = path.substring(lastIndex + 1, recordsCount);
-  }
-  return collectionName;
+    if ((typeof url === "undefined") || url == null || url == "") {
+        return "";
+    };
+
+    let name;
+    if (_.contains(url, "\\")) {
+        name = _.last(_.compact(url.split("\\")));
+    }else{
+        name = _.last(_.compact(url.split("/")));
+    }
+    return name;
 };
