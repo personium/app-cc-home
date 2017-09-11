@@ -30,6 +30,14 @@ h1{
     border-radius: 20px;
     color: #333333;
 }
+
+/*
+ * IE hack for line-height
+ */
+.login-form-controls input[type=text], .login-form-controls input[type=password] {
+    height: 40px !important;
+}
+
 .login-form-controls input:focus {
     outline: none;
     border: none;
