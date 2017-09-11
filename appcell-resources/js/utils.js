@@ -1,6 +1,6 @@
 var ut = {};
 
-ut.cellUrlWithEndingSlash = function(tempUrl, raiseError=false) {
+ut.cellUrlWithEndingSlash = function(tempUrl, raiseError) {
     var i = tempUrl.indexOf("/", 8); // search after "http://" or "https://"
 
     if (raiseError && i == -1) {
