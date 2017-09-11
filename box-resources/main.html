@@ -85,6 +85,11 @@ ha.dispInsAppList = function() {
             return (val1.Name < val2.Name ? 1 : -1);
         })
         for (var i in insAppRes) {
+            // hotfix for not showing HomeApplication's box inside a data subject's cell
+            if (_.contains(location.href.split("/"), insAppRes[i].Name)) {
+                continue;
+            };
+
             var schema = insAppRes[i].Schema;
             if (schema && schema.length > 0) {
                 ha.dispInsAppListSchema(schema, insAppRes[i].Name);

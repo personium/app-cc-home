@@ -29,6 +29,11 @@ am.createApplicationList = function() {
         am.insAppList = new Array();
         am.insAppBoxList = new Array();
         for (var i in insAppRes) {
+            // hotfix for not showing HomeApplication's box inside a data subject's cell
+            if (_.contains(location.href.split("/"), insAppRes[i].Name)) {
+                continue;
+            };
+            
             var schema = insAppRes[i].Schema;
             if (schema && schema.length > 0) {
                 am.insAppList.push(schema);
