@@ -114,7 +114,7 @@ am.dispApplicationListSchema = function(schemaJson, no) {
         var dispName = profTrans + ":" + schemaJson.BoxName + "_DisplayName";
         cm.i18nAddProfile("en", profTrans, schemaJson.BoxName, profData);
         cm.i18nAddProfile("ja", profTrans, schemaJson.BoxName, profData);
-        var description = schemaJson.BoxName + "_Description";
+        var description = profTrans + ":" + schemaJson.BoxName + "_Description";
         var imageSrc = cm.notAppImage;
         if (profData.Image) {
             imageSrc = profData.Image;
