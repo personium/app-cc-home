@@ -59,7 +59,7 @@ ha.deploySystemApps = function() {
      * For older profile.json that might not have CellType key,
      * assign default cell type (Person) to it.
      */
-    let cellType = JSON.parse(sessionStorage.getItem("myProfile")).CellType || "Person";
+    let cellType = cm.getCellType();
 
     var arrCount = 0;
     for (var i in ha.systemApps) {

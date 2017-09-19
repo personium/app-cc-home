@@ -1061,7 +1061,7 @@ cm.setAppMarketTitle = function() {
      * For older profile.json that might not have CellType key,
      * assign default cell type (Person) to it.
      */
-    let cellType = JSON.parse(sessionStorage.getItem("myProfile")).CellType || "Person";
+    let cellType = cm.getCellType();
 
     /*
      * Since setTitleMenu does not support i18next context,
@@ -1073,6 +1073,27 @@ cm.setAppMarketTitle = function() {
     }
 
     cm.setTitleMenu(appMarketTitle);
+};
+
+cm.getCellType = function() {
+    return (JSON.parse(sessionStorage.getItem("myProfile")).CellType || "Person");
+};
+
+cm.getAppListURL = function() {
+    /*
+     * For older profile.json that might not have CellType key,
+     * assign default cell type (Person) to it.
+     */
+    let cellType = cm.getCellType();
+    let fileName = "applist.json"
+
+    if (cellType == "Organization") {
+        fileName = "applistForBusiness.json";
+    }
+
+    let appListURL = [cm.user.baseUrl, 'market/__/', fileName].join("");
+
+    return appListURL;
 };
 
 // TEST
