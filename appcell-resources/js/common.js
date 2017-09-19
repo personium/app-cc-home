@@ -1056,6 +1056,25 @@ cm.getNotCompMessageCnt = function() {
   });
 };
 
+cm.setAppMarketTitle = function() {
+    /*
+     * For older profile.json that might not have CellType key,
+     * assign default cell type (Person) to it.
+     */
+    let cellType = JSON.parse(sessionStorage.getItem("myProfile")).CellType || "Person";
+
+    /*
+     * Since setTitleMenu does not support i18next context,
+     * need to use either "AppMarket" or "AppMarket_Organization" directly.
+     */
+    let appMarketTitle = "AppMarket";
+    if (cellType == "Organization") {
+        appMarketTitle = [appMarketTitle, "_", cellType].join("");
+    }
+
+    cm.setTitleMenu(appMarketTitle);
+};
+
 // TEST
 function testBinary() {
     var file = document.getElementById("testFile").files[0];
@@ -1148,3 +1167,4 @@ function testAPI2() {
         alert(data);
     });
 };
+ 

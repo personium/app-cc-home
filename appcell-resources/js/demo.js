@@ -14,7 +14,7 @@ demo.initAppMarket = function() {
   cm.createTitleHeader(false, true);
   cm.createSideMenu();
   cm.createBackMenu("main.html");
-  cm.setTitleMenu("AppMarket");
+  cm.setAppMarketTitle();
   demo.initSettings();
   $("#dashboard").append('<div class="panel list-group toggle-panel" id="toggle-panel1"></div>');
 
