@@ -117,7 +117,7 @@ lg.loadProfile = function() {
         headers: {'Accept':'application/json'}
     }).done(function(data) {
             lg.profile = data;
-                sessionStorage.setItem("myProfile", lg.profile);
+                sessionStorage.setItem("myProfile", JSON.stringify(lg.profile));
         lg.populateProfile(data);
     }).fail(function(){
         alert("Do not have a profile.");
@@ -129,7 +129,7 @@ lg.loadProfile = function() {
                     Scope: "Private"
                 };
                 lg.profile = noProfile;
-                sessionStorage.setItem("myProfile", lg.profile);
+                sessionStorage.setItem("myProfile", JSON.stringify(lg.profile));
         lg.populateProfile(noProfile);
     });
 };

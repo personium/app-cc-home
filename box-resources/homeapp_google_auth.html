@@ -34,7 +34,7 @@
           var i = cellUrl.indexOf("/"); // first slash
           i = cellUrl.indexOf("/", i + 2);  // second slash
           data.baseUrl = cellUrl.substring(0, i + 1);
-          data.profile = sessionStorage.getItem("myProfile");
+          data.profile = JSON.parse(sessionStorage.getItem("myProfile"));
           //data.userName = username;
           data.userName = "googleAccount";
           sessionStorage.setItem("sessionData", JSON.stringify(data));
