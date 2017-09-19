@@ -2,6 +2,10 @@ body{
     background-color: #4D6CEF;
 }
 
+body-biz{
+  background-color: #31437a;
+}
+
 *{
     font-family: 'Raleway', sans-serif;
     color : #FFF;
@@ -53,8 +57,16 @@ h1{
     outline: 0;
 }
 
+.login_btn-biz {
+    background-color: #416BBF;
+}
+
 .login_btn:hover,.login_btn:focus {
     background-color: #44447f;
+}
+
+.login_btn-biz:hover, .login_btn-biz:focus {
+    background-color: #8391B2;
 }
 
 .login_btn_g{
