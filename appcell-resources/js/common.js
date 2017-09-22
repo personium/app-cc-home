@@ -1056,6 +1056,14 @@ cm.getNotCompMessageCnt = function() {
   });
 };
 
+/*
+ * Should be unique:
+ * https://demo.personium.io/market/__/applist.json
+ */
+cm.getAppListURL = function() {
+    return 'https://demo.personium.io/market/__/applist.json';
+}
+
 // TEST
 function testBinary() {
     var file = document.getElementById("testFile").files[0];

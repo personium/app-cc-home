@@ -436,7 +436,7 @@ st.createApplicationList = function() {
 st.getApplicationList = function() {
     return $.ajax({
             type: "GET",
-            url: cm.user.baseUrl + 'market/__/applist.json',
+            url: cm.getAppListURL(),
             datatype: 'json',
             headers: {
               'Accept':'application/json'
