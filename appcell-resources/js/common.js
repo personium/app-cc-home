@@ -1091,7 +1091,7 @@ cm.getAppListURL = function() {
         fileName = "applistForBusiness.json";
     }
 
-    let appListURL = [cm.user.baseUrl, 'market/__/', fileName].join("");
+    let appListURL = ['https://demo.personium.io/market/__/', fileName].join("");
 
     return appListURL;
 };
