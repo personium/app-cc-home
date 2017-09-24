@@ -87,7 +87,7 @@ header {
   color: #ffffff;
   font-size: 16px;
 }
-header-biz {
+.header-biz {
   background-color: #31437a;
 }
 header > * {
@@ -677,15 +677,6 @@ textarea {
 }
 
 /* Heder Menu CSS */
-
-.header-menu {
-  background: #1a247f;
-  color: #FFFFFF;
-}
-
-.header-menu-biz {
-  background: #777777;
-}
 
 .prev-icon {
   width:48px;

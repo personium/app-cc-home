@@ -64,6 +64,16 @@ st.initSettings = function() {
     $("#relationToggle").on("click", function() {
       st.createRelationList();
     });
+    
+    st.setBizTheme();
+};
+
+st.setBizTheme = function() {
+    let cellType = (JSON.parse(sessionStorage.getItem("myProfile")).CellType || "Person");
+    if (cellType == "Organization") {
+        $('header').addClass('header-biz');
+        $('.header-menu').addClass('header-menu-biz');
+    }
 };
 
 // ファイルパスからファイル名を取得する
