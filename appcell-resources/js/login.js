@@ -116,9 +116,10 @@ lg.loadProfile = function() {
         dataType: 'json',
         headers: {'Accept':'application/json'}
     }).done(function(data) {
-            lg.profile = data;
-                sessionStorage.setItem("myProfile", JSON.stringify(lg.profile));
+        lg.profile = data;
+        sessionStorage.setItem("myProfile", JSON.stringify(lg.profile));
         lg.populateProfile(data);
+        lg.setBizTheme();
     }).fail(function(){
         alert("Do not have a profile.");
                 var noProfile = {
@@ -141,6 +142,14 @@ lg.populateProfile = function(profile) {
         } else {
             $("#imProfile").attr("src", lg.notImage);
         }
+};
+
+lg.setBizTheme = function() {
+    let cellType = (JSON.parse(sessionStorage.getItem("myProfile")).CellType || "Person");
+    if (cellType == "Organization") {
+        $('body').addClass('body-biz');
+        $('.login_btn').addClass('login_btn-biz');
+    }
 };
 
 lg.sendAccountNamePw = function(username, pw) {
