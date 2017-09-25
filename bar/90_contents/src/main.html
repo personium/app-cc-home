@@ -36,7 +36,7 @@ ha.systemApps = [
         "url": "socialgraph.html",
         "used": true
     }, {
-        "name": "AppMarket",
+        "name": "AppMarket", // With context properly set, it can be AppMarket_biz
         "icon": "001lighticons-31full.png",
         "url": "applicationmarket.html",
         "used": true
@@ -55,22 +55,43 @@ function init() {
 };
 
 ha.deploySystemApps = function() {
+    /*
+     * For older profile.json that might not have CellType key,
+     * assign default cell type (Person) to it.
+     */
+    let cellType = cm.getCellType();
+
     var arrCount = 0;
     for (var i in ha.systemApps) {
         var app = ha.systemApps[i];
-        var html = '<a href="';
+
+        var imgTag = $('<img>', {
+            src: 'https://demo.personium.io/HomeApplication/__/icons/' + app.icon,
+            class: 'p-app-icon'
+        });
+
+        var divTag1 = $('<div>', {
+            class: 'p-app-icon'
+        });
+        divTag1.append($(imgTag));
+
+        var divTag2 = $('<div>', {
+            class: 'p-app-name',
+            'data-i18n': app.name,
+            'data-i18n-options': JSON.stringify({ context: cellType })
+        });
+
+        var aTag = $('<a>', {
+            class: 'p-app'
+        });
         if (app.used) {
-            html += app.url;
+            aTag.attr('href', app.url);
         } else {
-            html += "javascript:void(0)";
+            aTag.attr('href', "javascript:void(0)");
         }
-        html += '" class="p-app">'
-             + '<div class="p-app-icon">'
-             + '<img src="https://demo.personium.io/HomeApplication/__/icons/' + app.icon + '" class="p-app-icon"/>'
-             + '</div>'
-             + '<div class="p-app-name" data-i18n="' + app.name + '"></div>'
-             + '</a>';
-        $("#dashboard").append(html);
+        aTag.append($(divTag1), $(divTag2));
+
+        $("#dashboard").append($(aTag));
         arrCount += 1;
     }
 
@@ -145,7 +166,7 @@ ha.dispInsAppListSchema = function(schema, boxName) {
 };
 
 ha.dispInformation = function() {
-// 現状ダミー
+// Currently the followings are dummy information
     var html = '<li>'
              + '<a>'
              + '<div class="list-icon">'

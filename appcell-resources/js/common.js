@@ -1056,13 +1056,45 @@ cm.getNotCompMessageCnt = function() {
   });
 };
 
-/*
- * Should be unique:
- * https://demo.personium.io/market/__/applist.json
- */
+cm.setAppMarketTitle = function() {
+    /*
+     * For older profile.json that might not have CellType key,
+     * assign default cell type (Person) to it.
+     */
+    let cellType = cm.getCellType();
+
+    /*
+     * Since setTitleMenu does not support i18next context,
+     * need to use either "AppMarket" or "AppMarket_Organization" directly.
+     */
+    let appMarketTitle = "AppMarket";
+    if (cellType == "Organization") {
+        appMarketTitle = [appMarketTitle, "_", cellType].join("");
+    }
+
+    cm.setTitleMenu(appMarketTitle);
+};
+
+cm.getCellType = function() {
+    return (JSON.parse(sessionStorage.getItem("myProfile")).CellType || "Person");
+};
+
 cm.getAppListURL = function() {
-    return 'https://demo.personium.io/market/__/applist.json';
-}
+    /*
+     * For older profile.json that might not have CellType key,
+     * assign default cell type (Person) to it.
+     */
+    let cellType = cm.getCellType();
+    let fileName = "applist.json"
+
+    if (cellType == "Organization") {
+        fileName = "applistForBusiness.json";
+    }
+
+    let appListURL = ['https://demo.personium.io/market/__/', fileName].join("");
+
+    return appListURL;
+};
 
 // TEST
 function testBinary() {
@@ -1156,3 +1188,4 @@ function testAPI2() {
         alert(data);
     });
 };
+ 
