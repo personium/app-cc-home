@@ -23,9 +23,16 @@ cm.user.settingNowTitle = {};
 cm.notImage = "https://demo.personium.io/HomeApplication/__/icons/profile_image.png";
 cm.notAppImage = "https://demo.personium.io/HomeApplication/__/icons/no_app_image.png";
 
-//Default timeout limit - 60 minutes.
+// Icon quality
+cm.ICON_QUALITY = 0.8;
+// Icon Size
+cm.ICON_WIDTH = 172;
+cm.ICON_HEIGHT = 172;
+// Icon Size limit(KB)
+cm.ICON_SIZELIMIT = 500;
+// Default timeout limit - 60 minutes.
 cm.IDLE_TIMEOUT =  3600000;
-//cm.IDLE_TIMEOUT =  10000;
+// cm.IDLE_TIMEOUT =  10000;
 // Records last activity time.
 cm.LASTACTIVITY = new Date().getTime();
 
@@ -290,7 +297,7 @@ cm.createSideMenu = function() {
     html += '</span>';
     html += '<div id="dvPhoto" data-i18n="ProfileImage"></div>';
     html += '<div id="dvBrowseButtonSection">';
-    html += '<input type="file" class="fileUpload" onchange="cm.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile" style="display: none">';
+    html += '<input type="file" class="fileUpload" onchange="cm.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile" accept="image/*" style="display: none">';
     html += '<button class="btn btn-primary" id="editImgButton" type="button" data-i18n="SelectFile"></button>';
     html += '<label id="editImgLbl" style="margin-left:10px;"></label>';
     html += '</div>';
@@ -698,11 +705,57 @@ cm.getAsBinaryString = function(readFile) {
 	reader.onerror = cm.errorHandler;
 };
 cm.loaded = function(evt) {
-	cm.imgBinaryFile = null;
-	cm.imgBinaryFile = evt.target.result;
+    cm.imgBinaryFile = null;
+    var image = new Image();
+    image.src = evt.target.result;
+    // Get file size(KB)
+    var imageFileSize = evt.total / 1024;
+    if (imageFileSize <= cm.ICON_SIZELIMIT) {
+        cm.imgBinaryFile = evt.target.result;
         $("#idImgFile").attr('src', cm.imgBinaryFile);
-	//document.getElementById("fileID").value = '';
+    } else {
+        // Clipping Canvas
+        cm.clipImage(image);
+    }
 };
+cm.clipImage = function(image) {
+    //Create temporary canvas
+    var tmpCvs = document.createElement('canvas');
+    var tmpCxt = tmpCvs.getContext('2d');
+    image.onload = function () {
+        // Original size
+        var origSize = {
+            width: image.naturalWidth,
+            height: image.naturalHeight
+        };
+        // Icon size
+        tmpCvs.width = cm.ICON_WIDTH;
+        tmpCvs.height = cm.ICON_HEIGHT;
+        /*
+         * 1.The file size of the image is limited to 500 KB
+         * 2.Images of 500 KB or more are resized to 172 * 172 after shaping into squares.
+         *   (172 * 172 is supposed to be 500 KB or less)
+         */
+        if (origSize.width - origSize.height >= 0) {
+            // Horizontal image, Square image
+            // Calculate the starting point of the image
+            var d = (origSize.width - origSize.height) / 2;
+            // Draw on the canvas
+            tmpCxt.drawImage(image, d, 0, origSize.height, origSize.height, 0, 0, cm.ICON_WIDTH, cm.ICON_HEIGHT);
+        } else {
+            // Vertical image
+            // Calculate the starting point of the image
+            var d = (origSize.height - origSize.width) / 2;
+            // Draw on the canvas
+            tmpCxt.drawImage(image, 0, d, origSize.width, origSize.width, 0, 0, cm.ICON_WIDTH, cm.ICON_HEIGHT);
+        }
+        // Convert the image drawn on the canvas to base64
+        var base64 = tmpCvs.toDataURL('image/jpeg', cm.ICON_QUALITY);
+        // Display image
+        cm.imgBinaryFile = base64;
+        $("#idImgFile").attr('src', cm.imgBinaryFile);
+    }
+}
 cm.errorHandler = function(evt) {
 	if (evt.target.error.code == evt.target.error.NOT_READABLE_ERR) {
 		cm.spinner.stop();
