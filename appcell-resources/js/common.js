@@ -26,8 +26,10 @@ cm.notAppImage = "https://demo.personium.io/HomeApplication/__/icons/no_app_imag
 // Icon quality
 cm.ICON_QUALITY = 0.8;
 // Icon Size
-cm.ICON_WIDTH = 100;
-cm.ICON_HEIGHT = 100;
+cm.ICON_WIDTH = 172;
+cm.ICON_HEIGHT = 172;
+// Icon Size limit(KB)
+cm.ICON_SIZELIMIT = 500;
 // Default timeout limit - 60 minutes.
 cm.IDLE_TIMEOUT =  3600000;
 // cm.IDLE_TIMEOUT =  10000;
@@ -295,7 +297,7 @@ cm.createSideMenu = function() {
     html += '</span>';
     html += '<div id="dvPhoto" data-i18n="ProfileImage"></div>';
     html += '<div id="dvBrowseButtonSection">';
-    html += '<input type="file" capture="camera" class="fileUpload" onchange="cm.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile" accept="image/*" style="display: none">';
+    html += '<input type="file" class="fileUpload" onchange="cm.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile" accept="image/*" style="display: none">';
     html += '<button class="btn btn-primary" id="editImgButton" type="button" data-i18n="SelectFile"></button>';
     html += '<label id="editImgLbl" style="margin-left:10px;"></label>';
     html += '</div>';
@@ -706,6 +708,17 @@ cm.loaded = function(evt) {
     cm.imgBinaryFile = null;
     var image = new Image();
     image.src = evt.target.result;
+    // Get file size(KB)
+    var imageFileSize = evt.total / 1024;
+    if (imageFileSize <= cm.ICON_SIZELIMIT) {
+        cm.imgBinaryFile = evt.target.result;
+        $("#idImgFile").attr('src', cm.imgBinaryFile);
+    } else {
+        // Clipping Canvas
+        cm.clipImage(image);
+    }
+};
+cm.clipImage = function(image) {
     //Create temporary canvas
     var tmpCvs = document.createElement('canvas');
     var tmpCxt = tmpCvs.getContext('2d');
@@ -737,7 +750,7 @@ cm.loaded = function(evt) {
         cm.imgBinaryFile = base64;
         $("#idImgFile").attr('src', cm.imgBinaryFile);
     }
-};
+}
 cm.errorHandler = function(evt) {
 	if (evt.target.error.code == evt.target.error.NOT_READABLE_ERR) {
 		cm.spinner.stop();
