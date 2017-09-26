@@ -731,6 +731,11 @@ cm.clipImage = function(image) {
         // Icon size
         tmpCvs.width = cm.ICON_WIDTH;
         tmpCvs.height = cm.ICON_HEIGHT;
+        /*
+         * 1.The file size of the image is limited to 500 KB
+         * 2.Images of 500 KB or more are resized to 172 * 172 after shaping into squares.
+         *   (172 * 172 is supposed to be 500 KB or less)
+         */
         if (origSize.width - origSize.height >= 0) {
             // Horizontal image, Square image
             // Calculate the starting point of the image
@@ -745,7 +750,7 @@ cm.clipImage = function(image) {
             tmpCxt.drawImage(image, 0, d, origSize.width, origSize.width, 0, 0, cm.ICON_WIDTH, cm.ICON_HEIGHT);
         }
         // Convert the image drawn on the canvas to base64
-        var base64 = tmpCvs.toDataURL('image/jpeg', cm.JPEG_QUALITY);
+        var base64 = tmpCvs.toDataURL('image/jpeg', cm.ICON_QUALITY);
         // Display image
         cm.imgBinaryFile = base64;
         $("#idImgFile").attr('src', cm.imgBinaryFile);
