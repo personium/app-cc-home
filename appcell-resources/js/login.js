@@ -119,7 +119,6 @@ lg.loadProfile = function() {
         lg.profile = data;
         sessionStorage.setItem("myProfile", JSON.stringify(lg.profile));
         lg.populateProfile(data);
-        lg.setBizTheme();
     }).fail(function(){
         alert("Do not have a profile.");
                 var noProfile = {
@@ -132,6 +131,8 @@ lg.loadProfile = function() {
                 lg.profile = noProfile;
                 sessionStorage.setItem("myProfile", JSON.stringify(lg.profile));
         lg.populateProfile(noProfile);
+    }).always(function(){
+        lg.setBizTheme();
     });
 };
 lg.populateProfile = function(profile) {
@@ -149,7 +150,10 @@ lg.setBizTheme = function() {
     if (cellType == "Organization") {
         $('body').addClass('body-biz');
         $('.login_btn').addClass('login_btn-biz');
-    }
+    } else {
+        $('body').addClass('body');
+    };
+    $('body > div').toggle();
 };
 
 lg.sendAccountNamePw = function(username, pw) {
