@@ -36,7 +36,7 @@
     <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
     <span class="sr-only">Loading...</span>
   </div>
-  <div style="display: none;">
+  <div class="myHiddenDiv">
     <section class="login-section">
       <h1 id="pdsLogo">Personium</h1>
       <div>
@@ -69,25 +69,24 @@
         </div>
       </div>
     </section>
-
-    <div id="modal-input-cell" class="modal fade" role="dialog" data-backdrop="static">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header login-header">
-            <h4 class="modal-title" data-i18n="inputLoginCellTitle">Login cell input</h4>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <div id="dvCellUrl">Cell URL</div>
-                <input id="pCellUrl" type="text" class="fontBlack" />
-                <span id="errorCellUrl" style="color:red"></span>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="b-input-cell-ok">OK</button>
-          </div>
+  </div>
+  <div id="modal-input-cell" class="modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header login-header">
+          <h4 class="modal-title" data-i18n="inputLoginCellTitle">Login cell input</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <div id="dvCellUrl">Cell URL</div>
+              <input id="pCellUrl" type="text" class="fontBlack" />
+              <span id="errorCellUrl" style="color:red"></span>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="b-input-cell-ok">OK</button>
         </div>
       </div>
     </div>

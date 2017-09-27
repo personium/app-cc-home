@@ -127,3 +127,7 @@ div.mySpinner > i {
   color: #D3D3D3 !important;
   font-size: 5em;
 }
+
+div.myHiddenDiv {
+  display: none;
+}

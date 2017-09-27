@@ -153,7 +153,8 @@ lg.setBizTheme = function() {
     } else {
         $('body').addClass('body');
     };
-    $('body > div').toggle();
+    $('body > div.mySpinner').hide();
+    $('body > div.myHiddenDiv').show();
 };
 
 lg.sendAccountNamePw = function(username, pw) {
