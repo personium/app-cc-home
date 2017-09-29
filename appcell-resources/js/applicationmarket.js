@@ -15,7 +15,6 @@ am.initAppMarket = function() {
       $(this).toggleClass("active");
       $(".appInsMenu").slideToggle();
     });
-    am.setBizTheme();
 }
 
 am.createApplicationList = function() {
@@ -141,10 +140,3 @@ am.dispViewApp = function(schema, dispName, imageSrc, description, barUrl, barBo
     $("#toggle-panel1").toggleClass('slide-on');
     cm.setTitleMenu("Details");
 };
-am.setBizTheme = function() {
-    let cellType = (JSON.parse(sessionStorage.getItem("myProfile")).CellType || "Person");
-    if (cellType == "Organization") {
-        $('.header-menu').addClass('header-menu-biz');
-    }
-};
-
