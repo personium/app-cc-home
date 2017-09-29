@@ -74,6 +74,8 @@ st.setBizTheme = function() {
         $('header').addClass('header-biz');
         $('.header-menu').addClass('header-menu-biz');
     }
+    $('body > div.mySpinner').hide();
+    $('body > div.myHiddenDiv').show();
 };
 
 // ファイルパスからファイル名を取得する

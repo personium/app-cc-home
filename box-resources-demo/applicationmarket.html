@@ -26,21 +26,28 @@
     <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
     <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/settings.css' rel='stylesheet' type='text/css'>
     <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/applicationmarket.css' rel='stylesheet' type='text/css'>
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" />
 <script type="text/javascript">
     function init() {
         demo.initAppMarket();
 
         $("#tutorialTitle").html(i18next.t("Demo.applicationTitle"));
         $("#tutorial").html(i18next.t("Demo.applicationTutorial"));
+
+        st.setBizTheme();
     };
 </script>
-  </head>
-  <body>
+</head>
+<body>
+  <div class="mySpinner">
+    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="myHiddenDiv">
     <div class="container-fluid display-table">
         <div class="row display-parent-div" id="displayParentDiv">
             <div class="col-md-12 col-sm-12 display-table-cell v-align">
-                <div class="row profile-menu">
-                </div>
                 <div class="row header-menu">
                 </div>
                 <div class="row user-dashboard" id="dashboard">
@@ -48,24 +55,25 @@
             </div>
         </div>
     </div>
+  </div>
 
-    <div id="modal-applicationlist-start" class="modal fade" role="dialog" data-backdrop="static">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header login-header">
-                        <h4 id="tutorialTitle" class="modal-title" data-i18n="Demo.applicationTitle">Application</h4>
-                    </div>
-                    <div class="modal-body fontBlack" id="tutorial">
-                        Installed applications are displayed in "installed", <br>
-                        Applications not installed are displayed in "Application list". <br>
-                        <br>
-                        Now I have not installed anything, so let's install MyBoard.
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="b-applicationlist-start-ok">OK</button>
-                    </div>
-                </div>
-            </div>
+  <div id="modal-applicationlist-start" class="modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header login-header">
+          <h4 id="tutorialTitle" class="modal-title" data-i18n="Demo.applicationTitle">Application</h4>
         </div>
-  </body>
+        <div class="modal-body fontBlack" id="tutorial">
+            Installed applications are displayed in "installed", <br>
+            Applications not installed are displayed in "Application list". <br>
+            <br>
+            Now I have not installed anything, so let's install MyBoard.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="b-applicationlist-start-ok">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
 </html>
