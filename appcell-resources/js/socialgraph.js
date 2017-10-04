@@ -121,10 +121,7 @@ sg.addExtCell = function() {
   sg.checkUrlCell(url);
 };
 sg.checkUrlCell = function(url) {
-  $.ajax({
-          type: "GET",
-          url: url
-  }).done(function(data) {
+    sg.getCell().done(function(data) {
     var jsonData = {
                     "Url" : url
     };
@@ -164,12 +161,10 @@ sg.urlBlurEvent = function() {
             $("#popupAddExtCellUrlErrorMsg").attr("data-i18n", "invalidURL").localize();
             return false;
         }
-        var extCellName = extCellInfo[1];
-        var extCellURL = extCellInfo[0];
         if (sg.validateSchemaURL(schemaURL, "popupAddExtCellUrlErrorMsg", "#addExtCellUrl")
-          && sg.doesUrlContainSlash(schemaURL, "popupAddExtCellUrlErrorMsg", "#addExtCellUrl", i18next.t("errorValidateEndWithExternalCell"))) {
+            && sg.doesUrlContainSlash(schemaURL, "popupAddExtCellUrlErrorMsg", "#addExtCellUrl", i18next.t("errorValidateEndWithExternalCell"))) {
 
-          return true;
+            return true;
         }
         
         return false;
@@ -203,8 +198,8 @@ sg.dispExtCellLinkRelation = function(json, extUrl) {
       var extRelObj = {ID: "dvExtCellRelList"};
       cm.getProfile(extUrl).done(function(profData) {
           if (profData !== null) {
-              profObj.DisplayName = profData.DisplayName;
-              profObj.Description = profData.Description;
+              profObj.DisplayName = _.escape(profData.DisplayName);
+              profObj.Description = _.escape(profData.Description);
               if (profData.Image) {
                   profObj.Image = profData.Image;
               }
@@ -250,8 +245,8 @@ sg.appendRelationLinkExtCellAfter = function(extUrl, extRelObj) {
     }
     cm.getProfile(extUrl).done(function(profData) {
           if (profData !== null) {
-              profObj.DisplayName = profData.DisplayName;
-              profObj.Description = profData.Description;
+              profObj.DisplayName = _.escape(profData.DisplayName);
+              profObj.Description = _.escape(profData.Description);
               if (profData.Image) {
                   profObj.Image = profData.Image;
               }
@@ -546,7 +541,7 @@ sg.createAddExtCell = function() {
         html += '</table></div>';
         html += '<div class="modal-footer">';
         html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead();" data-i18n="Cancel"></button>';
-        html += '<button type="button" class="btn btn-primary" id="b-add-extcell-ok" onClick="sg.addExtCell();" data-i18n="Add"></button>';
+        html += '<button type="button" class="btn btn-primary" id="b-add-extcell-ok" onClick="sg.addExtCell();" data-i18n="Add" disabled></button>';
         html += '</div></div>';
         $("#toggle-panel1").append(html).localize();
         cm.dispRoleList(data, "ddlAddExtCellLinkRoleList", true);
@@ -558,8 +553,41 @@ sg.createAddExtCell = function() {
     });
 };
 sg.blurAddExtCellUrl = function() {
-    var bool = sg.urlBlurEvent();
-    $('#b-add-extcell-ok').prop('disabled', !bool);
+    if (sg.urlBlurEvent()) {
+        // Cell existence check
+        var schemaURL = $("#addExtCellUrl").val();
+        sg.getCell(schemaURL).done(function () {
+            // Profile Modal Disp
+            var profObj = {
+                DisplayName: sg.getName(schemaURL),
+                Description: "",
+                Image: cm.notImage
+            }
+            cm.getProfile(schemaURL).done(function (prof) {
+                // Profile Modal Settings
+                if (prof) {
+                    profObj.DisplayName = _.escape(prof.DisplayName);
+                    profObj.Description = _.escape(prof.Description);
+                    if (prof.Image) {
+                        profObj.Image = prof.Image;
+                    }
+                }
+            }).always(function () {
+                $("#modalProfileName").html(profObj.DisplayName);
+                $("#txtModalDescription").html(profObj.Description);
+                $("#imgModalExtProfileImage").attr("src", profObj.Image);
+                $("#dispExtProfileBtn").css("display", "");
+            });
+            $('#b-add-extcell-ok').prop('disabled', false);
+        }).fail(function () { 
+            $("#popupAddExtCellUrlErrorMsg").attr("data-i18n", "notExistTargetCell").localize();
+            $('#b-add-extcell-ok').prop('disabled', true);
+            $("#dispExtProfileBtn").css("display", "none");
+        });
+    } else {
+        $('#b-add-extcell-ok').prop('disabled', true);
+        $("#dispExtProfileBtn").css("display", "none");
+    }
 };
 sg.changeCheckExtCellLinkRoleAndRelation = function(obj) {
     if (obj.checked) {
