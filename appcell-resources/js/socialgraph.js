@@ -121,10 +121,7 @@ sg.addExtCell = function() {
   sg.checkUrlCell(url);
 };
 sg.checkUrlCell = function(url) {
-  $.ajax({
-          type: "GET",
-          url: url
-  }).done(function(data) {
+    sg.getCell().done(function(data) {
     var jsonData = {
                     "Url" : url
     };
@@ -164,12 +161,10 @@ sg.urlBlurEvent = function() {
             $("#popupAddExtCellUrlErrorMsg").attr("data-i18n", "invalidURL").localize();
             return false;
         }
-        var extCellName = extCellInfo[1];
-        var extCellURL = extCellInfo[0];
         if (sg.validateSchemaURL(schemaURL, "popupAddExtCellUrlErrorMsg", "#addExtCellUrl")
-          && sg.doesUrlContainSlash(schemaURL, "popupAddExtCellUrlErrorMsg", "#addExtCellUrl", i18next.t("errorValidateEndWithExternalCell"))) {
+            && sg.doesUrlContainSlash(schemaURL, "popupAddExtCellUrlErrorMsg", "#addExtCellUrl", i18next.t("errorValidateEndWithExternalCell"))) {
 
-          return true;
+            return true;
         }
         
         return false;
@@ -203,8 +198,8 @@ sg.dispExtCellLinkRelation = function(json, extUrl) {
       var extRelObj = {ID: "dvExtCellRelList"};
       cm.getProfile(extUrl).done(function(profData) {
           if (profData !== null) {
-              profObj.DisplayName = profData.DisplayName;
-              profObj.Description = profData.Description;
+              profObj.DisplayName = _.escape(profData.DisplayName);
+              profObj.Description = _.escape(profData.Description);
               if (profData.Image) {
                   profObj.Image = profData.Image;
               }
@@ -250,8 +245,8 @@ sg.appendRelationLinkExtCellAfter = function(extUrl, extRelObj) {
     }
     cm.getProfile(extUrl).done(function(profData) {
           if (profData !== null) {
-              profObj.DisplayName = profData.DisplayName;
-              profObj.Description = profData.Description;
+              profObj.DisplayName = _.escape(profData.DisplayName);
+              profObj.Description = _.escape(profData.Description);
               if (profData.Image) {
                   profObj.Image = profData.Image;
               }
@@ -536,8 +531,16 @@ sg.createAddExtCell = function() {
     cm.setBackahead();
     cm.getRoleList().done(function(data) {
         var html = '<div class="modal-body">';
-        html += '<div id="dvSelectedCell">URL</div>';
-        html += '<div id="dvTextSelectedCell" style="margin-bottom: 10px;"><input type="text" id="addExtCellUrl" onblur="sg.blurAddExtCellUrl();"><span class="popupAlertArea" style="color:red"><aside id="popupAddExtCellUrlErrorMsg"> </aside></span></div>';
+        html += '<div id="dvSelectedCell">URL <button type="button" class="btn-xs btn-info" id="dispExtProfileBtn" data-toggle="modal" data-target="#modal-dispExtProfile" data-i18n="Details" style="display:none;"></button></div>';
+        html += '<div id="dvTextSelectedCell" style="margin-bottom: 10px;"><input type="text" id="addExtCellUrl" onblur="sg.blurAddExtCellUrl();"><span class="popupAlertArea" style="color:red"><aside id="popupAddExtCellUrlErrorMsg"> </aside></span>';
+
+        // Read QR Image
+        html += '<input type="file" class="fileUpload" onchange="sg.readQRImage(this);" id="readQRImage" accept="image/*" style="display: none">';
+        html += '<button class="btn btn-primary" id="readQRImgButton" type="button" data-i18n="SelectFile"></button>';
+
+        // Start QR Scanner
+        html += '<button type="button" class="btn btn-primary" id="qrscannerBtn" data-toggle="modal" data-target="#modal-qrscanner" data-i18n="QRScanner" style="margin-left:10px;"></button>';
+        html += '</div>';
         html += '<div id="dvCheckAddExtCellLinkRoleAndRelation" style="margin-bottom: 10px;"><label><input type="checkbox" id="addCheckExtCellLinkRoleAndRelation" onChange="sg.changeCheckExtCellLinkRoleAndRelation(this);"><span data-i18n="AssignMulti"></span></label></div>';
         html += '<div id="dvSelectAddExtCellLink" style="margin-bottom: 10px;"><table>';
         html += '<tr><td><label><input type="radio" name="addRadioExtCellLink" id="addRadioExtCellLinkRole" onChange="sg.changeRadioExtCellLink();" value="role" disabled><span data-i18n="Role"></span></label></td><td><label><input type="radio" name="addRadioExtCellLink" id="addRadioExtCellLinkRelation" onChange="sg.changeRadioExtCellLink();" value="relation" disabled><span data-i18n="Relation"></span></label></td></tr>';
@@ -546,7 +549,7 @@ sg.createAddExtCell = function() {
         html += '</table></div>';
         html += '<div class="modal-footer">';
         html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead();" data-i18n="Cancel"></button>';
-        html += '<button type="button" class="btn btn-primary" id="b-add-extcell-ok" onClick="sg.addExtCell();" data-i18n="Add"></button>';
+        html += '<button type="button" class="btn btn-primary" id="b-add-extcell-ok" onClick="sg.addExtCell();" data-i18n="Add" disabled></button>';
         html += '</div></div>';
         $("#toggle-panel1").append(html).localize();
         cm.dispRoleList(data, "ddlAddExtCellLinkRoleList", true);
@@ -555,11 +558,48 @@ sg.createAddExtCell = function() {
             $("#toggle-panel1,.panel-default").toggleClass('slide-on');
             cm.setTitleMenu("CreateExternalCell");
         });
+
+        $("#readQRImgButton").on('click', function () {
+            $("#readQRImage").click();
+        });
     });
 };
 sg.blurAddExtCellUrl = function() {
-    var bool = sg.urlBlurEvent();
-    $('#b-add-extcell-ok').prop('disabled', !bool);
+    if (sg.urlBlurEvent()) {
+        // Cell existence check
+        var schemaURL = $("#addExtCellUrl").val();
+        sg.getCell(schemaURL).done(function () {
+            // Profile Modal Disp
+            var profObj = {
+                DisplayName: sg.getName(schemaURL),
+                Description: "",
+                Image: cm.notImage
+            }
+            cm.getProfile(schemaURL).done(function (prof) {
+                // Profile Modal Settings
+                if (prof) {
+                    profObj.DisplayName = _.escape(prof.DisplayName);
+                    profObj.Description = _.escape(prof.Description);
+                    if (prof.Image) {
+                        profObj.Image = prof.Image;
+                    }
+                }
+            }).always(function () {
+                $("#modalProfileName").html(profObj.DisplayName);
+                $("#txtModalDescription").html(profObj.Description);
+                $("#imgModalExtProfileImage").attr("src", profObj.Image);
+                $("#dispExtProfileBtn").css("display", "");
+            });
+            $('#b-add-extcell-ok').prop('disabled', false);
+        }).fail(function () { 
+            $("#popupAddExtCellUrlErrorMsg").attr("data-i18n", "notExistTargetCell").localize();
+            $('#b-add-extcell-ok').prop('disabled', true);
+            $("#dispExtProfileBtn").css("display", "none");
+        });
+    } else {
+        $('#b-add-extcell-ok').prop('disabled', true);
+        $("#dispExtProfileBtn").css("display", "none");
+    }
 };
 sg.changeCheckExtCellLinkRoleAndRelation = function(obj) {
     if (obj.checked) {
@@ -643,6 +683,15 @@ sg.doesUrlContainSlash = function(schemaURL, schemaSpan,txtID,message) {
         //cellpopup.showValidValueIcon(txtID);
         return true;
     }
+};
+sg.getCell = function (cellUrl) {
+    return $.ajax({
+        type: "GET",
+        url: cellUrl,
+        headers: {
+            'Accept': 'application/xml'
+        }
+    });
 };
 
 // API
@@ -870,6 +919,8 @@ sg.initSocialGraph = function() {
 
     // Initialization
     sg.getRelationList();
+    sg.createProfileModal();
+    sg.createQRScannerModal();
 
     // click event
     $('#b-add-extcell-ok').on('click', function () { sg.addExtCell(); });
@@ -959,6 +1010,87 @@ sg.initSocialGraph = function() {
       $(".extcellMenu").slideToggle();
     });
 };
+
+sg.createProfileModal = function () {
+    // Profile Modal
+    var html = '<div id="modal-dispExtProfile" class="modal fade" role="dialog">' +
+        '<div class="modal-dialog">' +
+        // Modal content
+        '<div class="modal-content">' +
+        '<div class="modal-header login-header">' +
+        '<button type="button" class="close" data-dismiss="modal">Å~</button>' +
+        '<h4 class="modal-title" id="modalProfileName"></h4>' +
+        '</div>' +
+        '<div class="modal-body">' +
+        '<div><img class="image-circle-large center-block" style="margin: auto;" id="imgModalExtProfileImage" alt="image" /></div><div><p align="center" id="txtModalDescription"></p></div>' +
+        '</div>' +
+        '<div class="modal-footer">' +
+        '<button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Close"></button>' +
+        '</div></div></div></div>';
+    var modal = $(html);
+    $(document.body).append(modal);
+}
+
+sg.createQRScannerModal = function () {
+    // QRScanner Modal
+    var html = '<div id="modal-qrscanner" class="modal fade" role="dialog">' +
+        '<div class="modal-dialog">' +
+        // Modal content
+        '<div class="modal-content">' +
+        '<div class="modal-header login-header">' +
+        '<button type="button" class="close" data-dismiss="modal">Å~</button>' +
+        '<h4 class="modal-title" data-i18n="QRScanner"></h4>' +
+        '</div>' +
+        '<div class="modal-body">' +
+        '<div><p align="center" data-i18n="qrscannerDescription"></p></div>' +
+        '<div id="pqrdiv"></div>' +
+        '</div>' +
+        '<div class="modal-footer">' +
+        '<button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Close"></button>' +
+        '</div></div></div></div>';
+    var modal = $(html);
+    $(document.body).append(modal);
+
+    $("#modal-qrscanner").on("show.bs.modal", function () {
+        start_pQR(sg.qrReturn);
+    });
+    $("#modal-qrscanner").on("hidden.bs.modal", function () {
+        quit_pQR();
+    });
+}
+
+sg.qrReturn = function (res) {
+    $("#addExtCellUrl").val(_.escape(res));
+    sg.blurAddExtCellUrl();
+    $('#modal-qrscanner').modal('hide');
+}
+
+sg.readQRImage = function (e) {
+    var file = e.files[0];
+    if (file) {
+        try {
+            var reader = new FileReader();
+        } catch (e) {
+            return;
+        }
+        reader.readAsDataURL(file, "UTF-8");
+        reader.onload = sg.loaded;
+        reader.onerror = cm.errorHandler;
+    }
+}
+
+sg.loaded = function (evt) {
+    sg.decodeImageFromBase64(evt.target.result, function (decodedInformation) {
+        $("#addExtCellUrl").val(_.escape(decodedInformation));
+        sg.blurAddExtCellUrl();
+
+    })
+}
+
+sg.decodeImageFromBase64 = function (data, callback) {
+    qrcode.callback = callback;
+    qrcode.decode(data);
+}
 
 // API DEBUG
 //sg.testAPI = function() {
