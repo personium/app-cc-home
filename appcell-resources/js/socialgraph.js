@@ -109,7 +109,8 @@ sg.dispExtCellList = function(json) {
     return (val1.Url < val2.Url ? 1 : -1);
   })
   for (var i = 0; i < results.length; i++) {
-    var extCell = json.d.results[i];
+    var extCell = results[i];
+    // Displace the cell URL with the unit's proper URL. However, when sending to the server, we use "personium-localunit:" URL format.
     var extCellUrl = ut.changeLocalUnitToUnitUrl(extCell.Url);
     $("#ddlExtCellLinkRelationList").append('<option value="' + extCell.Url + '">' + sg.getName(extCellUrl) + '</option>');
 
@@ -127,7 +128,7 @@ sg.checkUrlCell = function(url) {
                         "Url" : cellUrl
         };
         
-        // Assinginig Roles Or Relations
+        // Assigning Roles or Relations using the "personium-localunit:" format if possible
         sg.setLinkUrl(cellUrl, null);
         var chkObj = document.getElementById("addCheckExtCellLinkRoleAndRelation");
         if (chkObj.checked) {
@@ -435,7 +436,7 @@ sg.checkBoxPublic = function(json) {
     var html = '<div class="panel-body">';
     html += '<p data-i18n="Document"></p><HR>';
     for (var i = 0; i < results.length; i++) {
-        var boxName = json.d.results[i].Name;
+        var boxName = results[i].Name;
         html += '<p style="margin-top: 10px;">' + boxName + '</p>';
     }
     html += '</div>';
@@ -487,7 +488,7 @@ sg.dispRelationList = function(json) {
   var html = '';
   var extRelID = "";
   for (var i = 0; i < results.length; i++) {
-    var objRelation = json.d.results[i];
+    var objRelation = results[i];
     var boxName = objRelation["_Box.Name"];
     var relBoxName = boxName;
     if (boxName === null) {

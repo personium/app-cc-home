@@ -531,7 +531,7 @@ cm.dispRoleList = function(json, id, multiFlag) {
       $("#" + id).append('<option value="" data-i18n="selectRole"></option>');
   }
   for (var i = 0; i < results.length; i++) {
-    var objRole = json.d.results[i];
+    var objRole = results[i];
     var boxName = objRole["_Box.Name"];
     if (boxName === null) {
       boxName = "[main]";
@@ -629,7 +629,7 @@ cm.dispRelationList = function(json, id, multiFlag) {
   }
 
   for (var i = 0; i < results.length; i++) {
-    var objRelation = json.d.results[i];
+    var objRelation = results[i];
     var boxName = objRelation["_Box.Name"];
     if (boxName === null) {
       boxName = "[main]";
