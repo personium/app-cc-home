@@ -1,5 +1,8 @@
 var ut = {};
 
+// LocalUnit Schema
+ut.PERSONIUM_LOCALUNIT = "personium-localunit:";
+
 ut.cellUrlWithEndingSlash = function(tempUrl, raiseError) {
     var i = tempUrl.indexOf("/", 8); // search after "http://" or "https://"
 
@@ -46,3 +49,27 @@ ut.getName = function(path) {
     }
     return name;
 };
+
+/*
+ * Replace the same unit URL as my unit URL with personium-localunit
+ */
+ut.changeUnitUrlToLocalUnit = function (cellUrl) {
+    var result = cellUrl;
+    if (cellUrl.startsWith(cm.user.baseUrl)) {
+        result = cellUrl.replace(cm.user.baseUrl, ut.PERSONIUM_LOCALUNIT + "/");
+    }
+
+    return result;
+}
+
+/*
+ * Replace personium-localunit with your unit URL
+ */
+ut.changeLocalUnitToUnitUrl = function (cellUrl) {
+    var result = cellUrl;
+    if (cellUrl.startsWith(ut.PERSONIUM_LOCALUNIT)) {
+        result = cellUrl.replace(ut.PERSONIUM_LOCALUNIT + "/", cm.user.baseUrl);
+    }
+
+    return result;
+}
