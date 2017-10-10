@@ -108,10 +108,11 @@ sg.dispExtCellList = function(json) {
   results.sort(function(val1, val2) {
     return (val1.Url < val2.Url ? 1 : -1);
   })
-  for (var i in results) {
-    var extCell = json.d.results[i];
-
-    $("#ddlExtCellLinkRelationList").append('<option value="' + extCell.Url + '">' + sg.getName(extCell.Url) + '</option>');
+  for (var i = 0; i < results.length; i++) {
+    var extCell = results[i];
+    // Displace the cell URL with the unit's proper URL. However, when sending to the server, we use "personium-localunit:" URL format.
+    var extCellUrl = ut.changeLocalUnitToUnitUrl(extCell.Url);
+    $("#ddlExtCellLinkRelationList").append('<option value="' + extCell.Url + '">' + sg.getName(extCellUrl) + '</option>');
 
     sg.getExtCellRelationList(extCell.Url);
   }
@@ -121,34 +122,35 @@ sg.addExtCell = function() {
   sg.checkUrlCell(url);
 };
 sg.checkUrlCell = function(url) {
-    sg.getCell().done(function(data) {
-    var jsonData = {
-                    "Url" : url
-    };
-
-    // Assinginig Roles Or Relations
-    sg.setLinkUrl(url, null);
-    var chkObj = document.getElementById("addCheckExtCellLinkRoleAndRelation");
-    if (chkObj.checked) {
-      if ($('input[name="addRadioExtCellLink"]:checked').val() === "role") {
-        if (sg.checkExtCellLinkRole()) {
+    sg.getCell().done(function (data) {
+        var cellUrl = ut.changeUnitUrlToLocalUnit(url);
+        var jsonData = {
+                        "Url" : cellUrl
+        };
+        
+        // Assigning Roles or Relations using the "personium-localunit:" format if possible
+        sg.setLinkUrl(cellUrl, null);
+        var chkObj = document.getElementById("addCheckExtCellLinkRoleAndRelation");
+        if (chkObj.checked) {
+          if ($('input[name="addRadioExtCellLink"]:checked').val() === "role") {
+            if (sg.checkExtCellLinkRole()) {
+              sg.restCreateExtCellAPI(jsonData);
+            }
+          } else {
+            if (sg.checkExtCellLinkRelation()) {
+              sg.restCreateExtCellAPI(jsonData);
+            }
+          }
+        } else {
           sg.restCreateExtCellAPI(jsonData);
         }
-      } else {
-        if (sg.checkExtCellLinkRelation()) {
-          sg.restCreateExtCellAPI(jsonData);
-        }
-      }
-    } else {
-      sg.restCreateExtCellAPI(jsonData);
-    }
   }).fail(function(data) {
     //alert("The specified cell does not exist.");
     $("#popupAddExtCellUrlErrorMsg").attr("data-i18n", "notExistTargetCell").localize();
   });
 }
 sg.dispDelExtCellModal = function() {
-    $("#dvTextConfirmation").html(i18next.t("confirmDeleteExternalCell", {value:sg.linkExtCellUrl}));
+    $("#dvTextConfirmation").html(i18next.t("confirmDeleteExternalCell", { value: ut.changeLocalUnitToUnitUrl(sg.linkExtCellUrl)}));
     $("#modal-confirmation-title").html(i18next.t("DeleteExternalCell"));
     $('#b-del-extcell-ok').css("display","");
     $('#b-cancel').css("display","");
@@ -196,7 +198,8 @@ sg.dispExtCellLinkRelation = function(json, extUrl) {
           Image: cm.notImage
       }
       var extRelObj = {ID: "dvExtCellRelList"};
-      cm.getProfile(extUrl).done(function(profData) {
+      var cellUrl = ut.changeLocalUnitToUnitUrl(extUrl);
+      cm.getProfile(cellUrl).done(function(profData) {
           if (profData !== null) {
               profObj.DisplayName = _.escape(profData.DisplayName);
               profObj.Description = _.escape(profData.Description);
@@ -228,7 +231,7 @@ sg.dispRelationLinkExtCell = function(json, relName, relBoxName) {
     }
     $("#" + extRelObj.ID).empty();
 
-    for (var i in results) {
+    for (var i = 0; i < results.length; i++) {
       var uri = results[i].uri;
       var matchUrl = uri.match(/\(\'(.+)\'\)/);
       var extUrl = matchUrl[1];
@@ -243,7 +246,8 @@ sg.appendRelationLinkExtCellAfter = function(extUrl, extRelObj) {
         Description: "",
         Image: cm.notImage
     }
-    cm.getProfile(extUrl).done(function(profData) {
+    var cellUrl = ut.changeLocalUnitToUnitUrl(extUrl);
+    cm.getProfile(cellUrl).done(function(profData) {
           if (profData !== null) {
               profObj.DisplayName = _.escape(profData.DisplayName);
               profObj.Description = _.escape(profData.Description);
@@ -331,7 +335,7 @@ sg.createExtCellProfile = function(aDom) {
     $("#toggle-panel1").empty();
     cm.setBackahead();
     var html = '<div class="panel-body">';
-    html += '<div class="extcell-profile" id="dvExtProfileImage"><img class="image-circle-large" style="margin: auto;" id="imgExtProfileImage" src="' + imagesrc + '" alt="image" /><span id="txtExtUrl">' + url + '</span><h5><span id="txtDescription">' + description + '</span></h5></div>';
+    html += '<div class="extcell-profile" id="dvExtProfileImage"><img class="image-circle-large" style="margin: auto;" id="imgExtProfileImage" src="' + imagesrc + '" alt="image" /><span id="txtExtUrl">' + ut.changeLocalUnitToUnitUrl(url) + '</span><h5><span id="txtDescription">' + description + '</span></h5></div>';
     html += '<div class="toggleButton"><a class="toggle list-group-item" href="#" onClick="sg.showExtPublicBoxList();return(false);" data-i18n="WatchPublicBOX"></a></div>';
     html += '<div class="toggleButton"><a class="toggle list-group-item" href="#" onClick="sg.createRoleList(\'' + url + '\');return(false);" data-i18n="RoleList"></a></div>';
     html += '<div class="toggleButton"><a class="toggle list-group-item" href="#" onClick="sg.dispDelExtCellModal();return(false);" data-i18n="DeleteExternalCell"></a></div>';
@@ -357,13 +361,10 @@ sg.createRoleList = function(url) {
     });
 };
 sg.getExtCellRoleList = function(url) {
-  var urlArray = url.split("/");
-  var hProt = urlArray[0].substring(0, urlArray[0].length - 1);
-  var fqdn = urlArray[2];
-  var cellName = urlArray[3];
+  var extCellUrl = encodeURIComponent(url);
   return $.ajax({
           type: "GET",
-          url:cm.user.cellUrl + '__ctl/ExtCell(\'' + hProt + '%3A%2F%2F' + fqdn + '%2F' + cellName + '%2F\')/$links/_Role',
+          url: cm.user.cellUrl + '__ctl/ExtCell(\'' + extCellUrl + '\')/$links/_Role',
           headers: {
             'Authorization':'Bearer ' + cm.user.access_token
           }
@@ -377,7 +378,7 @@ sg.dispExtCellRoleList = function(json, exturl) {
   })
 
   var html = '<div class="panel-body">';
-  for (var i in results) {
+  for (var i = 0; i < results.length; i++) {
     var res = results[i];
     var url = res.uri;
     var matchName = url.match(/\(Name='(.+)',/);
@@ -403,15 +404,12 @@ sg.dispExtCellRoleList = function(json, exturl) {
   html += '</div>';
   $("#toggle-panel2").append(html).localize();
 };
-sg.showExtPublicBoxList = function() {
-    cm.getTargetToken(sg.linkExtCellUrl).done(function(data) {
-        var urlArray = sg.linkExtCellUrl.split("/");
-        var hProt = urlArray[0].substring(0, urlArray[0].length - 1);
-        var fqdn = urlArray[2];
-        var cellName = urlArray[3];
+sg.showExtPublicBoxList = function () {
+    var cellUrl = ut.changeLocalUnitToUnitUrl(sg.linkExtCellUrl);
+    cm.getTargetToken(cellUrl).done(function(data) {
         $.ajax({
                 type: "GET",
-                url: sg.linkExtCellUrl + "__ctl/Box" ,
+                url: cellUrl + "__ctl/Box" ,
                 headers: {
                   'Authorization':'Bearer ' + data.access_token,
                   'Accept':'application/json'
@@ -437,8 +435,8 @@ sg.checkBoxPublic = function(json) {
     })
     var html = '<div class="panel-body">';
     html += '<p data-i18n="Document"></p><HR>';
-    for (var i in results) {
-        var boxName = json.d.results[i].Name;
+    for (var i = 0; i < results.length; i++) {
+        var boxName = results[i].Name;
         html += '<p style="margin-top: 10px;">' + boxName + '</p>';
     }
     html += '</div>';
@@ -489,8 +487,8 @@ sg.dispRelationList = function(json) {
   
   var html = '';
   var extRelID = "";
-  for (var i in results) {
-    var objRelation = json.d.results[i];
+  for (var i = 0; i < results.length; i++) {
+    var objRelation = results[i];
     var boxName = objRelation["_Box.Name"];
     var relBoxName = boxName;
     if (boxName === null) {
@@ -728,14 +726,11 @@ sg.restCreateExtCellAPI = function(json) {
     alert("An error has occurred.\n" + res.message.value);
   });
 };
-sg.restDeleteExtCellAPI = function() {
-  var urlArray = sg.linkExtCellUrl.split("/");
-  var hProt = urlArray[0].substring(0, urlArray[0].length - 1);
-  var fqdn = urlArray[2];
-  var cellName = urlArray[3];
+sg.restDeleteExtCellAPI = function () {
+  var extCellUrl = encodeURIComponent(sg.linkExtCellUrl);
   $.ajax({
           type: "DELETE",
-          url: cm.user.cellUrl + '__ctl/ExtCell(\'' + hProt + '%3A%2F%2F' + fqdn + '%2F' + cellName + '%2F\')',
+          url: cm.user.cellUrl + '__ctl/ExtCell(\'' + extCellUrl + '\')',
           headers: {
             'Authorization':'Bearer ' + cm.user.access_token
           }
@@ -749,11 +744,8 @@ sg.restDeleteExtCellAPI = function() {
     alert("An error has occurred.\n" + res.message.value);
   });
 };
-sg.restAddExtCellLinkRole = function(moveFlag) {
-  var urlArray = sg.linkExtCellUrl.split("/");
-  var hProt = urlArray[0].substring(0, urlArray[0].length - 1);
-  var fqdn = urlArray[2];
-  var cellName = urlArray[3];
+sg.restAddExtCellLinkRole = function (moveFlag) {
+  var extCellUrl = encodeURIComponent(sg.linkExtCellUrl);
   var uri = cm.user.cellUrl + '__ctl/Role';
   if (cm.linkBoxName === null) {
     uri += '(\'' + cm.linkName + '\')';
@@ -764,7 +756,7 @@ sg.restAddExtCellLinkRole = function(moveFlag) {
 
   $.ajax({
           type: "POST",
-          url: cm.user.cellUrl + '__ctl/ExtCell(\'' + hProt + '%3A%2F%2F' + fqdn + '%2F' + cellName + '%2F\')/$links/_Role',
+          url: cm.user.cellUrl + '__ctl/ExtCell(\'' + extCellUrl + '\')/$links/_Role',
           data: JSON.stringify(json),
           headers: {
             'Authorization':'Bearer ' + cm.user.access_token,
@@ -783,12 +775,9 @@ sg.restAddExtCellLinkRole = function(moveFlag) {
     alert("An error has occurred.\n" + res.message.value);
   });
 }
-sg.restDeleteExtCellLinkRole = function() {
-    var urlArray = sg.linkExtCellUrl.split("/");
-    var hProt = urlArray[0].substring(0, urlArray[0].length - 1);
-    var fqdn = urlArray[2];
-    var cellName = urlArray[3];
-    var api = '__ctl/ExtCell(\'' + hProt + '%3A%2F%2F' + fqdn + '%2F' + cellName + '%2F\')/$links/_Role';
+sg.restDeleteExtCellLinkRole = function () {
+    var extCellUrl = encodeURIComponent(sg.linkExtCellUrl);
+    var api = '__ctl/ExtCell(\'' + extCellUrl + '\')/$links/_Role';
     if (cm.linkBoxName === null) {
       api += '(\'' + cm.linkName + '\')';
     } else {
@@ -811,14 +800,11 @@ sg.restDeleteExtCellLinkRole = function() {
       alert("An error has occurred.\n" + res.message.value);
     });
 };
-sg.getExtCellRelationList = function(url) {
-  var urlArray = url.split("/");
-  var hProt = urlArray[0].substring(0, urlArray[0].length - 1);
-  var fqdn = urlArray[2];
-  var cellName = urlArray[3];
+sg.getExtCellRelationList = function (url) {
+  var extCellUrl = encodeURIComponent(url);
   $.ajax({
           type: "GET",
-          url:cm.user.cellUrl + '__ctl/ExtCell(\'' + hProt + '%3A%2F%2F' + fqdn + '%2F' + cellName + '%2F\')/$links/_Relation',
+          url: cm.user.cellUrl + '__ctl/ExtCell(\'' + extCellUrl + '\')/$links/_Relation',
           headers: {
             'Authorization':'Bearer ' + cm.user.access_token
           }
@@ -846,11 +832,8 @@ sg.getRelLinkExtCell = function(relName, relBoxName) {
   }).fail(function(data) {
   });
 };
-sg.restAddExtCellLinkRelation = function(moveFlag) {
-  var urlArray = sg.linkExtCellUrl.split("/");
-  var hProt = urlArray[0].substring(0, urlArray[0].length - 1);
-  var fqdn = urlArray[2];
-  var cellName = urlArray[3];
+sg.restAddExtCellLinkRelation = function (moveFlag) {
+  var extCellUrl = encodeURIComponent(sg.linkExtCellUrl);
   var uri = cm.user.cellUrl + '__ctl/Relation';
   var linkName = cm.linkName;
   var linkBoxName = cm.linkBoxName;
@@ -863,7 +846,7 @@ sg.restAddExtCellLinkRelation = function(moveFlag) {
 
   $.ajax({
           type: "POST",
-          url: cm.user.cellUrl + '__ctl/ExtCell(\'' + hProt + '%3A%2F%2F' + fqdn + '%2F' + cellName + '%2F\')/$links/_Relation',
+          url: cm.user.cellUrl + '__ctl/ExtCell(\'' + extCellUrl + '\')/$links/_Relation',
           data: JSON.stringify(json),
           headers: {
             'Authorization':'Bearer ' + cm.user.access_token,
@@ -881,12 +864,9 @@ sg.restAddExtCellLinkRelation = function(moveFlag) {
     alert("An error has occurred.\n" + res.message.value);
   });
 };
-sg.restDeleteExtCellLinkRelation = function() {
-    var urlArray = sg.linkExtCellUrl.split("/");
-    var hProt = urlArray[0].substring(0, urlArray[0].length - 1);
-    var fqdn = urlArray[2];
-    var cellName = urlArray[3];
-    var api = '__ctl/ExtCell(\'' + hProt + '%3A%2F%2F' + fqdn + '%2F' + cellName + '%2F\')/$links/_Relation';
+sg.restDeleteExtCellLinkRelation = function () {
+    var extCellUrl = encodeURIComponent(sg.linkExtCellUrl);
+    var api = '__ctl/ExtCell(\'' + extCellUrl + '\')/$links/_Relation';
     if (cm.linkBoxName === null) {
       api += '(\'' + sg.linkRelationName + '\')';
     } else {
