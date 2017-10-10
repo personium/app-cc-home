@@ -255,7 +255,7 @@ cm.createSideMenu = function() {
     html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-change-password" data-i18n="ChangePass"></a></li>';
     // setting menu
     html += '<li><a class="allToggle" id="accountToggle" href="#" data-i18n="Account"></a></li>';
-    html += '<li><a class="allToggle" id="applicationToggle" href="#" data-i18n="Application"></a></li>';
+    html += '<li><a class="allToggle disabled" id="applicationToggle" href="#" data-i18n="Application"></a></li>';
     html += '<li><a class="allToggle" id="roleToggle" href="#" data-i18n="Role"></a></li>';
     html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="#" data-i18n="Relation"></a></li>';
     // change language
