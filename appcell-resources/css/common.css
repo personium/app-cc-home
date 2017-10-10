@@ -761,6 +761,9 @@ a.toggle{
   border-color: #337ab7;
   color: #fff;
 }
+a.disabled {
+    color: #d4d4d4 !important;
+}
 .toggle:after{
   position: absolute;
   top: 35%;

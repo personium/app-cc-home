@@ -54,8 +54,9 @@ st.initSettings = function() {
     $("#accountToggle").on("click", function() {
       st.createAccountList();
     });
-    $("#applicationToggle").on("click", function() {
-      st.createApplicationList();
+    $("#applicationToggle").on("click", function () {
+        return false;
+      //st.createApplicationList();
       //testAPI();
     });
     $("#roleToggle").on("click", function() {
