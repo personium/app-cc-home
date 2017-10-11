@@ -1,6 +1,7 @@
 {
   "Message": "メッセージ",
+  "NotSubject": "件名なし",
   "ReceiveMessage": "受信メッセージ",
   "SendMessage": "送信メッセージ",
-  "CreateMessage":  "新規メッセージ作成"
+  "CreateMessage": "新規メッセージ作成"
 }
