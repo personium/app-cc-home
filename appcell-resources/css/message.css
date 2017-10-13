@@ -1,3 +1,13 @@
 .menu-list > li {
     border-bottom:0;
 }
+
+.unread-msg {
+    font-weight: bold;
+}
+
+.badge {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+}

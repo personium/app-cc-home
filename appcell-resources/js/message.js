@@ -26,12 +26,14 @@ ms.openReceiveMsg = function () {
     cm.setBackahead();
     $("#toggle-panel1").html('<ul class="list" id="messageList"></ul>');
 
+    var count = 0
     // create Receive Message List
     ms.getReceivedMessageAPI().done(function (data) {
         var results = data.d.results;
         ms.profileList = new Array();
         var html = '';
         for (var i = 0; i < results.length; i++) {
+            if (results[i]["_Box.Name"]) continue;
             var title = results[i].Title;
             if (title == null) {
                 title = i18next.t("message:notSubject");
@@ -45,7 +47,7 @@ ms.openReceiveMsg = function () {
             if (results[i].Status == "unread" || results[i].Status == "none") {
                 unreadCss = "unread-msg";
             }
-            html += '<li>';
+            html += '<li class="' + unreadCss + '">';
             html += '<a href="javascript:void(0)">';
             html += '<div class="list-icon">';
             html += '<img id="requestIcon" width="24" height="24"/>';
@@ -58,17 +60,85 @@ ms.openReceiveMsg = function () {
             html += '</a>';
             html += '</li>';
             ms.profileList.push(cm.getProfile(from));
+            count++;
         }
         ms.setProfile();
         if (html.length > 0) {
-            html += '</table></div>';
             $("#messageList").append(html);
         }
     }).fail(function (data) {
-        alert(test);
+        html = '<li data-i18n="message:errorReceivedMessage"></li>';
+        $("#messageList").append(html).localize();
+        count++;
     }).always(function (data) {
+        if (count == 0) {
+            html = '<li data-i18n="message:notReceivedMessage"></li>';
+            $("#messageList").append(html).localize();
+        }
         $("#toggle-panel1,.panel-default").toggleClass('slide-on');
         cm.setTitleMenu("message:ReceiveMessage");
+    });
+}
+
+/*
+ * Display Sent Message List
+ */
+ms.openSentMsg = function () {
+    $("#toggle-panel1").empty();
+    cm.setBackahead();
+    $("#toggle-panel1").html('<ul class="list" id="messageList"></ul>');
+
+    var count = 0;
+    // create Sent Message List
+    ms.getSentMessageAPI().done(function (data) {
+        var results = data.d.results;
+        ms.profileList = new Array();
+        var html = '';
+        for (var i = 0; i < results.length; i++) {
+            if (results[i]["_Box.Name"]) continue;
+            var title = results[i].Title;
+            if (title == null) {
+                title = i18next.t("message:notSubject");
+            }
+            var id = results[i].__id;
+            var from = results[i].From;
+            var unixTime = results[i].__updated
+            unixTime = parseInt(unixTime.replace(/[^0-9^]/g, ""));
+            var changedDate = ms.changeUnixTime(unixTime);
+            var unreadCss = "";
+            if (results[i].Status == "unread" || results[i].Status == "none") {
+                unreadCss = "unread-msg";
+            }
+            html += '<li class="' + unreadCss + '">';
+            html += '<a href="javascript:void(0)">';
+            html += '<div class="list-icon">';
+            html += '<img id="requestIcon" width="24" height="24"/>';
+            html += '</div>';
+            html += '<div class="list-body">';
+            html += '<div class="sizeBody">' + _.escape(title) + '</div>';
+            html += '<div class="sizeCaption" id="requestName" ></div>';
+            html += '<div class="sizeCaption">' + changedDate + '</div>';
+            html += '</div>';
+            html += '</a>';
+            html += '</li>';
+            ms.profileList.push(cm.getProfile(from));
+            count++;
+        }
+        ms.setProfile();
+        if (html.length > 0) {
+            $("#messageList").append(html);
+        }
+    }).fail(function (data) {
+        html = '<li data-i18n="message:errorSentMessage"></li>';
+        $("#messageList").append(html).localize();
+        count++;
+    }).always(function (data) {
+        if (count == 0) {
+            html = '<li data-i18n="message:notSentMessage"></li>';
+            $("#messageList").append(html).localize();
+        }
+        $("#toggle-panel1,.panel-default").toggleClass('slide-on');
+        cm.setTitleMenu("message:SentMessage");
     });
 }
 
@@ -107,6 +177,17 @@ ms.getReceivedMessageAPI = function () {
     return $.ajax({
         type: "GET",
         url: cm.user.cellUrl + '__ctl/ReceivedMessage?$orderby=__published%20desc',
+        headers: {
+            'Authorization': 'Bearer ' + cm.user.access_token,
+            'Accept': 'application/json'
+        }
+    });
+};
+
+ms.getSentMessageAPI = function () {
+    return $.ajax({
+        type: "GET",
+        url: cm.user.cellUrl + '__ctl/SentMessage?$orderby=__published%20desc',
         headers: {
             'Authorization': 'Bearer ' + cm.user.access_token,
             'Accept': 'application/json'

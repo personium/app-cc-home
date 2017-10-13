@@ -1,7 +1,10 @@
 {
-  "Message": "メッセージ",
   "NotSubject": "件名なし",
   "ReceiveMessage": "受信メッセージ",
-  "SendMessage": "送信メッセージ",
-  "CreateMessage": "新規メッセージ作成"
+  "SentMessage": "送信メッセージ",
+  "CreateMessage": "新規メッセージ作成",
+  "errorReceivedMessage": "受信したメッセージを取得出来ませんでした。",
+  "errorSentMessage": "送信済みメッセージを取得出来ませんでした。",
+  "notReceivedMessage": "受信したメッセージはありません。",
+  "notSentMessage": "送信済みメッセージはありません。"
 }

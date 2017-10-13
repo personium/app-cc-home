@@ -1,7 +1,10 @@
 {
-  "Message": "Message",
   "NotSubject": "Not Subject",
   "ReceiveMessage": "Receive Message",
-  "SendMessage": "Send Message",
-  "CreateMessage": "Create Message"
+  "SentMessage": "Sent Message",
+  "CreateMessage": "Create Message",
+  "errorReceivedMessage": "We could not get the received message.",
+  "errorSentMessage": "Failed to get sent message.",
+  "notReceivedMessage": "There are no received messages.",
+  "notSentMessage": "There are no sent messages."
 }

@@ -20,6 +20,7 @@
     <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/common.js"></script>
     <!--<script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/message.js"></script>-->
     <script src="../../../appcell-resources/js/message.js"></script>
+    <!--<script src="./js/message.js"></script>-->
     <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/settings.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
@@ -27,6 +28,7 @@
     <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/settings.css' rel='stylesheet' type='text/css'>
     <!--<link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/message.css' rel='stylesheet' type='text/css'>-->
     <link href='../../../appcell-resources/css/message.css' rel='stylesheet' type='text/css'>
+    <!--<link href='./css/message.css' rel='stylesheet' type='text/css'>-->
     <!--     Fonts and icons     -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" />
     <script type="text/javascript">
@@ -51,9 +53,11 @@
                             <ul class="list menu-list">
                                 <li>
                                     <a href="#" class="list-group-item" onclick="ms.openReceiveMsg(); return false;" data-i18n="message:ReceiveMessage"></a>
+                                    <span class="badge" id="receiveBadge"></span>
                                 </li>
                                 <li>
-                                    <a href="#" class="list-group-item" onclick="ms.openSendMsg(); return false;" data-i18n="message:SendMessage"></a>
+                                    <a href="#" class="list-group-item" onclick="ms.openSentMsg(); return false;" data-i18n="message:SentMessage"></a>
+                                    <span class="badge" id="sentBadge"></span>
                                 </li>
                                 <li>
                                     <a href="#" class="list-group-item" onclick="ms.openCreateMsg(); return false;" data-i18n="message:CreateMessage"></a>
