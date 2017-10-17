@@ -1,5 +1,7 @@
 var ms = {};
 
+ms.replyTo = null;
+
 addNamesapces = function (ns) {
     ns.push('message');
     return ns;
@@ -12,6 +14,51 @@ ms.init = function () {
     ms.setTitle();
     st.initSettings();
     $("#dashboard").append('<div class="panel list-group toggle-panel" id="toggle-panel1"></div>');
+
+    $("#b-create-message-sent").on('click', function () {
+        var msg = {};
+        msg.To = $("#txtDestCellUrl").val();
+        msg.Title = $("#txtMessageSubject").val();
+        msg.Body = $("#txtMessageBody").val();
+        if (ms.replyTo) {
+            msg.InReplyTo = ms.replyTo;
+        }
+        ms.postSendAPI(msg).done(function () {
+            $("#dashboard").prepend('<div class="alert alert-success alert-dismissable fade in"><a href="JavaScript:void(0)" class="close" data-dismiss="alert" aria-label="close">&times;</a><span data-i18n="message:successSendMessage"></span></div>').localize();
+            $("#modal-create-message").modal("hide");
+        }).fail(function () {
+            $("#dashboard").prepend('<div class="alert alert-warning alert-dismissable fade in"><a href="JavaScript:void(0)" class="close" data-dismiss="alert" aria-label="close">&times;</a><span data-i18n="message:failSendMessage"></span></div>').localize();
+            $("#modal-create-message").modal("hide");
+        });
+    });
+}
+
+ms.checkCellUrl = function (obj) {
+    if (obj.value) {
+        if (cm.validateCellURL(obj.value, "popupSendCellUrlErrorMsg")
+            && cm.doesUrlContainSlash(obj.value, "popupSendCellUrlErrorMsg", i18next.t("errorValidateEndWithCell"))) {
+
+            ms.getCell(obj.value).done(function () {
+                cm.getProfile(obj.value).done(function (result) {
+                    $("#txtDestProfName").val(result.DisplayName);
+                }).fail(function () {
+                    $("#txtDestProfName").val("");
+                }).always(function () {
+                    $("#popupSendCellUrlErrorMsg").html("");
+                    $("#b-create-message-sent").prop('disabled', false);
+                });
+            }).fail(function () {
+                $("#txtDestProfName").val("");
+                $("#popupSendCellUrlErrorMsg").attr("data-i18n", "notExistTargetCell").localize();
+                $("#b-create-message-sent").prop('disabled', true);
+            })
+            
+        }
+       
+    } else {
+        $("#txtDestProfName").val("");
+        $("#b-create-message-sent").prop('disabled', true);
+    }
 }
 
 ms.setTitle = function () {
@@ -31,7 +78,6 @@ ms.openReceiveMsg = function () {
     ms.getReceivedMessageAPI().done(function (data) {
         var results = data.d.results;
         ms.profileList = new Array();
-        var html = '';
         for (var i = 0; i < results.length; i++) {
             if (results[i]["_Box.Name"]) continue;
             var title = results[i].Title;
@@ -47,24 +93,21 @@ ms.openReceiveMsg = function () {
             if (results[i].Status == "unread" || results[i].Status == "none") {
                 unreadCss = "unread-msg";
             }
-            html += '<li class="' + unreadCss + '">';
+            var html = '<li id="msgList' + count + '" class="' + unreadCss + '">';
             html += '<a href="javascript:void(0)">';
             html += '<div class="list-icon">';
-            html += '<img id="requestIcon" width="24" height="24"/>';
+            html += '<img id="requestIcon' + count + '" width="24" height="24"/>';
             html += '</div>';
             html += '<div class="list-body">';
             html += '<div class="sizeBody">' + _.escape(title) + '</div>';
-            html += '<div class="sizeCaption" id="requestName" ></div>';
+            html += '<div class="sizeCaption" id="requestName' + count + '" ></div>';
             html += '<div class="sizeCaption">' + changedDate + '</div>';
             html += '</div>';
             html += '</a>';
             html += '</li>';
-            ms.profileList.push(cm.getProfile(from));
-            count++;
-        }
-        ms.setProfile();
-        if (html.length > 0) {
             $("#messageList").append(html);
+            ms.setProfile(from, count);
+            count++;
         }
     }).fail(function (data) {
         html = '<li data-i18n="message:errorReceivedMessage"></li>';
@@ -93,7 +136,6 @@ ms.openSentMsg = function () {
     ms.getSentMessageAPI().done(function (data) {
         var results = data.d.results;
         ms.profileList = new Array();
-        var html = '';
         for (var i = 0; i < results.length; i++) {
             if (results[i]["_Box.Name"]) continue;
             var title = results[i].Title;
@@ -101,7 +143,7 @@ ms.openSentMsg = function () {
                 title = i18next.t("message:notSubject");
             }
             var id = results[i].__id;
-            var from = results[i].From;
+            var to = results[i].To;
             var unixTime = results[i].__updated
             unixTime = parseInt(unixTime.replace(/[^0-9^]/g, ""));
             var changedDate = ms.changeUnixTime(unixTime);
@@ -109,24 +151,21 @@ ms.openSentMsg = function () {
             if (results[i].Status == "unread" || results[i].Status == "none") {
                 unreadCss = "unread-msg";
             }
-            html += '<li class="' + unreadCss + '">';
+            var html = '<li id="msgList' + count + '" class="' + unreadCss + '">';
             html += '<a href="javascript:void(0)">';
             html += '<div class="list-icon">';
-            html += '<img id="requestIcon" width="24" height="24"/>';
+            html += '<img id="requestIcon' + count + '" width="24" height="24"/>';
             html += '</div>';
             html += '<div class="list-body">';
             html += '<div class="sizeBody">' + _.escape(title) + '</div>';
-            html += '<div class="sizeCaption" id="requestName" ></div>';
+            html += '<div class="sizeCaption" id="requestName' + count + '"></div>';
             html += '<div class="sizeCaption">' + changedDate + '</div>';
             html += '</div>';
             html += '</a>';
             html += '</li>';
-            ms.profileList.push(cm.getProfile(from));
-            count++;
-        }
-        ms.setProfile();
-        if (html.length > 0) {
             $("#messageList").append(html);
+            ms.setProfile(to, count);
+            count++;
         }
     }).fail(function (data) {
         html = '<li data-i18n="message:errorSentMessage"></li>';
@@ -154,23 +193,19 @@ ms.changeUnixTime = function (unixTime) {
     return changedDate;
 };
 
-ms.setProfile = function () {
-    $.when.apply($, ms.profileList).done(function () {
-        for (var i = 0; i < arguments.length; i++) {
-            var result = arguments[i];
-            if (result.length > 0) {
-                $('#requestName').html('<div class="sizeCaption">' + _.escape(result[0].DisplayName) + '</div>');
-                $('#requestName').attr({ "id": "requestNameSet" });
-                $('#requestIcon').attr({ "src": result[0].Image });
-                $('#requestIcon').attr({ "id": "requestIconSet" });
-            } else {
-                $('#requestName').html('<div class="sizeCaption">' + _.escape(result.DisplayName) + '</div>');
-                $('#requestName').attr({ "id": "requestNameSet" });
-                $('#requestIcon').attr({ "src": result.Image });
-                $('#requestIcon').attr({ "id": "requestIconSet" });
-            }
-        }
-    });
+ms.setProfile = function (cellUrl, num) {
+    cm.getProfile(cellUrl).done(function (result) {
+        $('#requestName' + num).html('<div class="sizeCaption">' + _.escape(result.DisplayName) + '</div>');
+        $('#requestName' + num).attr({ "id": "requestNameSet" + num });
+        $('#requestIcon' + num).attr({ "src": result.Image });
+        $('#requestIcon' + num).attr({ "id": "requestIconSet" + num });
+    })
+}
+
+ms.createNewMsg = function () {
+    ms.replyTo = null;
+    $("#create-message_h").attr("data-i18n", "message:CreateNewMessage").localize();
+    $("#modal-create-message").modal("show");
 }
 
 ms.getReceivedMessageAPI = function () {
@@ -191,6 +226,29 @@ ms.getSentMessageAPI = function () {
         headers: {
             'Authorization': 'Bearer ' + cm.user.access_token,
             'Accept': 'application/json'
+        }
+    });
+};
+
+ms.postSendAPI = function (dataObj) {
+    return $.ajax({
+        type: 'POST',
+        url: cm.user.cellUrl + '__message/send',
+        dataType: 'json',
+        headers: {
+            'Authorization': 'Bearer ' + cm.user.access_token,
+            'Accept': 'application/json'
+        },
+        data: JSON.stringify(dataObj)
+    });
+}
+
+ms.getCell = function (cellUrl) {
+    return $.ajax({
+        type: "GET",
+        url: cellUrl,
+        headers: {
+            'Accept': 'application/xml'
         }
     });
 };

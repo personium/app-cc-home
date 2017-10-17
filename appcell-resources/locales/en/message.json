@@ -1,10 +1,18 @@
 {
+  "DestProfName": "Destination Profile Name",
+  "DestCellURL": "Destination Cell URL",
+  "MessageBody": "Body",
+  "MessageSubject": "Subject",
   "NotSubject": "Not Subject",
   "ReceiveMessage": "Receive Message",
+  "Reply": "Reply",
+  "Sent": "Sent",
   "SentMessage": "Sent Message",
-  "CreateMessage": "Create Message",
+  "CreateNewMessage": "Create Message",
   "errorReceivedMessage": "We could not get the received message.",
   "errorSentMessage": "Failed to get sent message.",
   "notReceivedMessage": "There are no received messages.",
-  "notSentMessage": "There are no sent messages."
+  "notSentMessage": "There are no sent messages.",
+  "failSendMessage": "Failed to send the message.",
+  "successSendMessage": "Sent a message."
 }

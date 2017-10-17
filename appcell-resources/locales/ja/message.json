@@ -1,10 +1,18 @@
 {
+  "DestProfName": "宛先プロフィール名",
+  "DestCellURL": "宛先セルURL",
+  "MessageBody": "本文",
+  "MessageSubject": "件名",
   "NotSubject": "件名なし",
   "ReceiveMessage": "受信メッセージ",
+  "Reply": "返信",
+  "Sent": "送信",
   "SentMessage": "送信メッセージ",
-  "CreateMessage": "新規メッセージ作成",
+  "CreateNewMessage": "新規メッセージ作成",
   "errorReceivedMessage": "受信したメッセージを取得出来ませんでした。",
   "errorSentMessage": "送信済みメッセージを取得出来ませんでした。",
   "notReceivedMessage": "受信したメッセージはありません。",
-  "notSentMessage": "送信済みメッセージはありません。"
+  "notSentMessage": "送信済みメッセージはありません。",
+  "failSendMessage": "メッセージの送信に失敗しました。",
+  "successSendMessage": "メッセージを送信しました。"
 }

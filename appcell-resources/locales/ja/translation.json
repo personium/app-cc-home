@@ -87,6 +87,7 @@
  ,"confirmDeleteRole": "このロールを削除します ( {{value1}}:{{value2}} )。 よろしいですか？"
  ,"confirmInstallation": "インストールします。よろしいですか？"
  ,"confirmNewPass": "確認の為、パスワードを再度入力して下さい。"
+ ,"errorValidateEndWithCell": "セルのURLは最後に'/'を入れてください。"
  ,"errorValidateEndWithExternalCell": "外部セルのURLは最後に'/'を入れてください。"
  ,"errorValidateFirstPossibleSpecialCharacters": "先頭に使用出来る特殊文字は {{value}} のみです。"
  ,"errorValidateMaxLengthOver": "51,200文字以上は入力出来ません。"

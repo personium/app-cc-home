@@ -840,6 +840,52 @@ cm.validateDescription = function(descriptionDetails, descriptionSpan) {
 	}
 	return isValidDescription;
 };
+// Validation Check
+cm.validateCellURL = function (cellURL, span) {
+    var isHttp = cellURL.substring(0, 5);
+    var isHttps = cellURL.substring(0, 6);
+    var minURLLength = cellURL.length;
+    var validMessage = "pleaseValidSchemaURL";
+    var letters = /^[0-9a-zA-Z-_.\/]+$/;
+    var startHyphenUnderscore = /^[-_!@#$%^&*()=+]/;
+    var urlLength = cellURL.length;
+    var schemaSplit = cellURL.split("/");
+    var isDot = -1;
+    if (cellURL.split("/").length > 2) {
+        if (schemaSplit[2].length > 0) {
+            isDot = schemaSplit[2].indexOf(".");
+        }
+    }
+    var domainName = cellURL.substring(8, urlLength);
+    if (cellURL == "" || cellURL == null || cellURL == undefined) {
+        return true;
+    } else if ((isHttp != "http:" && isHttps != "https:")
+        || (minURLLength <= 8)) {
+        $("#" + span).attr("data-i18n", validMessage).localize();
+        return false;
+    } else if (urlLength > 1024) {
+        $("#" + span).attr("data-i18n", "maxUrlLengthError").localize();
+        return false;
+    } else if (isDot == -1) {
+        $("#" + span).attr("data-i18n", validMessage).localize();
+        return false;
+    } else if ((domainName.indexOf("..")) > -1 || (domainName.indexOf("//")) > -1) {
+        $("#" + span).attr("data-i18n", validMessage).localize();
+        return false;
+    }
+    document.getElementById(span).innerHTML = "";
+    return true;
+};
+cm.doesUrlContainSlash = function (cellURL, span, message) {
+    if (cellURL != undefined) {
+        if (!cellURL.endsWith("/")) {
+            document.getElementById(span).innerHTML = message;
+            return false;
+        }
+        document.getElementById(span).innerHTML = "";
+        return true;
+    }
+};
 
 cm.i18nAddProfile = function(lng , ns, boxName, json) {
     if (json.DisplayName[lng]) {

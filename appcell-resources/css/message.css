@@ -11,3 +11,16 @@
     top: 20px;
     right: 40px;
 }
+
+.allToggle {
+    background-image: none !important;
+}
+
+.divider {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 1px 0 rgba(255,255,255,1);
+}
+
+.alert{
+    margin-bottom:0px;
+} 

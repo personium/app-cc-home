@@ -18,9 +18,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/load.i18n.js"></script>
     <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/common.js"></script>
-    <!--<script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/message.js"></script>-->
-    <script src="../../../appcell-resources/js/message.js"></script>
-    <!--<script src="./js/message.js"></script>-->
+    <!--<script src="../../../appcell-resources/js/common.js"></script>-->
+    <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/message.js"></script>
+    <!--<script src="../../../appcell-resources/js/message.js"></script>-->
     <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/settings.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
@@ -60,11 +60,50 @@
                                     <span class="badge" id="sentBadge"></span>
                                 </li>
                                 <li>
-                                    <a href="#" class="list-group-item" onclick="ms.openCreateMsg(); return false;" data-i18n="message:CreateMessage"></a>
+                                    <a href="#" class="list-group-item allToggle" onclick="ms.createNewMsg(); return false;" data-i18n="message:CreateNewMessage"></a>
                                 </li>
                             </ul>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Message -->
+    <div id="modal-create-message" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="create-message_h"></h4>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>
+                            <span data-i18n="message:DestCellURL"></span>
+                            <input type="text" class="form-control" id="txtDestCellUrl" onblur="ms.checkCellUrl(this);" />
+                            <span class="popupAlertArea" style="color:red"><aside id="popupSendCellUrlErrorMsg"> </aside></span>
+                        </li>
+                        <li>
+                            <span data-i18n="message:DestProfName"></span>
+                            <input type="text" class="form-control" id="txtDestProfName" readonly />
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <span data-i18n="message:MessageSubject"></span>
+                            <input type="text" class="form-control" id="txtMessageSubject" />
+                        </li>
+                        <li>
+                            <span data-i18n="message:MessageBody"></span>
+                            <textarea type="text" class="form-control" id="txtMessageBody"></textarea>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal" data-i18n="Cancel"></button>
+                    <button type="button" class="btn btn-primary" id="b-create-message-sent" data-i18n="message:Sent" disabled></button>
                 </div>
             </div>
         </div>
