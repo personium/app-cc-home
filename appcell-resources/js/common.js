@@ -670,10 +670,11 @@ cm.updateCellProfile = function() {
     var validDesciption = cm.validateDescription(description,"popupEditDescriptionErrorMsg");
     if (validDesciption){
       fileData = {
-                   "DisplayName" : displayName,
-                   "Description" : description,
-                   "Image" : cm.imgBinaryFile,
-                   "ProfileImageName" : profileBoxImageName
+          "CellType": cm.getCellType(),
+          "DisplayName" : displayName,
+          "Description" : description,
+          "Image" : cm.imgBinaryFile,
+          "ProfileImageName" : profileBoxImageName
       };
       cm.retrieveCollectionAPIResponse(fileData);
     }
