@@ -670,10 +670,11 @@ cm.updateCellProfile = function() {
     var validDesciption = cm.validateDescription(description,"popupEditDescriptionErrorMsg");
     if (validDesciption){
       fileData = {
-                   "DisplayName" : displayName,
-                   "Description" : description,
-                   "Image" : cm.imgBinaryFile,
-                   "ProfileImageName" : profileBoxImageName
+          "CellType": cm.getCellType(),
+          "DisplayName" : displayName,
+          "Description" : description,
+          "Image" : cm.imgBinaryFile,
+          "ProfileImageName" : profileBoxImageName
       };
       cm.retrieveCollectionAPIResponse(fileData);
     }
@@ -1141,6 +1142,16 @@ cm.execApp = function(schema,boxName) {
     }).fail(function(data) {
         childWindow.close();
         childWindow = null;
+    });
+};
+cm.getReceivedMessageCntAPI = function () {
+    return $.ajax({
+        type: "GET",
+        url: cm.user.cellUrl + '__ctl/ReceivedMessage?$filter=Type+eq+%27message%27+and+Status+eq+%27unread%27&$inlinecount=allpages&$top=0',
+        headers: {
+            'Authorization': 'Bearer ' + cm.user.access_token,
+            'Accept': 'application/json'
+        }
     });
 };
 
