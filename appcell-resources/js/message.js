@@ -172,6 +172,7 @@ ms.dispReceiveMsg = function (no) {
     if (dispName) {
         tmp = dispName + "<" + from + ">";
     }
+    body = body.replace(/\n/g, '<br>');
     $("#pSenderCellUrl").html(_.escape(tmp));
     $("#pMessageSubject").html(title);
     $("#txtDispBody").html(body);
@@ -310,6 +311,7 @@ ms.dispSentMsg = function (no) {
     if (dispName) {
         tmp = dispName + "<" + to + ">";
     }
+    body = body.replace(/\n/g, '<br>');
     $("#pDestCellUrl").html(_.escape(tmp));
     $("#pMessageSubject").html(title);
     $("#txtDispBody").html(body);
