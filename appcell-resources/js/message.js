@@ -16,6 +16,20 @@ ms.init = function () {
     st.initSettings();
     $("#dashboard").append('<div class="panel list-group toggle-panel" id="toggle-panel1"></div>');
 
+    ms.getExtCellList().done(function (res) {
+        $('#extCellList').empty();
+        var results = res.d.results;
+        results.sort(function (val1, val2) {
+            return (val1.Url < val2.Url ? 1 : -1);
+        })
+        for (var i = 0; i < results.length; i++) {
+            var extCell = results[i];
+            // Displace the cell URL with the unit's proper URL. However, when sending to the server, we use "personium-localunit:" URL format.
+            var extCellUrl = ut.changeLocalUnitToUnitUrl(extCell.Url);
+            $("#extCellList").append('<option value="' + extCellUrl + '"></option>');
+        }
+    })
+
     $("#b-create-message-sent").on('click', function () {
         var msg = {};
         msg.To = $("#txtDestCellUrl").val();
@@ -53,9 +67,9 @@ ms.checkCellUrl = function (obj) {
                 $("#popupSendCellUrlErrorMsg").attr("data-i18n", "notExistTargetCell").localize();
                 $("#b-create-message-sent").prop('disabled', true);
             })
-            
+
         }
-       
+
     } else {
         $("#txtDestProfName").val("");
         $("#b-create-message-sent").prop('disabled', true);
@@ -131,31 +145,31 @@ ms.dispReceiveMsg = function (no) {
         cm.setBackahead();
         var html = [
             '<div class="panel panel-info">',
-            '<div class="panel-heading" data-i18n="message:Sender">',
-            '',
+            '<ul class="list-gorup">',
+            '<li class="list-group-item message-item">',
+            '<div class="row bg-info">',
+            '<div class="col-xs-2 bg-info message-header" data-i18n="message:From"></div>',
+            '<div class="col-xs-10 message-body" id="pSenderCellUrl"></div>',
             '</div>',
-            '<div class="panel-body">',
-            '<p id="pSenderCellUrl"/>',
+            '</li>',
+            '<li class="list-group-item message-item">',
+            '<div class="row bg-info">',
+            '<div class="col-xs-2 bg-info message-header" data-i18n="message:MessageSubject"></div>',
+            '<div class="col-xs-10 message-body" id="pMessageSubject"></div>',
             '</div>',
-            '<div class="panel-heading" data-i18n="message:MessageSubject">',
-            '',
+            '</li>',
+            '<li class="list-group-item">',
+            '<div class="row">',
+            '<div class="col-md-9 col-xs-9" id="txtDispBody"></div>',
             '</div>',
-            '<div class="panel-body">',
-            '<p id="pMessageSubject"/>',
-            '</div>',
-            '<div class="panel-heading" data-i18n="message:MessageBody">',
-            '',
-            '</div>',
-            '<div class="panel-body">',
-            '<p id="txtDispBody"/>',
-            '</div>',
+            '</li>',
+            '</ul>',
             '</div>',
             '<div class="modal-footer">',
             '<button type="button" class="btn btn-default" onClick="ms.deleteReceiveMsg();" data-i18n="Del"></button>',
             '<button type="button" class="btn btn-primary" onClick="ms.replyMsg();" data-i18n="message:Reply"></button>',
             '</div>'
         ].join("");
-
         $("#toggle-panel2").html(html).localize();
 
         $("#toggle-panel2").toggleClass('slide-on');
@@ -271,24 +285,25 @@ ms.dispSentMsg = function (no) {
         cm.setBackahead();
         var html = [
             '<div class="panel panel-info">',
-            '<div class="panel-heading" data-i18n="message:Destination">',
-            '',
+            '<ul class="list-gorup">',
+            '<li class="list-group-item message-item">',
+            '<div class="row bg-info">',
+            '<div class="col-xs-2 bg-info message-header" data-i18n="message:To"></div>',
+            '<div class="col-xs-10 message-body" id="pDestCellUrl"></div>',
             '</div>',
-            '<div class="panel-body">',
-            '<p id="pDestCellUrl"/>',
+            '</li>',
+            '<li class="list-group-item message-item">',
+            '<div class="row bg-info">',
+            '<div class="col-xs-2 bg-info message-header" data-i18n="message:MessageSubject"></div>',
+            '<div class="col-xs-10 message-body" id="pMessageSubject"></div>',
             '</div>',
-            '<div class="panel-heading" data-i18n="message:MessageSubject">',
-            '',
+            '</li>',
+            '<li class="list-group-item">',
+            '<div class="row">',
+            '<div class="col-md-9 col-xs-9" id="txtDispBody"></div>',
             '</div>',
-            '<div class="panel-body">',
-            '<p id="pMessageSubject"/>',
-            '</div>',
-            '<div class="panel-heading" data-i18n="message:MessageBody">',
-            '',
-            '</div>',
-            '<div class="panel-body">',
-            '<p id="txtDispBody"/>',
-            '</div>',
+            '</li>',
+            '</ul>',
             '</div>',
             '<div class="modal-footer">',
             '<button type="button" class="btn btn-default" onClick="ms.deleteSentMsg();" data-i18n="Del"></button>',
@@ -359,6 +374,8 @@ ms.setProfile = function (cellUrl, num) {
 
 ms.createNewMsg = function () {
     ms.replyTo = null;
+    $("#txtDestCellUrl").val("").attr("readonly", false);
+    $("#txtDestProfName").val("");
     $("#create-message_h").attr("data-i18n", "message:CreateNewMessage").localize();
     $("#modal-create-message").modal("show");
 }
@@ -443,4 +460,15 @@ ms.readMessageAPI = function (id) {
             'Accept': 'application/json'
         }
     })
+}
+
+ms.getExtCellList = function () {
+    return $.ajax({
+        type: "GET",
+        url: cm.user.cellUrl + '__ctl/ExtCell',
+        headers: {
+            'Authorization': 'Bearer ' + cm.user.access_token,
+            'Accept': 'application/json'
+        }
+    });
 }

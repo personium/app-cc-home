@@ -1,7 +1,7 @@
 {
   "CreateNewMessage": "Create Message",
   "CreateReplyMessage": "Create reply message",
-  "Destination": "Destination",
+  "To": "To",
   "DestProfName": "Destination Profile Name",
   "DestCellURL": "Destination Cell URL",
   "MessageBody": "Body",
@@ -10,7 +10,7 @@
   "ReceiveMessage": "Receive Message",
   "Reply": "Reply",
   "Sent": "Sent",
-  "Sender": "Sender",
+  "From": "From",
   "SentMessage": "Sent Message",
   "errorReceivedMessage": "We could not get the received message.",
   "errorSentMessage": "Failed to get sent message.",

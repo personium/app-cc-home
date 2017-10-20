@@ -484,18 +484,18 @@ cm.createBackMenu = function(moveUrl, flg) {
 cm.setTitleMenu = function(title, flg) {
     if (flg) {
         if (i18next.exists(title)) {
-            $("#settingTitleMenu").html('<p class="ellipsisText" data-i18n="' + title + '"></p>').localize();
+            $("#settingTitleMenu").html('<h4 class="ellipsisText" data-i18n="' + title + '"></h4>').localize();
         } else {
-            $("#settingTitleMenu").html('<p class="ellipsisText">' + title + '</p>');
+            $("#settingTitleMenu").html('<h4 class="ellipsisText">' + title + '</h4>');
         }
         var titles = cm.user.settingNowTitle;
         titles[cm.user.settingNowPage] = title;
         cm.user.settingNowTitle = titles;
     } else {
         if (i18next.exists(title)) {
-            $("#titleMenu").html('<p class="ellipsisText" data-i18n="' + title + '"></p>').localize();
+            $("#titleMenu").html('<h4 class="ellipsisText" data-i18n="' + title + '"></h4>').localize();
         } else {
-            $("#titleMenu").html('<p class="ellipsisText">' + title + '</p>');
+            $("#titleMenu").html('<h4 class="ellipsisText">' + title + '</h4>');
         }
         var titles = cm.user.nowTitle;
         titles[cm.user.nowPage] = title;

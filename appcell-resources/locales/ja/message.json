@@ -1,7 +1,7 @@
 {
   "CreateNewMessage": "新規メッセージ作成",
   "CreateReplyMessage": "返信メッセージ作成",
-  "Destination": "送信先",
+  "To": "送信先",
   "DestProfName": "宛先プロフィール名",
   "DestCellURL": "宛先セルURL",
   "MessageBody": "本文",
@@ -10,7 +10,7 @@
   "ReceiveMessage": "受信メッセージ",
   "Reply": "返信",
   "Sent": "送信",
-  "Sender": "送信元",
+  "From": "送信元",
   "SentMessage": "送信メッセージ",
   "errorReceivedMessage": "受信したメッセージを取得出来ませんでした。",
   "errorSentMessage": "送信済みメッセージを取得出来ませんでした。",

@@ -22,6 +22,7 @@
     <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/message.js"></script>
     <!--<script src="../../../appcell-resources/js/message.js"></script>-->
     <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/settings.js"></script>
+    <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/utils.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
     <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
@@ -83,7 +84,8 @@
                     <ul>
                         <li>
                             <span data-i18n="message:DestCellURL"></span>
-                            <input type="text" class="form-control" id="txtDestCellUrl" onblur="ms.checkCellUrl(this);" />
+                            <input type="text" class="form-control" id="txtDestCellUrl" onblur="ms.checkCellUrl(this);" list="extCellList"/>
+                            <datalist id="extCellList"></datalist>
                             <span class="popupAlertArea" style="color:red"><aside id="popupSendCellUrlErrorMsg"> </aside></span>
                         </li>
                         <li>
