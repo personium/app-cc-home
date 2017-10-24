@@ -32,11 +32,6 @@
     <!--<link href='./css/message.css' rel='stylesheet' type='text/css'>-->
     <!--     Fonts and icons     -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" />
-    <script type="text/javascript">
-        function init() {
-            ms.init();
-        };
-    </script>
 </head>
 <body>
     <div class="mySpinner">
@@ -53,11 +48,11 @@
                         <div class="panel panel-default list-group">
                             <ul class="list menu-list">
                                 <li>
-                                    <a href="#" class="list-group-item" onclick="ms.openReceiveMsg(); return false;" data-i18n="message:ReceiveMessage"></a>
+                                    <a href="#" class="list-group-item" onclick="ms.openReceivedMsgPanel(); return false;" data-i18n="message:ReceiveMessage"></a>
                                     <span class="badge" id="receiveBadge"></span>
                                 </li>
                                 <li>
-                                    <a href="#" class="list-group-item" onclick="ms.openSentMsg(); return false;" data-i18n="message:SentMessage"></a>
+                                    <a href="#" class="list-group-item" onclick="ms.openSentMsgPanel(); return false;" data-i18n="message:SentMessage"></a>
                                     <span class="badge" id="sentBadge"></span>
                                 </li>
                                 <li>

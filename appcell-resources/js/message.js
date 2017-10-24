@@ -8,7 +8,7 @@ addNamesapces = function (ns) {
     return ns;
 };
 
-ms.init = function () {
+init = function () {
     cm.createTitleHeader(false, true);
     cm.createSideMenu();
     cm.createBackMenu("main.html");
@@ -81,13 +81,24 @@ ms.setTitle = function () {
 }
 
 /*
- * Display Receive Message List
+ * Open Receive Message
  */
-ms.openReceiveMsg = function () {
+ms.openReceivedMsgPanel = function () {
     $("#toggle-panel1").empty();
     cm.setBackahead();
     $("#toggle-panel1").html('<ul class="list" id="messageList"></ul>');
 
+    // Display Receive Message List
+    ms.displayReceivedMsgList();
+
+    $("#toggle-panel1,.panel-default").toggleClass('slide-on');
+    cm.setTitleMenu("message:ReceiveMessage");
+}
+/*
+ * Display Receive Message List
+ */
+ms.displayReceivedMsgList = function () {
+    $("#messageList").empty();
     var count = 0
     // create Receive Message List
     ms.getReceivedMessageAPI().done(function (data) {
@@ -122,7 +133,7 @@ ms.openReceiveMsg = function () {
             html += '</a>';
             html += '</li>';
             $("#messageList").append(html);
-            ms.setProfile(from, count);
+            ms.displayProfile(from, count);
             count++;
         }
     }).fail(function (data) {
@@ -134,8 +145,6 @@ ms.openReceiveMsg = function () {
             html = '<li data-i18n="message:notReceivedMessage"></li>';
             $("#messageList").append(html).localize();
         }
-        $("#toggle-panel1,.panel-default").toggleClass('slide-on');
-        cm.setTitleMenu("message:ReceiveMessage");
     });
 }
 ms.dispReceiveMsg = function (no) {
@@ -201,9 +210,18 @@ ms.deleteReceiveMsg = function () {
     var id = $("#msgLink" + no).data('id');
 
     ms.deleteReceiveMsgAPI(id).done(function () {
-        $("#msgList" + no).remove();
+        
+    }).fail(function (res) {
+        if (res.status == "404") {
+            // Not Found
+            $("#dashboard").prepend('<div class="alert alert-warning alert-dismissable fade in"><a href="JavaScript:void(0)" class="close" data-dismiss="alert" aria-label="close">&times;</a><span data-i18n="message:errorDeleteMessageNotFound"></span></div>').localize();
+        } else {
+            // communication error etc
+            $("#dashboard").prepend('<div class="alert alert-warning alert-dismissable fade in"><a href="JavaScript:void(0)" class="close" data-dismiss="alert" aria-label="close">&times;</a><span data-i18n="message:errorDeleteMessageCommunicationError"></span></div>').localize();
+        }
+    }).always(function () {
+        ms.displayReceivedMsgList();
         cm.moveBackahead();
-    }).fail(function () {
     })
 }
 ms.replyMsg = function () {
@@ -226,13 +244,24 @@ ms.replyMsg = function () {
 }
 
 /*
- * Display Sent Message List
+ * Open Sent Message
  */
-ms.openSentMsg = function () {
+ms.openSentMsgPanel = function () {
     $("#toggle-panel1").empty();
     cm.setBackahead();
     $("#toggle-panel1").html('<ul class="list" id="messageList"></ul>');
 
+    // Display Sent Message List
+    ms.displaySentMsgList();
+
+    $("#toggle-panel1,.panel-default").toggleClass('slide-on');
+    cm.setTitleMenu("message:SentMessage");
+}
+/*
+ * Display Sent Message List
+ */
+ms.displaySentMsgList = function () {
+    $("#messageList").empty();
     var count = 0;
     // create Sent Message List
     ms.getSentMessageAPI().done(function (data) {
@@ -262,7 +291,7 @@ ms.openSentMsg = function () {
             html += '</a>';
             html += '</li>';
             $("#messageList").append(html);
-            ms.setProfile(to, count);
+            ms.displayProfile(to, count);
             count++;
         }
     }).fail(function (data) {
@@ -274,8 +303,6 @@ ms.openSentMsg = function () {
             html = '<li data-i18n="message:notSentMessage"></li>';
             $("#messageList").append(html).localize();
         }
-        $("#toggle-panel1,.panel-default").toggleClass('slide-on');
-        cm.setTitleMenu("message:SentMessage");
     });
 }
 ms.dispSentMsg = function (no) {
@@ -336,9 +363,18 @@ ms.deleteSentMsg = function () {
     var id = $("#msgLink" + no).data('id');
 
     ms.deleteSentMsgAPI(id).done(function () {
-        $("#msgList" + no).remove();
+
+    }).fail(function (res) {
+        if (res.status == "404") {
+            // Not Found
+            $("#dashboard").prepend('<div class="alert alert-warning alert-dismissable fade in"><a href="JavaScript:void(0)" class="close" data-dismiss="alert" aria-label="close">&times;</a><span data-i18n="message:errorDeleteMessageNotFound"></span></div>').localize();
+        } else {
+            // communication error etc
+            $("#dashboard").prepend('<div class="alert alert-warning alert-dismissable fade in"><a href="JavaScript:void(0)" class="close" data-dismiss="alert" aria-label="close">&times;</a><span data-i18n="message:errorDeleteMessageCommunicationError"></span></div>').localize();
+        }
+    }).always(function () {
+        ms.displaySentMsgList();
         cm.moveBackahead();
-    }).fail(function () {
     })
 }
 
@@ -354,7 +390,7 @@ ms.changeUnixTime = function (unixTime) {
     return changedDate;
 };
 
-ms.setProfile = function (cellUrl, num) {
+ms.displayProfile = function (cellUrl, num) {
     ms.getCell(cellUrl).done(function () {
         cm.getProfile(cellUrl).done(function (result) {
             $('#requestName' + num).html('<div class="sizeCaption">' + _.escape(result.DisplayName) + '</div>');
