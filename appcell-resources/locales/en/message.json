@@ -13,7 +13,7 @@
   "From": "From",
   "SentMessage": "Sent Message",
   "errorDeleteMessageNotFound": "Failed to delete the message. Message does not exist.",
-  "errorDeleteMessageCommunicationError": "Failed to delete the message. Please try again with some time.",
+  "errorDeleteMessageCommunicationError": "Failed to delete the selected message. Please try again later.",
   "errorReceivedMessage": "We could not get the received message.",
   "errorSentMessage": "Failed to get sent message.",
   "notReceivedMessage": "There are no received messages.",
