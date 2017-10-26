@@ -1,12 +1,20 @@
-$(document).ready(function() {
+var nameSpaces = ['translation'];
+
+$(document).ready(function () {
+    if (typeof addNamesapces == "function") {
+        nameSpaces = addNamesapces(nameSpaces);
+    }
+
     i18next
         .use(i18nextXHRBackend)
         .use(i18nextBrowserLanguageDetector)
         .init({
             fallbackLng: 'en',
+            ns: nameSpaces,
+            defaultNS: 'translation',
             debug: true,
             backend: {
-                loadPath: 'https://demo.personium.io/HomeApplication/__/appcell-resources/locales/{{lng}}/translation.json'
+                loadPath: 'https://demo.personium.io/HomeApplication/__/appcell-resources/locales/{{lng}}/{{ns}}.json'
                ,crossDomain: true
             }
         }, function(err, t) {

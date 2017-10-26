@@ -484,18 +484,18 @@ cm.createBackMenu = function(moveUrl, flg) {
 cm.setTitleMenu = function(title, flg) {
     if (flg) {
         if (i18next.exists(title)) {
-            $("#settingTitleMenu").html('<p class="ellipsisText" data-i18n="' + title + '"></p>').localize();
+            $("#settingTitleMenu").html('<h4 class="ellipsisText" data-i18n="' + title + '"></h4>').localize();
         } else {
-            $("#settingTitleMenu").html('<p class="ellipsisText">' + title + '</p>');
+            $("#settingTitleMenu").html('<h4 class="ellipsisText">' + title + '</h4>');
         }
         var titles = cm.user.settingNowTitle;
         titles[cm.user.settingNowPage] = title;
         cm.user.settingNowTitle = titles;
     } else {
         if (i18next.exists(title)) {
-            $("#titleMenu").html('<p class="ellipsisText" data-i18n="' + title + '"></p>').localize();
+            $("#titleMenu").html('<h4 class="ellipsisText" data-i18n="' + title + '"></h4>').localize();
         } else {
-            $("#titleMenu").html('<p class="ellipsisText">' + title + '</p>');
+            $("#titleMenu").html('<h4 class="ellipsisText">' + title + '</h4>');
         }
         var titles = cm.user.nowTitle;
         titles[cm.user.nowPage] = title;
@@ -841,6 +841,52 @@ cm.validateDescription = function(descriptionDetails, descriptionSpan) {
 	}
 	return isValidDescription;
 };
+// Validation Check
+cm.validateCellURL = function (cellURL, span) {
+    var isHttp = cellURL.substring(0, 5);
+    var isHttps = cellURL.substring(0, 6);
+    var minURLLength = cellURL.length;
+    var validMessage = "pleaseValidSchemaURL";
+    var letters = /^[0-9a-zA-Z-_.\/]+$/;
+    var startHyphenUnderscore = /^[-_!@#$%^&*()=+]/;
+    var urlLength = cellURL.length;
+    var schemaSplit = cellURL.split("/");
+    var isDot = -1;
+    if (cellURL.split("/").length > 2) {
+        if (schemaSplit[2].length > 0) {
+            isDot = schemaSplit[2].indexOf(".");
+        }
+    }
+    var domainName = cellURL.substring(8, urlLength);
+    if (cellURL == "" || cellURL == null || cellURL == undefined) {
+        return true;
+    } else if ((isHttp != "http:" && isHttps != "https:")
+        || (minURLLength <= 8)) {
+        $("#" + span).attr("data-i18n", validMessage).localize();
+        return false;
+    } else if (urlLength > 1024) {
+        $("#" + span).attr("data-i18n", "maxUrlLengthError").localize();
+        return false;
+    } else if (isDot == -1) {
+        $("#" + span).attr("data-i18n", validMessage).localize();
+        return false;
+    } else if ((domainName.indexOf("..")) > -1 || (domainName.indexOf("//")) > -1) {
+        $("#" + span).attr("data-i18n", validMessage).localize();
+        return false;
+    }
+    document.getElementById(span).innerHTML = "";
+    return true;
+};
+cm.doesUrlContainSlash = function (cellURL, span, message) {
+    if (cellURL != undefined) {
+        if (!cellURL.endsWith("/")) {
+            document.getElementById(span).innerHTML = message;
+            return false;
+        }
+        document.getElementById(span).innerHTML = "";
+        return true;
+    }
+};
 
 cm.i18nAddProfile = function(lng , ns, boxName, json) {
     if (json.DisplayName[lng]) {
@@ -1096,6 +1142,16 @@ cm.execApp = function(schema,boxName) {
     }).fail(function(data) {
         childWindow.close();
         childWindow = null;
+    });
+};
+cm.getReceivedMessageCntAPI = function () {
+    return $.ajax({
+        type: "GET",
+        url: cm.user.cellUrl + '__ctl/ReceivedMessage?$filter=Type+eq+%27message%27+and+Status+eq+%27unread%27&$inlinecount=allpages&$top=0',
+        headers: {
+            'Authorization': 'Bearer ' + cm.user.access_token,
+            'Accept': 'application/json'
+        }
     });
 };
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -42,6 +42,11 @@
           "icon": "001lighticons-31full.png",
           "url": "applicationmarket.html",
           "used": true
+      }, {
+            "name": "Message",
+          "icon": "001lighticons-02full.png",
+          "url": "message.html",
+          "used": true
       }
     ];
 
@@ -76,6 +81,18 @@ ha.deploySystemApps = function() {
             class: 'p-app-icon'
         });
         divTag1.append($(imgTag));
+
+        if (app.name == "Message") {
+            var spanTag = $('<span>', {
+                class: 'badge',
+                id: 'messageCnt'
+            });
+            divTag1.append($(spanTag));
+            cm.getReceivedMessageCntAPI().done(function (res) {
+                var cnt = res.d.__count;
+                if (cnt > 0) $("#messageCnt").html(cnt);
+            })
+        }
 
         var divTag2 = $('<div>', {
             class: 'p-app-name',
