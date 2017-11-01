@@ -821,6 +821,89 @@ st.checkBarUrl = function (fileUrl) {
 
     return true;
 }
+st.boxInstallUnknown = function () {
+    var boxName = $("#inputBoxName").val();
+    if (!$("#inputBoxName").val()) {
+        // Box name not entered
+        st.displayBoxInsUnknownMsg("inputBoxMsg", "pleaseEnterName");
+        return;
+    }
+
+    if ($("input[name=boxInsType]:checked").val() == "1") {
+        // select
+        if (st.barFileArrayBuffer) {
+            st.execBoxInstallUnknown();
+        } else {
+            // File not selected
+            st.displayBoxInsUnknownMsg("selectBarMsg", "errorBarFileNotSelected");
+        }
+    } else {
+        // input
+        var url = $("#input_barUrl").val();
+        if (url && boxName) {
+            var barFilePath = url;
+            var oReq = new XMLHttpRequest();
+            oReq.open("GET", barFilePath);
+            oReq.responseType = "arraybuffer";
+            oReq.setRequestHeader("Content-Type", "application/zip");
+            oReq.onload = function (e) {
+                st.barFileArrayBuffer = oReq.response;
+                st.execBoxInstallUnknown();
+            }
+            oReq.send();
+        } else {
+            // bar File URL is not entered
+            st.displayBoxInsUnknownMsg("inputBarMsg", "errorBarFileUrlNotEntered");
+        }
+    }
+}
+st.execBoxInstallUnknown = function () {
+    var view = new Uint8Array(st.barFileArrayBuffer);
+    var blob = new Blob([view], { "type": "application/zip" });
+    var boxName = $("#inputBoxName").val();
+    $.ajax({
+        type: "MKCOL",
+        url: cm.user.cellUrl + boxName + '/',
+        data: blob,
+        processData: false,
+        headers: {
+            'Authorization': 'Bearer ' + cm.user.access_token,
+            'Content-type': 'application/zip'
+        }
+    }).done(function(data) {
+        var insArray = sessionStorage.getItem("insBarList");
+        if (!insArray) {
+            insArray = [];
+        } else {
+            try {
+                insArray = JSON.parse(insArray);
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        var no = insArray.length;
+         
+        // Add installation list
+        var html = [
+            '<div class="row">',
+            '<div class="col-xs-6 barEllipsis" title="' + boxName + '">',
+            no + '. ' + boxName,
+            '</div>',
+            '<div class="col-xs-6 barEllipsis" id="boxIns_' + boxName + '" data-no="' + no + '">',
+            '</div>',
+            '</div>'
+        ].join("");
+        $("#installStatus").append(html);
+        st.dispBoxInsUnknownProgress(boxName);
+        insArray.push(boxName);
+        sessionStorage.setItem("insBarList", JSON.stringify(insArray));
+        
+    }).fail(function (data) {
+        // box installation failure
+        var res = JSON.parse(data.responseText);
+        alert("An error has occurred.\n" + res.message.value);
+    });
+}
 st.displayBoxInsUnknownMsg = function (id, msgId) {
     $("#" + id).attr("data-i18n", msgId).localize();
     $("#unknownBoxInsBtn").prop("disabled", true);
