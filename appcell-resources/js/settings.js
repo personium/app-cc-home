@@ -937,6 +937,77 @@ st.checkBoxInsUnknownMsg = function () {
         $("#unknownBoxInsBtn").prop("disabled", true);
     }
 }
+st.dispBoxInsUnknownProgress = function (boxname) {
+    var no = $("#boxIns_" + boxname).data("no");
+    cm.getBoxStatus(boxname).done(function (data) {
+        var status = data.status;
+        var resHtml = "";
+        if (status.indexOf('ready') >= 0) {
+            // ready
+            resHtml = "<span data-i18n='Success'></span>";
+        } else if (status.indexOf('progress') >= 0) {
+            // progress
+            resHtml = [
+                '<div id="boxInsParent_' + no + '" class="progress progress-striped active">',
+                  '<div name="nowBoxInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';">',
+                  '</div>',
+                '</div>',
+            ].join("");
+            if (!st.nowBoxInstalledUnknownID) {
+                st.nowBoxInstalledUnknownID = setInterval(st.checkBoxInstallUnknown, 1000);
+            }
+        } else {
+            // failed
+            resHtml = "<span data-i18n='Failed' title='" + data.message.message.value + "'></span>";
+        }
+
+        $("#boxIns_" + boxname).html(resHtml).localize();
+    }).fail(function (data) {
+        if (data.status == "404") {
+            // Box Not Found
+            resHtml = "<span data-i18n='[title]errorBoxStatusNotFound'><span data-i18n='errorBoxStatusNotFound'></span></span>";
+            $("#boxIns_" + boxname).html(resHtml).localize();
+        } else {
+            // Communication error
+            resHtml = "<span data-i18n='[title]errorBoxStatusCommunication'><span data-i18n='errorBoxStatusCommunication'></span></span>";
+            $("#boxIns_" + boxname).html(resHtml).localize();
+        }
+    })
+}
+st.checkBoxInstallUnknown = function() {
+    var elements = document.getElementsByName("nowBoxInstall");
+    if (elements.length > 0) {
+        for (var i in elements) {
+            var ele = elements[i];
+            var no = ele.id.split("_")[1];
+            st.updateBoxInsUnknownProgress(no, ele.id);
+        }
+    } else {
+        clearInterval(st.nowBoxInstalledUnknownID);
+    }
+}
+st.updateBoxInsUnknownProgress = function(no, id) {
+    var insArray = JSON.parse(sessionStorage.getItem("insBarList"));
+    cm.getBoxStatus(insArray[no]).done(function(data) {
+        var status = data.status;
+        if (status.indexOf('ready') >= 0) {
+            $("#boxInsParent_" + no).remove();
+            var html = "<span data-i18n='Success'></span>";
+            $("#boxIns_" + insArray[no]).html(html).localize();
+        } else if (status.indexOf('progress') >= 0) {
+            $('#' + id).css("width", data.progress);
+        } else {
+            $('#boxInsParent_' + no).remove();
+            var html = "<span data-i18n='Failed' title='" + data.message.message.value + "'></span>";
+            $("#boxIns_" + insArray[no]).html(html).localize();
+        }
+        var elements = document.getElementsByName("nowBoxInstall");
+        if (elements.length = 0) {
+            clearInterval(st.nowBoxInstalledUnknownID);
+        }
+    });
+};
+
 // Role
 st.createRoleList = function() {
     $("#setting-panel1").remove();
