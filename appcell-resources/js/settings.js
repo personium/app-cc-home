@@ -630,6 +630,132 @@ st.createApplicationMgr = function () {
 st.openAppliDelPanel = function () {
     return false;
 }
+st.openBoxInstall = function () {
+    $("#setting-panel2").empty();
+    cm.setBackahead(true);
+
+    html = [
+        '<div class="modal-body">',
+          '<div>',
+            '<span data-i18n="BoxInstall" style="margin-right:10px;"></span>',
+            '<input id="boxInstallSwitch" style="margin-left: auto;" type="checkbox">',
+          '</div>',
+          '<div>',
+            '<p class="text-danger" data-i18n="warningBoxInstall"></p>',
+          '</div>',
+          '<div class="container" id="dvBoxInstall" style="display:none;">',
+            '<div class="row">',
+              '<div class="col-xs-2">',
+                '<div style="margin-top:10px;">',
+                  '<input type="radio" value="1" name="boxInsType" id="boxInsType_select" checked>',
+                '</div>',
+              '</div>',
+              '<div class="col-xs-10">',
+                '<fieldset id="boxInsSelect">',
+                  '<input type="file" class="fileUpload" onchange="st.attachBarFile();" id="selectBarFile" accept="bar/*" style="display: none">',
+                  '<button class="btn btn-primary" id="selectBarButton" type="button" data-i18n="SelectBar"></button>',
+                  '<label id="selectBarLbl" style="margin-left:10px;"></label>',
+                '</fieldset>',
+                '<span id="selectBarMsg" style="color:red"></span>',
+              '</div>',
+            '</div>',
+            '<div class="row">',
+              '<div class="col-xs-2">',
+                '<div style="margin-top:15px;">',
+                  '<input type="radio" value="2" name="boxInsType" id="boxInsType_input">',
+                '</div>',
+              '</div>',
+              '<div class="col-xs-10">',
+                '<fieldset id="boxInsInput" disabled>',
+                  '<input type="text" value="" id="input_barUrl" onblur="st.inputBarUrlBlurEvent();" data-i18n="[placeholder]barfileUrlInput">',
+                '</fieldset>',
+                '<span id="inputBarMsg" style="color:red"></span>',
+              '</div>',
+            '</div>',
+            '<div class="row">',
+              '<div class="col-xs-2">',
+                '<div style="margin-top:15px;" data-i18n="BoxName">',
+                '</div>',
+              '</div>',
+              '<div class="col-xs-10">',
+                '<input type="text" value="" id="inputBoxName" onblur="st.inputBoxNameBlurEvent();">',
+                '<span id="inputBoxMsg" style="color:red"></span>',
+              '</div>',
+            '</div>',
+            '<div class="row">',
+              '<button type="button" id="unknownBoxInsBtn" class="btn btn-primary text-capitalize" data-i18n="Install" onClick="st.boxInstallUnknown();" disabled>',
+            '</div>',
+            '<div>',
+              '<hr />',
+              '<span data-i18n="Status"></span>',
+            '</div>',
+            '<div class="container" id="installStatus">',
+            '</div>',
+          '</div>',
+        '</div>'
+    ].join("");
+    $("#setting-panel2").append(html).localize();
+    $("#boxInstallSwitch").bootstrapSwitch();
+    if (sessionStorage.getItem("boxInstallAuth")) {
+        $("#boxInstallSwitch").bootstrapSwitch("state", sessionStorage.getItem("boxInstallAuth"));
+        $("#dvBoxInstall").css("display", "block");
+    }
+
+    // set events
+    $("#boxInstallSwitch").on('switchChange.bootstrapSwitch', function (event, state) {
+        if (state) {
+            $("#dvBoxInstall").css("display", "block");
+            sessionStorage.setItem("boxInstallAuth", state);
+        } else {
+            $("#dvBoxInstall").css("display", "none");
+            sessionStorage.removeItem("boxInstallAuth");
+        }
+        
+    });
+    $("input[name=boxInsType]").change(function () {
+        if ($("input[name=boxInsType]:checked").val() == "1") {
+            // select bar file
+            $("#boxInsSelect").attr("disabled", false);
+            $("#boxInsInput").attr("disabled", true);
+            $("#selectBarMsg").css("display", "block");
+            $("#inputBarMsg").css("display", "none");
+        } else {
+            // input bar file
+            $("#boxInsSelect").attr("disabled", true);
+            $("#boxInsInput").attr("disabled", false);
+            $("#selectBarMsg").css("display", "none");
+            $("#inputBarMsg").css("display", "block");
+        }
+        st.checkBoxInsUnknownMsg();
+    });
+    $("#selectBarButton,#selectBarLbl").on('click', function () {
+        $("#selectBarFile").click();
+    });
+
+    // box Installation status display
+    var insArray = sessionStorage.getItem("insBarList");
+    if (insArray) {
+        insArray = JSON.parse(insArray);
+        for (var i in insArray) {
+            var boxname = insArray[i];
+            var html = [
+                '<div class="row">',
+                '<div class="col-xs-6 barEllipsis" title="' + boxname + '">',
+                i + '. ' + boxname,
+                '</div>',
+                '<div class="col-xs-6 barEllipsis" id="boxIns_' + boxname + '" data-no="' + i + '">',
+                '</div>',
+                '</div>'
+            ].join("");
+            $("#installStatus").append(html);
+            st.dispBoxInsUnknownProgress(boxname);
+        }
+    }
+
+    $("#setting-panel2").toggleClass('slide-on');
+    $("#setting-panel1").toggleClass('slide-on-holder');
+    cm.setTitleMenu("BoxInstall", true);
+}
 // Role
 st.createRoleList = function() {
     $("#setting-panel1").remove();
