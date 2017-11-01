@@ -20,10 +20,12 @@
   <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/utils.js"></script>
   <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/common.js"></script>
   <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/settings.js"></script>
+  <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/bootstrap-switch/bootstrap-switch.min.js"></script>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
   <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
   <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/settings.css' rel='stylesheet' type='text/css'>
+  <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/bootstrap-switch/bootstrap-switch.min.css' rel='stylesheet' type='text/css'>
   <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/main.css' rel='stylesheet' type='text/css'>
   <!--     Fonts and icons     -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" />
@@ -89,7 +91,14 @@ ha.deploySystemApps = function() {
             });
             divTag1.append($(spanTag));
             cm.getReceivedMessageCntAPI().done(function (res) {
-                var cnt = res.d.__count;
+                var results = res.d.results;
+                var cnt = 0;
+                for (var i in results) {
+                    if (!results[i]["_Box.Name"]) {
+                        cnt++;
+                    }
+                }
+                
                 if (cnt > 0) $("#messageCnt").html(cnt);
             })
         }

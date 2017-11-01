@@ -55,9 +55,7 @@ st.initSettings = function() {
       st.createAccountList();
     });
     $("#applicationToggle").on("click", function () {
-        return false;
-      //st.createApplicationList();
-      //testAPI();
+      st.createApplicationMgr();
     });
     $("#roleToggle").on("click", function() {
       st.createRoleList();
@@ -603,6 +601,35 @@ st.execBarInstall = function() {
     oReq.send();
 };
 
+/////////////////////////
+// Application Manager //
+/////////////////////////
+st.createApplicationMgr = function () {
+    $("#setting-panel1").remove();
+    cm.setBackahead(true);
+
+    var html = [
+        '<div class="panel-body">',
+        '<ul class="list menu-list">',
+        '<li>',
+        '<a href="#" class="list-group-item disabled" onclick="st.openAppliDelPanel(); return false;" data-i18n="ApplicationDelete"></a>',
+        '<span class="badge" id="receiveBadge"></span>',
+        '</li>',
+        '<li>',
+        '<a href="#" class="list-group-item" onclick="st.openBoxInstall(); return false;" data-i18n="BoxInstall"></a>',
+        '<span class="badge" id="receiveBadge"></span>',
+        '</li>',
+        '</ul>',
+        '</div>'
+    ].join("");
+    $("#setting-panel1").append(html).localize();
+
+    $(".setting-menu").toggleClass('slide-on');
+    cm.setTitleMenu("Application", true);
+}
+st.openAppliDelPanel = function () {
+    return false;
+}
 // Role
 st.createRoleList = function() {
     $("#setting-panel1").remove();

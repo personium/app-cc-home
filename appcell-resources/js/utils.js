@@ -36,7 +36,7 @@ ut.cellUrlWithEndingSlash = function(tempUrl, raiseError) {
  *     OR
  *     hello.png
  */
-ut.getName = function(path) {
+ut.getName = function(path, notExtension) {
     if ((typeof path === "undefined") || path == null || path == "") {
         return "";
     };
@@ -46,6 +46,10 @@ ut.getName = function(path) {
         name = _.last(_.compact(path.split("\\")));
     }else{
         name = _.last(_.compact(path.split("/")));
+    }
+
+    if (notExtension) {
+        name = _.first(_.compact(name.split("\.")));
     }
     return name;
 };
