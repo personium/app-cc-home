@@ -784,6 +784,32 @@ st.attachBarFile = function () {
         st.displayBoxInsUnknownMsg("selectBarMsg", "errorFileFormat");
     }
 }
+st.inputBarUrlBlurEvent = function () {
+    $("#inputBarMsg").html("");
+    var fileUrl = $("#input_barUrl").val();
+    if (!fileUrl) {
+        st.displayBoxInsUnknownMsg("inputBarMsg", "barfileUrlInput");
+        return;
+    }
+
+    if (st.checkBarUrl(fileUrl)) {
+        $("#inputBoxName").val(ut.getName(fileUrl, true));
+        st.checkBoxInsUnknownMsg();
+    } else {
+        // FileFormat error
+        st.displayBoxInsUnknownMsg("inputBarMsg", "errorFileFormat");
+    }
+}
+st.inputBoxNameBlurEvent = function() {
+    var name = $("#inputBoxName").val();
+    var nameSpan = "inputBoxMsg";
+    if (st.validateName(name, nameSpan, "-_", "")) {
+        $("#nameSpan").html("");
+        st.checkBoxInsUnknownMsg();
+    } else {
+        $("#unknownBoxInsBtn").prop("disabled", true);
+    }
+}
 st.checkBarUrl = function (fileUrl) {
     var fileName = ut.getName(fileUrl);
     var ext = _.last(_.compact(fileName.split("\.")));
@@ -794,6 +820,39 @@ st.checkBarUrl = function (fileUrl) {
     }
 
     return true;
+}
+st.displayBoxInsUnknownMsg = function (id, msgId) {
+    $("#" + id).attr("data-i18n", msgId).localize();
+    $("#unknownBoxInsBtn").prop("disabled", true);
+}
+st.checkBoxInsUnknownMsg = function () {
+    var insFlg = true;
+    if ($("input[name=boxInsType]:checked").val() == "1") {
+        // select bar file
+        if ($("#selectBarMsg").html()) {
+            insFlg = false;
+        }
+        if (!st.barFileArrayBuffer) {
+            insFlg = false;
+        }
+    } else {
+        // input bar file
+        if ($("#inputBarMsg").html()) {
+            insFlg = false;
+        }
+        if (!$("#input_barUrl").val()) {
+            insFlg = false;
+        }
+    }
+    if ($("#inputBoxMsg").html()) {
+        insFlg = false;
+    }
+
+    if (insFlg) {
+        $("#unknownBoxInsBtn").prop("disabled", false);
+    } else {
+        $("#unknownBoxInsBtn").prop("disabled", true);
+    }
 }
 // Role
 st.createRoleList = function() {
