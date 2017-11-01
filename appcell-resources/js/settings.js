@@ -756,6 +756,45 @@ st.openBoxInstall = function () {
     $("#setting-panel1").toggleClass('slide-on-holder');
     cm.setTitleMenu("BoxInstall", true);
 }
+st.attachBarFile = function () {
+    $("#selectBarMsg").html("");
+    st.barFileArrayBuffer = null;
+    var file = document.getElementById("selectBarFile").files[0];
+    var fileUrl = document.getElementById("selectBarFile").value;
+    if (st.checkBarUrl(fileUrl)) {
+        try {
+            var reader = new FileReader();
+        } catch (e) {
+            // reading error
+            st.displayBoxInsUnknownMsg("selectBarMsg", "errorReadingFile");
+            return;
+        }
+        reader.readAsArrayBuffer(file);
+        reader.onload = function (evt) {
+            st.barFileArrayBuffer = evt.target.result;
+            $("#inputBoxName").val(ut.getName(fileUrl, true));
+            st.checkBoxInsUnknownMsg();
+        }
+        reader.onerror = function (evt) {
+            // reading error
+            st.displayBoxInsUnknownMsg("selectBarMsg", "errorReadingFile");
+        }
+    } else {
+        // FileFormat error
+        st.displayBoxInsUnknownMsg("selectBarMsg", "errorFileFormat");
+    }
+}
+st.checkBarUrl = function (fileUrl) {
+    var fileName = ut.getName(fileUrl);
+    var ext = _.last(_.compact(fileName.split("\.")));
+    if ("bar" == ext) {
+        return true;
+    } else {
+        return false;
+    }
+
+    return true;
+}
 // Role
 st.createRoleList = function() {
     $("#setting-panel1").remove();
