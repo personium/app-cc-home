@@ -821,8 +821,6 @@ st.checkBarUrl = function (fileUrl) {
     } else {
         return false;
     }
-
-    return true;
 }
 st.boxInstallUnknown = function () {
     var boxName = $("#inputBoxName").val();

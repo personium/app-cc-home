@@ -31,12 +31,13 @@ ut.cellUrlWithEndingSlash = function(tempUrl, raiseError) {
  *     2. ended without "/", "https://demo.personium.io/debug-user1"
  *     3. window path "c:\\home\hoge\hello.png"
  *     4. linux path "/home/hoge/hello.png"
+ *     withoutExtension: Exclude the extension from the acquired file name
  * Return:
  *     debug-user1
  *     OR
  *     hello.png
  */
-ut.getName = function(path, notExtension) {
+ut.getName = function(path, withoutExtension) {
     if ((typeof path === "undefined") || path == null || path == "") {
         return "";
     };
@@ -48,7 +49,7 @@ ut.getName = function(path, notExtension) {
         name = _.last(_.compact(path.split("/")));
     }
 
-    if (notExtension) {
+    if (withoutExtension) {
         name = _.first(_.compact(name.split("\.")));
     }
     return name;
