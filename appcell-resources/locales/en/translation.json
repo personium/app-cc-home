@@ -141,7 +141,8 @@
  ,"selectRole": "Please select a Role"
  ,"selectRoleAssign": "Please select the role to assign."
  ,"successChangePass": "You have successfully changed your password!<br>Please login again."
- ,"warningBoxInstall": "Allow installing Box of unknown provider"
+ ,"warningBoxInstallAllow": "Allow installing Box of unknown provider"
+ ,"warningBoxInstallNotAllowed": "Do not allow Box installation whose source is unknown"
 
  ,"Demo": {
      "loginTitle1": "Welcome to the demo version home application"

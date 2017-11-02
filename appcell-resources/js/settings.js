@@ -641,16 +641,16 @@ st.openBoxInstall = function () {
             '<input id="boxInstallSwitch" style="margin-left: auto;" type="checkbox">',
           '</div>',
           '<div>',
-            '<p class="text-danger" data-i18n="warningBoxInstall"></p>',
+            '<p class="text-danger" id="boxInsWarningMsg" data-i18n="warningBoxInstallNotAllowed"></p>',
           '</div>',
           '<div class="container" id="dvBoxInstall" style="display:none;">',
             '<div class="row">',
-              '<div class="col-xs-2">',
+              '<div class="col-xs-2 col-sm-1">',
                 '<div style="margin-top:10px;">',
                   '<input type="radio" value="1" name="boxInsType" id="boxInsType_select" checked>',
                 '</div>',
               '</div>',
-              '<div class="col-xs-10">',
+              '<div class="col-xs-10 col-sm-11">',
                 '<fieldset id="boxInsSelect">',
                   '<input type="file" class="fileUpload" onchange="st.attachBarFile();" id="selectBarFile" accept="bar/*" style="display: none">',
                   '<button class="btn btn-primary" id="selectBarButton" type="button" data-i18n="SelectBar"></button>',
@@ -660,12 +660,12 @@ st.openBoxInstall = function () {
               '</div>',
             '</div>',
             '<div class="row">',
-              '<div class="col-xs-2">',
+              '<div class="col-xs-2 col-sm-1">',
                 '<div style="margin-top:15px;">',
                   '<input type="radio" value="2" name="boxInsType" id="boxInsType_input">',
                 '</div>',
               '</div>',
-              '<div class="col-xs-10">',
+              '<div class="col-xs-10 col-sm-11">',
                 '<fieldset id="boxInsInput" disabled>',
                   '<input type="text" value="" id="input_barUrl" onblur="st.inputBarUrlBlurEvent();" data-i18n="[placeholder]barfileUrlInput">',
                 '</fieldset>',
@@ -673,11 +673,11 @@ st.openBoxInstall = function () {
               '</div>',
             '</div>',
             '<div class="row">',
-              '<div class="col-xs-2">',
+              '<div class="col-xs-2 col-sm-1">',
                 '<div style="margin-top:15px;" data-i18n="BoxName">',
                 '</div>',
               '</div>',
-              '<div class="col-xs-10">',
+              '<div class="col-xs-10 col-sm-11">',
                 '<input type="text" value="" id="inputBoxName" onblur="st.inputBoxNameBlurEvent();">',
                 '<span id="inputBoxMsg" style="color:red"></span>',
               '</div>',
@@ -698,6 +698,7 @@ st.openBoxInstall = function () {
     $("#boxInstallSwitch").bootstrapSwitch();
     if (sessionStorage.getItem("boxInstallAuth")) {
         $("#boxInstallSwitch").bootstrapSwitch("state", sessionStorage.getItem("boxInstallAuth"));
+        $("#boxInsWarningMsg").attr("data-i18n", "warningBoxInstallAllow").localize();
         $("#dvBoxInstall").css("display", "block");
     }
 
@@ -706,9 +707,11 @@ st.openBoxInstall = function () {
         if (state) {
             $("#dvBoxInstall").css("display", "block");
             sessionStorage.setItem("boxInstallAuth", state);
+            $("#boxInsWarningMsg").attr("data-i18n", "warningBoxInstallAllow").localize();
         } else {
             $("#dvBoxInstall").css("display", "none");
             sessionStorage.removeItem("boxInstallAuth");
+            $("#boxInsWarningMsg").attr("data-i18n", "warningBoxInstallNotAllowed").localize();
         }
         
     });
@@ -945,6 +948,10 @@ st.dispBoxInsUnknownProgress = function (boxname) {
         if (status.indexOf('ready') >= 0) {
             // ready
             resHtml = "<span data-i18n='Success'></span>";
+            if (typeof (ha) != "undefined") {
+                // Redraw the application list if it is the main screen
+                ha.dispInsAppList();
+            }
         } else if (status.indexOf('progress') >= 0) {
             // progress
             resHtml = [
@@ -994,6 +1001,10 @@ st.updateBoxInsUnknownProgress = function(no, id) {
             $("#boxInsParent_" + no).remove();
             var html = "<span data-i18n='Success'></span>";
             $("#boxIns_" + insArray[no]).html(html).localize();
+            if (typeof (ha) != "undefined") {
+                // Redraw the application list if it is the main screen
+                ha.dispInsAppList();
+            }
         } else if (status.indexOf('progress') >= 0) {
             $('#' + id).css("width", data.progress);
         } else {

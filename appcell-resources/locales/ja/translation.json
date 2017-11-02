@@ -141,7 +141,8 @@
  ,"selectRelationAssign": "割り当てる外部セルを選択して下さい。"
  ,"selectRoleAssign": "割り当てるロールを選択して下さい。"
  ,"successChangePass": "パスワードを変更しました。<br>ログインし直して下さい。"
- ,"warningBoxInstall": "提供元が不明のBoxインストールを許可する"
+ ,"warningBoxInstallAllow": "提供元が不明のBoxインストールを許可する"
+ ,"warningBoxInstallNotAllowed": "提供元が不明のBoxインストールを許可しない"
 
  ,"Demo": {
      "loginTitle1": "デモ版ホームアプリへようこそ"
