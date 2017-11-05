@@ -272,50 +272,69 @@ cm.createSideMenu = function() {
 
     // Modal
     // Edit Profile
-    html = '<div id="modal-edit-profile" class="modal fade" role="dialog">';
-    html += '<div class="modal-dialog">';
+    html = [
+        '<div id="modal-edit-profile" class="modal fade" role="dialog">',
+            '<div class="modal-dialog">',
     // Modal content
-    html += '<div class="modal-content">';
-    html += '<div class="modal-header login-header">';
-    html += '<button type="button" class="close" data-dismiss="modal">×</button>';
-    html += '<h4 class="modal-title" data-i18n="EditProfile"></h4>';
-    html += '</div>';
-    html += '<div class="modal-body">';
-    html += '<div id="dvDisplayName" data-i18n="DisplayName"></div>';
-    html += '<div id="dvTextDisplayName">';
-    html += '<input type="text" id="editDisplayName" onblur="cm.editDisplayNameBlurEvent();">';
-    html += '</div>';
-    html += '<span class="popupAlertArea" style="color:red">';
-    html += '<aside id="popupEditDisplayNameErrorMsg"></aside>';
-    html += '</span>';
-    html += '<div id="dvDescription" data-i18n="Description"></div>';
-    html += '<div id="dvTextDescription">';
-    html += '<textarea onblur="cm.editDescriptionBlurEvent();" name="" cols="" rows=""  id="editDescription"></textarea>';
-    html += '</div>';
-    html += '<span style="padding-top: 3px;height:11px;color:red;">';
-    html += '<aside id="popupEditDescriptionErrorMsg"></aside>';
-    html += '</span>';
-    html += '<div id="dvPhoto" data-i18n="ProfileImage"></div>';
-    html += '<div id="dvBrowseButtonSection">';
-    html += '<input type="file" class="fileUpload" onchange="cm.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile" accept="image/*" style="display: none">';
-    html += '<button class="btn btn-primary" id="editImgButton" type="button" data-i18n="SelectFile"></button>';
-    html += '<label id="editImgLbl" style="margin-left:10px;"></label>';
-    html += '</div>';
-    html += '<div id="dvBoxProfileImage" style="margin-top: 10px;">';
-    html += '<figure id="figEditCellProfile" class="boxProfileImage">';
-    html += '<img class="image-circle-large" style="margin: auto;" id="idImgFile" src="#" alt="image" />';
-    html += '</figure>';
-    html += '</div>';
-    html += '<span style="padding-top: 3px;height:11px;color:red;">';
-    html += '<aside id="popupEditUserPhotoErrorMsg"></aside>';
-    html += '</span>';
-    html += '</div>';
-    html += '<div class="modal-footer">';
-    html += '<button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Cancel"></button>';
-    html += '<button type="button" class="btn btn-primary" id="b-edit-profile-ok" data-i18n="Register"></button>';
-    html += '</div></div></div></div>';
+                '<div class="modal-content">',
+                    '<div class="modal-header login-header">',
+                        '<button type="button" class="close" data-dismiss="modal">×</button>',
+                        '<h4 class="modal-title" data-i18n="EditProfile"></h4>',
+                    '</div>',
+                    '<div class="modal-body">',
+                        '<div id="dvDisplayName" data-i18n="DisplayName"></div>',
+                        '<div id="dvTextDisplayName">',
+                            '<input type="text" id="editDisplayName" onblur="cm.editDisplayNameBlurEvent();">',
+                        '</div>',
+                        '<span class="popupAlertArea" style="color:red">',
+                            '<aside id="popupEditDisplayNameErrorMsg"></aside>',
+                        '</span>',
+                        '<div id="dvDescription" data-i18n="Description"></div>',
+                        '<div id="dvTextDescription">',
+                            '<textarea onblur="cm.editDescriptionBlurEvent();" name="" cols="" rows=""  id="editDescription"></textarea>',
+                        '</div>',
+                        '<span style="padding-top: 3px;height:11px;color:red;">',
+                            '<aside id="popupEditDescriptionErrorMsg"></aside>',
+                        '</span>',
+                        '<div class="row">',
+                            '<div class="col-sm-6">',
+                                '<div id="dvPhoto" data-i18n="ProfileImage"></div>',
+                                '<div id="dvBrowseButtonSection">',
+                                    '<input type="file" class="fileUpload" onchange="cm.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile" accept="image/*" style="display: none">',
+                                    '<button class="btn btn-primary" id="editImgButton" type="button" data-i18n="SelectFile"></button>',
+                                    '<label id="editImgLbl" style="margin-left:10px;"></label>',
+                                '</div>',
+                                '<div id="dvBoxProfileImage" style="margin-top: 10px;">',
+                                    '<figure id="figEditCellProfile" class="boxProfileImage">',
+                                        '<img class="image-circle-large" style="margin: auto;" id="idImgFile" src="#" alt="image" />',
+                                    '</figure>',
+                                '</div>',
+                                '<span style="padding-top: 3px;height:11px;color:red;">',
+                                    '<aside id="popupEditUserPhotoErrorMsg"></aside>',
+                                '</span>',
+                            '</div>',
+                            '<div class="col-sm-6">',
+                                '<div data-i18n="QRCode"></div>',
+                                '<div style="margin-top: 10px;">',
+                                    '<figure id="qrcodeEditCellProfile" class="boxProfileImage">',
+                                    '</figure>',
+                                '</div>',
+                            '</div>',
+                        '</div>',
+                    '</div>',
+                    '<div class="modal-footer">',
+                        '<button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Cancel"></button>',
+                        '<button type="button" class="btn btn-primary" id="b-edit-profile-ok" data-i18n="Register"></button>',
+                    '</div>',
+                '</div>',
+            '</div>',
+        '</div>'
+    ].join("");
     var modal = $(html);
     $(document.body).append(modal).localize();
+    var aImg;
+    aImg = cm.createQRCodeImg('https://chart.googleapis.com/chart?cht=qr&chs=177x177&chl=' + sessionStorage.targetCellUrl);
+    $("#qrcodeEditCellProfile").append($(aImg));
 
     // Change Password
     html = '<div id="modal-change-password" class="modal fade" role="dialog">' +
@@ -446,6 +465,18 @@ cm.createSideMenu = function() {
     // Time Out Set
     cm.setIdleTime();
 }
+
+cm.createQRCodeImg = function(url) {
+    let googleAPI = 'https://chart.googleapis.com/chart?cht=qr&chs=177x177&chl=';
+    let qrURL = googleAPI + url;
+    let aImg = $('<img>', {
+        src: qrURL,
+        alt: url,
+        style: 'margin: auto; width: 180px; height: 180px; padding: 1px;'
+    })
+
+    return aImg;
+};
 
 cm.toggleSlide = function() {
 //    $(".overlay").toggleClass('overlay-on');
