@@ -255,7 +255,7 @@ cm.createSideMenu = function() {
     html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-change-password" data-i18n="ChangePass"></a></li>';
     // setting menu
     html += '<li><a class="allToggle" id="accountToggle" href="#" data-i18n="Account"></a></li>';
-    html += '<li><a class="allToggle disabled" id="applicationToggle" href="#" data-i18n="Application"></a></li>';
+    html += '<li><a class="allToggle" id="applicationToggle" href="#" data-i18n="Application"></a></li>';
     html += '<li><a class="allToggle" id="roleToggle" href="#" data-i18n="Role"></a></li>';
     html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="#" data-i18n="Relation"></a></li>';
     // change language
@@ -877,6 +877,39 @@ cm.validateCellURL = function (cellURL, span) {
     document.getElementById(span).innerHTML = "";
     return true;
 };
+cm.validateBoxName = function(boxName, span) {
+    var minURLLength = cellURL.length;
+    var validMessage = "pleaseValidSchemaURL";
+    var letters = /^[0-9a-zA-Z-_.\/]+$/;
+    var startHyphenUnderscore = /^[-_!@#$%^&*()=+]/;
+    var urlLength = cellURL.length;
+    var schemaSplit = cellURL.split("/");
+    var isDot = -1;
+    if (cellURL.split("/").length > 2) {
+        if (schemaSplit[2].length > 0) {
+            isDot = schemaSplit[2].indexOf(".");
+        }
+    }
+    var domainName = cellURL.substring(8, urlLength);
+    if (cellURL == "" || cellURL == null || cellURL == undefined) {
+        return true;
+    } else if ((proto != "http" && proto != "https")
+        || (minURLLength <= 8)) {
+        $("#" + span).attr("data-i18n", validMessage).localize();
+        return false;
+    } else if (urlLength > 1024) {
+        $("#" + span).attr("data-i18n", "maxUrlLengthError").localize();
+        return false;
+    } else if (isDot == -1) {
+        $("#" + span).attr("data-i18n", validMessage).localize();
+        return false;
+    } else if ((domainName.indexOf("..")) > -1 || (domainName.indexOf("//")) > -1) {
+        $("#" + span).attr("data-i18n", validMessage).localize();
+        return false;
+    }
+    document.getElementById(span).innerHTML = "";
+    return true;
+};
 cm.doesUrlContainSlash = function (cellURL, span, message) {
     if (cellURL != undefined) {
         if (!cellURL.endsWith("/")) {
@@ -1147,7 +1180,7 @@ cm.execApp = function(schema,boxName) {
 cm.getReceivedMessageCntAPI = function () {
     return $.ajax({
         type: "GET",
-        url: cm.user.cellUrl + '__ctl/ReceivedMessage?$filter=Type+eq+%27message%27+and+Status+eq+%27unread%27&$inlinecount=allpages&$top=0',
+        url: cm.user.cellUrl + '__ctl/ReceivedMessage?$filter=Type+eq+%27message%27+and+Status+eq+%27unread%27&$inlinecount=allpages',
         headers: {
             'Authorization': 'Bearer ' + cm.user.access_token,
             'Accept': 'application/json'
