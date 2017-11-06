@@ -63,4 +63,12 @@
             </prop>
         </propstat>
     </response>
+    <response>
+        <href>dcbox:/src/message.html</href>
+        <propstat>
+            <prop>
+                <getcontenttype>text/html</getcontenttype>
+            </prop>
+        </propstat>
+    </response>
 </multistatus>
