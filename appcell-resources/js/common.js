@@ -16,6 +16,13 @@ cm.logout = function() {
 if (!cm.user) {
   cm.logout();
 }
+/*
+ * When isAdvancedMode is false, do not display the followings:
+ * 1. Create External Cell Dialog - Assign checkbox
+ * 2. Create External Cell Dialog - Role/Relation radio buttons
+ * 3. Create External Cell Dialog - Role/Relation options
+ */ 
+cm.user.isAdvancedMode = false;
 cm.user.nowPage = 0;
 cm.user.nowTitle = {};
 cm.user.settingNowPage = 0;

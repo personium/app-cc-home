@@ -550,6 +550,14 @@ sg.createAddExtCell = function() {
         html += '<button type="button" class="btn btn-primary" id="b-add-extcell-ok" onClick="sg.addExtCell();" data-i18n="Add" disabled></button>';
         html += '</div></div>';
         $("#toggle-panel1").append(html).localize();
+
+        /*
+         * Only show Role and Relation Assignment input items for Advanced Mode.
+         * Currently mode switching is not implemented.
+         * Default is to hide the items.
+         */
+        $("#dvCheckAddExtCellLinkRoleAndRelation, #dvSelectAddExtCellLink").toggle(cm.user.isAdvancedMode);
+
         cm.dispRoleList(data, "ddlAddExtCellLinkRoleList", true);
         cm.getRelationList().done(function(data) {
             cm.dispRelationList(data, "ddlAddExtCellLinkRelationList", true);
