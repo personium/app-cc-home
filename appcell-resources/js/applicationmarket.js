@@ -29,8 +29,8 @@ am.createApplicationList = function() {
         am.insAppList = new Array();
         am.insAppBoxList = new Array();
         for (var i in insAppRes) {
-            // hotfix for not showing HomeApplication's box inside a data subject's cell
-            if (_.contains(location.href.split("/"), insAppRes[i].Name)) {
+            // hotfix for not showing HomeApplication/Cell Manager's box inside a data subject's cell
+            if (_.contains(cm.boxIgnoreList, insAppRes[i].Name)) {
                 continue;
             };
             
@@ -55,10 +55,6 @@ am.dispInsAppListSetting = function() {
     am.nowInstalledID = null;
     for (var i in am.insAppList) {
         am.dispInsAppListSchemaSetting(am.insAppList[i], am.insAppBoxList[i], i);
-    }
-
-    if (typeof(ha) != "undefined") {
-        ha.dispInsAppList();
     }
 };
 am.dispInsAppListSchemaSetting = function(schema, boxName, no) {

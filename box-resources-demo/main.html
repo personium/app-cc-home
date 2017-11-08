@@ -121,8 +121,8 @@ ha.dispInsAppList = function() {
             return (val1.Name < val2.Name ? 1 : -1);
         })
         for (var i in insAppRes) {
-            // hotfix for not showing HomeApplication's box inside a data subject's cell
-            if (_.contains(location.href.split("/"), insAppRes[i].Name)) {
+            // hotfix for not showing HomeApplication/Cell Manager's box inside a data subject's cell
+            if (_.contains(cm.boxIgnoreList, insAppRes[i].Name)) {
                 continue;
             };
 
