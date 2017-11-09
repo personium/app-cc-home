@@ -696,21 +696,20 @@ st.openBoxInstall = function () {
     ].join("");
     $("#setting-panel2").append(html).localize();
     $("#boxInstallSwitch").bootstrapSwitch();
-    if (sessionStorage.getItem("boxInstallAuth")) {
-        $("#boxInstallSwitch").bootstrapSwitch("state", sessionStorage.getItem("boxInstallAuth"));
+    if (cm.user.boxInstallAuth) {
+        $("#boxInstallSwitch").bootstrapSwitch("state", cm.user.boxInstallAuth);
         $("#boxInsWarningMsg").attr("data-i18n", "warningBoxInstallAllow").localize();
         $("#dvBoxInstall").css("display", "block");
     }
 
     // set events
     $("#boxInstallSwitch").on('switchChange.bootstrapSwitch', function (event, state) {
+        $("#dvBoxInstall").toggle(state);
+        cm.user.boxInstallAuth = state;
+        sessionStorage.setItem("sessionData", JSON.stringify(cm.user));
         if (state) {
-            $("#dvBoxInstall").css("display", "block");
-            sessionStorage.setItem("boxInstallAuth", state);
             $("#boxInsWarningMsg").attr("data-i18n", "warningBoxInstallAllow").localize();
         } else {
-            $("#dvBoxInstall").css("display", "none");
-            sessionStorage.removeItem("boxInstallAuth");
             $("#boxInsWarningMsg").attr("data-i18n", "warningBoxInstallNotAllowed").localize();
         }
         
@@ -739,14 +738,14 @@ st.openBoxInstall = function () {
     var insArray = sessionStorage.getItem("insBarList");
     if (insArray) {
         insArray = JSON.parse(insArray);
-        for (var i in insArray) {
-            var boxname = insArray[i];
+        for (var no in insArray) {
+            var boxname = insArray[no];
             var html = [
                 '<div class="row">',
                 '<div class="col-xs-6 barEllipsis" title="' + boxname + '">',
-                i + '. ' + boxname,
+                no + '. ' + boxname,
                 '</div>',
-                '<div class="col-xs-6 barEllipsis" id="boxIns_' + boxname + '" data-no="' + i + '">',
+                '<div class="col-xs-6 barEllipsis" id="boxIns_' + boxname + '" data-no="' + no + '">',
                 '</div>',
                 '</div>'
             ].join("");
@@ -775,6 +774,7 @@ st.attachBarFile = function () {
         reader.readAsArrayBuffer(file);
         reader.onload = function (evt) {
             st.barFileArrayBuffer = evt.target.result;
+            $("#selectBarFileLbl").html(fileUrl);
             $("#inputBoxName").val(ut.getName(fileUrl, true));
             st.checkUnofficialBoxInsConditions();
         }
