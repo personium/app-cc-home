@@ -106,7 +106,7 @@ st.checkAccLinkRole = function() {
         $("#popupAddAccountLinkRoleErrorMsg").html(i18next.t("selectRole"));
         return false;
     } else {
-        $("#popupAddAccountLinkRoleErrorMsg").html("");
+        $("#popupAddAccountLinkRoleErrorMsg").empty();
         //cm.setLinkParam(value);
         return true;
     }
@@ -230,7 +230,7 @@ st.changeCheckAccountLinkRole = function(obj) {
         $("#ddlAddAccLinkRoleList").prop('disabled', false);
     } else {
         $("#ddlAddAccLinkRoleList").val("");
-        $("#popupAddAccountLinkRoleErrorMsg").html("");
+        $("#popupAddAccountLinkRoleErrorMsg").empty();
         $("#ddlAddAccLinkRoleList").prop('disabled', true);
     }
 };
@@ -760,7 +760,7 @@ st.openBoxInstall = function () {
     cm.setTitleMenu("BoxInstall", true);
 }
 st.attachBarFile = function () {
-    $("#selectBarMsg").html("");
+    $("#selectBarErrorMsg").empty();
     st.barFileArrayBuffer = null;
     var file = document.getElementById("selectBarFile").files[0];
     var fileUrl = document.getElementById("selectBarFile").value;
@@ -788,7 +788,7 @@ st.attachBarFile = function () {
     }
 }
 st.inputBarUrlBlurEvent = function () {
-    $("#inputBarMsg").html("");
+    $("#inputBarErrorMsg").empty();
     var fileUrl = $("#input_barUrl").val();
     if (!fileUrl) {
         st.displayBoxInsUnknownMsg("inputBarMsg", "barfileUrlInput");
@@ -807,8 +807,8 @@ st.inputBoxNameBlurEvent = function() {
     var name = $("#inputBoxName").val();
     var nameSpan = "inputBoxMsg";
     if (st.validateName(name, nameSpan, "-_", "")) {
-        $("#nameSpan").html("");
         st.checkBoxInsUnknownMsg();
+        $("#nameSpan").empty();
     } else {
         $("#unknownBoxInsBtn").prop("disabled", true);
     }
@@ -1405,7 +1405,7 @@ st.checkRelationLinkRole = function() {
         $("#popupAddRelationLinkErrorMsg").html(i18next.t("selectRole"));
         return false;
     } else {
-        $("#popupAddRelationLinkErrorMsg").html("");
+        $("#popupAddRelationLinkErrorMsg").empty();
         return true;
     }
 };
@@ -1586,7 +1586,7 @@ st.charCheck = function(check, displayNameSpan) {
   return bool;
 };
 st.changePassCheck = function(newpass, confirm, displayNameSpan) {
-  $('#' + displayNameSpan).html("");
+  $('#' + displayNameSpan).empty();
   if (newpass !== confirm) {
     $('#' + displayNameSpan).html(i18next.t("passwordNotMatch"));
     return false
@@ -1595,7 +1595,7 @@ st.changePassCheck = function(newpass, confirm, displayNameSpan) {
   return true;
 };
 st.passInputCheck = function(newpass, displayNameSpan) {
-  $('#' + displayNameSpan).html("");
+  $('#' + displayNameSpan).empty();
   if (newpass.length == 0) {
     $('#' + displayNameSpan).html(i18next.t("pleaseEnterPassword"));
     return false;
