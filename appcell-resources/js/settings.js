@@ -647,7 +647,7 @@ st.openBoxInstall = function () {
             '<div class="row">',
               '<div class="col-xs-2 col-sm-1">',
                 '<div style="margin-top:10px;">',
-                  '<input type="radio" value="1" name="boxInsType" id="boxInsType_select" checked>',
+                  '<input type="radio" value="typeSelect" name="boxInsType" id="boxInsType_select" checked>',
                 '</div>',
               '</div>',
               '<div class="col-xs-10 col-sm-11">',
@@ -662,7 +662,7 @@ st.openBoxInstall = function () {
             '<div class="row">',
               '<div class="col-xs-2 col-sm-1">',
                 '<div style="margin-top:15px;">',
-                  '<input type="radio" value="2" name="boxInsType" id="boxInsType_input">',
+                  '<input type="radio" value="typeInput" name="boxInsType" id="boxInsType_input">',
                 '</div>',
               '</div>',
               '<div class="col-xs-10 col-sm-11">',
@@ -716,7 +716,7 @@ st.openBoxInstall = function () {
         
     });
     $("input[name=boxInsType]").change(function () {
-        if ($("input[name=boxInsType]:checked").val() == "1") {
+        if ($("input[name=boxInsType]:checked").val() == "typeSelect") {
             // select bar file
             $("#boxInsSelect").attr("disabled", false);
             $("#boxInsInput").attr("disabled", true);
@@ -830,7 +830,7 @@ st.boxInstallUnknown = function () {
         return;
     }
 
-    if ($("input[name=boxInsType]:checked").val() == "1") {
+    if ($("input[name=boxInsType]:checked").val() == "typeSelect") {
         // select
         if (st.barFileArrayBuffer) {
             st.execBoxInstallUnknown();
@@ -911,7 +911,7 @@ st.displayBoxInsUnknownMsg = function (id, msgId) {
 }
 st.checkBoxInsUnknownMsg = function () {
     var insFlg = true;
-    if ($("input[name=boxInsType]:checked").val() == "1") {
+    if ($("input[name=boxInsType]:checked").val() == "typeSelect") {
         // select bar file
         if ($("#selectBarMsg").html()) {
             insFlg = false;
