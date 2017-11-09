@@ -954,19 +954,19 @@ st.dispUnofficialBoxInsProgress = function (boxname) {
             // progress
             resHtml = [
                 '<div id="boxInsParent_' + no + '" class="progress progress-striped active">',
-                  '<div name="nowBoxInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';">',
+                  '<div id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';">',
                   '</div>',
                 '</div>',
             ].join("");
-            if (!st.nowBoxInstalledUnknownID) {
-                st.nowBoxInstalledUnknownID = setInterval(st.checkBoxInstallUnknown, 1000);
-            }
         } else {
             // failed
             resHtml = "<span data-i18n='Failed' title='" + data.message.message.value + "'></span>";
         }
 
         $("#boxIns_" + boxname).html(resHtml).localize();
+        if (status.indexOf('progress') >= 0) {
+            setTimeout(function () { st.updateUnofficialBoxInsProgress(no)}, 1000);
+        }
     }).fail(function (data) {
         if (data.status == "404") {
             // Box Not Found
@@ -979,19 +979,7 @@ st.dispUnofficialBoxInsProgress = function (boxname) {
         }
     })
 }
-st.checkBoxInstallUnknown = function() {
-    var elements = document.getElementsByName("nowBoxInstall");
-    if (elements.length > 0) {
-        for (var i in elements) {
-            var ele = elements[i];
-            var no = ele.id.split("_")[1];
-            st.updateBoxInsUnknownProgress(no, ele.id);
-        }
-    } else {
-        clearInterval(st.nowBoxInstalledUnknownID);
-    }
-}
-st.updateBoxInsUnknownProgress = function(no, id) {
+st.updateUnofficialBoxInsProgress = function(no) {
     var insArray = JSON.parse(sessionStorage.getItem("insBarList"));
     cm.getBoxStatus(insArray[no]).done(function(data) {
         var status = data.status;
@@ -1004,15 +992,12 @@ st.updateBoxInsUnknownProgress = function(no, id) {
                 ha.dispInsAppList();
             }
         } else if (status.indexOf('progress') >= 0) {
-            $('#' + id).css("width", data.progress);
+            $('#nowInstall_' + no).css("width", data.progress);
+            setTimeout(function () { st.updateUnofficialBoxInsProgress(no) }, 1000);
         } else {
             $('#boxInsParent_' + no).remove();
             var html = "<span data-i18n='Failed' title='" + data.message.message.value + "'></span>";
             $("#boxIns_" + insArray[no]).html(html).localize();
-        }
-        var elements = document.getElementsByName("nowBoxInstall");
-        if (elements.length = 0) {
-            clearInterval(st.nowBoxInstalledUnknownID);
         }
     });
 };
