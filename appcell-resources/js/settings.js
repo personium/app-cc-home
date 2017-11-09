@@ -654,9 +654,9 @@ st.openBoxInstall = function () {
                 '<fieldset id="boxInsSelect">',
                   '<input type="file" class="fileUpload" onchange="st.attachBarFile();" id="selectBarFile" accept="bar/*" style="display: none">',
                   '<button class="btn btn-primary" id="selectBarButton" type="button" data-i18n="SelectBar"></button>',
-                  '<label id="selectBarLbl" style="margin-left:10px;"></label>',
+                  '<label id="selectBarFileLbl" style="margin-left:10px;"></label>',
                 '</fieldset>',
-                '<span id="selectBarMsg" style="color:red"></span>',
+                '<span id="selectBarErrorMsg" style="color:red"></span>',
               '</div>',
             '</div>',
             '<div class="row">',
@@ -669,7 +669,7 @@ st.openBoxInstall = function () {
                 '<fieldset id="boxInsInput" disabled>',
                   '<input type="text" value="" id="input_barUrl" onblur="st.inputBarUrlBlurEvent();" data-i18n="[placeholder]barfileUrlInput">',
                 '</fieldset>',
-                '<span id="inputBarMsg" style="color:red"></span>',
+                '<span id="inputBarErrorMsg" style="color:red"></span>',
               '</div>',
             '</div>',
             '<div class="row">',
@@ -679,11 +679,11 @@ st.openBoxInstall = function () {
               '</div>',
               '<div class="col-xs-10 col-sm-11">',
                 '<input type="text" value="" id="inputBoxName" onblur="st.inputBoxNameBlurEvent();">',
-                '<span id="inputBoxMsg" style="color:red"></span>',
+                '<span id="inputBoxErrorMsg" style="color:red"></span>',
               '</div>',
             '</div>',
             '<div class="row">',
-              '<button type="button" id="unknownBoxInsBtn" class="btn btn-primary text-capitalize" data-i18n="Install" onClick="st.boxInstallUnknown();" disabled>',
+              '<button type="button" id="unofficialBoxInsBtn" class="btn btn-primary text-capitalize" data-i18n="Install" onClick="st.unofficialBoxInstall();" disabled>',
             '</div>',
             '<div>',
               '<hr />',
@@ -720,18 +720,18 @@ st.openBoxInstall = function () {
             // select bar file
             $("#boxInsSelect").attr("disabled", false);
             $("#boxInsInput").attr("disabled", true);
-            $("#selectBarMsg").css("display", "block");
-            $("#inputBarMsg").css("display", "none");
+            $("#selectBarErrorMsg").css("display", "block");
+            $("#inputBarErrorMsg").css("display", "none");
         } else {
             // input bar file
             $("#boxInsSelect").attr("disabled", true);
             $("#boxInsInput").attr("disabled", false);
-            $("#selectBarMsg").css("display", "none");
-            $("#inputBarMsg").css("display", "block");
+            $("#selectBarErrorMsg").css("display", "none");
+            $("#inputBarErrorMsg").css("display", "block");
         }
-        st.checkBoxInsUnknownMsg();
+        st.checkUnofficialBoxInsConditions();
     });
-    $("#selectBarButton,#selectBarLbl").on('click', function () {
+    $("#selectBarButton,#selectBarFileLbl").on('click', function () {
         $("#selectBarFile").click();
     });
 
@@ -751,7 +751,7 @@ st.openBoxInstall = function () {
                 '</div>'
             ].join("");
             $("#installStatus").append(html);
-            st.dispBoxInsUnknownProgress(boxname);
+            st.dispUnofficialBoxInsProgress(boxname);
         }
     }
 
@@ -769,48 +769,48 @@ st.attachBarFile = function () {
             var reader = new FileReader();
         } catch (e) {
             // reading error
-            st.displayBoxInsUnknownMsg("selectBarMsg", "errorReadingFile");
+            st.displayUnofficialBoxInsMsg("selectBarErrorMsg", "errorReadingFile");
             return;
         }
         reader.readAsArrayBuffer(file);
         reader.onload = function (evt) {
             st.barFileArrayBuffer = evt.target.result;
             $("#inputBoxName").val(ut.getName(fileUrl, true));
-            st.checkBoxInsUnknownMsg();
+            st.checkUnofficialBoxInsConditions();
         }
         reader.onerror = function (evt) {
             // reading error
-            st.displayBoxInsUnknownMsg("selectBarMsg", "errorReadingFile");
+            st.displayUnofficialBoxInsMsg("selectBarErrorMsg", "errorReadingFile");
         }
     } else {
         // FileFormat error
-        st.displayBoxInsUnknownMsg("selectBarMsg", "errorFileFormat");
+        st.displayUnofficialBoxInsMsg("selectBarErrorMsg", "errorFileFormat");
     }
 }
 st.inputBarUrlBlurEvent = function () {
     $("#inputBarErrorMsg").empty();
     var fileUrl = $("#input_barUrl").val();
     if (!fileUrl) {
-        st.displayBoxInsUnknownMsg("inputBarMsg", "barfileUrlInput");
+        st.displayUnofficialBoxInsMsg("inputBarErrorMsg", "barfileUrlInput");
         return;
     }
 
     if (st.checkBarUrl(fileUrl)) {
         $("#inputBoxName").val(ut.getName(fileUrl, true));
-        st.checkBoxInsUnknownMsg();
+        st.checkUnofficialBoxInsConditions();
     } else {
         // FileFormat error
-        st.displayBoxInsUnknownMsg("inputBarMsg", "errorFileFormat");
+        st.displayUnofficialBoxInsMsg("inputBarErrorMsg", "errorFileFormat");
     }
 }
 st.inputBoxNameBlurEvent = function() {
     var name = $("#inputBoxName").val();
-    var nameSpan = "inputBoxMsg";
+    var nameSpan = "inputBoxErrorMsg";
     if (st.validateName(name, nameSpan, "-_", "")) {
-        st.checkBoxInsUnknownMsg();
         $("#nameSpan").empty();
+        st.checkUnofficialBoxInsConditions();
     } else {
-        $("#unknownBoxInsBtn").prop("disabled", true);
+        $("#unofficialBoxInsBtn").prop("disabled", true);
     }
 }
 st.checkBarUrl = function (fileUrl) {
@@ -822,21 +822,21 @@ st.checkBarUrl = function (fileUrl) {
         return false;
     }
 }
-st.boxInstallUnknown = function () {
+st.unofficialBoxInstall = function () {
     var boxName = $("#inputBoxName").val();
     if (!$("#inputBoxName").val()) {
         // Box name not entered
-        st.displayBoxInsUnknownMsg("inputBoxMsg", "pleaseEnterName");
+        st.displayUnofficialBoxInsMsg("inputBoxErrorMsg", "pleaseEnterName");
         return;
     }
 
     if ($("input[name=boxInsType]:checked").val() == "typeSelect") {
         // select
         if (st.barFileArrayBuffer) {
-            st.execBoxInstallUnknown();
+            st.execUnofficialBoxInstall();
         } else {
             // File not selected
-            st.displayBoxInsUnknownMsg("selectBarMsg", "errorBarFileNotSelected");
+            st.displayUnofficialBoxInsMsg("selectBarErrorMsg", "errorBarFileNotSelected");
         }
     } else {
         // input
@@ -849,16 +849,16 @@ st.boxInstallUnknown = function () {
             oReq.setRequestHeader("Content-Type", "application/zip");
             oReq.onload = function (e) {
                 st.barFileArrayBuffer = oReq.response;
-                st.execBoxInstallUnknown();
+                st.execUnofficialBoxInstall();
             }
             oReq.send();
         } else {
             // bar File URL is not entered
-            st.displayBoxInsUnknownMsg("inputBarMsg", "errorBarFileUrlNotEntered");
+            st.displayUnofficialBoxInsMsg("inputBarErrorMsg", "errorBarFileUrlNotEntered");
         }
     }
 }
-st.execBoxInstallUnknown = function () {
+st.execUnofficialBoxInstall = function () {
     var view = new Uint8Array(st.barFileArrayBuffer);
     var blob = new Blob([view], { "type": "application/zip" });
     var boxName = $("#inputBoxName").val();
@@ -895,7 +895,7 @@ st.execBoxInstallUnknown = function () {
             '</div>'
         ].join("");
         $("#installStatus").append(html);
-        st.dispBoxInsUnknownProgress(boxName);
+        st.dispUnofficialBoxInsProgress(boxName);
         insArray.push(boxName);
         sessionStorage.setItem("insBarList", JSON.stringify(insArray));
         
@@ -905,15 +905,15 @@ st.execBoxInstallUnknown = function () {
         alert("An error has occurred.\n" + res.message.value);
     });
 }
-st.displayBoxInsUnknownMsg = function (id, msgId) {
+st.displayUnofficialBoxInsMsg = function (id, msgId) {
     $("#" + id).attr("data-i18n", msgId).localize();
-    $("#unknownBoxInsBtn").prop("disabled", true);
+    $("#unofficialBoxInsBtn").prop("disabled", true);
 }
-st.checkBoxInsUnknownMsg = function () {
+st.checkUnofficialBoxInsConditions = function () {
     var insFlg = true;
     if ($("input[name=boxInsType]:checked").val() == "typeSelect") {
         // select bar file
-        if ($("#selectBarMsg").html()) {
+        if ($("#selectBarErrorMsg").html()) {
             insFlg = false;
         }
         if (!st.barFileArrayBuffer) {
@@ -921,24 +921,24 @@ st.checkBoxInsUnknownMsg = function () {
         }
     } else {
         // input bar file
-        if ($("#inputBarMsg").html()) {
+        if ($("#inputBarErrorMsg").html()) {
             insFlg = false;
         }
         if (!$("#input_barUrl").val()) {
             insFlg = false;
         }
     }
-    if ($("#inputBoxMsg").html()) {
+    if ($("#inputBoxErrorMsg").html()) {
         insFlg = false;
     }
 
     if (insFlg) {
-        $("#unknownBoxInsBtn").prop("disabled", false);
+        $("#unofficialBoxInsBtn").prop("disabled", false);
     } else {
-        $("#unknownBoxInsBtn").prop("disabled", true);
+        $("#unofficialBoxInsBtn").prop("disabled", true);
     }
 }
-st.dispBoxInsUnknownProgress = function (boxname) {
+st.dispUnofficialBoxInsProgress = function (boxname) {
     var no = $("#boxIns_" + boxname).data("no");
     cm.getBoxStatus(boxname).done(function (data) {
         var status = data.status;
