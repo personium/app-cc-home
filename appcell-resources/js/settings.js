@@ -106,7 +106,7 @@ st.checkAccLinkRole = function() {
         $("#popupAddAccountLinkRoleErrorMsg").html(i18next.t("selectRole"));
         return false;
     } else {
-        $("#popupAddAccountLinkRoleErrorMsg").html("");
+        $("#popupAddAccountLinkRoleErrorMsg").empty();
         //cm.setLinkParam(value);
         return true;
     }
@@ -230,7 +230,7 @@ st.changeCheckAccountLinkRole = function(obj) {
         $("#ddlAddAccLinkRoleList").prop('disabled', false);
     } else {
         $("#ddlAddAccLinkRoleList").val("");
-        $("#popupAddAccountLinkRoleErrorMsg").html("");
+        $("#popupAddAccountLinkRoleErrorMsg").empty();
         $("#ddlAddAccLinkRoleList").prop('disabled', true);
     }
 };
@@ -647,29 +647,29 @@ st.openBoxInstall = function () {
             '<div class="row">',
               '<div class="col-xs-2 col-sm-1">',
                 '<div style="margin-top:10px;">',
-                  '<input type="radio" value="1" name="boxInsType" id="boxInsType_select" checked>',
+                  '<input type="radio" value="typeSelect" name="boxInsType" id="boxInsType_select" checked>',
                 '</div>',
               '</div>',
               '<div class="col-xs-10 col-sm-11">',
                 '<fieldset id="boxInsSelect">',
                   '<input type="file" class="fileUpload" onchange="st.attachBarFile();" id="selectBarFile" accept="bar/*" style="display: none">',
                   '<button class="btn btn-primary" id="selectBarButton" type="button" data-i18n="SelectBar"></button>',
-                  '<label id="selectBarLbl" style="margin-left:10px;"></label>',
+                  '<label id="selectBarFileLbl" style="margin-left:10px;"></label>',
                 '</fieldset>',
-                '<span id="selectBarMsg" style="color:red"></span>',
+                '<span id="selectBarErrorMsg" style="color:red"></span>',
               '</div>',
             '</div>',
             '<div class="row">',
               '<div class="col-xs-2 col-sm-1">',
                 '<div style="margin-top:15px;">',
-                  '<input type="radio" value="2" name="boxInsType" id="boxInsType_input">',
+                  '<input type="radio" value="typeInput" name="boxInsType" id="boxInsType_input">',
                 '</div>',
               '</div>',
               '<div class="col-xs-10 col-sm-11">',
                 '<fieldset id="boxInsInput" disabled>',
                   '<input type="text" value="" id="input_barUrl" onblur="st.inputBarUrlBlurEvent();" data-i18n="[placeholder]barfileUrlInput">',
                 '</fieldset>',
-                '<span id="inputBarMsg" style="color:red"></span>',
+                '<span id="inputBarErrorMsg" style="color:red"></span>',
               '</div>',
             '</div>',
             '<div class="row">',
@@ -679,11 +679,11 @@ st.openBoxInstall = function () {
               '</div>',
               '<div class="col-xs-10 col-sm-11">',
                 '<input type="text" value="" id="inputBoxName" onblur="st.inputBoxNameBlurEvent();">',
-                '<span id="inputBoxMsg" style="color:red"></span>',
+                '<span id="inputBoxErrorMsg" style="color:red"></span>',
               '</div>',
             '</div>',
             '<div class="row">',
-              '<button type="button" id="unknownBoxInsBtn" class="btn btn-primary text-capitalize" data-i18n="Install" onClick="st.boxInstallUnknown();" disabled>',
+              '<button type="button" id="unofficialBoxInsBtn" class="btn btn-primary text-capitalize" data-i18n="Install" onClick="st.unofficialBoxInstall();" disabled>',
             '</div>',
             '<div>',
               '<hr />',
@@ -696,42 +696,41 @@ st.openBoxInstall = function () {
     ].join("");
     $("#setting-panel2").append(html).localize();
     $("#boxInstallSwitch").bootstrapSwitch();
-    if (sessionStorage.getItem("boxInstallAuth")) {
-        $("#boxInstallSwitch").bootstrapSwitch("state", sessionStorage.getItem("boxInstallAuth"));
+    if (cm.user.boxInstallAuth) {
+        $("#boxInstallSwitch").bootstrapSwitch("state", cm.user.boxInstallAuth);
         $("#boxInsWarningMsg").attr("data-i18n", "warningBoxInstallAllow").localize();
         $("#dvBoxInstall").css("display", "block");
     }
 
     // set events
     $("#boxInstallSwitch").on('switchChange.bootstrapSwitch', function (event, state) {
+        $("#dvBoxInstall").toggle(state);
+        cm.user.boxInstallAuth = state;
+        sessionStorage.setItem("sessionData", JSON.stringify(cm.user));
         if (state) {
-            $("#dvBoxInstall").css("display", "block");
-            sessionStorage.setItem("boxInstallAuth", state);
             $("#boxInsWarningMsg").attr("data-i18n", "warningBoxInstallAllow").localize();
         } else {
-            $("#dvBoxInstall").css("display", "none");
-            sessionStorage.removeItem("boxInstallAuth");
             $("#boxInsWarningMsg").attr("data-i18n", "warningBoxInstallNotAllowed").localize();
         }
         
     });
     $("input[name=boxInsType]").change(function () {
-        if ($("input[name=boxInsType]:checked").val() == "1") {
+        if ($("input[name=boxInsType]:checked").val() == "typeSelect") {
             // select bar file
             $("#boxInsSelect").attr("disabled", false);
             $("#boxInsInput").attr("disabled", true);
-            $("#selectBarMsg").css("display", "block");
-            $("#inputBarMsg").css("display", "none");
+            $("#selectBarErrorMsg").css("display", "block");
+            $("#inputBarErrorMsg").css("display", "none");
         } else {
             // input bar file
             $("#boxInsSelect").attr("disabled", true);
             $("#boxInsInput").attr("disabled", false);
-            $("#selectBarMsg").css("display", "none");
-            $("#inputBarMsg").css("display", "block");
+            $("#selectBarErrorMsg").css("display", "none");
+            $("#inputBarErrorMsg").css("display", "block");
         }
-        st.checkBoxInsUnknownMsg();
+        st.checkUnofficialBoxInsConditions();
     });
-    $("#selectBarButton,#selectBarLbl").on('click', function () {
+    $("#selectBarButton,#selectBarFileLbl").on('click', function () {
         $("#selectBarFile").click();
     });
 
@@ -739,19 +738,19 @@ st.openBoxInstall = function () {
     var insArray = sessionStorage.getItem("insBarList");
     if (insArray) {
         insArray = JSON.parse(insArray);
-        for (var i in insArray) {
-            var boxname = insArray[i];
+        for (var no in insArray) {
+            var boxname = insArray[no];
             var html = [
                 '<div class="row">',
                 '<div class="col-xs-6 barEllipsis" title="' + boxname + '">',
-                i + '. ' + boxname,
+                no + '. ' + boxname,
                 '</div>',
-                '<div class="col-xs-6 barEllipsis" id="boxIns_' + boxname + '" data-no="' + i + '">',
+                '<div class="col-xs-6 barEllipsis" id="boxIns_' + boxname + '" data-no="' + no + '">',
                 '</div>',
                 '</div>'
             ].join("");
             $("#installStatus").append(html);
-            st.dispBoxInsUnknownProgress(boxname);
+            st.dispUnofficialBoxInsProgress(boxname);
         }
     }
 
@@ -760,7 +759,7 @@ st.openBoxInstall = function () {
     cm.setTitleMenu("BoxInstall", true);
 }
 st.attachBarFile = function () {
-    $("#selectBarMsg").html("");
+    $("#selectBarErrorMsg").empty();
     st.barFileArrayBuffer = null;
     var file = document.getElementById("selectBarFile").files[0];
     var fileUrl = document.getElementById("selectBarFile").value;
@@ -769,48 +768,49 @@ st.attachBarFile = function () {
             var reader = new FileReader();
         } catch (e) {
             // reading error
-            st.displayBoxInsUnknownMsg("selectBarMsg", "errorReadingFile");
+            st.displayUnofficialBoxInsMsg("selectBarErrorMsg", "errorReadingFile");
             return;
         }
         reader.readAsArrayBuffer(file);
         reader.onload = function (evt) {
             st.barFileArrayBuffer = evt.target.result;
+            $("#selectBarFileLbl").html(fileUrl);
             $("#inputBoxName").val(ut.getName(fileUrl, true));
-            st.checkBoxInsUnknownMsg();
+            st.checkUnofficialBoxInsConditions();
         }
         reader.onerror = function (evt) {
             // reading error
-            st.displayBoxInsUnknownMsg("selectBarMsg", "errorReadingFile");
+            st.displayUnofficialBoxInsMsg("selectBarErrorMsg", "errorReadingFile");
         }
     } else {
         // FileFormat error
-        st.displayBoxInsUnknownMsg("selectBarMsg", "errorFileFormat");
+        st.displayUnofficialBoxInsMsg("selectBarErrorMsg", "errorFileFormat");
     }
 }
 st.inputBarUrlBlurEvent = function () {
-    $("#inputBarMsg").html("");
+    $("#inputBarErrorMsg").empty();
     var fileUrl = $("#input_barUrl").val();
     if (!fileUrl) {
-        st.displayBoxInsUnknownMsg("inputBarMsg", "barfileUrlInput");
+        st.displayUnofficialBoxInsMsg("inputBarErrorMsg", "barfileUrlInput");
         return;
     }
 
     if (st.checkBarUrl(fileUrl)) {
         $("#inputBoxName").val(ut.getName(fileUrl, true));
-        st.checkBoxInsUnknownMsg();
+        st.checkUnofficialBoxInsConditions();
     } else {
         // FileFormat error
-        st.displayBoxInsUnknownMsg("inputBarMsg", "errorFileFormat");
+        st.displayUnofficialBoxInsMsg("inputBarErrorMsg", "errorFileFormat");
     }
 }
 st.inputBoxNameBlurEvent = function() {
     var name = $("#inputBoxName").val();
-    var nameSpan = "inputBoxMsg";
+    var nameSpan = "inputBoxErrorMsg";
     if (st.validateName(name, nameSpan, "-_", "")) {
-        $("#nameSpan").html("");
-        st.checkBoxInsUnknownMsg();
+        $("#nameSpan").empty();
+        st.checkUnofficialBoxInsConditions();
     } else {
-        $("#unknownBoxInsBtn").prop("disabled", true);
+        $("#unofficialBoxInsBtn").prop("disabled", true);
     }
 }
 st.checkBarUrl = function (fileUrl) {
@@ -822,21 +822,21 @@ st.checkBarUrl = function (fileUrl) {
         return false;
     }
 }
-st.boxInstallUnknown = function () {
+st.unofficialBoxInstall = function () {
     var boxName = $("#inputBoxName").val();
     if (!$("#inputBoxName").val()) {
         // Box name not entered
-        st.displayBoxInsUnknownMsg("inputBoxMsg", "pleaseEnterName");
+        st.displayUnofficialBoxInsMsg("inputBoxErrorMsg", "pleaseEnterName");
         return;
     }
 
-    if ($("input[name=boxInsType]:checked").val() == "1") {
+    if ($("input[name=boxInsType]:checked").val() == "typeSelect") {
         // select
         if (st.barFileArrayBuffer) {
-            st.execBoxInstallUnknown();
+            st.execUnofficialBoxInstall();
         } else {
             // File not selected
-            st.displayBoxInsUnknownMsg("selectBarMsg", "errorBarFileNotSelected");
+            st.displayUnofficialBoxInsMsg("selectBarErrorMsg", "errorBarFileNotSelected");
         }
     } else {
         // input
@@ -849,16 +849,16 @@ st.boxInstallUnknown = function () {
             oReq.setRequestHeader("Content-Type", "application/zip");
             oReq.onload = function (e) {
                 st.barFileArrayBuffer = oReq.response;
-                st.execBoxInstallUnknown();
+                st.execUnofficialBoxInstall();
             }
             oReq.send();
         } else {
             // bar File URL is not entered
-            st.displayBoxInsUnknownMsg("inputBarMsg", "errorBarFileUrlNotEntered");
+            st.displayUnofficialBoxInsMsg("inputBarErrorMsg", "errorBarFileUrlNotEntered");
         }
     }
 }
-st.execBoxInstallUnknown = function () {
+st.execUnofficialBoxInstall = function () {
     var view = new Uint8Array(st.barFileArrayBuffer);
     var blob = new Blob([view], { "type": "application/zip" });
     var boxName = $("#inputBoxName").val();
@@ -895,7 +895,7 @@ st.execBoxInstallUnknown = function () {
             '</div>'
         ].join("");
         $("#installStatus").append(html);
-        st.dispBoxInsUnknownProgress(boxName);
+        st.dispUnofficialBoxInsProgress(boxName);
         insArray.push(boxName);
         sessionStorage.setItem("insBarList", JSON.stringify(insArray));
         
@@ -905,15 +905,15 @@ st.execBoxInstallUnknown = function () {
         alert("An error has occurred.\n" + res.message.value);
     });
 }
-st.displayBoxInsUnknownMsg = function (id, msgId) {
+st.displayUnofficialBoxInsMsg = function (id, msgId) {
     $("#" + id).attr("data-i18n", msgId).localize();
-    $("#unknownBoxInsBtn").prop("disabled", true);
+    $("#unofficialBoxInsBtn").prop("disabled", true);
 }
-st.checkBoxInsUnknownMsg = function () {
+st.checkUnofficialBoxInsConditions = function () {
     var insFlg = true;
-    if ($("input[name=boxInsType]:checked").val() == "1") {
+    if ($("input[name=boxInsType]:checked").val() == "typeSelect") {
         // select bar file
-        if ($("#selectBarMsg").html()) {
+        if ($("#selectBarErrorMsg").html()) {
             insFlg = false;
         }
         if (!st.barFileArrayBuffer) {
@@ -921,24 +921,24 @@ st.checkBoxInsUnknownMsg = function () {
         }
     } else {
         // input bar file
-        if ($("#inputBarMsg").html()) {
+        if ($("#inputBarErrorMsg").html()) {
             insFlg = false;
         }
         if (!$("#input_barUrl").val()) {
             insFlg = false;
         }
     }
-    if ($("#inputBoxMsg").html()) {
+    if ($("#inputBoxErrorMsg").html()) {
         insFlg = false;
     }
 
     if (insFlg) {
-        $("#unknownBoxInsBtn").prop("disabled", false);
+        $("#unofficialBoxInsBtn").prop("disabled", false);
     } else {
-        $("#unknownBoxInsBtn").prop("disabled", true);
+        $("#unofficialBoxInsBtn").prop("disabled", true);
     }
 }
-st.dispBoxInsUnknownProgress = function (boxname) {
+st.dispUnofficialBoxInsProgress = function (boxname) {
     var no = $("#boxIns_" + boxname).data("no");
     cm.getBoxStatus(boxname).done(function (data) {
         var status = data.status;
@@ -954,19 +954,19 @@ st.dispBoxInsUnknownProgress = function (boxname) {
             // progress
             resHtml = [
                 '<div id="boxInsParent_' + no + '" class="progress progress-striped active">',
-                  '<div name="nowBoxInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';">',
+                  '<div id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';">',
                   '</div>',
                 '</div>',
             ].join("");
-            if (!st.nowBoxInstalledUnknownID) {
-                st.nowBoxInstalledUnknownID = setInterval(st.checkBoxInstallUnknown, 1000);
-            }
         } else {
             // failed
             resHtml = "<span data-i18n='Failed' title='" + data.message.message.value + "'></span>";
         }
 
         $("#boxIns_" + boxname).html(resHtml).localize();
+        if (status.indexOf('progress') >= 0) {
+            setTimeout(function () { st.updateUnofficialBoxInsProgress(no)}, 1000);
+        }
     }).fail(function (data) {
         if (data.status == "404") {
             // Box Not Found
@@ -979,19 +979,7 @@ st.dispBoxInsUnknownProgress = function (boxname) {
         }
     })
 }
-st.checkBoxInstallUnknown = function() {
-    var elements = document.getElementsByName("nowBoxInstall");
-    if (elements.length > 0) {
-        for (var i in elements) {
-            var ele = elements[i];
-            var no = ele.id.split("_")[1];
-            st.updateBoxInsUnknownProgress(no, ele.id);
-        }
-    } else {
-        clearInterval(st.nowBoxInstalledUnknownID);
-    }
-}
-st.updateBoxInsUnknownProgress = function(no, id) {
+st.updateUnofficialBoxInsProgress = function(no) {
     var insArray = JSON.parse(sessionStorage.getItem("insBarList"));
     cm.getBoxStatus(insArray[no]).done(function(data) {
         var status = data.status;
@@ -1004,15 +992,12 @@ st.updateBoxInsUnknownProgress = function(no, id) {
                 ha.dispInsAppList();
             }
         } else if (status.indexOf('progress') >= 0) {
-            $('#' + id).css("width", data.progress);
+            $('#nowInstall_' + no).css("width", data.progress);
+            setTimeout(function () { st.updateUnofficialBoxInsProgress(no) }, 1000);
         } else {
             $('#boxInsParent_' + no).remove();
             var html = "<span data-i18n='Failed' title='" + data.message.message.value + "'></span>";
             $("#boxIns_" + insArray[no]).html(html).localize();
-        }
-        var elements = document.getElementsByName("nowBoxInstall");
-        if (elements.length = 0) {
-            clearInterval(st.nowBoxInstalledUnknownID);
         }
     });
 };
@@ -1405,7 +1390,7 @@ st.checkRelationLinkRole = function() {
         $("#popupAddRelationLinkErrorMsg").html(i18next.t("selectRole"));
         return false;
     } else {
-        $("#popupAddRelationLinkErrorMsg").html("");
+        $("#popupAddRelationLinkErrorMsg").empty();
         return true;
     }
 };
@@ -1586,7 +1571,7 @@ st.charCheck = function(check, displayNameSpan) {
   return bool;
 };
 st.changePassCheck = function(newpass, confirm, displayNameSpan) {
-  $('#' + displayNameSpan).html("");
+  $('#' + displayNameSpan).empty();
   if (newpass !== confirm) {
     $('#' + displayNameSpan).html(i18next.t("passwordNotMatch"));
     return false
@@ -1595,7 +1580,7 @@ st.changePassCheck = function(newpass, confirm, displayNameSpan) {
   return true;
 };
 st.passInputCheck = function(newpass, displayNameSpan) {
-  $('#' + displayNameSpan).html("");
+  $('#' + displayNameSpan).empty();
   if (newpass.length == 0) {
     $('#' + displayNameSpan).html(i18next.t("pleaseEnterPassword"));
     return false;
