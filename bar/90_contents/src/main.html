@@ -35,33 +35,46 @@
     ha = {};
 
     function init() {
-      ha.deploySystemApps();
-      ha.dispInsAppList();
-      ha.dispInformation();
-      //createTitleHeader();
-      cm.createProfileHeaderMenu();
-      cm.createSideMenu();
-      st.initSettings();
-      // App launcher from the box list
+        let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
+        let isDemo = (tempMyProfile.IsDemo || false);
+
+        ha.displaySystemMenuItems();
+        ha.dispInformation();
+      
+        if (isDemo) {
+            demo.createProfileHeaderMenu();
+            demo.createSideMenu();
+            demo.initSettings();
+            demo.initMain();
+            if (demoSession.insApp) {
+                ha.dispInsAppList();
+            }
+            st.setBizTheme();
+        } else {
+            //createTitleHeader();
+            cm.createProfileHeaderMenu();
+            cm.createSideMenu();
+            st.initSettings();
+            ha.dispInsAppList();
+        }
     };
 
-ha.deploySystemApps = function() {
-    let systemApps = [
+ha.displaySystemMenuItems = function() {
+    let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
+    let isDemo = (tempMyProfile.IsDemo || false);
+    let systemMenuItems = [
       {
           "name": "Community",
           "icon": "003lighticons-03full.png",
-          "url": "socialgraph.html",
-          "used": true
+          "url": "socialgraph.html"
       }, {
           "name": "AppMarket", // With context properly set, it can be AppMarket_biz
           "icon": "001lighticons-31full.png",
-          "url": "applicationmarket.html",
-          "used": true
+          "url": "applicationmarket.html"
       }, {
             "name": "Message",
           "icon": "001lighticons-02full.png",
-          "url": "message.html",
-          "used": true
+          "url": "message.html"
       }
     ];
 
@@ -72,8 +85,8 @@ ha.deploySystemApps = function() {
     let cellType = cm.getCellType();
 
     var arrCount = 0;
-    for (var i in systemApps) {
-        var app = systemApps[i];
+    for (var i in systemMenuItems) {
+        var app = systemMenuItems[i];
 
         var imgTag = $('<img>', {
             src: 'https://demo.personium.io/HomeApplication/__/icons/' + app.icon,
@@ -113,10 +126,10 @@ ha.deploySystemApps = function() {
         var aTag = $('<a>', {
             class: 'p-app'
         });
-        if (app.used) {
-            aTag.attr('href', app.url);
-        } else {
+        if (isDemo && _.contains(["Community", "Message"], app.name)) {
             aTag.attr('href', "javascript:void(0)");
+        } else {
+            aTag.attr('href', app.url);
         }
         aTag.append($(divTag1), $(divTag2));
 
