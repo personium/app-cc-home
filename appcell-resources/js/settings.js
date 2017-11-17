@@ -412,38 +412,6 @@ st.validateEditedInfo = function() {
 }
 
 // Application
-st.createApplicationList = function() {
-    $("#setting-panel1").remove();
-    cm.setBackahead(true);
-    var html = '<div class="panel-body" id="app-panel"><section class="dashboard-block" id="installed-app"><h2>' + i18next.t("Installed") + '</h2><div id="insAppList"></div></section><section class="dashboard-block" id="all-app"><h2>' + i18next.t("ApplicationList") + '</h2><div id="appList"></div></section></div>';
-    $("#setting-panel1").append(html);
-    // install application list
-    cm.getBoxList().done(function(data) {
-        var insAppRes = data.d.results;
-        insAppRes.sort(function(val1, val2) {
-            return (val1.Name < val2.Name ? 1 : -1);
-        })
-        st.insAppList = new Array();
-        st.insAppBoxList = new Array();
-        for (var i in insAppRes) {
-            var schema = insAppRes[i].Schema;
-            if (schema && schema.length > 0) {
-                st.insAppList.push(schema);
-                st.insAppBoxList.push(insAppRes[i].Name);
-            }
-        }
-        st.dispInsAppListSetting();
-
-        // application list
-        st.getApplicationList().done(function(data) {
-            st.dispApplicationList(data);
-            $(".setting-menu").toggleClass('slide-on');
-            cm.setTitleMenu("Application", true);
-        }).fail(function(data) {
-            alert(data);
-        });
-    });
-};
 st.getApplicationList = function() {
     return $.ajax({
             type: "GET",

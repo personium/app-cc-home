@@ -20,6 +20,7 @@
   <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/utils.js"></script>
   <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/common.js"></script>
   <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/settings.js"></script>
+  <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/demo.js"></script>
   <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/bootstrap-switch/bootstrap-switch.min.js"></script>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
@@ -33,7 +34,19 @@
     //ha.user= JSON.parse(location.hash.substring(1));
     ha = {};
 
-    ha.systemApps = [
+    function init() {
+      ha.deploySystemApps();
+      ha.dispInsAppList();
+      ha.dispInformation();
+      //createTitleHeader();
+      cm.createProfileHeaderMenu();
+      cm.createSideMenu();
+      st.initSettings();
+      // App launcher from the box list
+    };
+
+ha.deploySystemApps = function() {
+    let systemApps = [
       {
           "name": "Community",
           "icon": "003lighticons-03full.png",
@@ -52,18 +65,6 @@
       }
     ];
 
-    function init() {
-      ha.deploySystemApps();
-      ha.dispInsAppList();
-      ha.dispInformation();
-      //createTitleHeader();
-      cm.createProfileHeaderMenu();
-      cm.createSideMenu();
-      st.initSettings();
-      // App launcher from the box list
-    };
-
-ha.deploySystemApps = function() {
     /*
      * For older profile.json that might not have CellType key,
      * assign default cell type (Person) to it.
@@ -71,8 +72,8 @@ ha.deploySystemApps = function() {
     let cellType = cm.getCellType();
 
     var arrCount = 0;
-    for (var i in ha.systemApps) {
-        var app = ha.systemApps[i];
+    for (var i in systemApps) {
+        var app = systemApps[i];
 
         var imgTag = $('<img>', {
             src: 'https://demo.personium.io/HomeApplication/__/icons/' + app.icon,
@@ -178,7 +179,6 @@ ha.dispInsAppListSchema = function(schema, boxName) {
                 }).fail(function(data) {
                     console.log("fail");
                 }).always(function(data) {
-                    //var html = '<div class="ins-app" align="center"><a class="ins-app-icon" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
                     var html = '<a class="ins-app" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank">'
                              + '<div class="ins-app-icon">'
                              + '<img src = "' + imageSrc + '" class="ins-app-icon">'
