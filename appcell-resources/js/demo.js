@@ -25,7 +25,7 @@ demo.initTarget = function() {
      $('#modal-input-cell').modal('hide');
   });
   $('#modal-input-cell').on('show.bs.modal', function() {
-     $("#pCellUrl").val("https://demo.personium.io/democell/")
+     $("#pCellUrl").val(lg.cellUrl());
   });
   $('#modal-input-cell').on('hidden.bs.modal', function() {
      lg.targetCellLogin($("#pCellUrl").val());
