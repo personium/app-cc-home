@@ -7,33 +7,10 @@ demo.showModal = function(id) {
   }
 };
 
-demo.initAppMarket = function() {
-  demoSession = JSON.parse(sessionStorage.getItem("demoSession"));
-  demo.showModal("#modal-applicationlist-start");
-
-  cm.createTitleHeader(false, true);
-  cm.createSideMenu();
-  cm.createBackMenu("main.html");
-  cm.setAppMarketTitle();
-  demo.initSettings();
-  $("#dashboard").append('<div class="panel list-group toggle-panel" id="toggle-panel1"></div>');
-
-  demo.createApplicationList();
-  // menu-toggle
-  $(".appInsMenu").css("display", "none");
-  $("#appInsToggle.toggle").on("click", function() {
-    $(this).toggleClass("active");
-    $(".appInsMenu").slideToggle();
-  });
-
-  $('#b-applicationlist-start-ok').on('click', function () {
-     $('#modal-applicationlist-start').modal('hide');
-  });
-};
-
 demo.initTarget = function() {
-  $('#errorCellUrl').html("");
-  lg.targetCellLogin("");
+    demo.addTutorialDialogLogin();
+    $('#errorCellUrl').html("");
+    lg.targetCellLogin(""); // initialization
 
   demoSession = JSON.parse(sessionStorage.getItem("demoSession"));
   if (!demoSession || !demoSession.demoend) {
@@ -48,9 +25,13 @@ demo.initTarget = function() {
      $('#modal-input-cell').modal('hide');
   });
   $('#modal-input-cell').on('show.bs.modal', function() {
-     $("#pCellUrl").val("https://demo.personium.io/democell/")
+     $("#pCellUrl").val(lg.cellUrl());
   });
   $('#modal-input-cell').on('hidden.bs.modal', function() {
+     if (demoSession && demoSession.demoend) {
+          sessionStorage.clear();
+          location.href ="https://demo.personium.io/HomeApplication/__/box-resources/login.html?mode=global";
+     };
      lg.targetCellLogin($("#pCellUrl").val());
      demo.showModal('#modal-celllogin-start');
   });
@@ -84,8 +65,66 @@ demo.initTarget = function() {
   });
 };
 
+demo.addTutorialDialogLogin = function() {
+    let htmlDemoStart = [
+        '<div id="modal-demo-start" class="modal fade" role="dialog" data-backdrop="static">',
+            '<div class="modal-dialog">',
+                '<div class="modal-content">',
+                    '<div class="modal-header login-header">',
+                        '<h4 class="modal-title" data-i18n="Demo.loginTitle1"></h4>',
+                    '</div>',
+                    '<div class="modal-body fontBlack" >',
+                        '<span class="fontBlack" data-i18n="[html]Demo.loginTutorial1"></span>',
+                    '</div>',
+                    '<div class="modal-footer">',
+                        '<button type="button" class="btn btn-primary" id="b-demo-start-ok">OK</button>',
+                    '</div>',
+                '</div>',
+            '</div>',
+        '</div>'
+    ].join("");
+
+    let htmlCellloginStart = [
+        '<div id="modal-celllogin-start" class="modal fade" role="dialog" data-backdrop="static">',
+            '<div class="modal-dialog">',
+                '<div class="modal-content">',
+                    '<div class="modal-header login-header">',
+                        '<h4 class="modal-title" data-i18n="Demo.loginTitle2"></h4>',
+                    '</div>',
+                    '<div class="modal-body fontBlack">',
+                        '<span class="fontBlack" data-i18n="[html]Demo.loginTutorial2"></span>',
+                    '</div>',
+                    '<div class="modal-footer">',
+                        '<button type="button" class="btn btn-primary" id="b-celllogin-start-ok">OK</button>',
+                    '</div>',
+                '</div>',
+            '</div>',
+        '</div>'
+    ].join("");
+
+    let htmlDemoendStart = [
+        '<div id="modal-demoend-start" class="modal fade" role="dialog" data-backdrop="static">',
+            '<div class="modal-dialog">',
+                '<div class="modal-content">',
+                    '<div class="modal-header login-header">',
+                        '<h4 class="modal-title" data-i18n="Demo.loginTitle3"></h4>',
+                    '</div>',
+                    '<div class="modal-body fontBlack" data-i18n="Demo.loginTutorial3"></div>',
+                    '<div class="modal-footer">',
+                        '<button type="button" class="btn btn-primary" id="b-demoend-start-ok">OK</button>',
+                    '</div>',
+                '</div>',
+            '</div>',
+        '</div>'
+    ].join("");
+
+    $("body").append(htmlDemoStart, htmlCellloginStart, htmlDemoendStart);
+};
+
 demo.initMain = function() {
   demoSession = JSON.parse(sessionStorage.getItem("demoSession"));
+
+  demo.addTutorialDialogMain();
 
   if (!demoSession.insApp) {
       demo.showModal('#modal-logined-start');
@@ -95,12 +134,6 @@ demo.initMain = function() {
 
   $('#b-logined-start-ok').on('click', function () {
      $('#modal-logined-start').modal('hide');
-  });
-  $('#b-socialed-start-ok').on('click', function () {
-     $('#modal-socialed-start').modal('hide');
-  });
-  $('#b-menued-start-ok').on('click', function () {
-     $('#modal-menued-start').modal('hide');
   });
   $('#b-sidemenu-end-ok').on('click', function () {
      $('#modal-sidemenu-end').modal('hide');
@@ -130,6 +163,127 @@ demo.initMain = function() {
   $('#b-appmarket-start-ok').on('click', function () {
      $('#modal-appmarket-start').modal('hide');
   });
+};
+
+demo.addTutorialDialogMain = function() {
+    let htmlLoginedStart = [
+        '<div id="modal-logined-start" class="modal fade" role="dialog" data-backdrop="static">',
+            '<div class="modal-dialog">',
+                '<div class="modal-content">',
+                    '<div class="modal-header login-header">',
+                        '<h4 class="modal-title" data-i18n="Demo.mainTitle1"></h4>',
+                    '</div>',
+                    '<div class="modal-body fontBlack" data-i18n="[html]Demo.mainTutorial1"></div>',
+                    '<div class="modal-footer">',
+                        '<button type="button" class="btn btn-primary" id="b-logined-start-ok">OK</button>',
+                    '</div>',
+                '</div>',
+            '</div>',
+        '</div>'
+    ].join("");
+
+    let htmlSidemenuStart = [
+        '<div id="modal-sidemenu-start" class="modal fade" role="dialog" data-backdrop="static">',
+            '<div class="modal-dialog">',
+                '<div class="modal-content">',
+                    '<div class="modal-header login-header">',
+                        '<h4 class="modal-title" data-i18n="Demo.mainTitle2"></h4>',
+                    '</div>',
+                    '<div class="modal-body fontBlack" data-i18n="[html]Demo.mainTutorial4"></div>',
+                    '<div class="modal-footer">',
+                        '<button type="button" class="btn btn-primary" id="b-sidemenu-start-ok">OK</button>',
+                    '</div>',
+                '</div>',
+            '</div>',
+        '</div>'
+    ].join("");
+
+    let htmlSidemenuEnd = [
+        '<div id="modal-sidemenu-end" class="modal fade" role="dialog" data-backdrop="static">',
+            '<div class="modal-dialog">',
+                '<div class="modal-content">',
+                    '<div class="modal-header login-header">',
+                        '<h4 class="modal-title" data-i18n="Demo.mainTitle2"></h4>',
+                    '</div>',
+                    '<div class="modal-body fontBlack" data-i18n="[html]Demo.mainTutorial5"></div>',
+                    '<div class="modal-footer">',
+                        '<button type="button" class="btn btn-primary" id="b-sidemenu-end-ok">OK</button>',
+                    '</div>',
+                '</div>',
+            '</div>',
+        '</div>'
+    ].join("");
+
+    let htmlAppmarketStart = [
+        '<div id="modal-appmarket-start" class="modal fade" role="dialog" data-backdrop="static">',
+            '<div class="modal-dialog">',
+                '<div class="modal-content">',
+                    '<div class="modal-header login-header">',
+                        '<h4 class="modal-title" data-i18n="Demo.mainTitle3"></h4>',
+                    '</div>',
+                    '<div class="modal-body fontBlack" data-i18n="[html]Demo.mainTutorial6"></div>',
+                    '<div class="modal-footer">',
+                        '<button type="button" class="btn btn-primary" id="b-appmarket-start-ok">OK</button>',
+                    '</div>',
+                '</div>',
+            '</div>',
+        '</div>'
+    ].join("");
+
+    let htmlInstalledStart = [
+        '<div id="modal-installed-start" class="modal fade" role="dialog" data-backdrop="static">',
+            '<div class="modal-dialog">',
+                '<div class="modal-content">',
+                    '<div class="modal-header login-header">',
+                        '<h4 class="modal-title" data-i18n="Demo.mainTitle4"></h4>',
+                    '</div>',
+                    '<div class="modal-body fontBlack" data-i18n="[html]Demo.mainTutorial7"></div>',
+                    '<div class="modal-footer">',
+                        '<button type="button" class="btn btn-primary" id="b-installed-start-ok">OK</button>',
+                    '</div>',
+                '</div>',
+            '</div>',
+        '</div>'
+    ].join("");
+
+    let htmlLogoutStart = [
+        '<div id="modal-logout-start" class="modal fade" role="dialog" data-backdrop="static">',
+            '<div class="modal-dialog">',
+                '<div class="modal-content">',
+                    '<div class="modal-header login-header">',
+                        '<h4 class="modal-title" data-i18n="Demo.mainTitle5"></h4>',
+                    '</div>',
+                    '<div class="modal-body fontBlack" data-i18n="[html]Demo.mainTutorial8"></div>',
+                    '<div class="modal-footer">',
+                        '<button type="button" class="btn btn-primary" id="b-logout-start-ok">OK</button>',
+                    '</div>',
+                '</div>',
+            '</div>',
+        '</div>'
+    ].join("");
+
+    $("body").append(htmlLoginedStart, htmlSidemenuStart, htmlSidemenuEnd, htmlAppmarketStart, htmlInstalledStart, htmlLogoutStart);
+};
+
+// Called by App Market from am.initAppMarket
+demo.addTutorialDialogAppMarket = function() {
+    let html = [
+        '<div id="modal-applicationlist-start" class="modal fade" role="dialog" data-backdrop="static">',
+            '<div class="modal-dialog">',
+                '<div class="modal-content">',
+                    '<div class="modal-header login-header">',
+                        '<h4 id="tutorialTitle" class="modal-title" data-i18n="[html]Demo.applicationTitle"></h4>',
+                    '</div>',
+                    '<div class="modal-body fontBlack" id="tutorial" data-i18n="[html]Demo.applicationTutorial"></div>',
+                    '<div class="modal-footer">',
+                        '<button type="button" class="btn btn-primary" id="b-applicationlist-start-ok">OK</button>',
+                    '</div>',
+                '</div>',
+            '</div>',
+        '</div>',
+    ].join("");
+
+    $("body").append(html);
 };
 
 demo.createProfileHeaderMenu = function() {
@@ -335,7 +489,7 @@ demo.createSideMenu = function() {
            '<div class="modal-dialog">' +
            '<div class="modal-content">' +
            '<div class="modal-header login-header">' +
-           '<button type="button" class="close" data-dismiss="modal">×</button>' +
+           '<button type="button" class="close" data-dismiss="modal">x</button>' +
            '<h4 class="modal-title">' + itemName.Logout + '</h4>' +
            '</div>' +
            '<div class="modal-body">' +
@@ -430,39 +584,5 @@ demo.execBarInstall = function() {
         }).fail(function(data) {
             alert(data);
         });
-    });
-};
-
-demo.execApp = function(schema,boxName) {
-    var childWindow = window.open('about:blank');
-    $.ajax({
-        type: "GET",
-        url: schema + "__/launch.json",
-        headers: {
-            'Authorization':'Bearer ' + cm.user.access_token,
-            'Accept':'application/json'
-        }
-    }).done(function(data) {
-        var launchObj = data.personal;
-        var launch = launchObj.web;
-        var target = cm.user.cellUrl + boxName;
-        cm.refreshTokenAPI().done(function(data) {
-            var url = launch;
-            url += '#target=' + target;
-            url += '&token=' + data.access_token;
-            url += '&ref=' + data.refresh_token;
-            url += '&expires=' + data.expires_in;
-            url += '&refexpires=' + data.refresh_token_expires_in;
-            childWindow.location.href = url;
-            childWindow = null;
-            if (launch.indexOf('MyBoard')) {
-                demoSession.sideMenu = true;
-                sessionStorage.setItem("demoSession", JSON.stringify(demoSession));
-                demo.showModal('#modal-logout-start');
-            }
-        });
-    }).fail(function(data) {
-        childWindow.close();
-        childWindow = null;
     });
 };

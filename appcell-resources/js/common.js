@@ -3,7 +3,7 @@ cm.imgBinaryFile = null;
 cm.user = JSON.parse(sessionStorage.getItem("sessionData"));
 
 // Do not display the following boxes in the installed list section
-cm.boxIgnoreList = ['io_personium_demo_HomeApplication', 'io_personium_demo_cell-manager'];
+cm.boxIgnoreList = ['io_personium_demo_HomeApplication'];
 
 // Logout
 cm.logout = function() {
@@ -150,7 +150,7 @@ cm.createSettingArea = function() {
     html += '<div class="modal-dialog">';
     html += '<div class="modal-content">';
     html += '<div class="modal-header login-header">';
-    html += '<button type="button" class="close" data-dismiss="modal">×</button>';
+    html += '<button type="button" class="close" data-dismiss="modal">x</button>';
     html += '<h4 class="modal-title" id="modal-confirmation-title"></h4>';
     html += '</div>';
     html += '<div class="modal-body">';
@@ -288,7 +288,7 @@ cm.createSideMenu = function() {
     // Modal content
                 '<div class="modal-content">',
                     '<div class="modal-header login-header">',
-                        '<button type="button" class="close" data-dismiss="modal">×</button>',
+                        '<button type="button" class="close" data-dismiss="modal">x</button>',
                         '<h4 class="modal-title" data-i18n="EditProfile"></h4>',
                     '</div>',
                     '<div class="modal-body">',
@@ -352,7 +352,7 @@ cm.createSideMenu = function() {
            // Modal content
            '<div class="modal-content">' +
            '<div class="modal-header login-header">' +
-           '<button type="button" class="close" data-dismiss="modal">×</button>' +
+           '<button type="button" class="close" data-dismiss="modal">x</button>' +
            '<h4 class="modal-title" data-i18n="ChangePass"></h4>' +
            '</div>' +
            '<div class="modal-body">' +
@@ -389,7 +389,7 @@ cm.createSideMenu = function() {
            '<div class="modal-dialog">' +
            '<div class="modal-content">' +
            '<div class="modal-header login-header">' +
-           '<button type="button" class="close" data-dismiss="modal">×</button>' +
+           '<button type="button" class="close" data-dismiss="modal">x</button>' +
            '<h4 class="modal-title" data-i18n="ChangeLng"></h4>' +
            '</div>' +
            '<div class="modal-body">' +
@@ -412,7 +412,7 @@ cm.createSideMenu = function() {
            '<div class="modal-dialog">' +
            '<div class="modal-content">' +
            '<div class="modal-header login-header">' +
-           '<button type="button" class="close" data-dismiss="modal">×</button>' +
+           '<button type="button" class="close" data-dismiss="modal">x</button>' +
            '<h4 class="modal-title" data-i18n="Logout"></h4>' +
            '</div>' +
            '<div class="modal-body" data-i18n="logoutConfirm"></div>' +
@@ -1153,34 +1153,6 @@ cm.editProfileHeaderMenu = function() {
     $("#tProfileDisplayName").html(cm.user.profile.DisplayName);
 }
 
-// APP
-//cm.execApp = function(schema,boxName) {
-//    $.ajax({
-//        type: "GET",
-//        url: schema + "__/launch.json",
-//        headers: {
-//            'Authorization':'Bearer ' + cm.user.access_token,
-//            'Accept':'application/json'
-//        }
-//    }).done(function(data) {
-//        var type = data.type;
-//        var launch = data[type];
-//        var target = cm.user.cellUrl + boxName;
-//        refreshToken().done(function(data) {
-//            switch (type) {
-//                case "web":
-//                    var url = launch;
-//                    url += '#target=' + target;
-//                    url += '&token=' + data.access_token;
-//                    url += '&ref=' + data.refresh_token;
-//                    url += '&expires=' + data.expires_in;
-//                    url += '&refexpires=' + data.refresh_token_expires_in;
-//                    window.open(url);
-//                    break;
-//            }
-//        });
-//    });
-//};
 cm.execApp = function(schema,boxName) {
     var childWindow = window.open('about:blank');
     $.ajax({
@@ -1194,24 +1166,25 @@ cm.execApp = function(schema,boxName) {
         var launchObj = data.personal;
         var launch = launchObj.web;
         var target = cm.user.cellUrl + boxName;
-        cm.appGetTargetToken(schema, launchObj.appTokenId, launchObj.appTokenPw).done(function(appToken) {
-            cm.appRefreshTokenAPI(schema, appToken.access_token).done(function(refTokenApp) {
-                var url = launch;
-                url += '?lng=' + i18next.language;
-                url += '#target=' + target;
-                url += '&token=' + refTokenApp.access_token;
-                url += '&ref=' + refTokenApp.refresh_token;
-                url += '&expires=' + refTokenApp.expires_in;
-                url += '&refexpires=' + refTokenApp.refresh_token_expires_in;
-                childWindow.location.href = url;
-                childWindow = null;
-            }).fail(function(refTokenApp) {
-                childWindow.close();
-                childWindow = null;
-            });
-        }).fail(function(appToken) {
-            childWindow.close();
+        
+        cm.refreshTokenAPI().done(function(data) {
+            let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
+            let isDemo = (tempMyProfile.IsDemo || false);
+
+            var url = launch;
+            url += '?lng=' + i18next.language;
+            url += '#target=' + target;
+            url += '&token=' + data.access_token;
+            url += '&ref=' + data.refresh_token;
+            url += '&expires=' + data.expires_in;
+            url += '&refexpires=' + data.refresh_token_expires_in;
+            childWindow.location.href = url;
             childWindow = null;
+            if (isDemo && launch.indexOf('MyBoard')) {
+                demoSession.sideMenu = true;
+                sessionStorage.setItem("demoSession", JSON.stringify(demoSession));
+                demo.showModal('#modal-logout-start');
+            }
         });
     }).fail(function(data) {
         childWindow.close();

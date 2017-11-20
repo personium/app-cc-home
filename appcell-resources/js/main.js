@@ -1,84 +1,57 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Personium Cell</title>
-  <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/8.4.3/i18next.min.js"></script>
-  <script src="https://unpkg.com/i18next-xhr-backend/i18nextXHRBackend.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/2.0.0/i18nextBrowserLanguageDetector.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-  <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/load.i18n.js"></script>
-  <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/utils.js"></script>
-  <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/common.js"></script>
-  <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/settings.js"></script>
-  <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/demo.js"></script>
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
-  <link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
-  <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
-  <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/settings.css' rel='stylesheet' type='text/css'>
-  <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/main.css' rel='stylesheet' type='text/css'>
-  <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/demo.css' rel='stylesheet' type='text/css'>
-  <!--     Fonts and icons     -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" />
-<script type="text/javascript">
-//ha.user= JSON.parse(location.hash.substring(1));
-ha = {};
+var ha = {};
 
-ha.systemApps = [
-    {
-        "name": "Community",
-        "icon": "003lighticons-03full.png",
-        "url": "socialgraph.html",
-        "used": false
-    }, {
-        "name": "AppMarket", // With context properly set, it can be AppMarket_biz
-        "icon": "001lighticons-31full.png",
-        "url": "applicationmarket.html",
-        "used": true
-    }
-];
+ha.init = function() {
+    let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
+    let isDemo = (tempMyProfile.IsDemo || false);
 
-function init() {
-    ha.deploySystemApps();
+    ha.displaySystemMenuItems();
     ha.dispInformation();
-    //createTitleHeader();
-    demo.createProfileHeaderMenu();
-    demo.createSideMenu();
-    demo.initSettings();
-    demo.initMain();
-    if (demoSession.insApp) {
+  
+    if (isDemo) {
+        demo.createProfileHeaderMenu();
+        demo.createSideMenu();
+        demo.initSettings();
+        demo.initMain();
+        if (demoSession.insApp) {
+            ha.dispInsAppList();
+        }
+        st.setBizTheme();
+    } else {
+        //createTitleHeader();
+        cm.createProfileHeaderMenu();
+        cm.createSideMenu();
+        st.initSettings();
         ha.dispInsAppList();
     }
-    // App launcher from the box list
-
-    $("#tutorial1").html(i18next.t("Demo.mainTutorial1"));
-    $("#tutorial2").html(i18next.t("Demo.mainTutorial2"));
-    $("#tutorial4").html(i18next.t("Demo.mainTutorial4"));
-    $("#tutorial5").html(i18next.t("Demo.mainTutorial5"));
-    $("#tutorial7").html(i18next.t("Demo.mainTutorial7"));
-    $("#tutorial8").html(i18next.t("Demo.mainTutorial8"));
-    st.setBizTheme();
 };
 
-ha.deploySystemApps = function() {
+ha.displaySystemMenuItems = function() {
+    let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
+    let isDemo = (tempMyProfile.IsDemo || false);
+    let systemMenuItems = [
+      {
+          "name": "Community",
+          "icon": "003lighticons-03full.png",
+          "url": "socialgraph.html"
+      }, {
+          "name": "AppMarket", // With context properly set, it can be AppMarket_biz
+          "icon": "001lighticons-31full.png",
+          "url": "applicationmarket.html"
+      }, {
+            "name": "Message",
+          "icon": "001lighticons-02full.png",
+          "url": "message.html"
+      }
+    ];
+
     /*
      * For older profile.json that might not have CellType key,
      * assign default cell type (Person) to it.
      */
     let cellType = cm.getCellType();
 
-    var arrCount = 0;
-    for (var i in ha.systemApps) {
-        var app = ha.systemApps[i];
+    for (var i in systemMenuItems) {
+        var app = systemMenuItems[i];
 
         var imgTag = $('<img>', {
             src: 'https://demo.personium.io/HomeApplication/__/icons/' + app.icon,
@@ -90,6 +63,25 @@ ha.deploySystemApps = function() {
         });
         divTag1.append($(imgTag));
 
+        if (app.name == "Message") {
+            var spanTag = $('<span>', {
+                class: 'badge',
+                id: 'messageCnt'
+            });
+            divTag1.append($(spanTag));
+            cm.getReceivedMessageCntAPI().done(function (res) {
+                var results = res.d.results;
+                var cnt = 0;
+                for (var i in results) {
+                    if (!results[i]["_Box.Name"]) {
+                        cnt++;
+                    }
+                }
+                
+                if (cnt > 0) $("#messageCnt").html(cnt);
+            })
+        }
+
         var divTag2 = $('<div>', {
             class: 'p-app-name',
             'data-i18n': app.name,
@@ -99,18 +91,15 @@ ha.deploySystemApps = function() {
         var aTag = $('<a>', {
             class: 'p-app'
         });
-        if (app.used) {
-            aTag.attr('href', app.url);
-        } else {
+        if (isDemo && _.contains(["Community", "Message"], app.name)) {
             aTag.attr('href', "javascript:void(0)");
+        } else {
+            aTag.attr('href', app.url);
         }
         aTag.append($(divTag1), $(divTag2));
 
         $("#dashboard").append($(aTag));
-        arrCount += 1;
     }
-
-    $("#serviceCount").append(arrCount);
 };
 
 ha.dispInsAppList = function() {
@@ -165,8 +154,7 @@ ha.dispInsAppListSchema = function(schema, boxName) {
                 }).fail(function(data) {
                     console.log("fail");
                 }).always(function(data) {
-                    //var html = '<div class="ins-app" align="center"><a class="ins-app-icon" onClick="demo.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div></div>';
-                    var html = '<a class="ins-app" onClick="demo.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank">'
+                    var html = '<a class="ins-app" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank">'
                              + '<div class="ins-app-icon">'
                              + '<img src = "' + imageSrc + '" class="ins-app-icon">'
                              + '<span class="badge">' + msgCnt + '</span>'
@@ -181,15 +169,15 @@ ha.dispInsAppListSchema = function(schema, boxName) {
 };
 
 ha.dispInformation = function() {
-// Currently the followings are dummy information
-    var html = '<li>'
+    // Currently the followings are dummy information
+    let html = '<li>'
              + '<a>'
              + '<div class="list-icon">'
              + '<img src="data:image/png;base64,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">'
              + '</div>'
              + '<div class="list-body">'
-             + '<div class="sizeBody">' + i18next.t("Dummy.MaintenanceTitle") + '</div>'
-             + '<div class="sizeCaption">' + i18next.t("Dummy.MaintenanceInfo") + '</div>'
+             + '<div class="sizeBody" data-i18n="Dummy.MaintenanceTitle"></div>'
+             + '<div class="sizeCaption" data-i18n="Dummy.MaintenanceInfo"></div>'
              + '</div>'
              + '</a>'
              + '</li>'
@@ -206,190 +194,3 @@ ha.dispInformation = function() {
              + '</li>';
     $("#information").append(html);
 };
-
-ha.dispEndDemo = function() {
-    demoSession.demoend = true;
-    sessionStorage.setItem("demoSession", JSON.stringify(demoSession));
-    $('#modal-logout-start').modal('show');
-};
-
-</script>
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-
-</head>
-<body id="translate">
-  <div class="mySpinner">
-    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-    <span class="sr-only">Loading...</span>
-  </div>
-  <div class="myHiddenDiv">
-    <div class="display-parent-div" id="displayParentDiv">
-        <!--<header>-->
-        <header class="profile-menu">
-        </header>
-        <!--</header>-->
-        <section class="dashboard-block" id="main-menu">
-            <h2>MENU</h2>
-            <div class="user-dashboard" id="dashboard">
-            </div>
-        </section>
-        <section class="dashboard-block" id="main-myService">
-            <h2>MY SERVICES</h2>
-            <div class="user-dashboard" id="dashboard_ins">
-            </div>
-        </section>
-        <section id="main-info">
-            <h2>INFORMATION</h2>
-            <ul class="list" id="information">
-            </ul>
-        </section>
-        <a id="info-readmore"><span data-i18n="Dummy.More">More</span></a>
-    </div>
-  </div>
-
-  <div id="modal-logined-start" class="modal fade" role="dialog" data-backdrop="static">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header login-header">
-                  <h4 class="modal-title" data-i18n="Demo.mainTitle1">You are now logged.</h4>
-              </div>
-              <div id="tutorial1" class="modal-body fontBlack">
-                  Login succeeded. <br>
-                  Next, we will explain the function of home application. <br>
-                  Please select the menu icon in the upper right.
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" id="b-logined-start-ok">OK</button>
-              </div>
-          </div>
-      </div>
-  </div>
-
-  <div id="modal-menued-start" class="modal fade" role="dialog" data-backdrop="static">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header login-header">
-                  <h4 class="modal-title"></h4>
-              </div>
-              <div class="modal-body fontBlack" data-i18n="Demo.mainTutorial2">
-                  Then select the social icon next.
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" id="b-menued-start-ok">OK</button>
-              </div>
-          </div>
-      </div>
-  </div>
-
-  <div id="modal-socialed-start" class="modal fade" role="dialog" data-backdrop="static">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header login-header">
-                  <h4 class="modal-title"></h4>
-              </div>
-              <div class="modal-body fontBlack" data-i18n="Demo.mainTutorial3">
-                  Then select the menu icon in the upper right corner.
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" id="b-socialed-start-ok">OK</button>
-              </div>
-          </div>
-      </div>
-  </div>
-
-  <div id="modal-sidemenu-start" class="modal fade" role="dialog" data-backdrop="static">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header login-header">
-                  <h4 class="modal-title" data-i18n="Demo.mainTitle2">side menu</h4>
-              </div>
-              <div id="tutorial4" class="modal-body fontBlack">
-                  The side menu has the following functions. <br>
-                  ・Edit profile<br>
-                    You can change display name and description of your cell, profile picture.<br>
-                  ・Change Password<br>
-                    You can change the password of the currently logged in account.<br>
-                  ・Account<br>
-                    You can create and edit accounts that can log in to your cell.<br>
-                  ・Role<br>
-                    You can create, edit, and delete roles.<br>
-                  ・Relation<br>
-                    You can create, edit, and delete relationships.<br>
-                  ・Log Out<br>
-                    Log out from the logged in cell.
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" id="b-sidemenu-start-ok">OK</button>
-              </div>
-          </div>
-      </div>
-  </div>
-
-  <div id="modal-sidemenu-end" class="modal fade" role="dialog" data-backdrop="static">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header login-header">
-                  <h4 class="modal-title" data-i18n="Demo.mainTitle2">side menu</h4>
-              </div>
-              <div id="tutorial5" class="modal-body fontBlack">
-                  Let's install the application this time.<br>
-                  Please select the black part on the left side of the screen and close the side menu.
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" id="b-sidemenu-end-ok">OK</button>
-              </div>
-          </div>
-      </div>
-  </div>
-
-  <div id="modal-appmarket-start" class="modal fade" role="dialog" data-backdrop="static">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header login-header">
-                  <h4 class="modal-title" data-i18n="Demo.mainTitle3">Application installation</h4>
-              </div>
-              <div class="modal-body fontBlack" data-i18n="Demo.mainTutorial6">
-                  Please select "App Market" icon in MENU.<br>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" id="b-appmarket-start-ok">OK</button>
-              </div>
-          </div>
-      </div>
-  </div>
-
-  <div id="modal-installed-start" class="modal fade" role="dialog" data-backdrop="static">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header login-header">
-                  <h4 class="modal-title" data-i18n="Demo.mainTitle4">Installation Complete</h4>
-              </div>
-              <div id="tutorial7" class="modal-body fontBlack">
-                  MyBoard was been installed in the cell. <br>
-                  Let's select the MyBoard icon and start the application.
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" id="b-installed-start-ok">OK</button>
-              </div>
-          </div>
-      </div>
-  </div>
-
-  <div id="modal-logout-start" class="modal fade" role="dialog" data-backdrop="static">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header login-header">
-                  <h4 class="modal-title" data-i18n="Demo.mainTitle5">Explanation End</h4>
-              </div>
-              <div id="tutorial8" class="modal-body fontBlack">
-                  Let's log out at the end.<br>
-                  From the menu icon in the upper right, select Logout.
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" id="b-logout-start-ok">OK</button>
-              </div>
-          </div>
-      </div>
-  </div>
-</body>
-</html>

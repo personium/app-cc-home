@@ -30,11 +30,6 @@
   <script type="text/javascript">
     function init() {
       demo.initTarget();
-
-      $("#iAccountName").attr("placeholder", i18next.t("accountNamePlaceHolder"));
-      $("#iAccountPw").attr("placeholder", i18next.t("accountPassPlaceHolder"));
-      $("#tutorial1").html(i18next.t("Demo.loginTutorial1"));
-      $("#tutorial2").html(i18next.t("Demo.loginTutorial2"));
     }
   </script>
 </head>
@@ -52,11 +47,11 @@
       <div id="tProfileDisplayName" class="sizeHeadLine">Guest</div>
       <div class="login-form-controls">
         <div>
-          <input id="iAccountName" type="text" placeholder="Please enter the account name." value=""/>
+          <input id="iAccountName" name="homeAppLoginID" type="text" data-i18n="[placeholder]accountNamePlaceHolder" placeholder="Please enter the account name." value=""/>
         </div>
 
         <div>
-          <input id="iAccountPw" type="password" placeholder="Please enter a password." value=""/>
+          <input id="iAccountPw" name="homeAppLoginPassword" type="password" data-i18n="[placeholder]accountPassPlaceHolder" placeholder="Please enter a password." value=""/>
         </div>
         <div>
           <button class="login_btn round-btn" id="bLogin"><span data-i18n="Login">LOGIN</span></button>
@@ -95,66 +90,6 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" id="b-input-cell-ok">OK</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="modal-demo-start" class="modal fade" role="dialog" data-backdrop="static">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header login-header">
-          <h4 class="modal-title" data-i18n="Demo.loginTitle1">Welcome to the demo version home application</h4>
-        </div>
-        <div class="modal-body fontBlack" >
-          <span id="tutorial1" class="fontBlack">
-              I will explain how to use the home application in the demo version. <br>
-              Let's first enter the cell URL to log in. <br>
-              This time the demo cell URL: <br>
-              https://demo.personium.io/democell/ <br>
-              I will try logging in to.
-          </span>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id="b-demo-start-ok">OK</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="modal-celllogin-start" class="modal fade" role="dialog" data-backdrop="static">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header login-header">
-          <h4 class="modal-title" data-i18n="Demo.loginTitle2">Selecting the login target cell is completed</h4>
-        </div>
-        <div class="modal-body fontBlack">
-          <span id="tutorial2" class="fontBlack">
-              You can now access the cell you are logging in to. <br>
-              Let's login to the cell. <br>
-              Login ID to this cell and PASS<br>
-              ID: me <br>
-              PW: democell <br>
-          </span>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id="b-celllogin-start-ok">OK</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="modal-demoend-start" class="modal fade" role="dialog" data-backdrop="static">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header login-header">
-          <h4 class="modal-title" data-i18n="Demo.loginTitle3">Thank you for your hard work.</h4>
-        </div>
-        <div class="modal-body fontBlack" data-i18n="Demo.loginTutorial3">
-            This concludes the description of the demo home application.
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id="b-demoend-start-ok">OK</button>
         </div>
       </div>
     </div>

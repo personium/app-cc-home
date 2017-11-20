@@ -1,20 +1,47 @@
 var am = {};
 
 am.initAppMarket = function() {
+    let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
+    let isDemo = (tempMyProfile.IsDemo || false);
+
+    if (isDemo) {
+        demoSession = JSON.parse(sessionStorage.getItem("demoSession"));
+        demo.addTutorialDialogAppMarket();
+        demo.showModal("#modal-applicationlist-start");
+    }
+    
     cm.createTitleHeader(false, true);
     cm.createSideMenu();
     cm.createBackMenu("main.html");
     cm.setAppMarketTitle();
-    st.initSettings();
+
+    if (isDemo) {
+        demo.initSettings();
+    } else {
+        st.initSettings();
+    }
+
     $("#dashboard").append('<div class="panel list-group toggle-panel" id="toggle-panel1"></div>');
 
-    am.createApplicationList();
+    if (isDemo) {
+        demo.createApplicationList();
+    } else {
+        am.createApplicationList();
+    }
+
     // menu-toggle
     $(".appInsMenu").css("display", "none");
     $("#appInsToggle.toggle").on("click", function() {
-      $(this).toggleClass("active");
-      $(".appInsMenu").slideToggle();
+        $(this).toggleClass("active");
+        $(".appInsMenu").slideToggle();
     });
+
+    if (isDemo) {
+        $('#b-applicationlist-start-ok').on('click', function () {
+            $('#modal-applicationlist-start').modal('hide');
+        });
+        st.setBizTheme();
+    }
 }
 
 am.createApplicationList = function() {

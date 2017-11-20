@@ -1006,7 +1006,7 @@ sg.createProfileModal = function () {
         // Modal content
         '<div class="modal-content">' +
         '<div class="modal-header login-header">' +
-        '<button type="button" class="close" data-dismiss="modal">Å~</button>' +
+        '<button type="button" class="close" data-dismiss="modal">x</button>' +
         '<h4 class="modal-title" id="modalProfileName"></h4>' +
         '</div>' +
         '<div class="modal-body">' +
@@ -1026,7 +1026,7 @@ sg.createQRScannerModal = function () {
         // Modal content
         '<div class="modal-content">' +
         '<div class="modal-header login-header">' +
-        '<button type="button" class="close" data-dismiss="modal">Å~</button>' +
+        '<button type="button" class="close" data-dismiss="modal">x</button>' +
         '<h4 class="modal-title" data-i18n="QRScanner"></h4>' +
         '</div>' +
         '<div class="modal-body">' +
