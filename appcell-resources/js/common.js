@@ -150,7 +150,7 @@ cm.createSettingArea = function() {
     html += '<div class="modal-dialog">';
     html += '<div class="modal-content">';
     html += '<div class="modal-header login-header">';
-    html += '<button type="button" class="close" data-dismiss="modal">×</button>';
+    html += '<button type="button" class="close" data-dismiss="modal">x</button>';
     html += '<h4 class="modal-title" id="modal-confirmation-title"></h4>';
     html += '</div>';
     html += '<div class="modal-body">';
@@ -288,7 +288,7 @@ cm.createSideMenu = function() {
     // Modal content
                 '<div class="modal-content">',
                     '<div class="modal-header login-header">',
-                        '<button type="button" class="close" data-dismiss="modal">×</button>',
+                        '<button type="button" class="close" data-dismiss="modal">x</button>',
                         '<h4 class="modal-title" data-i18n="EditProfile"></h4>',
                     '</div>',
                     '<div class="modal-body">',
@@ -352,7 +352,7 @@ cm.createSideMenu = function() {
            // Modal content
            '<div class="modal-content">' +
            '<div class="modal-header login-header">' +
-           '<button type="button" class="close" data-dismiss="modal">×</button>' +
+           '<button type="button" class="close" data-dismiss="modal">x</button>' +
            '<h4 class="modal-title" data-i18n="ChangePass"></h4>' +
            '</div>' +
            '<div class="modal-body">' +
@@ -389,7 +389,7 @@ cm.createSideMenu = function() {
            '<div class="modal-dialog">' +
            '<div class="modal-content">' +
            '<div class="modal-header login-header">' +
-           '<button type="button" class="close" data-dismiss="modal">×</button>' +
+           '<button type="button" class="close" data-dismiss="modal">x</button>' +
            '<h4 class="modal-title" data-i18n="ChangeLng"></h4>' +
            '</div>' +
            '<div class="modal-body">' +
@@ -412,7 +412,7 @@ cm.createSideMenu = function() {
            '<div class="modal-dialog">' +
            '<div class="modal-content">' +
            '<div class="modal-header login-header">' +
-           '<button type="button" class="close" data-dismiss="modal">×</button>' +
+           '<button type="button" class="close" data-dismiss="modal">x</button>' +
            '<h4 class="modal-title" data-i18n="Logout"></h4>' +
            '</div>' +
            '<div class="modal-body" data-i18n="logoutConfirm"></div>' +

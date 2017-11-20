@@ -489,7 +489,7 @@ demo.createSideMenu = function() {
            '<div class="modal-dialog">' +
            '<div class="modal-content">' +
            '<div class="modal-header login-header">' +
-           '<button type="button" class="close" data-dismiss="modal">×</button>' +
+           '<button type="button" class="close" data-dismiss="modal">x</button>' +
            '<h4 class="modal-title">' + itemName.Logout + '</h4>' +
            '</div>' +
            '<div class="modal-body">' +
