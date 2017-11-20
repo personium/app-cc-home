@@ -620,7 +620,7 @@ st.openBoxInstall = function () {
               '</div>',
               '<div class="col-xs-10 col-sm-11">',
                 '<fieldset id="boxInsSelect">',
-                  '<input type="file" class="fileUpload" onchange="st.attachBarFile();" id="selectBarFile" accept="bar/*" style="display: none">',
+                  '<input class="resetField" type="file" class="fileUpload" onchange="st.attachBarFile();" id="selectBarFile" accept="bar/*" style="display: none">',
                   '<button class="btn btn-primary" id="selectBarButton" type="button" data-i18n="SelectBar"></button>',
                   '<label id="selectBarFileLbl" style="margin-left:10px;"></label>',
                 '</fieldset>',
@@ -635,7 +635,7 @@ st.openBoxInstall = function () {
               '</div>',
               '<div class="col-xs-10 col-sm-11">',
                 '<fieldset id="boxInsInput" disabled>',
-                  '<input type="text" value="" id="input_barUrl" onblur="st.inputBarUrlBlurEvent();" data-i18n="[placeholder]barfileUrlInput">',
+                  '<input class="resetField" type="text" value="" id="input_barUrl" onblur="st.inputBarUrlBlurEvent();" data-i18n="[placeholder]barfileUrlInput">',
                 '</fieldset>',
                 '<span id="inputBarErrorMsg" style="color:red"></span>',
               '</div>',
@@ -646,7 +646,7 @@ st.openBoxInstall = function () {
                 '</div>',
               '</div>',
               '<div class="col-xs-10 col-sm-11">',
-                '<input type="text" value="" id="inputBoxName" onblur="st.inputBoxNameBlurEvent();">',
+                '<input class="resetField" type="text" value="" id="inputBoxName" onblur="st.inputBoxNameBlurEvent();">',
                 '<span id="inputBoxErrorMsg" style="color:red"></span>',
               '</div>',
             '</div>',
@@ -871,7 +871,15 @@ st.execUnofficialBoxInstall = function () {
         // box installation failure
         var res = JSON.parse(data.responseText);
         alert("An error has occurred.\n" + res.message.value);
+    }).always(function (data) {
+        st.resetInputFields();
     });
+}
+st.resetInputFields = function () {
+    $("#dvBoxInstall .resetField").val("");
+    $("#selectBarFileLbl").empty();
+    st.barFileArrayBuffer = null;
+    $("#boxInsType_select").click();
 }
 st.displayUnofficialBoxInsMsg = function (id, msgId) {
     $("#" + id).attr("data-i18n", msgId).localize();
@@ -1510,14 +1518,14 @@ st.validateName = function (displayName, displayNameSpan, addSpecial, addStart) 
         }
 };
 st.doesUrlContainSlash = function(schemaURL, schemaSpan,txtID,message) {
-	if (schemaURL != undefined) {
-		if (!schemaURL.endsWith("/")) {
-			document.getElementById(schemaSpan).innerHTML = message;
-			return false;
-		}
-		document.getElementById(schemaSpan).innerHTML = "";
-		return true;
-	}
+    if (schemaURL != undefined) {
+        if (!schemaURL.endsWith("/")) {
+            document.getElementById(schemaSpan).innerHTML = message;
+            return false;
+        }
+        document.getElementById(schemaSpan).innerHTML = "";
+        return true;
+    }
 };
 st.charCheck = function(check, displayNameSpan) {
   var passLen = check.val().length;
