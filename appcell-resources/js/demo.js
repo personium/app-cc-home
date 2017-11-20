@@ -28,7 +28,7 @@ demo.initTarget = function() {
      $("#pCellUrl").val(lg.cellUrl());
   });
   $('#modal-input-cell').on('hidden.bs.modal', function() {
-     if (!demoSession || !demoSession.demoend) {
+     if (demoSession && demoSession.demoend) {
           sessionStorage.clear();
           location.href ="https://demo.personium.io/HomeApplication/__/box-resources/login.html?mode=global";
      };
