@@ -31,6 +31,7 @@ ut.cellUrlWithEndingSlash = function(tempUrl, raiseError) {
  *     2. ended without "/", "https://demo.personium.io/debug-user1"
  *     3. window path "c:\\home\hoge\hello.png"
  *     4. linux path "/home/hoge/hello.png"
+ *     5. "https://demo.personium.io/debug-user1/HomeApplicatin.bar"
  *     withoutExtension: Exclude the extension from the acquired file name
  * Return:
  *     debug-user1
