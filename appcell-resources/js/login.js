@@ -133,6 +133,7 @@ lg.loadProfile = function() {
         lg.populateProfile(noProfile);
     }).always(function(){
         lg.setBizTheme();
+        lg.automaticLogin();
     });
 };
 lg.populateProfile = function(profile) {
@@ -153,11 +154,11 @@ lg.setBizTheme = function() {
     } else {
         $('body').addClass('body');
     };
-    $('body > div.mySpinner').hide();
-    $('body > div.myHiddenDiv').show();
 };
 
 lg.sendAccountNamePw = function(username, pw) {
+    $('body > div.mySpinner').show();
+    $('body > div.myHiddenDiv').hide();
     $.ajax({
         type: "POST",
         url: lg.rootUrl + '__token',
@@ -181,7 +182,10 @@ lg.sendAccountNamePw = function(username, pw) {
                 location.href = "main.html";
                 //location.href = "main.html#" + JSON.stringify(data);
     }).fail(function(){
-        //alert("fail");
+                // login failed
+                $('body > div.mySpinner').hide();
+                $('body > div.myHiddenDiv').show();
+
                 $("#error_area").removeClass('frames_active');
                 $("#error_area").removeClass('frames_hide');
                 $("#error_msg").html(i18next.t("incorrectAccountOrPass"));
@@ -200,6 +204,32 @@ lg.reAnimation = function() {
     el.before(newone);
 
     $("." + el.attr("class") + ":last").remove();
+}
+
+/*
+ * Try automatic login using hash information
+ */
+lg.automaticLogin = function () {
+    // If there is id,password in the parameter, log in automatically
+    let hash = location.hash.substring(1);
+    let params = hash.split("&");
+    let arrParam = {};
+    for (var i in params) {
+        var param = params[i].split("=");
+        arrParam[param[0]] = param[1];
+    }
+    if (arrParam.id && arrParam.password) {
+        // Try login with id, password
+        $("#iAccountName").val(arrParam.id);
+        $("#iAccountPw").val(arrParam.password);
+        lg.sendAccountNamePw($("#iAccountName").val(), $("#iAccountPw").val());
+    } else {
+        // manual login
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }
+    // Clear fragments
+    location.hash = "";
 }
 
 lg.getCell = function(cellUrl) {
