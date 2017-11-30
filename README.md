@@ -1,18 +1,8 @@
-# home-app
-This version of HomeApp allows you to install it directly onto your cell.
+# Overview  
+HomeApp is a GUI tool that helps you manage your profile, social network and Personium apps.  
+The latest version supports the following modes.  
 
-## App CellとBox側での役割分担
-
-App Cell側には、画像や共通CSS, JSなどを配置する。
-barインストールを前提にしてHTMLはすべてbox側に置く。
-
-・なるべくAppCellにものを置くことでBoxのVersion-upなしで
-　AppCell側で動作更新ができる。
-
-・動作はSame Origin前提にしたいため、HTMLファイルはBoxサイドに配置する。
-
-・開発時は各機能Boxサイドの一つのhtmlファイルで完結するように作ることで
-　開発のしやすさを確保する。
-・開発が進んでゆくにしたがって、共通機能等をでき次第
-　appcell側にCSS, JSなどを共通でもつ。
-
+1. Global mode - User must enter the target Cell URL manually and then log　in.  
+HomeApp is already running in [an App Cell in the Demo environment](https://demo.personium.io/HomeApplication/__/box-resources/login.html?mode=global&lng=en).  
+1. Local/Cell mode - User can log　in directly to the target Cell (target Cell URL is included in the login page URL).  
+HomeApp must be pre-installed inside the target Cell.  
