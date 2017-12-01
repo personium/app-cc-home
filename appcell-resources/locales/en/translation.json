@@ -167,6 +167,6 @@
     ,"applicationTutorial": "Installed applications are displayed in \"installed\", <br>Applications not installed are displayed in \"Application list\". <br>Now I have not installed anything, so let's install MyBoard."
  }
  ,"Dummy": {
-    ,"More": "More"
+    "More": "More"
  }
 }
