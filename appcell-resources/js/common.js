@@ -1164,7 +1164,7 @@ cm.execApp = function(schema,boxName) {
         }
     }).done(function(data) {
         var launchObj = data.personal;
-        var launch = cm.getAppUrl(launchObj, boxName);
+        var launch = ut.changeLocalBoxToBoxUrl(launchObj.web, boxName);
         var target = cm.user.cellUrl + boxName;
         
         cm.refreshTokenAPI().done(function(data) {
@@ -1191,17 +1191,7 @@ cm.execApp = function(schema,boxName) {
         childWindow = null;
     });
 };
-cm.getAppUrl = function (launchObj, boxName) {
-    let appUrl = "";
-    if (launchObj.target) {
-        // App that requires user to access a HTML file within the user's Cell first.
-        appUrl = sessionStorage.targetCellUrl + boxName + launchObj.target;
-    } else {
-        appUrl = launchObj.web;
-    }
-    
-    return appUrl;
-}
+
 cm.getReceivedMessageCntAPI = function () {
     return $.ajax({
         type: "GET",
