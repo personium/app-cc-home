@@ -50,59 +50,8 @@ header {
 #main-menu {
   background-color: #ededff;
 }
-#main-mySercvice,
-#main-info {
+#main-mySercvice {
   background-color: #ffffff;
-}
-#main-info {
-  border-top: 8px solid #ededed;
-}
-#main-info::before {
-  content: "";
-  display: block;
-  width: 100%;
-  height: 1px;
-  background-color: #d4d4d4;
-}
-
-/* お知らせ */
-#main-info h2 {
-  margin: 20px 16px 4px;
-}
-.info-list {
-  /* border-top: 1px solid #d4d4d4; */
-}
-.info-list > li {
-  border-bottom: 1px solid #d4d4d4;
-}
-.info-list > li:last-child {
-  border-bottom: 0 none;
-}
-.info-list > li > a {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 16px 20px;
-  color: #333333;
-}
-.info-list > li > a > * {
-  flex: 0 0 auto;
-}
-
-.info-icon img {
-  width: 40px;
-  height: 40px;
-}
-.info-list > li > a > .info-subject {
-  flex: 1 1 auto;
-  margin: 0 16px;
-  overflow: hidden;
-}
-.info-subject .sizeCaption {
-  color: #6d6d6d;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
 }
 
 #info-readmore {
@@ -138,10 +87,5 @@ header {
   .p-app-name,
   .ins-app-name {
     font-size: 14px;
-  }
-
-  .info-icon img {
-    width: 40px;
-    height: 40px;
   }
 }

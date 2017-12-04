@@ -167,10 +167,6 @@
     ,"applicationTutorial": "Installed applications are displayed in \"installed\", <br>Applications not installed are displayed in \"Application list\". <br>Now I have not installed anything, so let's install MyBoard."
  }
  ,"Dummy": {
-     "MaintenanceTitle": "Maintenance announcement"
-    ,"MaintenanceInfo": "Maintenance will be carried out on 6/14 AM 2: 00 - 4: 00."
-    ,"MaintenanceTitle02": "Nutritionist column is updated"
-    ,"MaintenanceInfo02": "[7 ways to increase vegetable intake]"
-    ,"More": "More"
+    "More": "More"
  }
 }
