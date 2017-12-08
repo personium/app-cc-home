@@ -1165,7 +1165,6 @@ cm.execApp = function(schema,boxName) {
     }).done(function(data) {
         var launchObj = data.personal;
         var launch = ut.changeLocalBoxToBoxUrl(launchObj.web, boxName);
-        var target = cm.user.cellUrl + boxName;
         
         cm.refreshTokenAPI().done(function(data) {
             let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
@@ -1173,11 +1172,8 @@ cm.execApp = function(schema,boxName) {
 
             var url = launch;
             url += '?lng=' + i18next.language;
-            url += '#target=' + target;
-            url += '&token=' + data.access_token;
-            url += '&ref=' + data.refresh_token;
-            url += '&expires=' + data.expires_in;
-            url += '&refexpires=' + data.refresh_token_expires_in;
+            url += '#cell=' + cm.user.cellUrl;
+            url += '&refresh_token=' + data.refresh_token;
             childWindow.location.href = url;
             childWindow = null;
             if (isDemo && launch.indexOf('MyBoard')) {
