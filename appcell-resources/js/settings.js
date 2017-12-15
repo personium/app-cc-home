@@ -144,7 +144,7 @@ st.dispAccountList = function(json) {
     return (val1.Name < val2.Name ? 1 : -1);
   })
   var html = '<div class="panel-body">';
-  for (var i in results) {
+  for (var i = 0; i < results.length; i++) {
     var acc = json.d.results[i];
     var type = acc.Type;
     var typeImg = "https://demo.personium.io/HomeApplication/__/icons/ico_user_00.png";
@@ -264,8 +264,11 @@ st.dispAccountRoleList = function(json, accName, no) {
   results.sort(function(val1, val2) {
     return (val1.Name < val2.Name ? 1 : -1);
   })
+  var html = '<div class="panel-body" id="accRoleList">';
+  html += '</div>';
+  $("#setting-panel2").append(html);
   var html = '<div class="panel-body">';
-  for (var i in results) {
+  for (var i = 0; i < results.length; i++) {
     var acc = json.d.results[i];
     var url = acc.uri;
     var matchName = url.match(/\(Name='(.+)',/);
@@ -277,28 +280,67 @@ st.dispAccountRoleList = function(json, accName, no) {
     } else {
       boxName = "[main]";
     }
-    html += '<div class="list-group-item">';
-    html += '<table class="table-fixed"><tr>';
-    html += '<td style="width: 85%;"><p class="ellipsisText">' + name + '(' + boxName + ')</p></td>';
-    html += '<td colspan="2" style="width: 15%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelAccountRoleModal(\'' + accName + '\',\'' + name + '\',\'' + boxName + '\',\'' + no + '\');return(false)">' + i18next.t("Detach") + '</a></td>';
-    html += '</tr>';
-    html += '</table></div>';
+
+    var tempHTML = [
+        '<table class="table-fixed">',
+        '<tr>',
+        '<td rowspan="2" style="width: 25%;"><img class="image-circle" data-i18n="[src]profTrans:' + name + '_' + boxName + '_Image" src="' + cm.notImage + '" alt="user"></td>',
+        '<td class="ellipsisText" data-i18n="profTrans:' + name + '_' + boxName + '_DisplayName">' + name + '(' + boxName + ')</td>',
+        '</tr>',
+        '<tr>',
+        '<td><p class="ellipsisText"><font color="LightGray" data-i18n="profTrans:' + name + '_' + boxName + '_Description"></font></p></td>',
+        '</tr>',
+        '</table>'
+    ].join("");
+    var firstCell = $('<td>', {
+        style: 'width: 90%;'
+    }).append(tempHTML);
+
+    var html = '';
+    var anotherTag = $('<a>', {
+        class: 'del-button list-group-item',
+        style: 'top:25%;',
+        onClick: 'st.dispDelAccountRoleModal(\'' + accName + '\',\'' + name + '\',\'' + boxName + '\',\'' + no + '\')',
+        'data-i18n': 'Del'
+    });
+    var secondCell = $('<td>', {
+        style: 'width: 10%;'
+    }).append($(anotherTag));
+
+    var aRow = $('<tr>').append($(firstCell), $(secondCell));
+
+    var aTable = $('<table>', {
+        style: 'width: 100%;'
+    }).append($(aRow));
+
+    var aDiv = $('<div>', {
+        class: 'list-group-item'
+    }).append($(aTable));
+    $("#accRoleList").append($(aDiv)).localize();
+
+    //html += '<div class="list-group-item">';
+    //html += '<table class="table-fixed"><tr>';
+    //html += '<td style="width: 85%;"><p class="ellipsisText" data-i18n="profTrans:' + name + '_' + boxName + '_DisplayName">' + name + '(' + boxName + ')</p></td>';
+    //html += '<td colspan="2" style="width: 15%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelAccountRoleModal(\'' + accName + '\',\'' + name + '\',\'' + boxName + '\',\'' + no + '\');return(false)">' + i18next.t("Detach") + '</a></td>';
+    //html += '</tr>';
+    //html += '</table></div>';
   }
   html += '<div class="list-group-item">';
   html += '<a class="allToggle" href="#" onClick="cm.dispAssignRole(\'acc\', true)" data-i18n="AssigningRolesPlus"></a></div>';
-  html += '</div>';
-  $("#setting-panel2").append(html).localize();
+  $("#accRoleList").append(html).localize();
 }
 st.dispDelAccountRoleModal = function(accName, roleName, boxName, no) {
     st.linkAccName = accName;
     cm.linkName = roleName;
     if (boxName === "[main]") {
-      cm.linkBoxName = null;
+        cm.linkBoxName = null;
+        $("#dvTextConfirmation").html(i18next.t("removeAssociationRole", { value1: roleName, value2: boxName })).localize();
     } else {
-      cm.linkBoxName = boxName
+        cm.linkBoxName = boxName;
+        $("#dvTextConfirmation").html(i18next.t("removeAssociationRole", { value1: i18next.t("profTrans:" + roleName + "_" + boxName + "_DisplayName"), value2: "" })).localize();
     }
     st.linkAccNameNo = no;
-    $("#dvTextConfirmation").html(i18next.t("removeAssociationRole", {value1:roleName, value2:boxName})).localize();
+    
     $("#modal-confirmation-title").html(i18next.t("DeleteAssigningRole"));
     $('#b-del-acclinkrole-ok').css("display","");
     $('#modal-confirmation').modal('show');
@@ -352,7 +394,7 @@ st.dispBoxList = function(json, id) {
   })
   $("#" + id).append('<option value="">' + i18next.t("selectBox") + '</option>');
   $("#" + id).append('<option value="[main]">[main]</option>');
-  for (var i in results) {
+  for (var i = 0; i < results.length; i++) {
     var objBox = json.d.results[i];
     var boxName = objBox.Name;
     $("#" + id).append('<option value="' + boxName + '">' + boxName + '</option>');
@@ -468,7 +510,7 @@ st.dispApplicationList = function(json) {
     results.sort(function(val1, val2) {
       return (val1.SchemaUrl < val2.SchemaUrl ? 1 : -1);
     })
-    for (var i in results) {
+    for (var i = 0; i < results.length; i++) {
       var schema = results[i].SchemaUrl;
       if (st.insAppList.indexOf(schema) < 0) {
           st.dispApplicationListSchema(results[i],i);
@@ -997,7 +1039,7 @@ st.dispRoleList = function(json) {
   var html = "";
   $("#setting-panel1").empty();
   html += '<div class="panel-body">';
-  for (var i in results) {
+  for (var i = 0; i < results.length; i++) {
     var objRole = json.d.results[i];
     var boxName = objRole["_Box.Name"];
     if (boxName === null) {
@@ -1133,7 +1175,7 @@ st.dispRelationList = function(json) {
   $("#setting-panel1").empty();
   html += '<div class="panel-body">';
 
-  for (var i in results) {
+  for (var i = 0; i < results.length; i++) {
     var objRelation = json.d.results[i];
     var boxName = objRelation["_Box.Name"];
     if (boxName === null) {
@@ -1233,7 +1275,7 @@ st.dispRelationRoleList = function(json, relName, relBoxName, no) {
     return (val1.Name < val2.Name ? 1 : -1);
   })
   var html = '<div class="panel-body">';
-  for (var i in results) {
+  for (var i = 0; i < results.length; i++) {
     var acc = json.d.results[i];
     var url = acc.uri;
     var matchName = url.match(/\(Name='(.+)',/);

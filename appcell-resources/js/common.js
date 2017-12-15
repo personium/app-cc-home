@@ -266,8 +266,9 @@ cm.createSideMenu = function() {
     // setting menu
     html += '<li><a class="allToggle" id="accountToggle" href="#" data-i18n="Account"></a></li>';
     html += '<li><a class="allToggle" id="applicationToggle" href="#" data-i18n="Application"></a></li>';
-    html += '<li><a class="allToggle" id="roleToggle" href="#" data-i18n="Role"></a></li>';
-    html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="#" data-i18n="Relation"></a></li>';
+    // Hiding role / relation management
+    //html += '<li><a class="allToggle" id="roleToggle" href="#" data-i18n="Role"></a></li>';
+    //html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="#" data-i18n="Relation"></a></li>';
     // change language
     html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-chgLng" data-i18n="ChangeLng"></a></li>'
     // log out
@@ -472,8 +473,55 @@ cm.createSideMenu = function() {
         $("#selectLng").val(i18next.language);
     });
 
+    // Register role/relation in data-i18n
+    cm.getRoleList().done(function (data) {
+        var results = data.d.results;
+        for (var i = 0; i < results.length; i++) {
+            var res = results[i];
+            var name = res.Name;
+            var boxName = res["_Box.Name"];
+            if (boxName != null) {
+                cm.registerProfI18n(name, boxName, "roles");
+            }
+        }
+    });
+    cm.getRelationList().done(function (data) {
+        var results = data.d.results;
+        for (var i = 0; i < results.length; i++) {
+            var res = results[i];
+            var name = res.Name;
+            var boxName = res["_Box.Name"];
+            if (boxName != null) {
+                cm.registerProfI18n(name, boxName, "relations");
+            }
+        }
+    });
+
     // Time Out Set
     cm.setIdleTime();
+}
+cm.registerProfI18n = function (name, boxName, fileName) {
+    cm.getBoxInfo(boxName).done(function (boxRes) {
+        let schemaUrl = boxRes.d.results.Schema;
+        let transName = name + "_" + boxName;
+        let defProf = {
+            DisplayName: name + '(' + boxName + ')',
+            Description: "",
+            Image: cm.notImage
+        }
+        cm.getTargetProfile(schemaUrl, fileName).done(function (defRes) {
+            if (defRes[name]) {
+                defProf = {
+                    DisplayName: defRes[name].DisplayName,
+                    Description: defRes[name].Description,
+                    Image: defRes[name].Image
+                }
+            }
+        }).always(function () {
+            cm.i18nAddProfile("en", "profTrans", transName, defProf, schemaUrl, fileName, name);
+            cm.i18nAddProfile("ja", "profTrans", transName, defProf, schemaUrl, fileName, name);
+        });
+    });
 }
 
 cm.createQRCodeImg = function(url) {
@@ -579,7 +627,7 @@ cm.dispRoleList = function(json, id, multiFlag) {
     }
 
     // role list(selectBox)
-    $("#" + id).append('<option value="' + objRole.Name + '(' + boxName + ')">' + objRole.Name + '(' + boxName + ')</option>');
+    $("#" + id).append('<option data-i18n="profTrans:' + objRole.Name + '_' + boxName + '_DisplayName" value="' + objRole.Name + '(' + boxName + ')">' + objRole.Name + '(' + boxName + ')</option>').localize();
   }
 }
 cm.dispAssignRole = function(type, flg) {
@@ -677,7 +725,7 @@ cm.dispRelationList = function(json, id, multiFlag) {
     }
 
     // relation list(selectBox)
-    $("#" + id).append('<option value="' + objRelation.Name + '(' + boxName + ')">' + objRelation.Name + '(' + boxName + ')</option>');
+    $("#" + id).append('<option data-i18n="profTrans:' + objRelation.Name + '_' + boxName + '_DisplayName" value="' + objRelation.Name + '(' + boxName + ')">' + objRelation.Name + '(' + boxName + ')</option>').localize();
   }
 };
 
@@ -962,18 +1010,64 @@ cm.doesUrlContainSlash = function (cellURL, span, message) {
     }
 };
 
-cm.i18nAddProfile = function(lng , ns, boxName, json) {
-    if (json.DisplayName[lng]) {
-        i18next.addResource(lng, ns, boxName + "_DisplayName", json.DisplayName[lng]);
-    } else {
-        i18next.addResource(lng, ns, boxName + "_DisplayName", json.DisplayName);
+cm.i18nAddProfile = function (lng, ns, transName, defJson, schemaUrl, fileName, typeName, appFlag) {
+    let defImage = cm.notImage;
+    if (appFlag) {
+        defImage = cm.notAppImage;
+    }
+    if (defJson.Image) {
+        defImage = defJson.Image;
     }
 
-    if (json.Description[lng]) {
-        i18next.addResource(lng, ns, boxName + "_Description", json.Description[lng]);
-    } else {
-        i18next.addResource(lng, ns, boxName + "_Description", json.Description);
-    }
+    cm.getTargetProfileLng(schemaUrl, lng, fileName).done(function (profRes) {
+        var profJson = {};
+        if (typeName) {
+            if (profRes[typeName]) {
+                profJson = {
+                    DisplayName: profRes[typeName].DisplayName,
+                    Description: profRes[typeName].Description,
+                    Image: profRes[typeName].Image
+                }
+            }
+        } else {
+            profJson = {
+                DisplayName: profRes.DisplayName,
+                Description: profRes.Description,
+                Image: profRes.Image
+            }
+        }
+
+        if (profJson.DisplayName) {
+            i18next.addResource(lng, ns, transName + "_DisplayName", profJson.DisplayName);
+        } else {
+            i18next.addResource(lng, ns, transName + "_DisplayName", defJson.DisplayName);
+        }
+        if (profJson.Description) {
+            i18next.addResource(lng, ns, transName + "_Description", profJson.Description);
+        } else {
+            i18next.addResource(lng, ns, transName + "_Description", defJson.Description);
+        }
+        if (profJson.Image) {
+            i18next.addResource(lng, ns, transName + "_Image", profJson.Image);
+        } else {
+            i18next.addResource(lng, ns, transName + "_Image", defImage);
+        }
+    }).fail(function () {
+        if (defJson.DisplayName[lng]) {
+            i18next.addResource(lng, ns, transName + "_DisplayName", defJson.DisplayName[lng]);
+        } else {
+            i18next.addResource(lng, ns, transName + "_DisplayName", defJson.DisplayName);
+        }
+
+        if (defJson.Description[lng]) {
+            i18next.addResource(lng, ns, transName + "_Description", defJson.Description[lng]);
+        } else {
+            i18next.addResource(lng, ns, transName + "_Description", defJson.Description);
+        }
+        i18next.addResource(lng, ns, transName + "_Image", defImage);
+    }).always(function () {
+        updateContent();
+    });
 };
 
 // This method checks idle time
@@ -1104,6 +1198,32 @@ cm.getBoxList = function() {
             'Accept':'application/json'
           }
   })
+}
+cm.getBoxInfo = function (boxName) {
+    return $.ajax({
+        type: "GET",
+        url: cm.user.cellUrl + "__ctl/Box('" + boxName + "')",
+        headers: {
+            'Authorization': 'Bearer ' + cm.user.access_token,
+            'Accept': 'application/json'
+        }
+    });
+}
+cm.getTargetProfile = function (schemaUrl, fileName) {
+    return $.ajax({
+        type: "GET",
+        url: schemaUrl + "__/" + fileName + ".json",
+        dataType: 'json',
+        headers: { 'Accept': 'application/json' }
+    });
+}
+cm.getTargetProfileLng = function (schemaUrl, lng, fileName) {
+    return $.ajax({
+        type: "GET",
+        url: schemaUrl + "__/locales/" + lng + "/" + fileName + ".json",
+        dataType: 'json',
+        headers: { 'Accept': 'application/json' }
+    });
 }
 cm.getBoxStatus = function(boxName) {
   return $.ajax({
