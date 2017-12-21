@@ -85,33 +85,29 @@ am.dispInsAppListSetting = function() {
     }
 };
 am.dispInsAppListSchemaSetting = function(schema, boxName, no) {
-    cm.getProfile(schema).done(function(profData) {
-        var profTrans = "profTrans";
-        var dispName = profTrans + ":" + boxName + "_DisplayName";
-        var imgName = profTrans + ":" + boxName + "_Image";
-        cm.i18nAddProfile("en", profTrans, boxName, profData, schema, "profile", null, true);
-        cm.i18nAddProfile("ja", profTrans, boxName, profData, schema, "profile", null, true);
-        cm.getBoxStatus(boxName).done(function(data) {
-            var status = data.status;
-            var html = '';
-            if (status.indexOf('ready') >= 0) {
-                // ready
-                html = '<a href="#" id="insAppNo_' + no + '" class="ins-app-icon" onClick="uninstallApp(\'' + schema + '\', \'' + boxName + '\')"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name" data-i18n="' + dispName + '"></div>';
-            } else if (status.indexOf('progress') >= 0) {
-                // progress
-                html = '<a href="#" id="insAppNo_' + no + '" class="ins-app-icon"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name" data-i18n="' + dispName + '"></div><div id="nowInstallParent_' + no + '" class="progress progress-striped active"><div name="nowInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';"></div></div>';
-                if (am.nowInstalledID === null) {
-                    am.nowInstalledID = setInterval(am.checkBoxInstall, 1000);
-                }
-            } else {
-                // failed
-                html = '<a href="#" class="ins-app-icon"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div><span id="appid_' + no + '" class="ins-app-name" data-i18n-"' + dispName + '"></span>(<font color="red"> ! </font>)</div>';
+    var profTrans = "profTrans";
+    var dispName = profTrans + ":" + boxName + "_DisplayName";
+    var imgName = profTrans + ":" + boxName + "_Image";
+    cm.getBoxStatus(boxName).done(function (data) {
+        var status = data.status;
+        var html = '';
+        if (status.indexOf('ready') >= 0) {
+            // ready
+            html = '<a href="#" id="insAppNo_' + no + '" class="ins-app-icon" onClick="uninstallApp(\'' + schema + '\', \'' + boxName + '\')"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name" data-i18n="' + dispName + '"></div>';
+        } else if (status.indexOf('progress') >= 0) {
+            // progress
+            html = '<a href="#" id="insAppNo_' + no + '" class="ins-app-icon"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name" data-i18n="' + dispName + '"></div><div id="nowInstallParent_' + no + '" class="progress progress-striped active"><div name="nowInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';"></div></div>';
+            if (am.nowInstalledID === null) {
+                am.nowInstalledID = setInterval(am.checkBoxInstall, 1000);
             }
+        } else {
+            // failed
+            html = '<a href="#" class="ins-app-icon"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div><span id="appid_' + no + '" class="ins-app-name" data-i18n-"' + dispName + '"></span>(<font color="red"> ! </font>)</div>';
+        }
 
-            $("#insAppList1").append('<a class="ins-app" id="ins-app_' + no + '"></a>');
-            var insAppId = 'ins-app_' + no;
-            $('#' + insAppId).append(html).localize();
-        });
+        $("#insAppList1").append('<a class="ins-app" id="ins-app_' + no + '"></a>');
+        var insAppId = 'ins-app_' + no;
+        $('#' + insAppId).append(html).localize();
     });
 };
 am.dispApplicationList = function(json) {

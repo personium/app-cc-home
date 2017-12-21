@@ -481,7 +481,7 @@ cm.createSideMenu = function() {
             var name = res.Name;
             var boxName = res["_Box.Name"];
             if (boxName != null) {
-                cm.registerProfI18n(name, boxName, "roles");
+                cm.registerRoleRelProfI18n(name, boxName, "roles");
             }
         }
     });
@@ -492,15 +492,27 @@ cm.createSideMenu = function() {
             var name = res.Name;
             var boxName = res["_Box.Name"];
             if (boxName != null) {
-                cm.registerProfI18n(name, boxName, "relations");
+                cm.registerRoleRelProfI18n(name, boxName, "relations");
             }
         }
     });
 
+    // Register Schema Profile in data-i18n
+    cm.getBoxList().done(function (data) {
+        var insAppRes = data.d.results;
+        for (var i in insAppRes) {
+            var schema = insAppRes[i].Schema;
+            var boxName = insAppRes[i].Name;
+            if (schema && schema.length > 0) {
+                cm.registerProfI18n(schema, boxName, "profile");
+            }
+        }
+    })
+
     // Time Out Set
     cm.setIdleTime();
 }
-cm.registerProfI18n = function (name, boxName, fileName) {
+cm.registerRoleRelProfI18n = function (name, boxName, fileName) {
     cm.getBoxInfo(boxName).done(function (boxRes) {
         let schemaUrl = boxRes.d.results.Schema;
         let transName = name + "_" + boxName;
@@ -521,6 +533,24 @@ cm.registerProfI18n = function (name, boxName, fileName) {
             cm.i18nAddProfile("en", "profTrans", transName, defProf, schemaUrl, fileName, name);
             cm.i18nAddProfile("ja", "profTrans", transName, defProf, schemaUrl, fileName, name);
         });
+    });
+}
+
+cm.registerProfI18n = function (schema, boxName, fileName) {
+    let defProf = {
+        DisplayName: ut.getName(schema),
+        Description: "",
+        Image: cm.notAppImage
+    }
+    cm.getProfile(schema).done(function (defRes) {
+        defProf = {
+            DisplayName: defRes.DisplayName,
+            Description: defRes.Description,
+            Image: defRes.Image
+        }
+    }).always(function () {
+        cm.i18nAddProfile("en", "profTrans", boxName, defProf, schema, fileName, null, true);
+        cm.i18nAddProfile("ja", "profTrans", boxName, defProf, schema, fileName, null, true);
     });
 }
 
