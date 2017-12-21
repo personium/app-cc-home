@@ -281,15 +281,25 @@ st.dispAccountRoleList = function(json, accName, no) {
       boxName = "[main]";
     }
 
+    var profTag = "";
+    if (matchBox) {
+        profTag = [
+            '<tr>',
+            '<td><img class="image-circle-small" data-i18n="[src]profTrans:' + boxName + '_Image" src="' + cm.notImage + '" alt="user"></td>',
+            '</tr>'
+        ].join("");
+    }
+
     var tempHTML = [
         '<table class="table-fixed">',
         '<tr>',
-        '<td rowspan="2" style="width: 25%;"><img class="image-circle" data-i18n="[src]profTrans:' + name + '_' + boxName + '_Image" src="' + cm.notImage + '" alt="user"></td>',
+        '<td rowspan="3" style="width: 25%;"><img class="image-circle" data-i18n="[src]profTrans:' + name + '_' + boxName + '_Image" src="' + cm.notImage + '" alt="user"></td>',
         '<td class="ellipsisText" data-i18n="profTrans:' + name + '_' + boxName + '_DisplayName">' + name + '(' + boxName + ')</td>',
         '</tr>',
         '<tr>',
         '<td><p class="ellipsisText"><font color="LightGray" data-i18n="profTrans:' + name + '_' + boxName + '_Description"></font></p></td>',
         '</tr>',
+        profTag,
         '</table>'
     ].join("");
     var firstCell = $('<td>', {

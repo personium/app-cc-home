@@ -123,46 +123,39 @@ ha.dispInsAppList = function() {
 };
 
 ha.dispInsAppListSchema = function(schema, boxName) {
-    cm.getProfile(schema).done(function(profData) {
-        var profTrans = "profTrans";
-        var dispName = profTrans + ":" + boxName + "_DisplayName";
-        cm.i18nAddProfile("en", profTrans, boxName, profData, schema, "profile", null, true);
-        cm.i18nAddProfile("ja", profTrans, boxName, profData, schema, "profile", null, true);
-        var imageSrc = cm.notAppImage;
-        if (profData.Image) {
-            imageSrc = profData.Image;
-        }
-        cm.getBoxStatus(boxName).done(function(data) {
-            var status = data.status;
-            var html = '';
-            if (status.indexOf('ready') >= 0) {
-                var msgCnt = '';
-                cm.getNotCompMessageCnt().done(function(data) {
-                    if (data.d.__count > 0) {
-                        var count = 0;
-                        for (i in data.d.results) {
-                           var res = data.d.results[i];
-                           if (boxName == res["_Box.Name"]) {
-                               count++;
-                           }
-                        }
-                        if (count > 0) {
-                           msgCnt = count;
+    var profTrans = "profTrans";
+    var dispName = profTrans + ":" + boxName + "_DisplayName";
+    var imgName = profTrans + ":" + boxName + "_Image";
+    cm.getBoxStatus(boxName).done(function (data) {
+        var status = data.status;
+        var html = '';
+        if (status.indexOf('ready') >= 0) {
+            var msgCnt = '';
+            cm.getNotCompMessageCnt().done(function (data) {
+                if (data.d.__count > 0) {
+                    var count = 0;
+                    for (i in data.d.results) {
+                        var res = data.d.results[i];
+                        if (boxName == res["_Box.Name"]) {
+                            count++;
                         }
                     }
-                }).fail(function(data) {
-                    console.log("fail");
-                }).always(function(data) {
-                    var html = '<a class="ins-app" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank">'
-                             + '<div class="ins-app-icon">'
-                             + '<img src = "' + imageSrc + '" class="ins-app-icon">'
-                             + '<span class="badge">' + msgCnt + '</span>'
-                             + '</div>'
-                             + '<div class="ins-app-name" data-i18n="' + dispName + '"></div>'
-                             + '</a>';
-                    $("#dashboard_ins").append(html).localize();
-                });
-            }
-        });
+                    if (count > 0) {
+                        msgCnt = count;
+                    }
+                }
+            }).fail(function (data) {
+                console.log("fail");
+            }).always(function (data) {
+                var html = '<a class="ins-app" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank">'
+                    + '<div class="ins-app-icon">'
+                    + '<img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon">'
+                    + '<span class="badge">' + msgCnt + '</span>'
+                    + '</div>'
+                    + '<div class="ins-app-name" data-i18n="' + dispName + '"></div>'
+                    + '</a>';
+                $("#dashboard_ins").append(html).localize();
+            });
+        }
     });
 };
