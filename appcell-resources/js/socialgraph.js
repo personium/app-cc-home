@@ -206,7 +206,10 @@ sg.dispExtCellLinkRelation = function (json, extUrl) {
       if (matchBox) {
           profTag = [
               '<tr>',
-              '<td><img class="image-circle-small" data-i18n="[src]profTrans:' + boxName + '_Image" src="' + cm.notImage + '" alt="user"></td>',
+              '<td>',
+              '<img class="image-circle-small" data-i18n="[src]profTrans:' + boxName + '_Image" src="' + cm.notImage + '" alt="user">',
+              '<font color="LightGray" data-i18n="profTrans:' + boxName + '_DisplayName"></font>',
+              '</td>',
               '</tr>'
           ].join("");
       }
@@ -417,7 +420,10 @@ sg.dispExtCellRoleList = function(json, exturl) {
     if (matchBox) {
         profTag = [
             '<tr>',
-            '<td><img class="image-circle-small" data-i18n="[src]profTrans:' + boxName + '_Image" src="' + cm.notImage + '" alt="user"></td>',
+            '<td>',
+            '<img class="image-circle-small" data-i18n="[src]profTrans:' + boxName + '_Image" src="' + cm.notImage + '" alt="user">',
+            '<font color="LightGray" data-i18n="profTrans:' + boxName + '_DisplayName"></font>',
+            '</td>',
             '</tr>'
         ].join("");
     }
@@ -752,7 +758,10 @@ sg.restDeleteExtCellAPI = function () {
             'Authorization':'Bearer ' + cm.user.access_token
           }
   }).done(function(data) {
-    sg.getExtCellList();
+    sg.getExtCellList().done(function (data) {
+          sg.dispExtCellList(data);
+    }).fail(function (data) {
+    });
     $("#modal-confirmation").modal("hide");
     //$("#modal-profile-extcell").modal("hide");
     cm.moveBackahead();
@@ -921,7 +930,10 @@ sg.initSocialGraph = function() {
     $('#b-del-extcelllinkrole-ok').on('click', function () { sg.restDeleteExtCellLinkRole(); });
     $('#b-add-extcelllinkrelation-ok').on('click', function () { 
         sg.restAddExtCellLinkRelation();
-        sg.getExtCellList();
+        sg.getExtCellList().done(function (data) {
+            sg.dispExtCellList(data);
+        }).fail(function (data) {
+        });
     });
     $('#b-del-extcelllinkrelation-ok').on('click', function () { sg.restDeleteExtCellLinkRelation(); });
 

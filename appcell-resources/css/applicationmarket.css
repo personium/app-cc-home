@@ -6,10 +6,6 @@
     margin-bottom: 0px;
 }
 
-.ellipsisText{
-    overflow: visible;
-}
-
 #installed-app {
   background-color: #ededff;
 }

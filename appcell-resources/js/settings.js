@@ -285,7 +285,10 @@ st.dispAccountRoleList = function(json, accName, no) {
     if (matchBox) {
         profTag = [
             '<tr>',
-            '<td><img class="image-circle-small" data-i18n="[src]profTrans:' + boxName + '_Image" src="' + cm.notImage + '" alt="user"></td>',
+            '<td>',
+            '<img class="image-circle-small" data-i18n="[src]profTrans:' + boxName + '_Image" src="' + cm.notImage + '" alt="user">',
+            '<font color="LightGray" data-i18n="profTrans:' + boxName + '_DisplayName"></font>',
+            '</td>',
             '</tr>'
         ].join("");
     }
