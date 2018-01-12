@@ -1389,13 +1389,13 @@ cm.getAppListURL = function() {
      * assign default cell type (Person) to it.
      */
     let cellType = cm.getCellType();
-    let fileName = "applist.json"
+    let filter = "?$filter=Type%20eq%20null%20or%20Type%20eq%20'personal'%20";
 
     if (cellType == "Organization") {
-        fileName = "applistForBusiness.json";
+        filter = "?$filter=Type%20eq%20null%20or%20Type%20eq%20'business'%20";
     }
 
-    let appListURL = ['https://demo.personium.io/market/__/', fileName].join("");
+    let appListURL = ['https://demo.personium.io/market/__/applist/Apps', filter].join("");
 
     return appListURL;
 };
