@@ -112,7 +112,7 @@ am.dispInsAppListSchemaSetting = function(schema, boxName, no) {
 };
 am.dispApplicationList = function(json) {
     $("#appList1").empty();
-    var results = json.Apps;
+    var results = json.d.results;
     results.sort(function(val1, val2) {
       return (val1.SchemaUrl < val2.SchemaUrl ? 1 : -1);
     })
