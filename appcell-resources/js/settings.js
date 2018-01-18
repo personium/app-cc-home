@@ -979,6 +979,17 @@ st.dispUnofficialBoxInsProgress = function (boxname) {
             resHtml = "<span data-i18n='Success'></span>";
             if (typeof (ha) != "undefined") {
                 // Redraw the application list if it is the main screen
+                // Register Schema Profile in data-i18n
+                cm.getBoxList().done(function (data) {
+                    var insAppRes = data.d.results;
+                    for (var i in insAppRes) {
+                        var schema = insAppRes[i].Schema;
+                        var boxName = insAppRes[i].Name;
+                        if (schema && schema.length > 0) {
+                            cm.registerProfI18n(schema, boxName, "profile");
+                        }
+                    }
+                })
                 ha.dispInsAppList();
             }
         } else if (status.indexOf('progress') >= 0) {

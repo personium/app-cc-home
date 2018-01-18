@@ -3,12 +3,20 @@ var ms = {};
 ms.replyTo = null;
 ms.selectNo = null;
 
+loadScript = function () {
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js";
+    head.appendChild(script);
+}
+
 addNamesapces = function (ns) {
     ns.push('message');
     return ns;
 };
 
 init = function () {
+    loadScript();
     cm.createTitleHeader(false, true);
     cm.createSideMenu();
     cm.createBackMenu("main.html");
@@ -54,13 +62,17 @@ ms.checkCellUrl = function (obj) {
             && cm.doesUrlContainSlash(obj.value, "popupSendCellUrlErrorMsg", i18next.t("errorValidateEndWithCell"))) {
 
             ms.getCell(obj.value).done(function () {
+                let dispName = "";
                 cm.getProfile(obj.value).done(function (result) {
-                    $("#txtDestProfName").val(result.DisplayName);
-                }).fail(function () {
-                    $("#txtDestProfName").val("");
+                    dispName = result.DisplayName;
                 }).always(function () {
-                    $("#popupSendCellUrlErrorMsg").html("");
-                    $("#b-create-message-sent").prop('disabled', false);
+                    cm.getTargetProfileLng(obj.value, i18next.language, "profile").done(function (resultLng) {
+                        dispName = resultLng.DisplayName;
+                    }).always(function () {
+                        $("#txtDestProfName").val(dispName);
+                        $("#popupSendCellUrlErrorMsg").html("");
+                        $("#b-create-message-sent").prop('disabled', false);
+                    })
                 });
             }).fail(function () {
                 $("#txtDestProfName").val("");
@@ -192,11 +204,11 @@ ms.dispReceiveMsg = function (no) {
     var dispName = $("#msgLink" + no).data('dispName');
 
     var tmp = $("#msgLink" + no).data('url');
-    if (dispName) {
-        tmp = dispName + "<" + from + ">";
+    if (i18next.exists(dispName)) {
+        tmp = "<span data-i18n=" + dispName + "></span>&lt;" + from + "&gt;";
     }
     body = body.replace(/\n/g, '<br>');
-    $("#pSenderCellUrl").html(_.escape(tmp));
+    $("#pSenderCellUrl").html(tmp).localize();
     $("#pMessageSubject").html(title);
     $("#txtDispBody").html(body);
 
@@ -235,7 +247,7 @@ ms.replyMsg = function () {
     body = "\n>" + body;
 
     $("#txtDestCellUrl").val(to).attr("readonly", true);
-    $("#txtDestProfName").val(dispName);
+    $("#txtDestProfName").val(i18next.t(dispName));
     $("#txtMessageSubject").val("RE:" + title);
     $("#txtMessageBody").val(body);
     $("#b-create-message-sent").prop('disabled', false);
@@ -350,11 +362,11 @@ ms.dispSentMsg = function (no) {
     var dispName = $("#msgLink" + no).data('dispName');
 
     var tmp = $("#msgLink" + no).data('url');
-    if (dispName) {
-        tmp = dispName + "<" + to + ">";
+    if (i18next.exists(dispName)) {
+        tmp = "<span data-i18n=" + dispName + "></span>&lt;" + to + "&gt;";
     }
     body = body.replace(/\n/g, '<br>');
-    $("#pDestCellUrl").html(_.escape(tmp));
+    $("#pDestCellUrl").html(tmp).localize();
     $("#pMessageSubject").html(title);
     $("#txtDispBody").html(body);
 }
@@ -392,16 +404,18 @@ ms.changeUnixTime = function (unixTime) {
 
 ms.displayProfile = function (cellUrl, num) {
     ms.getCell(cellUrl).done(function () {
-        cm.getProfile(cellUrl).done(function (result) {
-            $('#requestName' + num).html('<div class="sizeCaption">' + _.escape(result.DisplayName) + '</div>');
-            $('#requestName' + num).attr({ "id": "requestNameSet" + num });
-            $('#requestIcon' + num).attr({ "src": result.Image });
-            $('#requestIcon' + num).attr({ "id": "requestIconSet" + num });
-            $('#msgLink' + num).data('dispName', _.escape(result.DisplayName));
-
-        }).always(function () {
-            $('#msgLink' + num).data('url', cellUrl);
-        })
+        var cellName = ut.getName(cellUrl);
+        var urlParse = $.url(cellUrl);
+        var transName = urlParse.attr('host') + "_" + cellName;
+        if (!i18next.exists(transName)) {
+            cm.registerProfI18n(cellUrl, transName, "profile");
+        }
+        $('#requestName' + num).html('<div class="sizeCaption" data-i18n="profTrans:' + transName + '_DisplayName"></div>');
+        $('#requestName' + num).attr({ "id": "requestNameSet" + num });
+        $('#requestIcon' + num).attr({ "data-i18n": "[src]profTrans:" + transName + '_Image' });
+        $('#requestIcon' + num).attr({ "id": "requestIconSet" + num });
+        $('#msgLink' + num).data('dispName', 'profTrans:' + transName + '_DisplayName');
+        $('#msgLink' + num).data('url', cellUrl);
     }).fail(function () {
         $("#msgList" + num).removeClass("unread-msg");
         $('#requestName' + num).html('<div class="sizeCaption" data-i18n="notExistTargetCell"></div>').localize();

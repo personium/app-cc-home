@@ -92,3 +92,29 @@ ut.changeLocalBoxToBoxUrl = function (url, boxName) {
 
     return result;
 }
+
+/*
+ * Confirm existence of the specified URL.
+ */
+ut.confirmExistenceOfURL = function (url) {
+    return $.ajax({
+        type: "GET",
+        url: url,
+        headers: {
+            'Authorization': 'Bearer ' + cm.user.access_token,
+            'Accept': 'text/plain'
+        }
+    });
+}
+
+ut.putFileAPI = function (putUrl, json) {
+    return $.ajax({
+        type: "PUT",
+        url: putUrl,
+        data: JSON.stringify(json),
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + cm.user.access_token
+        }
+    });
+}

@@ -298,11 +298,11 @@ demo.createProfileHeaderMenu = function() {
     // create a profile menu in to "profile-menu" class
     var html = '<div>';
     html += '<a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">';
-    html += '<img class="icon-profile" id="imProfilePicture" src="' + cm.imgBinaryFile + '" alt="user">';
+    html += '<img class="icon-profile" id="imProfilePicture" data-i18n="[src]profTrans:myProfile_Image" src="" alt="user">';
     html += '</a>';
     html += '</div>';
     html += '<div class="header-body">';
-    html += '<div id="tProfileDisplayName" class="sizeBody">' + cm.user.profile.DisplayName + '</div>';
+    html += '<div id="tProfileDisplayName" class="sizeBody" data-i18n="profTrans:myProfile_DisplayName"></div>';
     html += '<div class="sizeCaption">' + i18next.t("Account") + ': ' + cm.user.userName +  '</div>';
     html += '</div>';
     html += '<a href="#" onClick="demo.toggleSlide();">';
@@ -475,8 +475,7 @@ demo.createSideMenu = function() {
            '<div class="modal-header login-header">' +
            '<h4 class="modal-title">' + itemName.Relogin + '</h4>' +
            '</div>' +
-           '<div class="modal-body">' +
-           i18next.t("successChangePass") +
+           '<div class="modal-body" data-i18n="[html]successChangePass">' +
            '</div>' +
            '<div class="modal-footer">' +
            '<button type="button" class="btn btn-primary" id="b-relogin-ok" >OK</button>' +

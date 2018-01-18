@@ -1,5 +1,12 @@
 var sg = {};
 
+loadScript = function () {
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js";
+    head.appendChild(script);
+}
+
 // Common
 sg.resetExtCellLink = function() {
   $("#addRadioExtCellLinkRole").prop('checked', true);
@@ -89,8 +96,9 @@ sg.dispExtCellList = function (json) {
 sg.dispExtCellListProf = function (extCellUrl) {
     // Displace the cell URL with the unit's proper URL. However, when sending to the server, we use "personium-localunit:" URL format.
     var extCellUrlCnv = ut.changeLocalUnitToUnitUrl(extCellUrl);
+    var cellName = ut.getName(extCellUrl);
     var profObj = {
-        DisplayName: ut.getName(extCellUrl),
+        DisplayName: cellName,
         Description: "",
         Image: cm.notImage
     }
@@ -104,7 +112,12 @@ sg.dispExtCellListProf = function (extCellUrl) {
             }
         }
     }).always(function () {
-        sg.appendRelationLinkExtCell(extCellUrl, profObj, extRelObj, false);
+        var profTrans = "profTrans";
+        var urlParse = $.url(extCellUrlCnv);
+        var transName = urlParse.attr('host') + "_" + cellName;
+        cm.i18nAddProfile("en", profTrans, transName, profObj, extCellUrlCnv, "profile", null, true);
+        cm.i18nAddProfile("ja", profTrans, transName, profObj, extCellUrlCnv, "profile", null, true);
+        sg.appendRelationLinkExtCell(extCellUrl, profTrans + ":" + transName, extRelObj, false);
     });
 };
 sg.addExtCell = function() {
@@ -292,7 +305,7 @@ sg.changeRelationSelect = function () {
         $("#b-linkrelation-ok").prop('disabled', false);
     }
 };
-sg.appendRelationLinkExtCell = function(url, profObj, extRelObj, delFlag) {
+sg.appendRelationLinkExtCell = function (url, transName, extRelObj, delFlag) {
     var aTag = $('<a>', {
         class: 'allToggle',
         onClick: 'sg.createExtCellProfile(this)'
@@ -300,19 +313,19 @@ sg.appendRelationLinkExtCell = function(url, profObj, extRelObj, delFlag) {
     var tempHTML = [
         '<table class="table-fixed">',
             '<tr>',
-                '<td rowspan="2" style="width: 25%;"><img class="image-circle" src="' + profObj.Image + '" alt="user"></td>',
-                '<td>' + profObj.DisplayName + '</td>',
+                '<td rowspan="2" style="width: 25%;"><img class="image-circle" data-i18n="[src]' + transName + '_Image" src="" alt="user"></td>',
+                '<td><p class="ellipsisText" data-i18n="' + transName + '_DisplayName"></p></td>',
             '</tr>',
             '<tr>',
-                '<td><p class="ellipsisText"><font color="LightGray">' + profObj.Description + '</font></p></td>',
+            '<td><p class="ellipsisText"><font color="LightGray" data-i18n="' + transName + '_Description"></font></p></td>',
             '</tr>',
         '</table>'
     ].join("");
     aTag
         .data('url', url)
-        .data('dispName', profObj.DisplayName)
-        .data('description', profObj.Description)
-        .data('imageSrc', profObj.Image)
+        .data('dispName', transName + '_DisplayName')
+        .data('description', transName + '_Description')
+        .data('imageSrc', transName + '_Image')
         .append(tempHTML);
     var firstCell = $('<td>', {
         style: 'width: 90%;'
@@ -360,7 +373,7 @@ sg.createExtCellProfile = function(aDom) {
     $("#toggle-panel1").empty();
     cm.setBackahead();
     var html = '<div class="panel-body">';
-    html += '<div class="extcell-profile" id="dvExtProfileImage"><img class="image-circle-large" style="margin: auto;" id="imgExtProfileImage" src="' + imagesrc + '" alt="image" /><span id="txtExtUrl">' + ut.changeLocalUnitToUnitUrl(url) + '</span><h5><span id="txtDescription">' + description + '</span></h5></div>';
+    html += '<div class="extcell-profile" id="dvExtProfileImage"><img class="image-circle-large" style="margin: auto;" id="imgExtProfileImage" data-i18n="[src]' + imagesrc + '" src="" alt="image" /><span id="txtExtUrl">' + ut.changeLocalUnitToUnitUrl(url) + '</span><h5><span id="txtDescription" data-i18n="' + description + '"></span></h5></div>';
     html += '<div class="toggleButton"><a class="toggle list-group-item" href="#" onClick="sg.showExtPublicBoxList();return(false);" data-i18n="WatchPublicBOX"></a></div>';
     html += '<div class="toggleButton"><a class="toggle list-group-item" href="#" onClick="sg.createRoleList(\'' + url + '\');return(false);" data-i18n="RoleList"></a></div>';
     html += '<div class="toggleButton"><a class="toggle list-group-item" href="#" onClick="sg.createRelationList(\'' + url + '\');return(false);" data-i18n="RelationList"></a></div>';
@@ -605,9 +618,13 @@ sg.blurAddExtCellUrl = function() {
                     }
                 }
             }).always(function () {
-                $("#modalProfileName").html(profObj.DisplayName);
-                $("#txtModalDescription").html(profObj.Description);
-                $("#imgModalExtProfileImage").attr("src", profObj.Image);
+                let transName = "inputExtCell";
+                cm.i18nAddProfile("en", "profTrans", transName, profObj, schemaURL, "profile");
+                cm.i18nAddProfile("ja", "profTrans", transName, profObj, schemaURL, "profile");
+
+                //$("#modalProfileName").html(profObj.DisplayName);
+                //$("#txtModalDescription").html(profObj.Description);
+                //$("#imgModalExtProfileImage").attr("src", profObj.Image);
                 $("#dispExtProfileBtn").css("display", "");
             });
             $('#b-add-extcell-ok').prop('disabled', false);
@@ -907,7 +924,8 @@ sg.restDeleteExtCellLinkRelation = function () {
     });
 };
 
-sg.initSocialGraph = function() {
+sg.initSocialGraph = function () {
+    loadScript();
     cm.createSideMenu();
     cm.createTitleHeader(false, true);
     cm.createBackMenu("main.html");
@@ -1014,10 +1032,10 @@ sg.createProfileModal = function () {
         '<div class="modal-content">' +
         '<div class="modal-header login-header">' +
         '<button type="button" class="close" data-dismiss="modal">x</button>' +
-        '<h4 class="modal-title" id="modalProfileName"></h4>' +
+        '<h4 class="modal-title" id="modalProfileName" data-i18n="profTrans:inputExtCell_DisplayName"></h4>' +
         '</div>' +
         '<div class="modal-body">' +
-        '<div><img class="image-circle-large center-block" style="margin: auto;" id="imgModalExtProfileImage" alt="image" /></div><div><p align="center" id="txtModalDescription"></p></div>' +
+        '<div><img class="image-circle-large center-block" style="margin: auto;" id="imgModalExtProfileImage" alt="image"  data-i18n="[src]profTrans:inputExtCell_Image"/></div><div><p align="center" id="txtModalDescription" data-i18n="profTrans:inputExtCell_Description"></p></div>' +
         '</div>' +
         '<div class="modal-footer">' +
         '<button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Close"></button>' +
