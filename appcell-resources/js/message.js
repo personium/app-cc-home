@@ -3,11 +3,9 @@ var ms = {};
 ms.replyTo = null;
 ms.selectNo = null;
 
-loadScript = function () {
-    var head = document.getElementsByTagName('head')[0];
-    var script = document.createElement('script');
-    script.src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js";
-    head.appendChild(script);
+addLoadScript = function (scriptList) {
+    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
+    return scriptList;
 }
 
 addNamesapces = function (ns) {
@@ -16,7 +14,7 @@ addNamesapces = function (ns) {
 };
 
 init = function () {
-    loadScript();
+    ut.loadScript();
     cm.createTitleHeader(false, true);
     cm.createSideMenu();
     cm.createBackMenu("main.html");
@@ -411,9 +409,7 @@ ms.displayProfile = function (cellUrl, num) {
             cm.registerProfI18n(cellUrl, transName, "profile");
         }
         $('#requestName' + num).html('<div class="sizeCaption" data-i18n="profTrans:' + transName + '_DisplayName"></div>');
-        $('#requestName' + num).attr({ "id": "requestNameSet" + num });
         $('#requestIcon' + num).attr({ "data-i18n": "[src]profTrans:" + transName + '_Image' });
-        $('#requestIcon' + num).attr({ "id": "requestIconSet" + num });
         $('#msgLink' + num).data('dispName', 'profTrans:' + transName + '_DisplayName');
         $('#msgLink' + num).data('url', cellUrl);
     }).fail(function () {

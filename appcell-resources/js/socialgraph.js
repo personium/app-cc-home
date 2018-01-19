@@ -1,10 +1,8 @@
 var sg = {};
 
-loadScript = function () {
-    var head = document.getElementsByTagName('head')[0];
-    var script = document.createElement('script');
-    script.src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js";
-    head.appendChild(script);
+addLoadScript = function (scriptList) {
+    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
+    return scriptList;
 }
 
 // Common
@@ -925,7 +923,7 @@ sg.restDeleteExtCellLinkRelation = function () {
 };
 
 sg.initSocialGraph = function () {
-    loadScript();
+    ut.loadScript();
     cm.createSideMenu();
     cm.createTitleHeader(false, true);
     cm.createBackMenu("main.html");
