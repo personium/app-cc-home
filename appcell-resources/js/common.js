@@ -60,11 +60,11 @@ cm.createProfileHeaderMenu = function() {
     // create a profile menu in to "profile-menu" class
     var html = '<div>';
     html += '<a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">';
-    html += '<img class="icon-profile" id="imProfilePicture" src="' + cm.imgBinaryFile + '" alt="user">';
+    html += '<img class="icon-profile" id="imProfilePicture" data-i18n="[src]profTrans:myProfile_Image" src="" alt="user">';
     html += '</a>';
     html += '</div>';
     html += '<div class="header-body">';
-    html += '<div id="tProfileDisplayName" class="sizeBody">' + cm.user.profile.DisplayName + '</div>';
+    html += '<div id="tProfileDisplayName" class="sizeBody" data-i18n="profTrans:myProfile_DisplayName"></div>';
     html += '<div id="accountTitle" class="sizeCaption" data-i18n="AccountTitle"></div>';
     html += '</div>';
     html += '<a href="#" onClick="cm.toggleSlide();">';
@@ -377,7 +377,7 @@ cm.createSideMenu = function() {
            '<div class="modal-header login-header">' +
            '<h4 class="modal-title" data-i18n="ReLogin"></h4>' +
            '</div>' +
-           '<div class="modal-body" data-i18n="successChangePass">' +
+           '<div class="modal-body" data-i18n="[html]successChangePass">' +
            '</div>' +
            '<div class="modal-footer">' +
            '<button type="button" class="btn btn-primary" id="b-relogin-ok" >OK</button>' +
@@ -431,7 +431,7 @@ cm.createSideMenu = function() {
            '<div class="modal-header login-header">' +
            '<h4 class="modal-title" data-i18n="ReLogin"></h4>' +
            '</div>' +
-           '<div class="modal-body" data-i18n="expiredSession"></div>' +
+           '<div class="modal-body" data-i18n="[html]expiredSession"></div>' +
            '<div class="modal-footer">' +
            '<button type="button" class="btn btn-primary" id="b-session-relogin-ok" >OK</button>' +
            '</div></div></div></div>';
@@ -471,6 +471,20 @@ cm.createSideMenu = function() {
     });
     $("#modal-chgLng").on("show.bs.modal", function () {
         $("#selectLng").val(i18next.language);
+    });
+
+    // Register my profile in data-i18n
+    let defProf = cm.user.profile;
+    cm.getProfile(cm.user.cellUrl).done(function (prof) {
+        defProf = {
+            DisplayName: prof.DisplayName,
+            Description: prof.Description,
+            Image: prof.Image
+        }
+    }).always(function () {
+        let transName = "myProfile";
+        cm.i18nAddProfile("en", "profTrans", transName, defProf, cm.user.cellUrl, "profile");
+        cm.i18nAddProfile("ja", "profTrans", transName, defProf, cm.user.cellUrl, "profile");
     });
 
     // Register role/relation in data-i18n
@@ -761,18 +775,19 @@ cm.dispRelationList = function(json, id, multiFlag) {
 
 // Initialization
 cm.populateProfileEditData = function() {
-  $("#editDisplayName").val(cm.user.profile.DisplayName);
+  $("#editDisplayName").val(i18next.t("profTrans:myProfile_DisplayName"));
   document.getElementById("popupEditDisplayNameErrorMsg").innerHTML = "";
-  $("#editDescription").val(cm.user.profile.Description);
+  $("#editDescription").val(i18next.t("profTrans:myProfile_Description"));
   document.getElementById("popupEditDescriptionErrorMsg").innerHTML = "";
   document.getElementById("popupEditUserPhotoErrorMsg").innerHTML = "";
   
   $("#editImgLbl").html("");
   $('#editImgFile').replaceWith($('#editImgFile').clone());
-  if (cm.user.profile.Image) {
-    $("#idImgFile").attr('src', cm.user.profile.Image);
+  if (i18next.t("profTrans:myProfile_Image")) {
+      cm.imgBinaryFile = i18next.t("profTrans:myProfile_Image");
+      $("#idImgFile").attr('src', cm.imgBinaryFile);
   } else {
-    $("#idImgFile").attr('src', "https://demo.personium.io/HomeApplication/__/appcell-resources/icons/profile_image.png");
+      $("#idImgFile").attr('src', "https://demo.personium.io/HomeApplication/__/appcell-resources/icons/profile_image.png");
   }
 
 };
@@ -1280,24 +1295,45 @@ cm.changePass = function(newpass) {
           alert("An error has occurred.\n" + res.message.value);
   });
 };
-cm.retrieveCollectionAPIResponse = function(json) {
-  $.ajax({
-    type: "PUT",
-    url: cm.user.cellUrl + '__/profile.json',
-    data: JSON.stringify(json),
-    headers: {'Accept':'application/json',
-              'Authorization':'Bearer ' + cm.user.access_token}
-  }).done(function(data) {
-    $('#modal-edit-profile').modal('hide');
-    cm.user.profile.Image = cm.imgBinaryFile;
-    cm.user.profile.DisplayName = json.DisplayName;
-    cm.user.profile.Description = json.Description;
-    cm.editProfileHeaderMenu();
-    sessionStorage.setItem("sessionData", JSON.stringify(cm.user));
-  }).fail(function(){
-    alert("fail");
-  });
+cm.retrieveCollectionAPIResponse = function (json) {
+    let profileUrl = cm.user.cellUrl + '__/profile.json';
+    // Check if there is locales folder
+    ut.confirmExistenceOfURL(cm.user.cellUrl + '__/locales').done(function (res) {
+        profileUrl = cm.user.cellUrl + '__/locales/' + i18next.language + '/profile.json';
+
+        // Check if there is a target language folder
+        ut.confirmExistenceOfURL(cm.user.cellUrl + '__/locales/' + i18next.language).fail(function (res) {
+           $.ajax({
+                type: "MKCOL",
+                url: cm.user.cellUrl + '__/locales/' + i18next.language,
+                data: '<?xml version="1.0" encoding="utf-8"?><D:mkcol xmlns:D="DAV:" xmlns:p="urn:x-personium:xmlns"><D:set><D:prop><D:resourcetype><D:collection/></D:resourcetype></D:prop></D:set></D:mkcol>',
+                processData: false,
+                headers: {
+                    'Authorization': 'Bearer ' + cm.user.access_token,
+                    'Accept': 'application/json'
+                }
+           }).done(function (res) {
+               cm.putFileProcess(profileUrl, json);
+           }).fail(function (res) {
+               console.log(res);
+           })
+        }).done(function (res) {
+            cm.putFileProcess(profileUrl, json);
+        });
+    }).fail(function (res) {
+        cm.putFileProcess(profileUrl, json);
+    });
 };
+cm.putFileProcess = function (profileUrl, json) {
+    ut.putFileAPI(profileUrl, json).done(function (data) {
+        $('#modal-edit-profile').modal('hide');
+        cm.i18nAddProfile(i18next.language, "profTrans", "myProfile", json, cm.user.cellUrl, "profile");
+        cm.editProfileHeaderMenu();
+        sessionStorage.setItem("sessionData", JSON.stringify(cm.user));
+    }).fail(function () {
+        alert("fail");
+    });
+}
 cm.editProfileHeaderMenu = function() {
     $("#imProfilePicture").attr('src', cm.imgBinaryFile);
     $("#tProfileDisplayName").html(cm.user.profile.DisplayName);

@@ -4,6 +4,21 @@ var ut = {};
 ut.PERSONIUM_LOCALUNIT = "personium-localunit:";
 ut.PERSONIUM_LOCALBOX = "personium-localbox:";
 
+ut.loadScript = function () {
+    let head = document.getElementsByTagName('head')[0];
+    let scriptList = [];
+    if (typeof addLoadScript == "function") {
+        scriptList = addLoadScript(scriptList);
+    }
+
+    let scriptLen = scriptList.length;
+    for (var i = 0; i < scriptLen; i++) {
+        let script = document.createElement('script');
+        script.src = scriptList[i];
+        head.appendChild(script);
+    }
+}
+
 ut.cellUrlWithEndingSlash = function(tempUrl, raiseError) {
     var i = tempUrl.indexOf("/", 8); // search after "http://" or "https://"
 
@@ -91,4 +106,30 @@ ut.changeLocalBoxToBoxUrl = function (url, boxName) {
     }
 
     return result;
+}
+
+/*
+ * Confirm existence of the specified URL.
+ */
+ut.confirmExistenceOfURL = function (url) {
+    return $.ajax({
+        type: "GET",
+        url: url,
+        headers: {
+            'Authorization': 'Bearer ' + cm.user.access_token,
+            'Accept': 'text/plain'
+        }
+    });
+}
+
+ut.putFileAPI = function (putUrl, json) {
+    return $.ajax({
+        type: "PUT",
+        url: putUrl,
+        data: JSON.stringify(json),
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + cm.user.access_token
+        }
+    });
 }
