@@ -17,7 +17,7 @@ ut.loadScript = function () {
         script.src = scriptList[i];
         head.appendChild(script);
     }
-}
+};
 
 ut.cellUrlWithEndingSlash = function(tempUrl, raiseError) {
     var i = tempUrl.indexOf("/", 8); // search after "http://" or "https://"
@@ -82,7 +82,7 @@ ut.changeUnitUrlToLocalUnit = function (cellUrl) {
     }
 
     return result;
-}
+};
 
 /*
  * Replace personium-localunit with your unit URL
@@ -94,7 +94,7 @@ ut.changeLocalUnitToUnitUrl = function (cellUrl) {
     }
 
     return result;
-}
+};
 
 /*
  * Replace personium-localbox with the user's Box URL
@@ -106,7 +106,7 @@ ut.changeLocalBoxToBoxUrl = function (url, boxName) {
     }
 
     return result;
-}
+};
 
 /*
  * Confirm existence of the specified URL.
@@ -120,7 +120,7 @@ ut.confirmExistenceOfURL = function (url) {
             'Accept': 'text/plain'
         }
     });
-}
+};
 
 ut.putFileAPI = function (putUrl, json) {
     return $.ajax({
@@ -132,4 +132,50 @@ ut.putFileAPI = function (putUrl, json) {
             'Authorization': 'Bearer ' + cm.user.access_token
         }
     });
-}
+};
+
+/*
+ * The following are not supported for now:
+ * navigator.userAgent.match(/webOS/i)
+ * navigator.userAgent.match(/iPod/i)
+ * navigator.userAgent.match(/BlackBerry/i)
+ * navigator.userAgent.match(/Windows Phone/i)
+ */
+ut.deviceType2PersoniumAppType = function() {
+    if (navigator.userAgent.match(/iPhone/i)
+      || navigator.userAgent.match(/iPad/i)) {
+        return "ios";
+    }
+
+    if (navigator.userAgent.match(/Android/i)) {
+        return "android";
+    }
+
+    return "web";
+};
+ut.PEROSNIUM_APP_TYPE = ut.deviceType2PersoniumAppType();
+console.log('Personium App Type [' + ut.PEROSNIUM_APP_TYPE + ']');
+
+ut.getAppLaunchUrl = function(launchObj, boxName) {
+    let result = {
+        appLaunchUrl: ut.changeLocalBoxToBoxUrl(launchObj.web, boxName),
+        openNewWindow: true
+    };
+
+    let personiumAppType = ut.PEROSNIUM_APP_TYPE;
+    switch (personiumAppType) {
+        case 'android':
+        case 'ios':
+            if (launchObj[personiumAppType] && !launchObj[personiumAppType].startsWith('***:')) {
+                result.openNewWindow = false;
+                result.appLaunchUrl = launchObj[personiumAppType];
+                console.log('Launch native App');
+            }
+            break;
+        case 'web':
+        default:
+            console.log('Launch Web App');
+    }
+
+    return result;
+};
