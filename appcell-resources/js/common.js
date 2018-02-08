@@ -140,12 +140,13 @@ cm.closeSetting = function() {
     $("#settingboard").empty();
     $("#settingBackTitle").empty();
     cm.user.settingNowPage = 0;
+    cm.toggleSlide();
 }
 
 cm.createSettingArea = function() {
     var html = '<div class="col-md-12 col-sm-12 display-table-cell v-align setting-menu">';
     html += '<div class="row header-menu setting-header"></div>';
-    html += '<div class="row" id="settingboard"></div>';
+    html += '<div class="row" id="settingboard" style="overflow:auto;height:90%;"></div>';
     html += '<div id="modal-confirmation" class="modal fade" role="dialog" data-backdrop="static">';
     html += '<div class="modal-dialog">';
     html += '<div class="modal-content">';
@@ -191,18 +192,18 @@ cm.setBackahead = function(flg) {
             toggleClass = "panel-default";
         }
         if (document.getElementById('setting-panel' + cm.user.settingNowPage) == null) {
-            $("#" + boardId).append('<div class="panel list-group ' + toggleClass + '" id="setting-panel' + cm.user.settingNowPage + '"></div>');
+            $("#" + boardId).append('<div class="list-group ' + toggleClass + '" id="setting-panel' + cm.user.settingNowPage + '"></div>');
         }
         if (document.getElementById('setting-panel' + (cm.user.settingNowPage + 1)) == null) {
-            $("#" + boardId).append('<div class="panel list-group toggle-panel" id="setting-panel' + (cm.user.settingNowPage + 1) + '"></div>');
+            $("#" + boardId).append('<div class="list-group toggle-panel" id="setting-panel' + (cm.user.settingNowPage + 1) + '"></div>');
         }
     } else {
         cm.user.nowPage = cm.user.nowPage + 1;
         if (document.getElementById('toggle-panel' + cm.user.nowPage) == null) {
-            $("#" + boardId).append('<div class="panel list-group toggle-panel" id="toggle-panel' + cm.user.nowPage + '"></div>');
+            $("#" + boardId).append('<div class="list-group toggle-panel" id="toggle-panel' + cm.user.nowPage + '"></div>');
         }
         if (document.getElementById('toggle-panel' + (cm.user.nowPage + 1)) == null) {
-            $("#" + boardId).append('<div class="panel list-group toggle-panel" id="toggle-panel' + (cm.user.nowPage + 1) + '"></div>');
+            $("#" + boardId).append('<div class="list-group toggle-panel" id="toggle-panel' + (cm.user.nowPage + 1) + '"></div>');
         }
     }
     
@@ -261,8 +262,8 @@ cm.createSideMenu = function() {
     // Menu Title
     html += '<li class="menu-title" data-i18n="Menu"></li>';
     // profile edit
-    html += '<li><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile" data-i18n="EditProfile"></a></li>';
-    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-change-password" data-i18n="ChangePass"></a></li>';
+    html += '<li><a class="allToggle" id="editProfToggle" href="#" data-i18n="EditProfile"></a></li>';
+    html += '<li class="menu-separator"><a class="allToggle" id="changePassword" href="#" data-i18n="ChangePass"></a></li>';
     // setting menu
     html += '<li><a class="allToggle" id="accountToggle" href="#" data-i18n="Account"></a></li>';
     html += '<li><a class="allToggle" id="applicationToggle" href="#" data-i18n="Application"></a></li>';
@@ -270,7 +271,7 @@ cm.createSideMenu = function() {
     //html += '<li><a class="allToggle" id="roleToggle" href="#" data-i18n="Role"></a></li>';
     //html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="#" data-i18n="Relation"></a></li>';
     // change language
-    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-chgLng" data-i18n="ChangeLng"></a></li>'
+    html += '<li class="menu-separator"><a class="allToggle" id="changeLanguage" href="#" data-i18n="ChangeLng"></a></li>'
     // log out
     html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout" data-i18n="Logout"></a></li>';
 
@@ -280,95 +281,6 @@ cm.createSideMenu = function() {
     html += '<div class="overlay" id="dvOverlay"></div>';
 
     $(".display-parent-div").append(html);
-
-    // Modal
-    // Edit Profile
-    html = [
-        '<div id="modal-edit-profile" class="modal fade" role="dialog">',
-            '<div class="modal-dialog">',
-    // Modal content
-                '<div class="modal-content">',
-                    '<div class="modal-header login-header">',
-                        '<button type="button" class="close" data-dismiss="modal">x</button>',
-                        '<h4 class="modal-title" data-i18n="EditProfile"></h4>',
-                    '</div>',
-                    '<div class="modal-body">',
-                        '<div id="dvDisplayName" data-i18n="DisplayName"></div>',
-                        '<div id="dvTextDisplayName">',
-                            '<input type="text" id="editDisplayName" onblur="cm.editDisplayNameBlurEvent();">',
-                        '</div>',
-                        '<span class="popupAlertArea" style="color:red">',
-                            '<aside id="popupEditDisplayNameErrorMsg"></aside>',
-                        '</span>',
-                        '<div id="dvDescription" data-i18n="Description"></div>',
-                        '<div id="dvTextDescription">',
-                            '<textarea onblur="cm.editDescriptionBlurEvent();" name="" cols="" rows=""  id="editDescription"></textarea>',
-                        '</div>',
-                        '<span style="padding-top: 3px;height:11px;color:red;">',
-                            '<aside id="popupEditDescriptionErrorMsg"></aside>',
-                        '</span>',
-                        '<div class="row">',
-                            '<div class="col-sm-6">',
-                                '<div id="dvPhoto" data-i18n="ProfileImage"></div>',
-                                '<div id="dvBrowseButtonSection">',
-                                    '<input type="file" class="fileUpload" onchange="cm.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile" accept="image/*" style="display: none">',
-                                    '<button class="btn btn-primary" id="editImgButton" type="button" data-i18n="SelectFile"></button>',
-                                    '<label id="editImgLbl" style="margin-left:10px;"></label>',
-                                '</div>',
-                                '<div id="dvBoxProfileImage" style="margin-top: 10px;">',
-                                    '<figure id="figEditCellProfile" class="boxProfileImage">',
-                                        '<img class="image-circle-large" style="margin: auto;" id="idImgFile" src="#" alt="image" />',
-                                    '</figure>',
-                                '</div>',
-                                '<span style="padding-top: 3px;height:11px;color:red;">',
-                                    '<aside id="popupEditUserPhotoErrorMsg"></aside>',
-                                '</span>',
-                            '</div>',
-                            '<div class="col-sm-6">',
-                                '<div data-i18n="QRCode"></div>',
-                                '<div style="margin-top: 10px;">',
-                                    '<figure id="qrcodeEditCellProfile" class="boxProfileImage">',
-                                    '</figure>',
-                                '</div>',
-                            '</div>',
-                        '</div>',
-                    '</div>',
-                    '<div class="modal-footer">',
-                        '<button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Cancel"></button>',
-                        '<button type="button" class="btn btn-primary" id="b-edit-profile-ok" data-i18n="Register"></button>',
-                    '</div>',
-                '</div>',
-            '</div>',
-        '</div>'
-    ].join("");
-    var modal = $(html);
-    $(document.body).append(modal).localize();
-    var aImg;
-    aImg = cm.createQRCodeImg('https://chart.googleapis.com/chart?cht=qr&chs=177x177&chl=' + sessionStorage.targetCellUrl);
-    $("#qrcodeEditCellProfile").append($(aImg));
-
-    // Change Password
-    html = '<div id="modal-change-password" class="modal fade" role="dialog">' +
-           '<div class="modal-dialog">' +
-           // Modal content
-           '<div class="modal-content">' +
-           '<div class="modal-header login-header">' +
-           '<button type="button" class="close" data-dismiss="modal">x</button>' +
-           '<h4 class="modal-title" data-i18n="ChangePass"></h4>' +
-           '</div>' +
-           '<div class="modal-body">' +
-           '<input type="password" data-i18n="[placeholder]newPassPlaceHolder" id="pNewPassword">' +
-           '<span id="changeMessage" style="color:red"></span>' +
-           '<input type="password" data-i18n="[placeholder]confirmNewPass" id="pConfirm">' +
-           '<span id="confirmMessage" style="color:red"></span>' +
-           '</div>' +
-           '<div class="modal-footer">' +
-           '<button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Cancel"></button>' +
-           '<button type="button" class="btn btn-primary" id="b-change-password-ok" data-i18n="Update" disabled></button>' +
-           '</div></div></div></div>';
-
-    modal = $(html);
-    $(document.body).append(modal);
 
     // ReLogin
     html = '<div id="modal-relogin" class="modal fade" role="dialog" data-backdrop="static">' +
@@ -381,29 +293,6 @@ cm.createSideMenu = function() {
            '</div>' +
            '<div class="modal-footer">' +
            '<button type="button" class="btn btn-primary" id="b-relogin-ok" >OK</button>' +
-           '</div></div></div></div>';
-    modal = $(html);
-    $(document.body).append(modal);
-
-    // Change Language
-    html = '<div id="modal-chgLng" class="modal fade" role="dialog">' +
-           '<div class="modal-dialog">' +
-           '<div class="modal-content">' +
-           '<div class="modal-header login-header">' +
-           '<button type="button" class="close" data-dismiss="modal">x</button>' +
-           '<h4 class="modal-title" data-i18n="ChangeLng"></h4>' +
-           '</div>' +
-           '<div class="modal-body">' +
-           '<span data-i18n="changeLanguageDescription"></span>' +
-           '<select class="form-control" id="selectLng">' +
-           '<option value="en" data-i18n="English"></option>' +
-           '<option value="ja" data-i18n="Japanese"></option>' +
-           '</select>' +
-           '<span id="selectLngMessage" style="color:red"></span>' +
-           '</div>' +
-           '<div class="modal-footer">' +
-           '<button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Cancel"></button>' +
-           '<button type="button" class="btn btn-primary" id="b-setlng-ok" data-i18n="Setup"></button>' +
            '</div></div></div></div>';
     modal = $(html);
     $(document.body).append(modal);
@@ -439,38 +328,11 @@ cm.createSideMenu = function() {
     $(document.body).append(modal);
 
     // Set Event
-    $('#b-logout-ok,#b-relogin-ok,#b-session-relogin-ok').on('click', function() { cm.logout(); });
-    $('#b-change-password-ok').on('click', function() { cm.changePassCheck($("#pNewPassword").val(), $("#pConfirm").val());});
-    $('#modal-change-password').on('hidden.bs.modal', function () {
-      $("#pNewPassword").val("");
-      $("#pConfirm").val("");
-      $("#changeMessage").html("");
-      $("#confirmMessage").html("");
-      $('#b-change-password-ok').prop('disabled', true);
-    });
-    $('#modal-edit-profile').on('show.bs.modal', function () {
-      cm.populateProfileEditData();
-    });
-    $('#pNewPassword').blur(function() {
-       cm.charCheck($(this));
-    });
-    $('#b-edit-profile-ok').on('click', function () { cm.updateCellProfile(); });
+    $('#b-logout-ok,#b-relogin-ok,#b-session-relogin-ok').on('click', function() { cm.logout(); });    
     $('#dvOverlay').on('click', function() {
 //        $(".overlay").removeClass('overlay-on');
 //        $(".slide-menu").removeClass('slide-on');
         cm.toggleSlide();
-    });
-    $("#b-setlng-ok").on('click', function() {
-        $("#selectLng option:selected").each(function(index, option) {
-            i18next.changeLanguage($(option).val(), function(err, t) {updateContent();})
-            $("#modal-chgLng").modal("hide");
-        });
-    });
-    $("#editImgButton,#editImgLbl").on('click', function() {
-        $("#editImgFile").click();
-    });
-    $("#modal-chgLng").on("show.bs.modal", function () {
-        $("#selectLng").val(i18next.language);
     });
 
     // Register my profile in data-i18n
@@ -1326,7 +1188,7 @@ cm.retrieveCollectionAPIResponse = function (json) {
 };
 cm.putFileProcess = function (profileUrl, json) {
     ut.putFileAPI(profileUrl, json).done(function (data) {
-        $('#modal-edit-profile').modal('hide');
+        cm.moveBackahead(true);
         cm.i18nAddProfile(i18next.language, "profTrans", "myProfile", json, cm.user.cellUrl, "profile");
         cm.editProfileHeaderMenu();
         sessionStorage.setItem("sessionData", JSON.stringify(cm.user));
