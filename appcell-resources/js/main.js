@@ -123,9 +123,6 @@ ha.dispInsAppList = function() {
 };
 
 ha.dispInsAppListSchema = function(schema, boxName) {
-    var profTrans = "profTrans";
-    var dispName = profTrans + ":" + boxName + "_DisplayName";
-    var imgName = profTrans + ":" + boxName + "_Image";
     cm.getBoxStatus(boxName).done(function (data) {
         var status = data.status;
         var html = '';
@@ -147,15 +144,56 @@ ha.dispInsAppListSchema = function(schema, boxName) {
             }).fail(function (data) {
                 console.log("fail");
             }).always(function (data) {
-                var html = '<a class="ins-app" onClick="cm.execApp(\'' + schema + '\', \'' + boxName + '\')" target="_blank">'
-                    + '<div class="ins-app-icon">'
-                    + '<img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon">'
-                    + '<span class="badge">' + msgCnt + '</span>'
-                    + '</div>'
-                    + '<div class="ins-app-name" data-i18n="' + dispName + '"></div>'
-                    + '</a>';
-                $("#dashboard_ins").append(html).localize();
+                ha.createLaunchLink(schema, boxName, msgCnt);
             });
         }
+    });
+};
+
+ha.createLaunchLink = function(schema, boxName, msgCnt) {
+    let profTrans = "profTrans";
+    let dispName = profTrans + ":" + boxName + "_DisplayName";
+    let imgName = profTrans + ":" + boxName + "_Image";
+
+    $.ajax({
+        type: "GET",
+        url: schema + "__/launch.json",
+        headers: {
+            'Authorization':'Bearer ' + cm.user.access_token,
+            'Accept':'application/json'
+        }
+    }).done(function(data) {
+        let appLaunchInfo = ut.getAppLaunchUrl(data.personal, boxName);
+
+        let imgTag = $('<img>', {
+            class: 'ins-app-icon',
+            'data-i18n': '[src]' + imgName
+        });
+
+        let counter = $('<span>', {
+            class: 'badge',
+            text: msgCnt
+        });
+
+        let iconDiv = $('<div>', {
+            class: 'ins-app-icon'
+        });
+        iconDiv.append($(imgTag), $(counter));
+
+        let nameDiv = $('<div>', {
+            class: 'ins-app-name',
+            'data-i18n': dispName
+        });
+
+        let aTag = $('<a>', {
+            href: '#',
+            class: 'ins-app',
+            onClick: 'return cm.execApp(this)',
+            'data-open-new-window': appLaunchInfo.openNewWindow, // $(this).data('openNewWindow')
+            'data-app-launch-url': appLaunchInfo.appLaunchUrl // $(this).data('appLaunchUrl')
+        });
+        aTag.append($(iconDiv), $(nameDiv));
+
+        $("#dashboard_ins").append($(aTag)).localize();
     });
 };
