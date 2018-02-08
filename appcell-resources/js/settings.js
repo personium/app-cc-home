@@ -51,6 +51,15 @@ st.initSettings = function() {
     });
 
     // menu-toggle
+    $("#editProfToggle").on("click", function () {
+        st.createEditProfScreen();
+    });
+    $("#changePassword").on("click", function () {
+        st.createChgPassScreen();
+    });
+    $("#changeLanguage").on("click", function () {
+        st.createChgLngScreen();
+    });
     $("#accountToggle").on("click", function() {
       st.createAccountList();
     });
@@ -111,6 +120,138 @@ st.checkAccLinkRole = function() {
         return true;
     }
 };
+
+// Creating a profile editing screen
+st.createEditProfScreen = function () {
+    $("#setting-panel1").remove();
+    cm.setBackahead(true);
+    st.dispEditProf();
+    $(".setting-menu").toggleClass('slide-on');
+    cm.setTitleMenu("EditProfile", true);
+    cm.populateProfileEditData();
+}
+// View profile edit screen
+st.dispEditProf = function () {
+    $("#setting-panel1").empty();
+    var html = [
+        '<div class="modal-body">',
+            '<div id="dvDisplayName" data-i18n="DisplayName"></div>',
+            '<div id="dvTextDisplayName">',
+                '<input type="text" id="editDisplayName" onblur="cm.editDisplayNameBlurEvent();">',
+            '</div>',
+            '<span class="popupAlertArea" style="color:red">',
+                '<aside id="popupEditDisplayNameErrorMsg"></aside>',
+            '</span>',
+            '<div id="dvDescription" data-i18n="Description"></div>',
+            '<div id="dvTextDescription">',
+                '<textarea onblur="cm.editDescriptionBlurEvent();" name="" cols="" rows=""  id="editDescription"></textarea>',
+            '</div>',
+            '<span style="padding-top: 3px;height:11px;color:red;">',
+                '<aside id="popupEditDescriptionErrorMsg"></aside>',
+            '</span>',
+            '<div class="row">',
+                '<div class="col-sm-6">',
+                    '<div id="dvPhoto" data-i18n="ProfileImage"></div>',
+                    '<div id="dvBrowseButtonSection">',
+                    '<input type="file" class="fileUpload" onchange="cm.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile" accept="image/*" style="display: none">',
+                    '<button class="btn btn-primary" id="editImgButton" type="button" data-i18n="SelectFile"></button>',
+                    '<label id="editImgLbl" style="margin-left:10px;"></label>',
+                '</div>',
+                '<div id="dvBoxProfileImage" style="margin-top: 10px;">',
+                    '<figure id="figEditCellProfile" class="boxProfileImage">',
+                        '<img class="image-circle-large" style="margin: auto;" id="idImgFile" data-i18n="[src]profTrans:myProfile_Image" src="#" alt="image" />',
+                    '</figure>',
+                '</div>',
+                '<span style="padding-top: 3px;height:11px;color:red;">',
+                    '<aside id="popupEditUserPhotoErrorMsg"></aside>',
+                '</span>',
+            '</div>',
+            '<div class="col-sm-6">',
+                '<div data-i18n="QRCode"></div>',
+                '<div style="margin-top: 10px;">',
+                    '<figure id="qrcodeEditCellProfile" class="boxProfileImage"></figure>',
+                '</div>',
+            '</div>',
+            '<div class="modal-footer">',
+                '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);" data-i18n="Cancel"></button>',
+                '<button type="button" class="btn btn-primary" id="b-edit-profile-ok" onClick="cm.updateCellProfile();" data-i18n="Register"></button>',
+            '</div>',
+        '</div>'
+    ].join("");
+    $("#setting-panel1").append(html).localize();
+    var aImg;
+    aImg = cm.createQRCodeImg('https://chart.googleapis.com/chart?cht=qr&chs=177x177&chl=' + sessionStorage.targetCellUrl);
+    $("#qrcodeEditCellProfile").append($(aImg));
+
+    $("#editImgButton,#editImgLbl").on('click', function () {
+        $("#editImgFile").click();
+    });
+}
+
+// Creating a change password screen
+st.createChgPassScreen = function () {
+    $("#setting-panel1").remove();
+    cm.setBackahead(true);
+    st.dispChgPass();
+    $(".setting-menu").toggleClass('slide-on');
+    cm.setTitleMenu("ChangePass", true);
+}
+// View change password screen
+st.dispChgPass = function () {
+    $("#setting-panel1").empty();
+    var html = [
+        '<div class="modal-body">',
+            '<input type="password" data-i18n="[placeholder]newPassPlaceHolder" id="pNewPassword" onblur="cm.charCheck($(this));">',
+            '<span id="changeMessage" style="color:red"></span>',
+            '<input type="password" data-i18n="[placeholder]confirmNewPass" id="pConfirm">',
+            '<span id="confirmMessage" style="color:red"></span>',
+        '</div>',
+        '<div class="modal-footer">' +
+            '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);" data-i18n="Cancel"></button>',
+            '<button type="button" class="btn btn-primary" id="b-change-password-ok" data-i18n="Update" disabled></button>',
+        '</div>'
+    ].join("");
+    $("#setting-panel1").append(html).localize();
+
+    $('#b-change-password-ok').on('click', function () {
+        cm.changePassCheck($("#pNewPassword").val(), $("#pConfirm").val());
+    });
+}
+
+// Creating a change language screen
+st.createChgLngScreen = function () {
+    $("#setting-panel1").remove();
+    cm.setBackahead(true);
+    st.dispChgLng();
+    $(".setting-menu").toggleClass('slide-on');
+    cm.setTitleMenu("ChangeLng", true);
+}
+// View change language screen
+st.dispChgLng = function () {
+    $("#setting-panel1").empty();
+    var html = [
+        '<div class="modal-body">',
+            '<span data-i18n="changeLanguageDescription"></span>',
+            '<select class="form-control" id="selectLng">',
+                '<option value="en" data-i18n="English"></option>',
+                '<option value="ja" data-i18n="Japanese"></option>',
+            '</select>',
+            '<span id="selectLngMessage" style="color:red"></span>',
+        '</div>',
+        '<div class="modal-footer">' +
+            '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);" data-i18n="Cancel"></button>' +
+            '<button type="button" class="btn btn-primary" id="b-setlng-ok" data-i18n="Setup"></button>' +
+        '</div>'
+    ].join("");
+    $("#setting-panel1").append(html).localize();
+    $("#selectLng").val(i18next.language);
+    $("#b-setlng-ok").on('click', function () {
+        $("#selectLng option:selected").each(function (index, option) {
+            i18next.changeLanguage($(option).val(), function (err, t) { updateContent(); })
+            cm.moveBackahead(true);
+        });
+    });
+}
 
 /////////////
 // Account //
@@ -519,7 +660,7 @@ st.dispInsAppListSchemaSetting = function(schema, boxName, no) {
 };
 st.dispApplicationList = function(json) {
     $("#appList").empty();
-    var results = json.Apps;
+    var results = json.d.results;
     results.sort(function(val1, val2) {
       return (val1.SchemaUrl < val2.SchemaUrl ? 1 : -1);
     })
