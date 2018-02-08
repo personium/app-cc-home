@@ -1,3 +1,10 @@
+if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function(searchString, position){
+        position = position || 0;
+        return this.substr(position, searchString.length) === searchString;
+    };
+}
+
 var ut = {};
 
 // Local Unit/Box Schema
@@ -157,6 +164,7 @@ ut.PEROSNIUM_APP_TYPE = ut.deviceType2PersoniumAppType();
 console.log('Personium App Type [' + ut.PEROSNIUM_APP_TYPE + ']');
 
 ut.getAppLaunchUrl = function(launchObj, boxName) {
+    let appTypeFinal = 'Web App';
     let result = {
         appLaunchUrl: ut.changeLocalBoxToBoxUrl(launchObj.web, boxName),
         openNewWindow: true
@@ -169,13 +177,14 @@ ut.getAppLaunchUrl = function(launchObj, boxName) {
             if (launchObj[personiumAppType] && !launchObj[personiumAppType].startsWith('***:')) {
                 result.openNewWindow = false;
                 result.appLaunchUrl = launchObj[personiumAppType];
-                console.log('Launch native App');
+                appTypeFinal = 'native App';
             }
             break;
         case 'web':
         default:
-            console.log('Launch Web App');
+            appTypeFinal = 'Web App';
     }
+    console.log('[%s] will be launched as %s', boxName, appTypeFinal);
 
     return result;
 };

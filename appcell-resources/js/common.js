@@ -1369,7 +1369,7 @@ cm.execApp = function(aDom) {
             window.location.href = url; // launch native App
         }
 
-        if (isDemo && (launchUrl.indexOf('https://demo.personium.io/app-myboard/') == 0)) {
+        if (isDemo && launchUrl.startsWith('https://demo.personium.io/app-myboard/')) {
             demoSession.sideMenu = true;
             sessionStorage.setItem("demoSession", JSON.stringify(demoSession));
             demo.showModal('#modal-logout-start');
