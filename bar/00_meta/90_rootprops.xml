@@ -10,12 +10,10 @@
         </propstat>
     </response>
     <response>
-        <href>dcbox:/src</href>
+        <href>dcbox:/login.html</href>
         <propstat>
             <prop>
-                <resourcetype>
-                    <collection/>
-                </resourcetype>
+                <getcontenttype>text/html</getcontenttype>
                 <acl xml:base="https://demo.personium.io/HomeApplication/__role/__/" xmlns:p="urn:x-personium:xmlns">
                     <ace>
                         <principal>
@@ -32,42 +30,82 @@
         </propstat>
     </response>
     <response>
-        <href>dcbox:/src/login.html</href>
+        <href>dcbox:/main.html</href>
         <propstat>
             <prop>
                 <getcontenttype>text/html</getcontenttype>
+                <acl xml:base="https://demo.personium.io/HomeApplication/__role/__/" xmlns:p="urn:x-personium:xmlns">
+                    <ace>
+                        <principal>
+                            <all/>
+                        </principal>
+                        <grant>
+                            <privilege>
+                                <read/>
+                            </privilege>
+                        </grant>
+                    </ace>
+                </acl>
             </prop>
         </propstat>
     </response>
     <response>
-        <href>dcbox:/src/main.html</href>
+        <href>dcbox:/applicationmarket.html</href>
         <propstat>
             <prop>
                 <getcontenttype>text/html</getcontenttype>
+                <acl xml:base="https://demo.personium.io/HomeApplication/__role/__/" xmlns:p="urn:x-personium:xmlns">
+                    <ace>
+                        <principal>
+                            <all/>
+                        </principal>
+                        <grant>
+                            <privilege>
+                                <read/>
+                            </privilege>
+                        </grant>
+                    </ace>
+                </acl>
             </prop>
         </propstat>
     </response>
     <response>
-        <href>dcbox:/src/applicationmarket.html</href>
+        <href>dcbox:/socialgraph.html</href>
         <propstat>
             <prop>
                 <getcontenttype>text/html</getcontenttype>
+                <acl xml:base="https://demo.personium.io/HomeApplication/__role/__/" xmlns:p="urn:x-personium:xmlns">
+                    <ace>
+                        <principal>
+                            <all/>
+                        </principal>
+                        <grant>
+                            <privilege>
+                                <read/>
+                            </privilege>
+                        </grant>
+                    </ace>
+                </acl>
             </prop>
         </propstat>
     </response>
     <response>
-        <href>dcbox:/src/socialgraph.html</href>
+        <href>dcbox:/message.html</href>
         <propstat>
             <prop>
                 <getcontenttype>text/html</getcontenttype>
-            </prop>
-        </propstat>
-    </response>
-    <response>
-        <href>dcbox:/src/message.html</href>
-        <propstat>
-            <prop>
-                <getcontenttype>text/html</getcontenttype>
+                <acl xml:base="https://demo.personium.io/HomeApplication/__role/__/" xmlns:p="urn:x-personium:xmlns">
+                    <ace>
+                        <principal>
+                            <all/>
+                        </principal>
+                        <grant>
+                            <privilege>
+                                <read/>
+                            </privilege>
+                        </grant>
+                    </ace>
+                </acl>
             </prop>
         </propstat>
     </response>
