@@ -322,7 +322,7 @@ st.createAddAccount = function() {
         html += '<div class="row" id="dvRadioAccType" style="margin-bottom: 10px;">';
         html += '<div class="row col-xs-12 col-sm-6 radio-inline">';
         html += '<div class="col-xs-2 col-sm-2"><input type="radio" value="typePassword" name="accType" id="accType_password" checked></div>';
-        html += '<div class="col-xs-10 col-sm-10"><label for="accType_password" data-i18n="PasswordAuth"></label></div>';
+        html += '<div class="col-xs-10 col-sm-10"><label for="accType_password" data-i18n="Password"></label></div>';
         html += '</div>';
         html += '<div class="row col-xs-12 col-sm-6">';
         html += '<div class="col-xs-2 col-sm-2"><input type="radio" value="typeGoogle" name="accType" id="accType_google"></div>';
