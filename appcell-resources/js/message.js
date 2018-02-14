@@ -5,6 +5,7 @@ ms.selectNo = null;
 
 addLoadScript = function (scriptList) {
     scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
+    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
     return scriptList;
 }
 
@@ -406,7 +407,21 @@ ms.displayProfile = function (cellUrl, num) {
         var urlParse = $.url(cellUrl);
         var transName = urlParse.attr('host') + "_" + cellName;
         if (!i18next.exists(transName)) {
-            cm.registerProfI18n(cellUrl, transName, "profile");
+            let defProf = {
+                DisplayName: ut.getName(cellUrl),
+                Description: "",
+                Image: ut.getJdenticon(cellUrl)
+            }
+            cm.getProfile(cellUrl).done(function (prof) {
+                defProf.DisplayName = _.escape(prof.DisplayName);
+                defProf.Description = _.escape(prof.Description);
+                if (prof.Image) {
+                    defProf.Image = prof.Image;
+                }
+            }).always(function () {
+                cm.i18nAddProfile("en", "profTrans", transName, defProf, cellUrl, "profile");
+                cm.i18nAddProfile("ja", "profTrans", transName, defProf, cellUrl, "profile");
+            });
         }
         $('#requestName' + num).html('<div class="sizeCaption" data-i18n="profTrans:' + transName + '_DisplayName"></div>');
         $('#requestIcon' + num).attr({ "data-i18n": "[src]profTrans:" + transName + '_Image' });

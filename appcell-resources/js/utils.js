@@ -188,3 +188,16 @@ ut.getAppLaunchUrl = function(launchObj, boxName) {
 
     return result;
 };
+
+/*
+ * Based on the passed value, we generate an image using jdenticon and return it in base64 format.
+ * This function can not be used unless you load jdenticon.
+ */
+ut.getJdenticon = function (value) {
+    var canvas = document.createElement("canvas");
+    canvas.height = 172;
+    canvas.width = 172;
+    jdenticon.update(canvas, value);
+    var icon_quality = 0.8;
+    return canvas.toDataURL("image/jpeg", icon_quality);
+}

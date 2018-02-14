@@ -1,7 +1,14 @@
 var lg = {};
 lg.notImage = "https://demo.personium.io/HomeApplication/__/icons/profile_image.png";
 
-lg.initTarget = function() {
+addLoadScript = function (scriptList) {
+    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
+    return scriptList;
+}
+
+lg.initTarget = function () {
+    ut.loadScript();
+
     var mode = "local";
     var match = location.search.match(/mode=(.*?)(&|$)/);
     if (match) {
@@ -140,9 +147,9 @@ lg.populateProfile = function(profile) {
     $("#tProfileDisplayName").html(profile.DisplayName);
     document.title = "" + profile.DisplayName;
         if (profile.Image) {
-        $("#imProfile").attr("src", profile.Image);
+            $("#imProfile").attr("src", profile.Image);
         } else {
-            $("#imProfile").attr("src", lg.notImage);
+            $("#imProfile").attr("src", ut.getJdenticon(lg.rootUrl));
         }
 };
 

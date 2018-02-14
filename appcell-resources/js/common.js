@@ -344,6 +344,9 @@ cm.createSideMenu = function() {
             Image: prof.Image
         }
     }).always(function () {
+        if (!defProf.Image) {
+            defProf.Image = ut.getJdenticon(cm.user.cellUrl);
+        }
         let transName = "myProfile";
         cm.i18nAddProfile("en", "profTrans", transName, defProf, cm.user.cellUrl, "profile");
         cm.i18nAddProfile("ja", "profTrans", transName, defProf, cm.user.cellUrl, "profile");
