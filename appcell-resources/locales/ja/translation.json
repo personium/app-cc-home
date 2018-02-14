@@ -1,6 +1,7 @@
 {
   "Account": "アカウント"
  ,"AccountTitle": "$t(Account): {{title}}"
+ ,"AuthType": "認証種別"
  ,"Add": "追加"
  ,"AddExternalCell": "外部セル追加"
  ,"AddExternalCellPlus": "+ 外部セル追加"
@@ -55,6 +56,7 @@
  ,"English": "English"
  ,"Error": "エラー"
  ,"Failed": "失敗"
+ ,"GoogleAuth": "Google認証"
  ,"Independent": "無所属"
  ,"Install": "インストール"
  ,"Installed": "インストール済み"
@@ -66,6 +68,7 @@
  ,"Name": "名前"
  ,"Overview": "概要"
  ,"Password": "パスワード"
+ ,"PasswordAuth": "パスワード認証"
  ,"ProfileImage": "プロフィール画像"
  ,"Provider": "提供元:"
  ,"PublicBOX": "公開BOX"
