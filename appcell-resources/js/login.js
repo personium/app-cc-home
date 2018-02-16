@@ -1,5 +1,4 @@
 var lg = {};
-lg.notImage = "https://demo.personium.io/HomeApplication/__/icons/profile_image.png";
 
 addLoadScript = function (scriptList) {
     scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
@@ -7,73 +6,71 @@ addLoadScript = function (scriptList) {
 }
 
 lg.initTarget = function () {
-    ut.loadScript();
-
-    var mode = "local";
-    var match = location.search.match(/mode=(.*?)(&|$)/);
-    if (match) {
-        mode = decodeURIComponent(match[1]);
-    }
-
-    if (mode === "global") {
-        match = location.search.match(/target=(.*?)(&|$)/);
-        var target = "";
+    ut.loadScript(function () {
+        var mode = "local";
+        var match = location.search.match(/mode=(.*?)(&|$)/);
         if (match) {
-            // target
-            target = decodeURIComponent(match[1]);
-            //$('#errorCellUrl').html(i18next.t("notExistTargetCell"));
-            $('#errorCellUrl').attr("data-i18n", "notExistTargetCell").localize().show();
-        } else {
-            // Cell URL is not provided in the URL's parameter, try to get the previously used cell URL from session.
-            target = sessionStorage.getItem("targetCellUrl") || "";
-            $('#errorCellUrl').html("");
+            mode = decodeURIComponent(match[1]);
         }
 
-        // Call the following function explicitly in order to prompt the user to enter the cell URL.
-        lg.targetCellLogin(target);
-    } else {
-        lg.rootUrl = lg.cellUrl();
-        lg.loadProfile();
-
-        sessionStorage.setItem("mode", "local");
-        sessionStorage.setItem("targetCellUrl", lg.rootUrl);
-    }
-
-    $('#b-input-cell-ok').on('click', function () {
-        $('#modal-input-cell').modal('hide');
-    });
-    $('#modal-input-cell').on('hidden.bs.modal', function() {
-        lg.targetCellLogin($("#pCellUrl").val());
-    });
-    $('#modal-input-cell').on('shown.bs.modal', function() {
-        $('#pCellUrl').focus();
-    });
-    $("#bLogin").on("click", function(e){
-        // send id pw to cell and get access token
-        lg.sendAccountNamePw($("#iAccountName").val(), $("#iAccountPw").val());
-    });
-    $("#gLogin").on("click", function(e) {
-        //var url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=102363313215-408im4hc7mtsgrda4ratkro2thn58bcd.apps.googleusercontent.com&response_type=code+id_token&scope=openid%20email%20profile&redirect_uri=https%3A%2F%2Fdemo.personium.io%2FoidcTest%2Foidc%2Fdav%2Findex2.html&state=abc&display=popup&nonce=personium";
-        var url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=102363313215-408im4hc7mtsgrda4ratkro2thn58bcd.apps.googleusercontent.com&response_type=code+id_token&scope=openid%20email%20profile&redirect_uri=http%3A%2F%2Fpersonium.io%2Fdemo%2Fhome-app%2Fbox-resources%2Fhomeapp_google_auth.html&state=abc&display=popup&nonce=personium";
-
-        window.location.href = url;
-    });
-
-    document.onkeypress = function(e) {
-        e = e ? e : event;
-        var keyCode= e.charCode ? e.charCode : ((e.which) ? e.which : e.keyCode);
-        var elem = e.target ? e.target : e.srcElement;
-        // KeyCode:13 = Enter
-        if(Number(keyCode) == 13) {
-            if ($('#modal-input-cell').css('display') == 'none') {
-                document.getElementById('bLogin').click();
+        if (mode === "global") {
+            match = location.search.match(/target=(.*?)(&|$)/);
+            var target = "";
+            if (match) {
+                // target
+                target = decodeURIComponent(match[1]);
+                //$('#errorCellUrl').html(i18next.t("notExistTargetCell"));
+                $('#errorCellUrl').attr("data-i18n", "notExistTargetCell").localize().show();
             } else {
-                document.getElementById('b-input-cell-ok').click();
+                // Cell URL is not provided in the URL's parameter, try to get the previously used cell URL from session.
+                target = sessionStorage.getItem("targetCellUrl") || "";
+                $('#errorCellUrl').html("");
             }
-            return false;
-        }
-    }
 
+            // Call the following function explicitly in order to prompt the user to enter the cell URL.
+            lg.targetCellLogin(target);
+        } else {
+            lg.rootUrl = lg.cellUrl();
+            lg.loadProfile();
+
+            sessionStorage.setItem("mode", "local");
+            sessionStorage.setItem("targetCellUrl", lg.rootUrl);
+        }
+
+        $('#b-input-cell-ok').on('click', function () {
+            $('#modal-input-cell').modal('hide');
+        });
+        $('#modal-input-cell').on('hidden.bs.modal', function () {
+            lg.targetCellLogin($("#pCellUrl").val());
+        });
+        $('#modal-input-cell').on('shown.bs.modal', function () {
+            $('#pCellUrl').focus();
+        });
+        $("#bLogin").on("click", function (e) {
+            // send id pw to cell and get access token
+            lg.sendAccountNamePw($("#iAccountName").val(), $("#iAccountPw").val());
+        });
+        $("#gLogin").on("click", function (e) {
+            var cellUrlEnc = encodeURIComponent(lg.rootUrl);
+            var url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=102363313215-408im4hc7mtsgrda4ratkro2thn58bcd.apps.googleusercontent.com&response_type=code+id_token&scope=openid%20email%20profile&redirect_uri=https%3A%2F%2Fdemo.personium.io%2FHomeApplication%2F__%2Fdebug%2Fbox-resources%2Fhomeapp_google_auth.html&display=popup&nonce=personium&state=" + cellUrlEnc;
+            window.location.href = url;
+        });
+
+        document.onkeypress = function (e) {
+            e = e ? e : event;
+            var keyCode = e.charCode ? e.charCode : ((e.which) ? e.which : e.keyCode);
+            var elem = e.target ? e.target : e.srcElement;
+            // KeyCode:13 = Enter
+            if (Number(keyCode) == 13) {
+                if ($('#modal-input-cell').css('display') == 'none') {
+                    document.getElementById('bLogin').click();
+                } else {
+                    document.getElementById('b-input-cell-ok').click();
+                }
+                return false;
+            }
+        }
+    });
 };
 
 lg.targetCellLogin = function(tempUrl) {
@@ -131,7 +128,7 @@ lg.loadProfile = function() {
                 var noProfile = {
                     Description: "",
                     DisplayName: "Guest",
-                    Image: lg.notImage,
+                    Image: ut.getJdenticon(lg.rootUrl),
                     ProfileImageName: "",
                     Scope: "Private"
                 };
