@@ -1,6 +1,13 @@
 var ha = {};
 
-ha.init = function() {
+addLoadScript = function (scriptList) {
+    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
+    return scriptList;
+}
+
+ha.init = function () {
+    ut.loadScript();
+
     let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
     let isDemo = (tempMyProfile.IsDemo || false);
 

@@ -2,6 +2,7 @@ var sg = {};
 
 addLoadScript = function (scriptList) {
     scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
+    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
     return scriptList;
 }
 
@@ -98,7 +99,7 @@ sg.dispExtCellListProf = function (extCellUrl) {
     var profObj = {
         DisplayName: cellName,
         Description: "",
-        Image: cm.notImage
+        Image: ut.getJdenticon(extCellUrlCnv)
     }
     var extRelObj = { ID: "dvExtCellList" };
     cm.getProfile(extCellUrlCnv).done(function (profData) {
@@ -604,7 +605,7 @@ sg.blurAddExtCellUrl = function() {
             var profObj = {
                 DisplayName: ut.getName(schemaURL),
                 Description: "",
-                Image: cm.notImage
+                Image: ut.getJdenticon(schemaURL)
             }
             cm.getProfile(schemaURL).done(function (prof) {
                 // Profile Modal Settings

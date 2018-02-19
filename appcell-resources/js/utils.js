@@ -11,19 +11,30 @@ var ut = {};
 ut.PERSONIUM_LOCALUNIT = "personium-localunit:";
 ut.PERSONIUM_LOCALBOX = "personium-localbox:";
 
-ut.loadScript = function () {
+ut.loadScript = function (callback) {
     let head = document.getElementsByTagName('head')[0];
     let scriptList = [];
     if (typeof addLoadScript == "function") {
         scriptList = addLoadScript(scriptList);
     }
 
-    let scriptLen = scriptList.length;
-    for (var i = 0; i < scriptLen; i++) {
+    let i = 0;
+    (function appendScript() {
+        if (typeof scriptList[i] == "undefined") {
+            if ((typeof callback !== "undefined") && $.isFunction(callback)) {
+                callback();
+            };
+            return false;
+        }
         let script = document.createElement('script');
         script.src = scriptList[i];
+        
         head.appendChild(script);
-    }
+        i++;
+        script.onload = function (e) {
+            appendScript();
+        }
+    })();
 };
 
 ut.cellUrlWithEndingSlash = function(tempUrl, raiseError) {
@@ -188,3 +199,23 @@ ut.getAppLaunchUrl = function(launchObj, boxName) {
 
     return result;
 };
+ut.getDefaultImage = function (cellUrl, cellType) {
+    if (cellType === "App") {
+        return cm.notAppImage;
+    }
+
+    return ut.getJdenticon(cellUrl);
+}
+
+/*
+ * Based on the passed value, we generate an image using jdenticon and return it in base64 format.
+ * This function can not be used unless you load jdenticon.
+ */
+ut.getJdenticon = function (value) {
+    var canvas = document.createElement("canvas");
+    canvas.height = 172;
+    canvas.width = 172;
+    jdenticon.update(canvas, value);
+    var icon_quality = 0.8;
+    return canvas.toDataURL("image/jpeg", icon_quality);
+}

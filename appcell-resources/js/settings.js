@@ -297,7 +297,7 @@ st.dispAccountList = function(json) {
     html += '<table style="width: 100%;"><tr>';
     html += '<td style="width: 80%;"><a href="#" class="ellipsisText" id="accountLinkToRoleToggle' + i + '" onClick="st.createAccountRole(\'' + acc.Name + '\',\'' + i + '\')">' + acc.Name + '&nbsp;<img class="image-circle-small" src="' + typeImg + '"></a></td>';
     if (acc.Name !== cm.user.username) {
-        html += '<td style="margin-right:10px;width: 10%;"><a class="edit-button list-group-item" href="#" onClick="st.createEditAccount(\'' + acc.Name + '\');return(false)">' + i18next.t("Edit") + '</a></td>'
+        html += '<td style="margin-right:10px;width: 10%;"><a class="edit-button list-group-item" href="#" onClick="st.createEditAccount(\'' + acc.Name + '\',\'' + type + '\');return(false)">' + i18next.t("Edit") + '</a></td>'
              + '<td style="width: 10%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelModal(\'' + acc.Name + '\');return(false)">' + i18next.t("Del") + '</a></td>';
     }
     html += '</tr></table></div>';
@@ -316,40 +316,62 @@ st.setLinkAccName = function(accName, no) {
 st.createAddAccount = function() {
     $("#setting-panel2").empty();
     cm.setBackahead(true);
-    cm.getRoleList().done(function(data) {
-        var html = '<div class="modal-body">';
-        html += '<div id="dvAddName">' + i18next.t("Name") + '</div>';
-        html += '<div id="dvTextAddName" style="margin-bottom: 10px;">';
-        html += '<input type="text" id="addAccountName" onblur="st.addAccountNameBlurEvent();">';
-        html += '<span class="popupAlertArea" style="color:red">';
-        html += '<aside id="popupAddAccountNameErrorMsg"> </aside>';
-        html += '</span></div>';
-        html += '<div id="dvAddPassword">' + i18next.t("Password") + '</div>';
-        html += '<div id="dvTextAddNewPassword" style="margin-bottom: 10px;">';
-        html += '<input type="password" placeholder="' + i18next.t("newPassPlaceHolder") + '" id="pAddNewPassword" onblur="st.blurNewPassword(this, \'b-add-account-ok\', \'addChangeMessage\');">';
-        html += '<span class="popupAlertArea" style="color:red">';
-        html += '<aside id="addChangeMessage"> </aside>';
-        html += '</span></div>';
-        html += '<div id="dvAddConfirm">' + i18next.t("confirmNewPass") + '</div>';
-        html += '<div id="dvTextAddConfirm" style="margin-bottom: 10px;">';
-        html += '<input type="password" placeholder="' + i18next.t("confirmNewPass") + '" id="pAddConfirm" onblur="st.blurConfirm(\'pAddNewPassword\', \'pAddConfirm\', \'addConfirmMessage\');">';
-        html += '<span class="popupAlertArea" style="color:red">';
-        html += '<aside id="addConfirmMessage"> </aside>';
-        html += '</span></div>';
-        html += '<div id="dvCheckAddAccountLinkRole" style="margin-bottom: 10px;">';
-        html += '<label><input class="widthAuto" type="checkbox" id="addCheckAccountLinkRole" onChange="st.changeCheckAccountLinkRole(this);">' + i18next.t("AssignRoleMulti") + '</label>';
-        html += '</div>';
-        html += '<div id="dvSelectAddAccountLinkRole" style="margin-bottom: 10px;">';
-        html += '<select class="form-control" name="" id="ddlAddAccLinkRoleList" onblur="st.checkAccLinkRole();" multiple disabled><option>Select a role</option></select>';
-        html += '<span class="popupAlertArea" style="color:red"><aside id="popupAddAccountLinkRoleErrorMsg"> </aside></span>';
-        html += '</div>';
+    cm.getRoleList().done(function (data) {
+     var html = '<div class="modal-body">';
+        html += '   <div id="dvAccType" data-i18n="AuthType"></div>';
+        html += '   <div class="row" id="dvRadioAccType" style="margin-bottom: 10px;">';
+        html += '       <div class="row col-xs-12 col-sm-6 radio-inline">';
+        html += '           <div class="col-xs-2 col-sm-2"><input type="radio" value="basic" name="accType" id="accType_password" checked></div>';
+        html += '           <div class="col-xs-10 col-sm-10"><label for="accType_password" data-i18n="authType.basic"></label></div>';
+        html += '       </div>';
+        html += '       <div class="row col-xs-12 col-sm-6">';
+        html += '           <div class="col-xs-2 col-sm-2"><input type="radio" value="oidc:google" name="accType" id="accType_google"></div>';
+        html += '           <div class="col-xs-10 col-sm-10"><label for="accType_google" data-i18n="authType.google"></label></div>';
+        html += '       </div>';
+        html += '   </div>';
+
+        html += '   <div id="dvAddName">' + i18next.t("AccountName") + '</div>';
+        html += '   <div id="dvTextAddName" style="margin-bottom: 10px;">';
+        html += '       <input type="text" id="addAccountName" placeholder="' + i18next.t("accountNamePlaceHolder") + '" onblur="st.addAccountNameBlurEvent();">';
+        html += '       <span class="popupAlertArea" style="color:red">';
+        html += '           <aside id="popupAddAccountNameErrorMsg"> </aside>';
+        html += '       </span>';
+        html += '   </div>';
+        html += '   <div id="passField">';
+        html += '       <div id="dvAddPassword">' + i18next.t("Password") + '</div>';
+        html += '       <div id="dvTextAddNewPassword" style="margin-bottom: 10px;">';
+        html += '           <input type="password" placeholder="' + i18next.t("newPassPlaceHolder") + '" id="pAddNewPassword" onblur="st.blurNewPassword(this, \'b-add-account-ok\', \'addChangeMessage\');">';
+        html += '           <span class="popupAlertArea" style="color:red">';
+        html += '               <aside id="addChangeMessage"> </aside>';
+        html += '           </span>';
+        html += '       </div>';
+        html += '       <div id="dvAddConfirm">' + i18next.t("confirmNewPass") + '</div>';
+        html += '       <div id="dvTextAddConfirm" style="margin-bottom: 10px;">';
+        html += '           <input type="password" placeholder="' + i18next.t("confirmNewPass") + '" id="pAddConfirm" onblur="st.blurConfirm(\'pAddNewPassword\', \'pAddConfirm\', \'addConfirmMessage\');">';
+        html += '           <span class="popupAlertArea" style="color:red">';
+        html += '               <aside id="addConfirmMessage"> </aside>';
+        html += '           </span>';
+        html += '       </div>';
+        html += '   </div>';
         html += '</div>';
         html += '<div class="modal-footer">';
-        html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + i18next.t("Cancel") + '</button>';
-        html += '<button type="button" class="btn btn-primary" id="b-add-account-ok" onClick="st.addAccount();">' + i18next.t("Create") + '</button>';
-        html += '</div></div>';
-        $("#setting-panel2").append(html);
-        cm.dispRoleList(data, "ddlAddAccLinkRoleList", true);
+        html += '   <button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + i18next.t("Cancel") + '</button>';
+        html += '   <button type="button" class="btn btn-primary" id="b-add-account-ok" onClick="st.addAccount();">' + i18next.t("Create") + '</button>';
+        html += '</div>';
+        $("#setting-panel2").append(html).localize();
+        $("input[name=accType]").change(function () {
+            $("#addAccountName").val("");
+            $("#popupAddAccountNameErrorMsg").html("");
+            if ($("input[name=accType]:checked").val() == "basic") {
+                $("#passField").css("display", "block");
+                $("#dvAddName").html(i18next.t("AccountName"));
+                $("#addAccountName").attr("placeholder", i18next.t("accountNamePlaceHolder"));
+            } else {
+                $("#passField").css("display", "none");
+                $("#dvAddName").html(i18next.t("GMailAddress"));
+                $("#addAccountName").attr("placeholder", i18next.t("gmailPlaceHolder"));
+            }
+        });
     });
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
@@ -499,16 +521,18 @@ st.dispDelAccountRoleModal = function(accName, roleName, boxName, no) {
     $('#b-del-acclinkrole-ok').css("display","");
     $('#modal-confirmation').modal('show');
 }
-st.createEditAccount = function(name) {
+st.createEditAccount = function(name, type) {
     st.updUser = name;
     $("#setting-panel2").empty();
     cm.setBackahead(true);
     var html = '<div class="modal-body">';
     html += '<div id="dvEditName">' + i18next.t("Name") + '</div>';
-    html += '<div id="dvTextEditName" style="margin-bottom: 10px;"><input type="text" id="editAccountName" onblur="st.editAccountNameBlurEvent();" value="' + name + '"><span class="popupAlertArea" style="color:red"><aside id="popupEditAccountNameErrorMsg"> </aside></span></div>';
-    html += '<div id="dvEditPassword">' + i18next.t("Password") + '</div>';
-    html += '<div id="dvTextEditNewPassword" style="margin-bottom: 10px;"><input type="password" placeholder="' + i18next.t("newPassPlaceHolder") + '" id="pEditNewPassword" onblur="st.blurNewPassword(this, \'b-edit-account-ok\', \'editChangeMessage\');"><span class="popupAlertArea" style="color:red"><aside id="editChangeMessage"> </aside></span></div>';
-    html += '<div id="dvTextEditConfirm" style="margin-bottom: 10px;"><input type="password" placeholder="' + i18next.t("confirmNewPass") + '" id="pEditConfirm" onblur="st.blurConfirm(\'pEditNewPassword\', \'pEditConfirm\', \'editConfirmMessage\');"><span class="popupAlertArea" style="color:red"><aside id="editConfirmMessage"> </aside></span></div>';
+    html += '<div id="dvTextEditName" style="margin-bottom: 10px;"><input type="text" id="editAccountName" onblur="st.editAccountNameBlurEvent();" value="' + name + '" data-accType="' + type + '"><span class="popupAlertArea" style="color:red"><aside id="popupEditAccountNameErrorMsg"> </aside></span></div>';
+    if (type === "basic") {
+        html += '<div id="dvEditPassword">' + i18next.t("Password") + '</div>';
+        html += '<div id="dvTextEditNewPassword" style="margin-bottom: 10px;"><input type="password" placeholder="' + i18next.t("newPassPlaceHolder") + '" id="pEditNewPassword" onblur="st.blurNewPassword(this, \'b-edit-account-ok\', \'editChangeMessage\');"><span class="popupAlertArea" style="color:red"><aside id="editChangeMessage"> </aside></span></div>';
+        html += '<div id="dvTextEditConfirm" style="margin-bottom: 10px;"><input type="password" placeholder="' + i18next.t("confirmNewPass") + '" id="pEditConfirm" onblur="st.blurConfirm(\'pEditNewPassword\', \'pEditConfirm\', \'editConfirmMessage\');"><span class="popupAlertArea" style="color:red"><aside id="editConfirmMessage"> </aside></span></div>';
+    }
     html += '<div class="modal-footer">';
     html += '<button type="button" class="btn btn-default" onClick="cm.moveBackahead(true);">' + i18next.t("Cancel") + '</button>';
     html += '<button type="button" class="btn btn-primary text-capitalize" id="b-edit-account-ok" onClick="st.validateEditedInfo();" disabled>' + i18next.t("Edit") + '</button>';
@@ -521,7 +545,8 @@ st.createEditAccount = function(name) {
 st.sendAjaxEditAccount = function() {
     var keyName = st.updUser;
     var jsonData = {
-                    "Name" : $("#editAccountName").val()
+        "Name": $("#editAccountName").val(),
+        "Type": $("#editAccountName").data('type')
     };
 
     st.restEditAccountAPI(jsonData, $("#pEditNewPassword").val(), keyName);
@@ -557,51 +582,66 @@ st.dispBoxList = function(json, id) {
 st.addAccountNameBlurEvent = function() {
         var name = $("#addAccountName").val();
         var nameSpan = "popupAddAccountNameErrorMsg";
-        st.validateName(name, nameSpan, "-_!\$\*=^`\{\|\}~.@", "")
+        if ($("input[name=accType]:checked").val() == "basic") {
+            st.validateName(name, nameSpan, "-_!\$\*=^`\{\|\}~.@", "");
+        } else {
+            st.validateMail(name, nameSpan);
+        }
+        
 };
 st.editAccountNameBlurEvent = function() {
         var name = $("#editAccountName").val();
         var nameSpan = "popupEditAccountNameErrorMsg";
         $('#b-edit-account-ok').prop('disabled', !st.validateName(name, nameSpan, "-_!\$\*=^`\{\|\}~.@", ""));
 };
-st.addAccount = function() {
-  var name = $("#addAccountName").val();
-  if (st.validateName(name, "popupAddAccountNameErrorMsg", "-_!\$\*=^`\{\|\}~.@", "")) {
-    var pass = $("#pAddNewPassword").val();
-    if (st.passInputCheck(pass, "addChangeMessage")
-     && st.changePassCheck(pass, $("#pAddConfirm").val(), "addConfirmMessage")) {
-        var jsonData = {
-                        "Name" : name
-        };
+st.addAccount = function () {
+    var name = $("#addAccountName").val();
+    let authType = $("input[name=accType]:checked").val();
+    var jsonData = {
+        "Name": name,
+        "Type": authType
+    };
 
-        // Assigning Roles
-        var chkObj = document.getElementById("addCheckAccountLinkRole");
-        if (chkObj.checked) {
-          if (st.checkAccLinkRole()) {
-            st.linkAccName = name;
-            st.restCreateAccountAPI(jsonData, pass);
-            return true;
-          }
-        } else {
-          st.restCreateAccountAPI(jsonData, pass);
-          return true;
+    let pass = null;
+    if (authType == "basic") {
+        if (!st.validateName(name, "popupAddAccountNameErrorMsg", "-_!\$\*=^`\{\|\}~.@", "")) {
+            return false;
+        }
+        pass = $("#pAddNewPassword").val();
+
+        if (!st.passInputCheck(pass, "addChangeMessage")) {
+            return false;
+        }
+        if (!st.changePassCheck(pass, $("#pAddConfirm").val(), "addConfirmMessage")) {
+            return false;
+        }
+    } else {
+        if (!st.validateMail(name, "popupAddAccountNameErrorMsg")) {
+            return false;
         }
     }
-  }
 
-  return false;
+    st.linkAccName = name;
+    st.restCreateAccountAPI(jsonData, pass);
+    return false;
 };
 st.validateEditedInfo = function() {
   var name = $("#editAccountName").val();
+  var type = $("#editAccountName").data('accType');
   if (st.validateName(name, "popupEditAccountNameErrorMsg", "-_!\$\*=^`\{\|\}~.@", "")) {
     var pass = $("#pEditNewPassword").val();
-    if (st.passInputCheck(pass, "editChangeMessage")
-     && st.changePassCheck(pass, $("#pEditConfirm").val(), "editConfirmMessage")) {
-        $('#dvTextConfirmation').html(i18next.t("confirmChangeContentEnter"));
-        $('#modal-confirmation-title').html(i18next.t("EditAccount"));
-        $('#b-edit-accconfirm-ok').css("display","");
-        $('#modal-confirmation').modal('show');
+
+    if (type === "basic" && !st.passInputCheck(pass, "editChangeMessage")) {
+        return false;
     }
+    if (type === "basic" && !st.changePassCheck(pass, $("#pEditConfirm").val(), "editConfirmMessage")) {
+        return false;
+    }
+
+    $('#dvTextConfirmation').html(i18next.t("confirmChangeContentEnter"));
+    $('#modal-confirmation-title').html(i18next.t("EditAccount"));
+    $('#b-edit-accconfirm-ok').css("display", "");
+    $('#modal-confirmation').modal('show');
   }
 
   return false;
@@ -1127,7 +1167,7 @@ st.dispUnofficialBoxInsProgress = function (boxname) {
                         var schema = insAppRes[i].Schema;
                         var boxName = insAppRes[i].Name;
                         if (schema && schema.length > 0) {
-                            cm.registerProfI18n(schema, boxName, "profile");
+                            cm.registerProfI18n(schema, boxName, "profile", "App");
                         }
                     }
                 })
@@ -1724,6 +1764,24 @@ st.validateName = function (displayName, displayNameSpan, addSpecial, addStart) 
             return false;
         }
 };
+st.validateMail = function (displayMail, displayMailSpan) {
+    var MINLENGTH = 1;
+    var lenDisplayMail = displayMail.length;
+    if (lenDisplayMail < MINLENGTH || displayMail == undefined || displayMail == null || displayMail == "") {
+        document.getElementById(displayMailSpan).innerHTML = i18next.t("pleaseEnterGMail");
+        return false;
+    }
+
+    document.getElementById(displayMailSpan).innerHTML = "";
+
+    if (displayMail.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
+        return true;
+    } else {
+        document.getElementById(displayMailSpan).innerHTML = i18next.t("errorValidateMailAddress");
+        return false;
+    }
+
+}
 st.doesUrlContainSlash = function(schemaURL, schemaSpan,txtID,message) {
     if (schemaURL != undefined) {
         if (!schemaURL.endsWith("/")) {
@@ -1773,35 +1831,39 @@ st.passInputCheck = function(newpass, displayNameSpan) {
 }
 
 // API
-st.restCreateAccountAPI = function(json, pass) {
-  $.ajax({
-          type: "POST",
-          url: cm.user.cellUrl + '__ctl/Account',
-          data: JSON.stringify(json),
-          headers: {
-            'Authorization':'Bearer ' + cm.user.access_token,
-            'X-Personium-Credential': pass
-          }
-  }).done(function(data) {
-    if (document.getElementById("addCheckAccountLinkRole").checked) {
-      $("#ddlAddAccLinkRoleList option:selected").each(function(index, option) {
-        cm.setLinkParam($(option).text());
-        st.restAddAccountLinkRole(false);
-      });
+st.restCreateAccountAPI = function (json, pass) {
+    var headerObj = {};
+    headerObj.Authorization = 'Bearer ' + cm.user.access_token;
+    if (pass) {
+        headerObj["X-Personium-Credential"] = pass;
     }
-    st.getAccountList().done(function(data) {
-        st.dispAccountList(data);
+    $.ajax({
+        type: "POST",
+        url: cm.user.cellUrl + '__ctl/Account',
+        data: JSON.stringify(json),
+        headers: headerObj
+    }).done(function (data) {
+        if (!pass) {
+            cm.setLinkParam("admin([main])");
+            st.restAddAccountLinkRole(false);
+        }
+
+        st.getAccountList().done(function (data) {
+            st.dispAccountList(data);
+        }).fail(function (data) {
+            var res = JSON.parse(data.responseText);
+            alert("An error has occurred.\n" + res.message.value);
+        });
+        cm.moveBackahead(true);
+    }).fail(function (data) {
+        var res = JSON.parse(data.responseText);
+        alert("An error has occurred.\n" + res.message.value);
     });
-    cm.moveBackahead(true);
-  }).fail(function(data) {
-    var res = JSON.parse(data.responseText);
-    alert("An error has occurred.\n" + res.message.value);
-  });
 };
 st.restEditAccountAPI = function(json, pass, updUser) {
   var headers = {};
   headers["Authorization"] = 'Bearer ' + cm.user.access_token;
-  if (pass.length > 0) {
+  if (pass && pass.length > 0) {
     headers["X-Personium-Credential"] = pass;
   }
   $.ajax({

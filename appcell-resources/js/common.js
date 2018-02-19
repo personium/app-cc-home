@@ -344,6 +344,9 @@ cm.createSideMenu = function() {
             Image: prof.Image
         }
     }).always(function () {
+        if (!defProf.Image) {
+            defProf.Image = ut.getJdenticon(cm.user.cellUrl);
+        }
         let transName = "myProfile";
         cm.i18nAddProfile("en", "profTrans", transName, defProf, cm.user.cellUrl, "profile");
         cm.i18nAddProfile("ja", "profTrans", transName, defProf, cm.user.cellUrl, "profile");
@@ -380,7 +383,7 @@ cm.createSideMenu = function() {
             var schema = insAppRes[i].Schema;
             var boxName = insAppRes[i].Name;
             if (schema && schema.length > 0) {
-                cm.registerProfI18n(schema, boxName, "profile");
+                cm.registerProfI18n(schema, boxName, "profile", "App");
             }
         }
     })
@@ -412,11 +415,12 @@ cm.registerRoleRelProfI18n = function (name, boxName, fileName) {
     });
 }
 
-cm.registerProfI18n = function (schema, boxName, fileName) {
+cm.registerProfI18n = function (schema, boxName, fileName, cellType) {
+    let defImage = ut.getDefaultImage(schema, cellType);
     let defProf = {
         DisplayName: ut.getName(schema),
         Description: "",
-        Image: cm.notAppImage
+        Image: defImage
     }
     cm.getProfile(schema).done(function (defRes) {
         defProf = {
