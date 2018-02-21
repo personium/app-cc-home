@@ -3,7 +3,12 @@ var sg = {};
 addLoadScript = function (scriptList) {
     scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
     scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
+    scriptList.push("https://demo.personium.io/HomeApplication/__/appcell-resources/js/cropper/cropper.min.js");
     return scriptList;
+}
+addLoadStyleSheet = function (styleList) {
+    styleList.push("https://demo.personium.io/HomeApplication/__/appcell-resources/css/cropper/cropper.min.css");
+    return styleList;
 }
 
 // Common
@@ -924,6 +929,7 @@ sg.restDeleteExtCellLinkRelation = function () {
 };
 
 sg.initSocialGraph = function () {
+    ut.loadStyleSheet();
     ut.loadScript();
     cm.createSideMenu();
     cm.createTitleHeader(false, true);

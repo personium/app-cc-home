@@ -36,6 +36,21 @@ ut.loadScript = function (callback) {
         }
     })();
 };
+ut.loadStyleSheet = function () {
+    let head = document.getElementsByTagName('head')[0];
+    let styleList = [];
+    if (typeof addLoadStyleSheet == "function") {
+        styleList = addLoadStyleSheet(styleList);
+    }
+
+    for (var i = 0; i < styleList.length; i++){
+        let link = document.createElement("link");
+        link.href = styleList[i];
+        link.rel = "stylesheet";
+        link.type = "text/css";
+        head.insertBefore(link, head.firstChild);
+    }
+}
 
 ut.cellUrlWithEndingSlash = function(tempUrl, raiseError) {
     var i = tempUrl.indexOf("/", 8); // search after "http://" or "https://"
@@ -208,6 +223,38 @@ ut.getDefaultImage = function (cellUrl, cellType) {
 }
 
 /*
+ * A function that creates a button for a modal footer part
+ * @param id OK button id
+ * @param callback Processing when the OK button is pressed
+ */
+ut.createModalFooterTag = function (id, callback) {
+    let footerTag = $("<div>", {
+        class: "modal-footer"
+    });
+    let cancelBtnTag = $("<button>", {
+        type: "button",
+        class: "btn btn-default",
+        "data-dismiss": "modal",
+        "data-i18n": "Cancel"
+    });
+    footerTag.append(cancelBtnTag);
+
+    let okBtnTag = $("<button>", {
+        type: "button",
+        class: "btn btn-primary",
+        id: id
+    }).html("OK");
+    okBtnTag.click(function () {
+        if ((typeof callback !== "undefined") && $.isFunction(callback)) {
+            callback();
+        }
+    });
+    footerTag.append(okBtnTag);
+
+    return footerTag;
+}
+
+/*
  * Based on the passed value, we generate an image using jdenticon and return it in base64 format.
  * This function can not be used unless you load jdenticon.
  */
@@ -218,4 +265,233 @@ ut.getJdenticon = function (value) {
     jdenticon.update(canvas, value);
     var icon_quality = 0.8;
     return canvas.toDataURL("image/jpeg", icon_quality);
+}
+/*
+ * Create cropper modal.
+ * If it has already been created, delete it and recreate it.
+ * @param imgSrc Image source to crop
+ * @param callbackOkBtn Processing when pressing the modal OK button
+ */
+ut.createCropperModal = function (imgSrc, callbackOkBtn) {
+    ut.deleteCropperModal();
+
+    let modalTag = $("<div>", {
+        id: "modal-cropper-image",
+        class: "modal fade",
+        role: "dialog",
+        "data-backdrop": "static"
+    });
+
+    let modalDiaTag = $("<div>", {
+        class: "modal-dialog"
+    });
+
+    let modalContTag = $("<div>", {
+        class: "modal-content"
+    });
+
+    let modalHerderTag = $("<div>", {
+        class: "modal-header",
+        style: "text-align:center;"
+    });
+    let dispImgTag = $("<img>", {
+        id: "cropped_img",
+        class: "image-circle-large",
+    });
+    modalHerderTag.append(dispImgTag);
+    modalContTag.append(modalHerderTag);
+
+    let modalBodyTag = $("<div>", {
+        class: "modal-body"
+    });
+
+    let bootContTag = $("<div>", {
+        class: "container",
+        style: "width:100%;"
+    });
+    let bootRowTag = $("<div>", {
+        class: "row"
+    });
+    let bootColTag = $("<div>", {
+        class: "col-md-12"
+    });
+
+    let imgContTag = $("<div>", {
+        style: "text-align:center;"
+    });
+    let cropImgTag = $("<img>", {
+        id: "cropping_img",
+        style: "max-width:100%;max-height: 600px;"
+    });
+    imgContTag.append(cropImgTag);
+    bootColTag.append(imgContTag);
+    bootRowTag.append(bootColTag);
+    bootContTag.append(bootRowTag);
+    modalBodyTag.append(bootContTag);
+    modalContTag.append(modalBodyTag);
+
+    // When the OK button is pressed, the process of closing the modal
+    let okFunc = function () {
+        $('#modal-cropper-image').modal('hide');
+    };
+    // If there is additional processing, integrate the processing
+    if ((typeof callbackOkBtn !== "undefined") && $.isFunction(callbackOkBtn)) {
+        let oldFunc = okFunc;
+        okFunc = function () {
+            callbackOkBtn();
+            oldFunc();
+        }
+    }
+
+    modalContTag.append(ut.createModalFooterTag("b-cropper-ok", okFunc));
+    modalDiaTag.append(modalContTag);
+    modalTag.append(modalDiaTag);
+    $(document.body).append(modalTag);
+
+    // After displaying the modal, set the cropper
+    $("#modal-cropper-image").on("shown.bs.modal", function () {
+        ut.appendCropper('#cropping_img', '#cropped_img');
+    });
+}
+/*
+ * Delete cropper modal.
+ */
+ut.deleteCropperModal = function () {
+    $("#modal-cropper-image").remove();
+}
+/*
+ * Call cropper modal.
+ */
+ut.showCropperModal = function () {
+    $('#modal-cropper-image').modal('show');
+}
+/*
+ * Set processing when pressing OK button.
+ * If it is already set, overwrite it.
+ * @param func Processing when the OK button is pressed
+ */
+ut.setCropperModalOkBtnFunc = function (func) {
+    if (!$("#b-cropper-ok").length) return;
+
+    $("#b-cropper-ok").off("click");
+    let okFunc = function () {
+        $('#modal-cropper-image').modal('hide');
+    };
+    if ((typeof func !== "undefined") && $.isFunction(func)) {
+        let oldFunc = okFunc;
+        okFunc = function () {
+            func();
+            oldFunc();
+        }
+    }
+    $("#b-cropper-ok").click(function () {
+        okFunc();
+    });
+}
+/*
+ * crop Sets the target image.
+ */
+ut.setCropperModalImage = function (imgSrc) {
+    if (!$("#cropping_img").length) return;
+
+    $("#cropping_img").attr("src", imgSrc);
+    $("#cropping_img").cropper('destroy');
+}
+/*
+ * Retrieve the croped image.
+ */
+ut.getCroppedModalImage = function () {
+    return $("#cropped_img").attr("src");
+}
+
+/*
+ * Add the cropping function to the specified Image selector.
+ * @param appendSelector Jquery selector to create cropper
+ * @param dispImageSelector Jquery selector to display cropped image
+ * @param options cropper options
+ */
+ut.appendCropper = function (croppingImageSelector, dispImageSelector, cropperOptions) {
+    const VECTOR_X = 1;
+    const VECTOR_Y = 1;
+    let canvas_w = 200;
+    let canvas_h = 200;
+    if ($(dispImageSelector).width()) {
+        canvas_w = $(dispImageSelector).width();
+    }
+    if ($(dispImageSelector).height()) {
+        canvas_h = $(dispImageSelector).height();
+    }
+
+    // Define cropper options
+    let options = {
+        dragMode: "move"
+    };
+    if (cropperOptions) {
+        $.extend(options, cropperOptions);
+    }
+
+    // Add "cropper" to image
+    let imgDef = $(croppingImageSelector);
+    imgDef.on({
+        ready: function (e) {
+            setImgParams();
+        },
+        cropstart: function (e) {
+            setImgParams();
+        },
+        cropmove: function (e) {
+            setImgParams();
+        },
+        cropend: function (e) {
+            setImgParams();
+        },
+        crop: function (e) {
+            setImgParams();
+        },
+        zoom: function (e) {
+            setImgParams();
+        }
+    }).cropper(options);
+
+    let canvas = document.createElement("canvas");
+    canvas.width = canvas_w;
+    canvas.height = canvas_h;
+    let ctx = canvas.getContext('2d');
+
+    let img = new Image();
+    if ($(croppingImageSelector).attr("src")) {
+        img.src = $(croppingImageSelector).attr("src");
+        img.onload = function () {
+            setImgParams();
+        }
+    }
+    // Make drawing settings
+    function setImgParams() {
+        let data = imgDef.cropper('getData');
+        let imageData = {
+            x: Math.round(data.x),
+            y: Math.round(data.y),
+            width: Math.round(data.width),
+            height: Math.round(data.height),
+            vectorX: VECTOR_X,
+            vectorY: VECTOR_Y
+        };
+        drawImg(imageData);
+    }
+    // Drawing process
+    function drawImg(data) {
+        ctx.clearRect(0, 0, canvas_w, canvas_h);
+        ctx.drawImage(
+            img,
+            data['x'],
+            data['y'],
+            data['width'],
+            data['height'],
+            0, 0,
+            data['vectorX'] * canvas_w,
+            data['vectorY'] * canvas_h
+        );
+        // Display of cut image
+        $(dispImageSelector).attr("src", canvas.toDataURL());
+    }
 }

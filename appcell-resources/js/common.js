@@ -327,6 +327,9 @@ cm.createSideMenu = function() {
     modal = $(html);
     $(document.body).append(modal);
 
+    // Create Cropper Modal
+    ut.createCropperModal();
+
     // Set Event
     $('#b-logout-ok,#b-relogin-ok,#b-session-relogin-ok').on('click', function() { cm.logout(); });    
     $('#dvOverlay').on('click', function() {
@@ -705,19 +708,29 @@ cm.getAsBinaryString = function(readFile) {
 	reader.onload = cm.loaded;
 	reader.onerror = cm.errorHandler;
 };
-cm.loaded = function(evt) {
-    cm.imgBinaryFile = null;
-    var image = new Image();
-    image.src = evt.target.result;
-    // Get file size(KB)
-    var imageFileSize = evt.total / 1024;
-    if (imageFileSize <= cm.ICON_SIZELIMIT) {
-        cm.imgBinaryFile = evt.target.result;
-        $("#idImgFile").attr('src', cm.imgBinaryFile);
-    } else {
-        // Clipping Canvas
-        cm.clipImage(image);
+cm.loaded = function (evt) {
+    // Set images in cropper modal
+    ut.setCropperModalImage(evt.target.result);
+    // Set functions in cropper modal ok button
+    let okFunc = function () {
+        let cropImg = ut.getCroppedModalImage();
+        cm.imgBinaryFile = null;
+        var image = new Image();
+        image.src = cropImg;
+        // Get file size(KB)
+        var imageFileSize = evt.total / 1024;
+        if (imageFileSize <= cm.ICON_SIZELIMIT) {
+            cm.imgBinaryFile = cropImg;
+            $("#idImgFile").attr('src', cm.imgBinaryFile);
+        } else {
+            // Clipping Canvas
+            cm.clipImage(image);
+        }
     }
+    ut.setCropperModalOkBtnFunc(okFunc);
+
+    // Start cropper modal
+    ut.showCropperModal();
 };
 cm.clipImage = function(image) {
     //Create temporary canvas
