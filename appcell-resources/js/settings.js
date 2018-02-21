@@ -153,7 +153,7 @@ st.dispEditProf = function () {
                 '<div class="col-sm-6">',
                     '<div id="dvPhoto" data-i18n="ProfileImage"></div>',
                     '<div id="dvBrowseButtonSection">',
-                    '<input type="file" class="fileUpload" onchange="cm.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile" accept="image/*" style="display: none">',
+                    '<input type="file" class="fileUpload" onclick="cm.clearInput(this);" onchange="cm.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile" accept="image/*" style="display: none">',
                     '<button class="btn btn-primary" id="editImgButton" type="button" data-i18n="SelectFile"></button>',
                     '<label id="editImgLbl" style="margin-left:10px;"></label>',
                 '</div>',

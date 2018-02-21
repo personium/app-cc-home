@@ -777,6 +777,10 @@ cm.errorHandler = function(evt) {
 		//document.getElementById('successmsg').innerHTML = "Error reading file...";
 	}
 };
+cm.clearInput = function (e) {
+    e.value = null;
+}
+
 cm.editDisplayNameBlurEvent = function() {
 	var displayName = $("#editDisplayName").val();
 	var displayNameSpan = "popupEditDisplayNameErrorMsg";
