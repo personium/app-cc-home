@@ -146,7 +146,7 @@ cm.closeSetting = function() {
 cm.createSettingArea = function() {
     var html = '<div class="col-md-12 col-sm-12 display-table-cell v-align setting-menu">';
     html += '<div class="row header-menu setting-header"></div>';
-    html += '<div class="row" id="settingboard" style="overflow:auto;height:90%;"></div>';
+    html += '<div class="row" id="settingboard" style="height:100%;"></div>';
     html += '<div id="modal-confirmation" class="modal fade" role="dialog" data-backdrop="static">';
     html += '<div class="modal-dialog">';
     html += '<div class="modal-content">';
@@ -192,10 +192,10 @@ cm.setBackahead = function(flg) {
             toggleClass = "panel-default";
         }
         if (document.getElementById('setting-panel' + cm.user.settingNowPage) == null) {
-            $("#" + boardId).append('<div class="list-group ' + toggleClass + '" id="setting-panel' + cm.user.settingNowPage + '"></div>');
+            $("#" + boardId).append('<div style="height:100%;overflow:auto;padding-bottom:85px;" class="list-group ' + toggleClass + '" id="setting-panel' + cm.user.settingNowPage + '"></div>');
         }
         if (document.getElementById('setting-panel' + (cm.user.settingNowPage + 1)) == null) {
-            $("#" + boardId).append('<div class="list-group toggle-panel" id="setting-panel' + (cm.user.settingNowPage + 1) + '"></div>');
+            $("#" + boardId).append('<div style="height:100%;overflow:auto;padding-bottom:85px;" class="list-group toggle-panel" id="setting-panel' + (cm.user.settingNowPage + 1) + '"></div>');
         }
     } else {
         cm.user.nowPage = cm.user.nowPage + 1;
