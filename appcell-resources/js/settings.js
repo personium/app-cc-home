@@ -137,7 +137,7 @@ st.dispEditProf = function () {
         '<div class="modal-body">',
             '<form class="form-horizontal">',
                 '<div class="form-group">',
-                    '<div class="col-sm-offset-2 col-sm-10">',
+                    '<div class="col-sm-12">',
                         '<div calss="checkbox">',
                             '<label>',
                                 '<input type="checkbox" name="onlyUploadChk" value="">',
