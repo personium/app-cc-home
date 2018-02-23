@@ -2,10 +2,16 @@ var ha = {};
 
 addLoadScript = function (scriptList) {
     scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
+    scriptList.push("https://demo.personium.io/HomeApplication/__/appcell-resources/js/cropper/cropper.min.js");
     return scriptList;
+}
+addLoadStyleSheet = function (styleList) {
+    styleList.push("https://demo.personium.io/HomeApplication/__/appcell-resources/css/cropper/cropper.min.css");
+    return styleList;
 }
 
 ha.init = function () {
+    ut.loadStyleSheet();
     ut.loadScript();
 
     let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
