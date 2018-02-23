@@ -124,6 +124,7 @@
  ,"incorrectAccountOrPass": "Account name or password is incorrect."
  ,"inputLoginCellTitle": "Login cell input"
  ,"invalidURL": "Invalid URL"
+ ,"langOnlyUpload": "Update only English profile."
  ,"loginGoogleAccount": "Sign in with your Google Account"
  ,"logoutConfirm": "Log out?"
  ,"maxExternalCellNameLengthError": "External cell name cannot exceed 128 characters."

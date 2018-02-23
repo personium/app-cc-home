@@ -135,6 +135,18 @@ st.dispEditProf = function () {
     $("#setting-panel1").empty();
     var html = [
         '<div class="modal-body">',
+            '<form class="form-horizontal">',
+                '<div class="form-group">',
+                    '<div class="col-sm-offset-2 col-sm-10">',
+                        '<div calss="checkbox">',
+                            '<label>',
+                                '<input type="checkbox" name="onlyUploadChk" value="">',
+                                '<span data-i18n="langOnlyUpload"></span>',
+                            '</label>',
+                        '</div>',
+                    '</div>',
+                '</div>',
+            '</form>',
             '<div id="dvDisplayName" data-i18n="DisplayName"></div>',
             '<div id="dvTextDisplayName">',
                 '<input type="text" id="editDisplayName" onblur="cm.editDisplayNameBlurEvent();">',

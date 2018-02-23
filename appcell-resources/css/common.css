@@ -649,14 +649,14 @@ textarea {
   margin-top: 2px;
 }
 
-.modal-body input {
-  border: 1px solid #d4d9e3;
-  font-size: 14px;
-  font-weight: 300;
-  margin: 5px 0;
-  padding: 14px 10px;
-  width: 100%;
-  color: #8492af;
+.modal-body input[type="text"] {
+    border: 1px solid #d4d9e3;
+    font-size: 14px;
+    font-weight: 300;
+    margin: 5px 0;
+    padding: 14px 10px;
+    width: 100%;
+    color: #8492af;
 }
 .modal-body textarea {
   border: 1px solid #d4d9e3;

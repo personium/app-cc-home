@@ -59,9 +59,7 @@ cm.createProfileHeaderMenu = function() {
 
     // create a profile menu in to "profile-menu" class
     var html = '<div>';
-    html += '<a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">';
     html += '<img class="icon-profile" id="imProfilePicture" data-i18n="[src]profTrans:myProfile_Image" src="" alt="user">';
-    html += '</a>';
     html += '</div>';
     html += '<div class="header-body">';
     html += '<div id="tProfileDisplayName" class="sizeBody" data-i18n="profTrans:myProfile_DisplayName"></div>';
@@ -1182,6 +1180,13 @@ cm.retrieveCollectionAPIResponse = function (json) {
     let profileUrl = cm.user.cellUrl + '__/profile.json';
     // Check if there is locales folder
     ut.confirmExistenceOfURL(cm.user.cellUrl + '__/locales').done(function (res) {
+        if (!$("[name=onlyUploadChk]").prop("checked")) {
+            // Update default profile
+            ut.putFileAPI(profileUrl, json).fail(function (res) {
+                console.log(res);
+            });
+        }
+
         profileUrl = cm.user.cellUrl + '__/locales/' + i18next.language + '/profile.json';
 
         // Check if there is a target language folder

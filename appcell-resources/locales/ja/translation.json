@@ -124,6 +124,7 @@
  ,"incorrectAccountOrPass": "アカウント名もしくはパスワードが間違っています。"
  ,"inputLoginCellTitle": "ログインセル入力"
  ,"invalidURL": "無効なURLです。"
+ ,"langOnlyUpload": "日本語プロフィールのみ更新する。"
  ,"loginGoogleAccount": "Googleアカウントでログイン"
  ,"logoutConfirm": "ログアウトしますか？"
  ,"maxExternalCellNameLengthError": "外部セル名は128文字以内で入力して下さい。"
