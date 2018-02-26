@@ -931,7 +931,9 @@ sg.restDeleteExtCellLinkRelation = function () {
 
 sg.initSocialGraph = function () {
     ut.loadStyleSheet();
-    ut.loadScript();
+    ut.loadScript(st.init);
+};
+st.init = function () {
     cm.createSideMenu();
     cm.createTitleHeader(false, true);
     cm.createBackMenu("main.html");
@@ -952,7 +954,7 @@ sg.initSocialGraph = function () {
     $('#b-del-extcell-ok').on('click', function () { sg.restDeleteExtCellAPI(); });
     $('#b-add-extcelllinkrole-ok').on('click', function () { sg.restAddExtCellLinkRole(); });
     $('#b-del-extcelllinkrole-ok').on('click', function () { sg.restDeleteExtCellLinkRole(); });
-    $('#b-add-extcelllinkrelation-ok').on('click', function () { 
+    $('#b-add-extcelllinkrelation-ok').on('click', function () {
         sg.restAddExtCellLinkRelation();
         sg.getExtCellList().done(function (data) {
             sg.dispExtCellList(data);
@@ -984,16 +986,16 @@ sg.initSocialGraph = function () {
     $('#addCheckExtCellLinkRoleAndRelation').on('change', function () {
 
     });
-    $('input[name="addRadioExtCellLink"]:radio').on('change', function() {
-        
+    $('input[name="addRadioExtCellLink"]:radio').on('change', function () {
+
     });
 
     // blur event
-    $('#addExtCellUrl').blur(function() {
-        
+    $('#addExtCellUrl').blur(function () {
+
     });
-    $('#ddlAddExtCellLinkRoleList').blur(function() { sg.checkExtCellLinkRole(); });
-    $('#ddlAddExtCellLinkRelationList').blur(function() { sg.checkExtCellLinkRelation(); });
+    $('#ddlAddExtCellLinkRoleList').blur(function () { sg.checkExtCellLinkRole(); });
+    $('#ddlAddExtCellLinkRelationList').blur(function () { sg.checkExtCellLinkRelation(); });
 
     // modal show event
     $("#modal-add-extcell").on("show.bs.modal", function () {
@@ -1016,19 +1018,19 @@ sg.initSocialGraph = function () {
         $("#popupAddExtCellUrlErrorMsg").html("");
     });
     $("#modal-confirmation").on("hidden.bs.modal", function () {
-        $('#b-cancel').css("display","none");
-        $('#b-del-extcell-ok').css("display","none");
-        $('#b-del-extcelllinkrole-ok').css("display","none");
-        $('#b-del-extcelllinkrelation-ok').css("display","none");
+        $('#b-cancel').css("display", "none");
+        $('#b-del-extcell-ok').css("display", "none");
+        $('#b-del-extcelllinkrole-ok').css("display", "none");
+        $('#b-del-extcelllinkrelation-ok').css("display", "none");
     });
 
     // menu-toggle
     $(".extcellMenu").css("display", "none");
-    $("#extcellToggle.toggle").on("click", function() {
-      $(this).toggleClass("active");
-      $(".extcellMenu").slideToggle();
+    $("#extcellToggle.toggle").on("click", function () {
+        $(this).toggleClass("active");
+        $(".extcellMenu").slideToggle();
     });
-};
+}
 
 sg.createProfileModal = function () {
     // Profile Modal

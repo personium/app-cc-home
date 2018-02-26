@@ -13,29 +13,29 @@ addLoadStyleSheet = function (styleList) {
 
 ha.init = function () {
     ut.loadStyleSheet();
-    ut.loadScript();
+    ut.loadScript(function () {
+        let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
+        let isDemo = (tempMyProfile.IsDemo || false);
 
-    let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
-    let isDemo = (tempMyProfile.IsDemo || false);
+        ha.displaySystemMenuItems();
 
-    ha.displaySystemMenuItems();
-  
-    if (isDemo) {
-        demo.createProfileHeaderMenu();
-        demo.createSideMenu();
-        demo.initSettings();
-        demo.initMain();
-        if (demoSession.insApp) {
+        if (isDemo) {
+            demo.createProfileHeaderMenu();
+            demo.createSideMenu();
+            demo.initSettings();
+            demo.initMain();
+            if (demoSession.insApp) {
+                ha.dispInsAppList();
+            }
+            st.setBizTheme();
+        } else {
+            //createTitleHeader();
+            cm.createProfileHeaderMenu();
+            cm.createSideMenu();
+            st.initSettings();
             ha.dispInsAppList();
         }
-        st.setBizTheme();
-    } else {
-        //createTitleHeader();
-        cm.createProfileHeaderMenu();
-        cm.createSideMenu();
-        st.initSettings();
-        ha.dispInsAppList();
-    }
+    });
 };
 
 ha.displaySystemMenuItems = function() {
