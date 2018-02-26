@@ -273,7 +273,14 @@ ut.getJdenticon = function (value) {
  * @param callbackOkBtn Processing when pressing the modal OK button
  * @param dispCircleMaskBool Whether to display a circular mask
  */
-ut.createCropperModal = function (imgSrc, callbackOkBtn, dispCircleMaskBool) {
+ut.createCropperModal = function (paramObj) {
+    let imgSrc = null;
+    if (paramObj.imgSrc) imgSrc = paramObj.imgSrc;
+    let callbackOkBtn = null;
+    if (paramObj.callbackOkBtn) callbackOkBtn = paramObj.callbackOkBtn;
+    let dispCircleMaskBool = false;
+    if (paramObj.dispCircleMaskBool) dispCircleMaskBool = paramObj.dispCircleMaskBool;
+
     ut.deleteCropperModal();
 
     let modalTag = $("<div>", {
@@ -330,7 +337,8 @@ ut.createCropperModal = function (imgSrc, callbackOkBtn, dispCircleMaskBool) {
 
     let cropImgTag = $("<img>", {
         id: "cropping_img",
-        style: "max-width:100%;max-height: 600px;"
+        style: "max-width:100%;max-height: 600px;",
+        src: imgSrc
     });
     imgContTag.append(cropImgTag);
     bootColTag.append(imgContTag);
