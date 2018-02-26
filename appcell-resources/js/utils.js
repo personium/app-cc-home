@@ -271,8 +271,9 @@ ut.getJdenticon = function (value) {
  * If it has already been created, delete it and recreate it.
  * @param imgSrc Image source to crop
  * @param callbackOkBtn Processing when pressing the modal OK button
+ * @param dispCircleMaskBool Whether to display a circular mask
  */
-ut.createCropperModal = function (imgSrc, callbackOkBtn) {
+ut.createCropperModal = function (imgSrc, callbackOkBtn, dispCircleMaskBool) {
     ut.deleteCropperModal();
 
     let modalTag = $("<div>", {
@@ -296,9 +297,13 @@ ut.createCropperModal = function (imgSrc, callbackOkBtn) {
     });
     let dispImgTag = $("<img>", {
         id: "cropped_img",
-        class: "image-circle-large",
+        class: "image-circle-large"
     });
+    if (dispCircleMaskBool) {
+        dispImgTag.css("display", "none");
+    }
     modalHerderTag.append(dispImgTag);
+
     modalContTag.append(modalHerderTag);
 
     let modalBodyTag = $("<div>", {
@@ -319,6 +324,10 @@ ut.createCropperModal = function (imgSrc, callbackOkBtn) {
     let imgContTag = $("<div>", {
         style: "text-align:center;"
     });
+    if (dispCircleMaskBool) {
+        imgContTag.addClass("circle-mask");
+    }
+
     let cropImgTag = $("<img>", {
         id: "cropping_img",
         style: "max-width:100%;max-height: 600px;"
@@ -330,27 +339,47 @@ ut.createCropperModal = function (imgSrc, callbackOkBtn) {
     modalBodyTag.append(bootContTag);
     modalContTag.append(modalBodyTag);
 
-    // When the OK button is pressed, the process of closing the modal
-    let okFunc = function () {
-        $('#modal-cropper-image').modal('hide');
-    };
-    // If there is additional processing, integrate the processing
-    if ((typeof callbackOkBtn !== "undefined") && $.isFunction(callbackOkBtn)) {
-        let oldFunc = okFunc;
-        okFunc = function () {
-            callbackOkBtn();
-            oldFunc();
-        }
-    }
-
-    modalContTag.append(ut.createModalFooterTag("b-cropper-ok", okFunc));
+    modalContTag.append(ut.createModalFooterTag("b-cropper-ok"));
     modalDiaTag.append(modalContTag);
     modalTag.append(modalDiaTag);
     $(document.body).append(modalTag);
 
+    // Set processing when pressing OK button.
+    ut.setCropperModalOkBtnFunc(callbackOkBtn);
+
     // After displaying the modal, set the cropper
     $("#modal-cropper-image").on("shown.bs.modal", function () {
-        ut.appendCropper('#cropping_img', '#cropped_img');
+        // Destroy cropper once
+        $("#cropping_img").cropper("destroy");
+
+        // Calculate ratio from width / height of original image
+        let width_ratio = 1;
+        if ($("#cropping_img")[0] && $("#cropping_img")[0].naturalWidth > 0) {
+            width_ratio = $("#cropping_img").width() / $("#cropping_img")[0].naturalWidth;
+        }
+
+        let height_ratio = 1;
+        if ($("#cropping_img")[0] && $("#cropping_img")[0].naturalHeight > 0) {
+            height_ratio = $("#cropping_img").height() / $("#cropping_img")[0].naturalHeight;
+        }
+
+        let option = {};
+        if (dispCircleMaskBool) {
+            option = {
+                cropBoxResizable: false, // Prohibition of crop box resizing
+                toggleDragModeOnDblclick: false, // Prohibit change of drag mode by double click
+                // Specify the size of the crop box
+                // ("cropper" calculates the actual size from the ratio between the specified size and the size of the original image, 
+                // so if you specify the result calculated in advance, you can make it look like specified size)
+                data: {
+                    width: $("#cropped_img").width() / width_ratio,
+                    height: $("#cropped_img").height() / height_ratio
+                }
+            }
+        }
+        ut.appendCropper('#cropping_img', '#cropped_img', option);
+
+        console.log($("#cropping_img").cropper("getImageData"));
     });
 }
 /*
@@ -424,7 +453,8 @@ ut.appendCropper = function (croppingImageSelector, dispImageSelector, cropperOp
 
     // Define cropper options
     let options = {
-        dragMode: "move"
+        dragMode: "move",
+        aspectRatio: VECTOR_X/VECTOR_Y
     };
     if (cropperOptions) {
         $.extend(options, cropperOptions);
@@ -480,7 +510,11 @@ ut.appendCropper = function (croppingImageSelector, dispImageSelector, cropperOp
     }
     // Drawing process
     function drawImg(data) {
+        ctx.beginPath();
         ctx.clearRect(0, 0, canvas_w, canvas_h);
+        ctx.save();
+
+        ctx.beginPath();
         ctx.drawImage(
             img,
             data['x'],
@@ -491,7 +525,10 @@ ut.appendCropper = function (croppingImageSelector, dispImageSelector, cropperOp
             data['vectorX'] * canvas_w,
             data['vectorY'] * canvas_h
         );
+
         // Display of cut image
         $(dispImageSelector).attr("src", canvas.toDataURL());
+
+        ctx.restore();
     }
 }
