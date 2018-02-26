@@ -2,11 +2,12 @@ var ha = {};
 
 addLoadScript = function (scriptList) {
     scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    scriptList.push("https://demo.personium.io/HomeApplication/__/appcell-resources/js/cropper/cropper.min.js");
+    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/cropper/3.1.4/cropper.min.js");
     return scriptList;
 }
 addLoadStyleSheet = function (styleList) {
     styleList.push("https://demo.personium.io/HomeApplication/__/appcell-resources/css/cropper/cropper.min.css");
+    styleList.push("https://demo.personium.io/HomeApplication/__/appcell-resources/css/cropper/cropper_circle_mask.css");
     return styleList;
 }
 
