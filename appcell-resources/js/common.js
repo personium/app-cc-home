@@ -326,7 +326,7 @@ cm.createSideMenu = function() {
     $(document.body).append(modal);
 
     // Create Cropper Modal
-    ut.createCropperModal(null, null, true);
+    ut.createCropperModal({ dispCircleMaskBool: true });
 
     // Set Event
     $('#b-logout-ok,#b-relogin-ok,#b-session-relogin-ok').on('click', function() { cm.logout(); });    

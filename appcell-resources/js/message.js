@@ -22,7 +22,9 @@ addNamesapces = function (ns) {
 
 init = function () {
     ut.loadStyleSheet();
-    ut.loadScript();
+    ut.loadScript(ms.init);
+}
+ms.init = function () {
     cm.createTitleHeader(false, true);
     cm.createSideMenu();
     cm.createBackMenu("main.html");
