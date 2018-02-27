@@ -931,9 +931,9 @@ sg.restDeleteExtCellLinkRelation = function () {
 
 sg.initSocialGraph = function () {
     ut.loadStyleSheet();
-    ut.loadScript(st.init);
+    ut.loadScript(sg.init);
 };
-st.init = function () {
+sg.init = function () {
     cm.createSideMenu();
     cm.createTitleHeader(false, true);
     cm.createBackMenu("main.html");
