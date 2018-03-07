@@ -101,6 +101,7 @@
  ,"confirmDeleteRelationAssign": "このリレーションとの割り当てを削除します( {{value1}}:{{value2}} )。 よろしいですか？"
  ,"confirmDeleteRole": "このロールを削除します ( {{value1}}:{{value2}} )。 よろしいですか？"
  ,"confirmInstallation": "インストールします。よろしいですか？"
+ ,"confirmUninstallation": "アンインストールします。よろしいですか？"
  ,"confirmNewPass": "確認の為、パスワードを再度入力して下さい。"
  ,"errorBarFileNotSelected": "barファイルが選択されていません。"
  ,"errorBarFileUrlNotEntered": "barファイルのURLが入力されていません。"

@@ -101,6 +101,7 @@
  ,"confirmDeleteRelationAssign": "Remove the association between this relation( {{value1}}:{{value2}} ). Is it OK?"
  ,"confirmDeleteRole": "You want to delete this role ( {{value1}}:{{value2}} ). Is it OK?"
  ,"confirmInstallation": "Perform the installation. Is it OK?"
+ ,"confirmUninstallation": "Perform the uninstallation. Is it OK?"
  ,"confirmNewPass": "Confirm (type new password again)"
  ,"errorBarFileNotSelected": "The bar file is not selected."
  ,"errorBarFileUrlNotEntered": "bar File URL is not entered"
