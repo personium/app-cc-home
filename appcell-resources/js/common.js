@@ -272,7 +272,7 @@ cm.createSideMenu = function() {
     // change language
     html += '<li class="menu-separator"><a class="allToggle" id="changeLanguage" href="#" data-i18n="ChangeLng"></a></li>'
     // log out
-    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout" data-i18n="Logout"></a></li>';
+    html += '<li class="menu-separator notImage"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout" data-i18n="Logout"></a></li>';
 
     html += '</ul>';
     html += '</nav>';
