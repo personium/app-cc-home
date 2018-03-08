@@ -35,7 +35,8 @@ st.initSettings = function() {
     });
     $('#b-del-relation-ok').on('click', function () { st.restDeleteRelationAPI(); });
     $('#b-del-rellinkrole-ok').on('click', function () { st.restDeleteRelationLinkRole(); });
-    $('#b-ins-bar-ok').on('click', function() { st.execBarInstall(); });
+    $('#b-ins-bar-ok').on('click', function () { st.execBarInstall(); });
+    $('#b-unins-box-ok').on('click', function () { st.execUninstallBox(); });
 
     $("#modal-confirmation").on("hidden.bs.modal", function () {
         st.updUser = null;
@@ -47,7 +48,8 @@ st.initSettings = function() {
         $('#b-edit-accconfirm-ok').css("display","none");
         $('#b-del-relation-ok').css("display","none");
         $('#b-del-rellinkrole-ok').css("display","none");
-        $('#b-ins-bar-ok').css("display","none");
+        $('#b-ins-bar-ok').css("display", "none");
+        $('#b-unins-box-ok').css("display", "none");
     });
 
     // menu-toggle
@@ -789,22 +791,27 @@ st.execBarInstall = function() {
                 insAppRes.sort(function(val1, val2) {
                     return (val1.Name < val2.Name ? 1 : -1);
                 })
-                st.insAppList = new Array();
-                st.insAppBoxList = new Array();
+                am.insAppList = new Array();
+                am.insAppBoxList = new Array();
                 for (var i in insAppRes) {
+                    // hotfix for not showing HomeApplication/Cell Manager's box inside a data subject's cell
+                    if (_.contains(cm.boxIgnoreList, insAppRes[i].Name)) {
+                        continue;
+                    };
+
                     var schema = insAppRes[i].Schema;
                     if (schema && schema.length > 0) {
-                        st.insAppList.push(schema);
-                        st.insAppBoxList.push(insAppRes[i].Name);
+                        am.insAppList.push(schema);
+                        am.insAppBoxList.push(insAppRes[i].Name);
                     }
                 }
-                st.dispInsAppListSetting();
+                am.dispInsAppListSetting();
 
                 // application list
                 st.getApplicationList().done(function(data) {
-                    st.dispApplicationList(data);
+                    am.dispApplicationList(data);
                     $("#modal-confirmation").modal("hide");
-                    cm.moveBackahead(true);
+                    cm.moveBackahead();
                 }).fail(function(data) {
                     alert(data);
                 });
@@ -816,6 +823,55 @@ st.execBarInstall = function() {
     }
     oReq.send();
 };
+st.confUninstallApp = function (boxName) {
+    st.barBoxName = boxName;
+    $("#dvTextConfirmation").html(i18next.t("confirmUninstallation"));
+    //$("#modal-confirmation-title").html(dispName);
+    $("#modal-confirmation-title").attr("data-i18n", "profTrans:" + boxName + "_DisplayName").localize();
+    $('#b-unins-box-ok').css("display", "");
+    $('#modal-confirmation').modal('show');
+};
+st.execUninstallBox = function () {
+    cm.recursiveDeleteBoxAPI(st.barBoxName).done(function () {
+        cm.getBoxList().done(function (data) {
+            var insAppRes = data.d.results;
+            insAppRes.sort(function (val1, val2) {
+                return (val1.Name < val2.Name ? 1 : -1);
+            })
+            am.insAppList = new Array();
+            am.insAppBoxList = new Array();
+            for (var i in insAppRes) {
+                // hotfix for not showing HomeApplication/Cell Manager's box inside a data subject's cell
+                if (_.contains(cm.boxIgnoreList, insAppRes[i].Name)) {
+                    continue;
+                };
+
+                var schema = insAppRes[i].Schema;
+                if (schema && schema.length > 0) {
+                    am.insAppList.push(schema);
+                    am.insAppBoxList.push(insAppRes[i].Name);
+                }
+            }
+            am.dispInsAppListSetting();
+
+            // application list
+            st.getApplicationList().done(function (data) {
+                am.dispApplicationList(data);
+                $("#modal-confirmation").modal("hide");
+                cm.moveBackahead();
+            }).fail(function (data) {
+                var res = JSON.parse(data.responseText);
+                alert("An error has occurred.\n" + res.message.value);
+            });
+        }).fail(function (data) {
+            var res = JSON.parse(data.responseText);
+            alert("An error has occurred.\n" + res.message.value);
+        });
+    }).fail(function (data) {
+        var res = JSON.parse(data.responseText);
+        alert("An error has occurred.\n" + res.message.value);
+    });
+}
 
 /////////////////////////
 // Application Manager //

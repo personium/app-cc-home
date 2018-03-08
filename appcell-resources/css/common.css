@@ -345,6 +345,9 @@ div.ins-app-icon .badge {
   line-height: 48px;
   margin-left: 30px;
 }
+.notImage {
+    background-image: none !important;
+}
 
 .slide-nav li.menu-title {
   background-image: none;

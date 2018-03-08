@@ -168,6 +168,7 @@ cm.createSettingArea = function() {
     html += '<button type="button" class="btn btn-primary" id="b-del-extcelllinkrole-ok" style="display:none" data-i18n="Del"></button>';
     html += '<button type="button" class="btn btn-primary" id="b-del-extcelllinkrelation-ok" style="display:none" data-i18n="Del"></button>';
     html += '<button type="button" class="btn btn-primary" id="b-ins-bar-ok" style="display:none">OK</button>';
+    html += '<button type="button" class="btn btn-primary" id="b-unins-box-ok" style="display:none">OK</button>';
     html += '</div>';
     html += '</div>';
     html += '</div>';
@@ -271,7 +272,7 @@ cm.createSideMenu = function() {
     // change language
     html += '<li class="menu-separator"><a class="allToggle" id="changeLanguage" href="#" data-i18n="ChangeLng"></a></li>'
     // log out
-    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout" data-i18n="Logout"></a></li>';
+    html += '<li class="menu-separator notImage"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout" data-i18n="Logout"></a></li>';
 
     html += '</ul>';
     html += '</nav>';
@@ -1176,6 +1177,19 @@ cm.changePass = function(newpass) {
           alert("An error has occurred.\n" + res.message.value);
   });
 };
+cm.recursiveDeleteBoxAPI = function (boxName) {
+    let header = {
+        "Accept": "application/json",
+        "Authorization": "Bearer " + cm.user.access_token,
+        "X-Personium-Recursive": true
+    }
+
+    return $.ajax({
+        type: "DELETE",
+        url: cm.user.cellUrl + boxName,
+        headers: header
+    });
+}
 cm.retrieveCollectionAPIResponse = function (json) {
     let profileUrl = cm.user.cellUrl + '__/profile.json';
     // Check if there is locales folder

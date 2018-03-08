@@ -108,7 +108,7 @@ am.dispInsAppListSchemaSetting = function(schema, boxName, no) {
         var html = '';
         if (status.indexOf('ready') >= 0) {
             // ready
-            html = '<a href="#" id="insAppNo_' + no + '" class="ins-app-icon" onClick="uninstallApp(\'' + schema + '\', \'' + boxName + '\')"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name" data-i18n="' + dispName + '"></div>';
+            html = '<a href="#" id="insAppNo_' + no + '" class="ins-app-icon" onClick="am.dispViewInsApp(\'' + schema + '\', \'' + boxName + '\')"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name" data-i18n="' + dispName + '"></div>';
         } else if (status.indexOf('progress') >= 0) {
             // progress
             html = '<a href="#" id="insAppNo_' + no + '" class="ins-app-icon"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name" data-i18n="' + dispName + '"></div><div id="nowInstallParent_' + no + '" class="progress progress-striped active"><div name="nowInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';"></div></div>';
@@ -163,6 +163,21 @@ am.dispViewApp = function (schema, dispName, imgName, description, barUrl, barBo
     } else {
         html += '<div class="app-install"><button class="round-btn"href="#" onClick="return(false);" data-i18n="Uninstall"></button></div></section>';
     }
+
+    $("#toggle-panel1").append(html).localize();
+    $("#toggle-panel1").toggleClass('slide-on');
+    cm.setTitleMenu("Details");
+};
+am.dispViewInsApp = function (schema, boxName) {
+    $("#toggle-panel1").empty();
+    var profTrans = "profTrans";
+    var dispName = profTrans + ":" + boxName + "_DisplayName";
+    var imgName = profTrans + ":" + boxName + "_Image";
+    var description = profTrans + ":" + boxName + "_Description";
+    cm.setBackahead();
+    var html = '<div class="panel-body">';
+    html += '<div class="app-info"><div class="app-icon"><img data-i18n="[src]' + imgName + '" src=""></div><div class="app-data"><div data-i18n="' + dispName + '"></div><div data-i18n="Provider"></div></div></div><section class="detail-section"><h2 data-i18n="Overview"></h2><div class="overview" data-i18n="' + description + '"></div>';
+    html += '<div class="app-install"><button class="round-btn"href="#" onClick="st.confUninstallApp(\'' + boxName + '\');return(false);" data-i18n="Uninstall"></button></div></section>';
 
     $("#toggle-panel1").append(html).localize();
     $("#toggle-panel1").toggleClass('slide-on');
