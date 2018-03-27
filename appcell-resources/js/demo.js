@@ -262,7 +262,7 @@ demo.addTutorialDialogMain = function() {
         '</div>'
     ].join("");
 
-    $("body").append(htmlLoginedStart, htmlSidemenuStart, htmlSidemenuEnd, htmlAppmarketStart, htmlInstalledStart, htmlLogoutStart);
+    $("body").append(htmlLoginedStart, htmlSidemenuStart, htmlSidemenuEnd, htmlAppmarketStart, htmlInstalledStart, htmlLogoutStart).localize();
 };
 
 // Called by App Market from am.initAppMarket
@@ -441,7 +441,7 @@ demo.createSideMenu = function() {
     itemName.DispName = i18next.t("DisplayName");
     itemName.Description = i18next.t("Description");
     itemName.Photo = i18next.t("ProfileImage");
-    itemName.Relogin = i18next.t("Re-Login");
+    itemName.Relogin = i18next.t("ReLogin");
 
     var html = '<div class="slide-menu">';
     html += '<nav class="slide-nav">';
@@ -518,7 +518,60 @@ demo.createSideMenu = function() {
     $(document.body).append(modal);
 
     // Set Event
-    $('#b-logout-ok,#b-relogin-ok,#b-session-relogin-ok').on('click', function() { cm.logout(); });
+    $('#b-logout-ok,#b-relogin-ok,#b-session-relogin-ok').on('click', function () { cm.logout(); });
+
+    // Register my profile in data-i18n
+    let defProf = cm.user.profile;
+    cm.getProfile(cm.user.cellUrl).done(function (prof) {
+        defProf = {
+            DisplayName: prof.DisplayName,
+            Description: prof.Description,
+            Image: prof.Image
+        }
+    }).always(function () {
+        if (!defProf.Image) {
+            defProf.Image = ut.getJdenticon(cm.user.cellUrl);
+        }
+        let transName = "myProfile";
+        cm.i18nAddProfile("en", "profTrans", transName, defProf, cm.user.cellUrl, "profile");
+        cm.i18nAddProfile("ja", "profTrans", transName, defProf, cm.user.cellUrl, "profile");
+    });
+
+    // Register role/relation in data-i18n
+    cm.getRoleList().done(function (data) {
+        var results = data.d.results;
+        for (var i = 0; i < results.length; i++) {
+            var res = results[i];
+            var name = res.Name;
+            var boxName = res["_Box.Name"];
+            if (boxName != null) {
+                cm.registerRoleRelProfI18n(name, boxName, "roles");
+            }
+        }
+    });
+    cm.getRelationList().done(function (data) {
+        var results = data.d.results;
+        for (var i = 0; i < results.length; i++) {
+            var res = results[i];
+            var name = res.Name;
+            var boxName = res["_Box.Name"];
+            if (boxName != null) {
+                cm.registerRoleRelProfI18n(name, boxName, "relations");
+            }
+        }
+    });
+
+    // Register Schema Profile in data-i18n
+    cm.getBoxList().done(function (data) {
+        var insAppRes = data.d.results;
+        for (var i in insAppRes) {
+            var schema = insAppRes[i].Schema;
+            var boxName = insAppRes[i].Name;
+            if (schema && schema.length > 0) {
+                cm.registerProfI18n(schema, boxName, "profile", "App");
+            }
+        }
+    })
 
     // Time Out Set
     cm.setIdleTime();
