@@ -125,6 +125,39 @@ am.dispInsAppListSchemaSetting = function(schema, boxName, no) {
         $('#' + insAppId).append(html).localize();
     });
 };
+am.checkBoxInstall = function () {
+    var elements = document.getElementsByName("nowInstall");
+    if (elements.length > 0) {
+        for (var i in elements) {
+            var ele = elements[i];
+            var no = ele.id.split("_")[1];
+            am.updateProgress(no, ele.id);
+        }
+    } else {
+        clearInterval(am.nowInstalledID);
+    }
+};
+am.updateProgress = function (no, id) {
+    cm.getBoxStatus(am.insAppBoxList[no]).done(function (data) {
+        var status = data.status;
+        if (status.indexOf('ready') >= 0) {
+            $("#nowInstallParent_" + no).remove();
+            $("#insAppNo_" + no).on('click', function () { am.dispViewInsApp(am.insAppList[no], am.insAppBoxList[no]) });
+            if (typeof (ha) != "undefined") {
+                ha.dispInsAppList();
+            }
+        } else if (status.indexOf('progress') >= 0) {
+            $('#' + id).css("width", data.progress);
+        } else {
+            $('#nowInstallParent_' + no).remove();
+            $('#appid_' + no).append('(<font color="red"> ! </font>)');
+        }
+        var elements = document.getElementsByName("nowInstall");
+        if (elements.length = 0) {
+            clearInterval(am.nowInstalledID);
+        }
+    });
+};
 am.dispApplicationList = function(json) {
     $("#appList1").empty();
     var results = json.d.results;
