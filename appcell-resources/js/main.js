@@ -124,7 +124,7 @@ ha.dispInsAppList = function() {
         })
         for (var i in insAppRes) {
             // hotfix for not showing HomeApplication/Cell Manager's box inside a data subject's cell
-            if (_.contains(cm.boxIgnoreList, insAppRes[i].Name)) {
+            if (_.contains(cm.boxIgnoreList, insAppRes[i].Schema)) {
                 continue;
             };
 
