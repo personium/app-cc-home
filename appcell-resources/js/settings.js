@@ -794,15 +794,13 @@ st.execBarInstall = function() {
                 am.insAppList = new Array();
                 am.insAppBoxList = new Array();
                 for (var i in insAppRes) {
-                    // hotfix for not showing HomeApplication/Cell Manager's box inside a data subject's cell
-                    if (_.contains(cm.boxIgnoreList, insAppRes[i].Name)) {
-                        continue;
-                    };
-
                     var schema = insAppRes[i].Schema;
                     if (schema && schema.length > 0) {
                         am.insAppList.push(schema);
-                        am.insAppBoxList.push(insAppRes[i].Name);
+                        // hotfix for not showing HomeApplication/Cell Manager's box inside a data subject's cell
+                        if (!_.contains(cm.boxIgnoreList, insAppRes[i].Schema)) {
+                            am.insAppBoxList.push(insAppRes[i].Name);
+                        };
                     }
                 }
                 am.dispInsAppListSetting();
@@ -841,15 +839,13 @@ st.execUninstallBox = function () {
             am.insAppList = new Array();
             am.insAppBoxList = new Array();
             for (var i in insAppRes) {
-                // hotfix for not showing HomeApplication/Cell Manager's box inside a data subject's cell
-                if (_.contains(cm.boxIgnoreList, insAppRes[i].Name)) {
-                    continue;
-                };
-
                 var schema = insAppRes[i].Schema;
                 if (schema && schema.length > 0) {
                     am.insAppList.push(schema);
-                    am.insAppBoxList.push(insAppRes[i].Name);
+                    // hotfix for not showing HomeApplication/Cell Manager's box inside a data subject's cell
+                    if (!_.contains(cm.boxIgnoreList, insAppRes[i].Schema)) {
+                        am.insAppBoxList.push(insAppRes[i].Name);
+                    };
                 }
             }
             am.dispInsAppListSetting();

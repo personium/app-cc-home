@@ -3,7 +3,7 @@ cm.imgBinaryFile = null;
 cm.user = JSON.parse(sessionStorage.getItem("sessionData"));
 
 // Do not display the following boxes in the installed list section
-cm.boxIgnoreList = ['io_personium_demo_HomeApplication', 'home'];
+cm.boxIgnoreList = ['https://demo.personium.io/HomeApplication/'];
 
 // Logout
 cm.logout = function() {
