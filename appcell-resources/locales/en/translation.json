@@ -111,7 +111,7 @@
  ,"errorBoxStatusCommunication": "Communication failed. Specified Box does not exist or Please try again later."
  ,"errorBoxStatusNotFound": "Box does not exist."
  ,"errorFileFormat": "The file format is incorrect."
- ,"errorGoogleLogin":  "I can not log in with this Google account. Please login with a different account and set up your Google Account."
+ ,"errorGoogleLogin":  "Failed to log in using the provided Google account. Please login with a proper account (Personium User Account) and register the Google account first."
  ,"errorReadingFile": "Failed to read the file."
  ,"errorValidateEndWithCell": "Cell URL must end with '/'"
  ,"errorValidateEndWithExternalCell": "External cell URL must end with '/'"

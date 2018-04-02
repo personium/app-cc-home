@@ -54,6 +54,7 @@ lg.initTarget = function () {
             var homeUrlMatch = location.href.split("/");
             homeUrlMatch.pop();
             var homeUrl = homeUrlMatch.join("/") + "/";
+            homeUrl = encodeURIComponent(homeUrl);
             var url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=102363313215-408im4hc7mtsgrda4ratkro2thn58bcd.apps.googleusercontent.com&response_type=code+id_token&scope=openid%20email%20profile&redirect_uri=https%3A%2F%2Fdemo.personium.io%2FHomeApplication%2F__%2Fbox-resources%2Fhomeapp_google_auth.html&display=popup&nonce=personium&state=" + homeUrl;
             window.location.href = url;
         });
