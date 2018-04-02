@@ -1,63 +1,71 @@
-<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
 <html>
 <head>
- <title>OpenID connect authentication completed!</title>
- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
- <!--<script src="https://demo.personium.io/HomeApplication/__/js/common.js"></script>-->
-</head>
- <body>
- <h1>認証完了</h1>
- <div id="implicit">
- <script type="text/javascript">
-  var token = "";
-  var match = location.hash.match(/id_token=(.*?)(&|$)/);
-  if (match) {
-    token = decodeURIComponent(match[1]);
-  }
-  
-  if (token) {
-      var cellUrl = sessionStorage.getItem("targetCellUrl");
-      $.ajax({
-          type: "POST",
-          url: cellUrl + "__token",
-          data: {
-              grant_type: 'urn:x-personium:oidc:google',
-              id_token: token
-          },
-          headers: {
-              'Accept':'application/json',
-              'Content-Type':'application/x-www-form-urlencoded'
-          }
-      }).done(function(data) {
-          data.cellUrl = cellUrl;
-          var i = cellUrl.indexOf("/"); // first slash
-          i = cellUrl.indexOf("/", i + 2);  // second slash
-          data.baseUrl = cellUrl.substring(0, i + 1);
-          data.profile = JSON.parse(sessionStorage.getItem("myProfile"));
-          //data.userName = username;
-          data.userName = "googleAccount";
-          sessionStorage.setItem("sessionData", JSON.stringify(data));
-          location.href = "main.html";
-      }).fail(function(data) {
-          logout();
-      });
-  } else {
-      logout();
-  }
+    <title>OpenID connect authentication completed!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <!--<script src="https://demo.personium.io/HomeApplication/__/js/common.js"></script>-->
 
-  // Logout
-  function logout() {
-    sessionStorage.setItem("sessionData", null);
-    var mode = sessionStorage.getItem("mode");
-    if (mode) {
-        location.href = "./login.html?mode=" + mode;
-    } else {
-        location.href = "./login.html";
-    }
-  };
-  
- </script>
-  </div>
- </body>
+</head>
+<body>
+    <div class="mySpinner">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div id="implicit">
+        <script type="text/javascript">
+            var token = "";
+            var match = location.hash.match(/id_token=(.*?)(&|$)/);
+            if (match) {
+                token = decodeURIComponent(match[1]);
+                console.log(match);
+                console.log("token : " + token);
+            }
+            var target = "";
+            var matchState = location.hash.match(/state=(.*?)(&|$)/);
+            if (matchState) {
+                target = decodeURIComponent(matchState[1]);
+                console.log("target : " + target);
+            }
+
+            if (token) {
+                var cellUrl = sessionStorage.getItem("targetCellUrl");
+                $.ajax({
+                    type: "POST",
+                    url: cellUrl + "__token",
+                    data: {
+                        grant_type: 'urn:x-personium:oidc:google',
+                        id_token: token
+                    },
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }).done(function (data) {
+                    data.cellUrl = cellUrl;
+                    var i = cellUrl.indexOf("/"); // first slash
+                    i = cellUrl.indexOf("/", i + 2);  // second slash
+                    data.baseUrl = cellUrl.substring(0, i + 1);
+                    data.profile = JSON.parse(sessionStorage.getItem("myProfile"));
+                    //data.userName = username;
+                    data.userName = "googleAccount";
+                    sessionStorage.setItem("sessionData", JSON.stringify(data));
+                    location.href = target + "main.html";
+                }).fail(function (data) {
+                    console.log(data);
+                    logout(target);
+                });
+            } else {
+                logout(target);
+            }
+
+            // Logout
+            function logout(target, errorMsg) {
+                location.href = target + "login.html?glogin=err";
+            };
+
+        </script>
+    </div>
+</body>
 </html>
