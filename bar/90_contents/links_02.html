@@ -35,71 +35,69 @@
     <script src="https://demo.personium.io/app-cc-home/__/src/js/utils.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/src/js/personium.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/src/js/common.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/message.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/settings.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/src/js/links_02.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/src/js/load.i18n.js"></script>
 
     <title>Personium</title>
 </head>
 
 <body>
+    <div class="modal fade double-btn-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog pn-modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body pn-modal-body" id="deleteMessage">
+                    
+                </div>
+                <div class="modal-footer pn-modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">キャンセル</button>
+                    <button type="button" class="btn ok-btn">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <header>
-        <a class="header-btn pn-back-btn pn-btn" href="main.html">
+        <a class="header-btn pn-back-btn pn-btn" href="links.html">
             <i id="back_btn" class="fas fa-angle-left fa-2x header-ic-01"></i>
         </a>
-        <span>メッセージ</span>
+        <span>富士通 花子</span>
+        <button class="header-btn header-btn-right pn-btn">
+            <i class="fas fa-trash-alt fa-2x header-ic-02"></i>
+        </button>
     </header>
 
     <main>
-        <!--user account infomation-->
         <div class="bg-gray">
-            <div id="links">
-                <ul class="hover-action">
-                    <li>
-                        <a href="incoming_message_list.html">
-                            <div class="pn-list">
-                                <div class="pn-list-icon-02">
-                                    <i class="far fa-envelope msg-list-icon"></i>
-                                </div>
-                                <div class="msg-menu-text">
-                                    <span>受信メッセージ</span>
-                                    <span class="pn-list-batch msg-list-batch">
-                                        <span id="receiveCnt"></span>
-                                    </span>
-                                </div>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="outgoing_message_list.html">
-                            <div class="pn-list">
-                                <div class="pn-list-icon-02">
-                                    <i class="far fa-paper-plane msg-list-icon"></i>
-                                </div>
-                                <div class="msg-menu-text">
-                                    <span>送信済メッセージ</span>
-                                </div>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="create_message.html">
-                            <div class="pn-list">
-                                <div class="pn-list-icon-02">
-                                    <i class="fas fa-pencil-alt msg-list-icon"></i>
-                                </div>
-                                <div class="msg-menu-text">
-                                    <span>メッセージ作成</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-
-                </ul>
+            <div class="extcell-profile">
+                <div class="link_icon user-icon user-icon-large"></div>
+                <div class="user-description"></div>
+                <div class="user-cell-url"></div>
             </div>
+
+            <ul class="extcell-role-list">
+                <li>
+                    <a href="arrow_to_role.html">
+                        <div class="pn-list">
+                            <div class="list-icon-left">
+                                <i class="fas fa-caret-right fa-2x"></i>
+                                <i class="fas fa-user fa-2x"></i>
+                            </div>
+                            <span class="pn-list-text">この人へ許可した役割</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="arrow_from_role.html">
+                        <div class="pn-list">
+                            <div class="list-icon-left">
+                                <i class="fas fa-user fa-2x"></i>
+                                <i class="fas fa-caret-right fa-2x"></i>
+                            </div>
+                            <span class="pn-list-text">この人から許可された役割</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
         </div>
     </main>
     <footer>

@@ -1,0 +1,143 @@
+﻿<!doctype html>
+<html lang="ja">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!--
+        <link rel="stylesheet" href="https://demo.personium.io/HomeApplication/__/src/css/personium.css">
+        <link rel="stylesheet" href="https://demo.personium.io/HomeApplication/__/src/css/homeapp.css">
+    -->
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/personium.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/homeapp.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/common.css">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/8.4.3/i18next.min.js"></script>
+    <script src="https://unpkg.com/i18next-xhr-backend/i18nextXHRBackend.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/2.0.0/i18nextBrowserLanguageDetector.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script>
+        FontAwesomeConfig = {
+            searchPseudoElements: true
+        };
+    </script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+    <script src="https://demo.personium.io/app-cc-home/__/src/js/utils.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/src/js/personium.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/src/js/common.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/src/js/profile.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/src/js/settings.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/src/js/load.i18n.js"></script>
+    <title>Personium</title>
+</head>
+
+<body>
+
+    <header>
+        <a class="header-btn pn-back-btn pn-btn" href="main.html">
+            <i id="back_btn" class="fas fa-angle-left fa-2x header-ic-01"></i>
+        </a>
+        <span>プロフィール</span>
+        <button id="edit-btn" class="slide-list-edit-btn header-btn header-btn-right pn-btn">
+            <i class="fas fa-edit fa-2x header-ic-03"></i>
+        </button>
+    </header>
+
+    <main>
+        <!--profile-->
+        <div class="profile-edit-block">
+            <div class="profile-edit-block-title">
+                <svg class="profile-ic user-ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+                    <title>ic_nickname</title>
+                    <path d="M15,.5A14.5,14.5,0,1,0,29.5,15,14.5,14.5,0,0,0,15,.5Zm0,5.15a6.55,6.55,0,1,1-6.55,6.55A6.55,6.55,0,0,1,15,5.65Zm0,22A12.61,12.61,0,0,1,4.74,22.36a3.86,3.86,0,0,1,2.9-3.3l1.89-.47a8.42,8.42,0,0,0,10.95,0l1.89.47a3.86,3.86,0,0,1,2.9,3.3A12.61,12.61,0,0,1,15,27.63Z"
+                    />
+                </svg>
+                <span class="block-title-text">表示名・アイコン</span>
+            </div>
+            <div class="user-name-and-icon">
+                <div class="my_icon user-icon user-icon-middle">
+                    <span style="display:none;">編集</span>
+                </div>
+                <div class="account-info">
+                    <div class="account-info-title">
+                        <span>表示名：</span>
+                    </div>
+                    <div class="input-group mb-2">
+                        <input type="text" id="user-name-form" class="form-control" disabled placeholder="" aria-label="" aria-describedby="basic-addon2">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-edit-block">
+            <div class="profile-edit-block-title">
+                <svg class="profile-ic card-ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+                    <title>ic_profile</title>
+                    <rect x="17.38" y="13.81" width="4.75" height="1.19" rx="0.45" ry="0.45" />
+                    <rect x="17.38" y="16.19" width="4.75" height="1.19" rx="0.45" ry="0.45" />
+                    <circle cx="12.03" cy="13.44" r="2.6" />
+                    <path d="M15,16.26,13.85,16a3.12,3.12,0,0,1-3.64,0l-1.16.29a1.56,1.56,0,0,0-1.18,1.51v.6a.78.78,0,0,0,.78.78h6.75a.78.78,0,0,0,.78-.78v-.6A1.56,1.56,0,0,0,15,16.26Z"
+                    />
+                    <rect x="17.38" y="11.44" width="4.75" height="1.19" rx="0.45" ry="0.45" />
+                    <path d="M15,.5A14.5,14.5,0,1,0,29.5,15,14.5,14.5,0,0,0,15,.5Zm9.5,19.84a1.78,1.78,0,0,1-1.78,1.78H7.28A1.78,1.78,0,0,1,5.5,20.34V9.66A1.78,1.78,0,0,1,7.28,7.88H22.72A1.78,1.78,0,0,1,24.5,9.66Z"
+                    />
+                </svg>
+                <span class="block-title-text">説明</span>
+            </div>
+            <div class="user-profile-description">
+                <!-- <div class="description-text">
+                    
+                    <br>
+                </div> -->
+                <div id="description-form" class="form-group">
+                    <textarea class="form-control" id="description-form-area" disabled rows="3">
+                    </textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-edit-block">
+            <div class="profile-edit-block-title">
+                <svg class="profile-ic qr-code-ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+                    <title>ic_profile_qrcode</title>
+                    <rect x="13.4" y="16.6" width="3.2" height="3.2" />
+                    <rect x="13.4" y="10.2" width="3.2" height="3.2" />
+                    <rect x="8.14" y="8.09" width="4.13" height="4.13" />
+                    <rect x="10.2" y="13.4" width="3.2" height="3.2" />
+                    <rect x="17.74" y="17.83" width="4.13" height="4.13" />
+                    <rect x="16.6" y="13.4" width="3.2" height="3.2" />
+                    <path d="M15,.5A14.5,14.5,0,1,0,29.5,15,14.5,14.5,0,0,0,15,.5Zm8,9.7H19.8v3.2H23V23H13.4V19.8H10.2V23H7V19.8h3.2V16.6H7V7h9.6v3.2h3.2V7H23Z"
+                    />
+                </svg>
+                <span class="block-title-text">QRコード</span>
+            </div>
+            <div class="user-profile-qr-code">
+                <div class="user-qr-code">
+                    <img src="img/qrcode_dummy.png" alt="QRコード">
+                </div>
+
+                <div class="user-cell-url">
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+    </footer>
+</body>
+
+</html>
