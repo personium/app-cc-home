@@ -17,6 +17,7 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/8.4.3/i18next.min.js"></script>
     <script src="https://unpkg.com/i18next-xhr-backend/i18nextXHRBackend.js"></script>
@@ -35,69 +36,31 @@
     <script src="https://demo.personium.io/app-cc-home/__/src/js/utils.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/src/js/personium.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/src/js/common.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/message.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/src/js/account_link_role.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/src/js/settings.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/src/js/load.i18n.js"></script>
-
     <title>Personium</title>
 </head>
 
 <body>
 
     <header>
-        <a class="header-btn pn-back-btn pn-btn" href="main.html">
+        <a class="header-btn pn-back-btn pn-btn" href="account_link_role_list.html">
             <i id="back_btn" class="fas fa-angle-left fa-2x header-ic-01"></i>
         </a>
-        <span>メッセージ</span>
+        <img class="title-icon-middle" src="" alt="">
+        <span></span>
     </header>
 
     <main>
         <!--user account infomation-->
         <div class="bg-gray">
-            <div id="links">
-                <ul class="hover-action">
-                    <li>
-                        <a href="incoming_message_list.html">
-                            <div class="pn-list">
-                                <div class="pn-list-icon-02">
-                                    <i class="far fa-envelope msg-list-icon"></i>
-                                </div>
-                                <div class="msg-menu-text">
-                                    <span>受信メッセージ</span>
-                                    <span class="pn-list-batch msg-list-batch">
-                                        <span id="receiveCnt"></span>
-                                    </span>
-                                </div>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="outgoing_message_list.html">
-                            <div class="pn-list">
-                                <div class="pn-list-icon-02">
-                                    <i class="far fa-paper-plane msg-list-icon"></i>
-                                </div>
-                                <div class="msg-menu-text">
-                                    <span>送信済メッセージ</span>
-                                </div>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="create_message.html">
-                            <div class="pn-list">
-                                <div class="pn-list-icon-02">
-                                    <i class="fas fa-pencil-alt msg-list-icon"></i>
-                                </div>
-                                <div class="msg-menu-text">
-                                    <span>メッセージ作成</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-
+            <div id="check-list">
+                <div class="title">
+                    <span>役割を選択</span>
+                </div>
+                <ul>
+                    
                 </ul>
             </div>
         </div>

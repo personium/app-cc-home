@@ -17,6 +17,7 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/8.4.3/i18next.min.js"></script>
     <script src="https://unpkg.com/i18next-xhr-backend/i18nextXHRBackend.js"></script>
@@ -35,8 +36,7 @@
     <script src="https://demo.personium.io/app-cc-home/__/src/js/utils.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/src/js/personium.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/src/js/common.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/message.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/settings.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/src/js/msg_info.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/src/js/load.i18n.js"></script>
 
     <title>Personium</title>
@@ -45,64 +45,44 @@
 <body>
 
     <header>
-        <a class="header-btn pn-back-btn pn-btn" href="main.html">
+        <a class="header-btn pn-back-btn pn-btn" href="incoming_message_list.html">
             <i id="back_btn" class="fas fa-angle-left fa-2x header-ic-01"></i>
         </a>
-        <span>メッセージ</span>
+        <span></span>
     </header>
 
-    <main>
-        <!--user account infomation-->
-        <div class="bg-gray">
-            <div id="links">
-                <ul class="hover-action">
-                    <li>
-                        <a href="incoming_message_list.html">
-                            <div class="pn-list">
-                                <div class="pn-list-icon-02">
-                                    <i class="far fa-envelope msg-list-icon"></i>
-                                </div>
-                                <div class="msg-menu-text">
-                                    <span>受信メッセージ</span>
-                                    <span class="pn-list-batch msg-list-batch">
-                                        <span id="receiveCnt"></span>
-                                    </span>
-                                </div>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="outgoing_message_list.html">
-                            <div class="pn-list">
-                                <div class="pn-list-icon-02">
-                                    <i class="far fa-paper-plane msg-list-icon"></i>
-                                </div>
-                                <div class="msg-menu-text">
-                                    <span>送信済メッセージ</span>
-                                </div>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="create_message.html">
-                            <div class="pn-list">
-                                <div class="pn-list-icon-02">
-                                    <i class="fas fa-pencil-alt msg-list-icon"></i>
-                                </div>
-                                <div class="msg-menu-text">
-                                    <span>メッセージ作成</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-
-                </ul>
+    <main class="incoming_msg">
+        <div class="pn-list sender">
+            <div class="pn-list-icon">
+                <img id="msgIcon">
+            </div>
+            <div class="account-info">
+                <div id="msgUserName" class="user-name font-weight-bold"></div>
+                <div>
+                    <span>登録日 </span>
+                    <span id="msgDate"></span>
+                </div>
             </div>
         </div>
+        <div class="message-title">
+            
+        </div>
+        <div class="message-text">
+            
+        </div>
+
     </main>
-    <footer>
+    <footer class="account-info-footer">
+        <div class="edit-list replay-btn-area">
+            <button type="button" class="footer-btn" onclick="msg_info.transitionReplyMessage();">
+                <i class="fas fa-reply fa-2x"></i>
+                <div>返信</div>
+            </button>
+            <button type="button" class="footer-btn" onclick="msg_info.transitionTransferMessage();">
+                <i class="fas fa-arrow-right fa-2x"></i>
+                <div>転送</div>
+            </button>
+        </div>
     </footer>
 </body>
 

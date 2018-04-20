@@ -35,7 +35,7 @@
     <script src="https://demo.personium.io/app-cc-home/__/src/js/utils.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/src/js/personium.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/src/js/common.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/message.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/src/js/account_info.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/src/js/settings.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/src/js/load.i18n.js"></script>
 
@@ -45,64 +45,25 @@
 <body>
 
     <header>
-        <a class="header-btn pn-back-btn pn-btn" href="main.html">
+        <a class="header-btn pn-back-btn pn-btn" href="account.html">
             <i id="back_btn" class="fas fa-angle-left fa-2x header-ic-01"></i>
         </a>
-        <span>メッセージ</span>
+        <span></span>
     </header>
 
     <main>
-        <!--user account infomation-->
         <div class="bg-gray">
-            <div id="links">
-                <ul class="hover-action">
-                    <li>
-                        <a href="incoming_message_list.html">
-                            <div class="pn-list">
-                                <div class="pn-list-icon-02">
-                                    <i class="far fa-envelope msg-list-icon"></i>
-                                </div>
-                                <div class="msg-menu-text">
-                                    <span>受信メッセージ</span>
-                                    <span class="pn-list-batch msg-list-batch">
-                                        <span id="receiveCnt"></span>
-                                    </span>
-                                </div>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="outgoing_message_list.html">
-                            <div class="pn-list">
-                                <div class="pn-list-icon-02">
-                                    <i class="far fa-paper-plane msg-list-icon"></i>
-                                </div>
-                                <div class="msg-menu-text">
-                                    <span>送信済メッセージ</span>
-                                </div>
-
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="create_message.html">
-                            <div class="pn-list">
-                                <div class="pn-list-icon-02">
-                                    <i class="fas fa-pencil-alt msg-list-icon"></i>
-                                </div>
-                                <div class="msg-menu-text">
-                                    <span>メッセージ作成</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-
-                </ul>
+            <div class="app-and-service">
+                
             </div>
         </div>
     </main>
-    <footer>
+    <footer class="account-info-footer">
+        <a href="account_link_role_list.html">
+            <div class="edit-list">
+                <span class="edit-role" onclick="">役割を編集</span>
+            </div>
+        </a>
     </footer>
 </body>
 
