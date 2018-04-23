@@ -47,7 +47,7 @@
         <a class="header-btn pn-back-btn pn-btn" href="select_accounttype.html">
             <i id="back_btn" class="fas fa-angle-left fa-2x header-ic-01"></i>
         </a>
-        <span>新規アカウント</span>
+        <span data-i18n="CreateAccount"></span>
     </header>
 
     <main>
@@ -57,7 +57,7 @@
                     <li>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text form-title form-no-border">名前</span>
+                                <span class="input-group-text form-title form-no-border" data-i18n="Name"></span>
                             </div>
                             <input id="addAccountName" type="text" class="form-control account-form form-no-border" placeholder="アカウント名を入力" aria-describedby="basic-addon3">
                         </div>
@@ -69,9 +69,9 @@
                     <li>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text form-title form-no-border">パスワード</span>
+                                <span class="input-group-text form-title form-no-border" data-i18n="Password"></span>
                             </div>
-                            <input id="addNewPassword" type="password" class="form-control account-form form-no-border" placeholder="半角英数 6～23文字" aria-describedby="basic-addon3">
+                            <input id="addNewPassword" type="password" class="form-control account-form form-no-border" data-i18n="[placeholder]newPassPlaceHolder" aria-describedby="basic-addon3">
                         </div>
                         <span class="popupAlertArea" style="color:red">
                             <aside id="addChangeMessage"> </aside>
@@ -81,9 +81,9 @@
                     <li>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text form-title form-no-border">確認</span>
+                                <span class="input-group-text form-title form-no-border" data-i18n="Confirmation"></span>
                             </div>
-                            <input id="addConfirmPassword" type="password" class="form-control account-form form-no-border" placeholder="パスワードを再入力" aria-describedby="basic-addon3">
+                            <input id="addConfirmPassword" type="password" class="form-control account-form form-no-border" data-i18n="[placeholder]confirmNewPass" aria-describedby="basic-addon3">
                         </div>
                         <span class="popupAlertArea" style="color:red">
                             <aside id="addConfirmMessage"> </aside>
@@ -95,8 +95,8 @@
     </main>
     <footer class="account-info-footer">
         <div class="edit-list footer-btn-area">
-            <button type="button" class="btn btn-secondary footer-btn" onclick="location.href='account.html'">キャンセル</button>
-            <button type="button" class="btn btn-primary footer-btn font-weight-bold" onclick="new_account.addAccount();">登録</button>
+            <button type="button" class="btn btn-secondary footer-btn" onclick="location.href='account.html'" data-i18n="Cancel"></button>
+            <button type="button" class="btn btn-primary footer-btn font-weight-bold" onclick="new_account.addAccount();" data-i18n="Register"></button>
         </div>
     </footer>
 </body>

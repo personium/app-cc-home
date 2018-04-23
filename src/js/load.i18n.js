@@ -14,7 +14,7 @@ $(document).ready(function () {
             defaultNS: 'translation',
             debug: true,
             backend: {
-                loadPath: 'https://demo.personium.io/HomeApplication/__/appcell-resources/locales/{{lng}}/{{ns}}.json'
+                loadPath: 'https://demo.personium.io/app-cc-home/__/src/locales/{{lng}}/{{ns}}.json'
                ,crossDomain: true
             }
         }, function(err, t) {
