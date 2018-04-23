@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Personium
  * Copyright 2018 FUJITSU LIMITED
  *
@@ -507,7 +507,7 @@ main {
 /*-------------------------add new account page(From here)-------------------------*/
 
 .form-title {
-    width: 120px;
+    width: 160px;
     font-size: 1.4rem;
     background-color: #ffffff;
 }

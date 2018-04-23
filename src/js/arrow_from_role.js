@@ -124,9 +124,9 @@ afr.displayLinksRole = function (boxName, roleList) {
         let name = roleList[i];
         let transName = "profTrans:" + name + "_" + roleId + "_DisplayName";
         let transImage = "profTrans:" + name + "_" + roleId + "_Image";
-        let transImgTag = '<img class="image-circle-small" data-i18n="[src]' + transImage + '" src="https://demo.personium.io/app-cc-home/__/src/img/role_default.png">';
+        let transImgTag = '<img class="image-circle-small" data-i18n="[src]' + transImage + '" src="' + cm.defaultRoleIcon +' ">';
         if (!boxName) {
-            transImgTag = '<img class="image-circle-small" src="https://demo.personium.io/app-cc-home/__/src/img/role_default.png">';
+            transImgTag = '<img class="image-circle-small" src="' + cm.defaultRoleIcon + '">';
         }
         $("#role_list_" + boxName).append([
             '<li class="ellipsisText">',
@@ -149,7 +149,7 @@ afr.dispTargetRoleProf = function (name, boxName) {
         let defProf = {
             DisplayName: name,
             Description: "",
-            Image: "https://demo.personium.io/app-cc-home/__/src/img/role_default.png"
+            Image: cm.defaultRoleIcon
         }
         personium.getTargetProfile(schemaUrl, fileName).done(function (defRes) {
             if (defRes[name]) {

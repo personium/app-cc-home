@@ -80,7 +80,7 @@ atr.appendBoxRole = function (boxName) {
     
     $(".app-and-service").append([
         '<div class="title" id="role_' + id + '" style="display:none;">',
-            '<img class="title-icon" data-i18n="[src]' + imgName + '" alt="">',
+            '<img class="ins-app-img title-icon" data-i18n="[src]' + imgName + '" alt="">',
             '<span style="margin-left:0.43rem;" data-i18n="' + dispName + '"></span>',
         '</div>',
         '<div class="role-list thin-border">',

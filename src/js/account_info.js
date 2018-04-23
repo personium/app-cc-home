@@ -74,6 +74,7 @@ accinfo.displayAccountToRole = function () {
                     var name = matchName[1];
                     $("#role_list_").append([
                         '<li class="ellipsisText">',
+                        '<img class="image-circle-small"src="' + cm.defaultRoleIcon + '">',
                         name,
                         '</li>'
                     ].join("")).localize();
@@ -99,7 +100,7 @@ accinfo.createBoxRoleHeader = function (boxName) {
     $(".app-and-service").append([
         '<span id="role_header_' + boxName + '" style="display:none;">',
         '<div class="title">',
-        '<img class="title-icon" data-i18n="[src]' + imgName + '" alt="">',
+        '<img class="ins-app-img title-icon" data-i18n="[src]' + imgName + '" alt="">',
         '<span style="margin-left:0.43rem;" data-i18n="' + dispName + '"></span>',
         '</div>',
         '<div class="role-list thin-border">',
