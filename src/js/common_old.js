@@ -424,7 +424,7 @@ cm.registerRoleRelProfI18n = function (name, boxName, fileName) {
 }
 
 cm.registerProfI18n = function (schema, boxName, fileName, cellType) {
-    let defImage = ut.getDefaultImage(schema, cellType);
+    let defImage = ut.getDefaultImage(schema);
     let defProf = {
         DisplayName: ut.getName(schema),
         Description: "",

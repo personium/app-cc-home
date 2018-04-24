@@ -527,17 +527,17 @@ cm.getCellType = function () {
 };
 
 cm.registerProfI18n = function (schema, boxName, fileName, cellType) {
-    let defImage = ut.getDefaultImage(schema, cellType);
+    let defImage = ut.getDefaultImage(schema);
     let defProf = {
         DisplayName: ut.getName(schema),
         Description: "",
         Image: defImage
     }
     personium.getProfile(schema).done(function (defRes) {
-        defProf = {
-            DisplayName: defRes.DisplayName,
-            Description: defRes.Description,
-            Image: defRes.Image
+        defProf.DisplayName = defRes.DisplayName;
+        defProf.Description = defRes.Description;
+        if (defRes.Image) {
+            defProf.Image = defRes.Image;
         }
     }).always(function () {
         cm.i18nAddProfile("en", "profTrans", boxName, defProf, schema, fileName, null);
