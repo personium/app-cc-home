@@ -11,7 +11,6 @@ addLoadStyleSheet = function (styleList) {
 function init() {
     ut.loadStyleSheet();
     ut.loadScript(function () {
-        sel_accType.createsel_accType.ist();
     });
 }
 

@@ -44,6 +44,7 @@ cm.user.nowPage = 0;
 cm.user.nowTitle = {};
 cm.user.settingNowPage = 0;
 cm.user.settingNowTitle = {};
+cm.defaultRoleIcon = "https://demo.personium.io/app-cc-home/__/src/img/role_default.png";
 cm.notAppImage = "https://demo.personium.io/HomeApplication/__/icons/no_app_image.png";
 cm.cellUrl = cm.user.cellUrl;
 cm.userName = cm.user.userName;
@@ -526,17 +527,17 @@ cm.getCellType = function () {
 };
 
 cm.registerProfI18n = function (schema, boxName, fileName, cellType) {
-    let defImage = ut.getDefaultImage(schema, cellType);
+    let defImage = ut.getDefaultImage(schema);
     let defProf = {
         DisplayName: ut.getName(schema),
         Description: "",
         Image: defImage
     }
     personium.getProfile(schema).done(function (defRes) {
-        defProf = {
-            DisplayName: defRes.DisplayName,
-            Description: defRes.Description,
-            Image: defRes.Image
+        defProf.DisplayName = defRes.DisplayName;
+        defProf.Description = defRes.Description;
+        if (defRes.Image) {
+            defProf.Image = defRes.Image;
         }
     }).always(function () {
         cm.i18nAddProfile("en", "profTrans", boxName, defProf, schema, fileName, null);
@@ -550,7 +551,7 @@ cm.registerRoleRelProfI18n = function (name, boxName, fileName) {
         let defProf = {
             DisplayName: name,
             Description: "",
-            Image: "https://demo.personium.io/app-cc-home/__/src/img/role_default.png"
+            Image: cm.defaultRoleIcon
         }
         personium.getTargetProfile(schemaUrl, fileName).done(function (defRes) {
             if (defRes[name]) {

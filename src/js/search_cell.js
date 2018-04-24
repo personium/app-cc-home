@@ -10,6 +10,11 @@ addLoadStyleSheet = function (styleList) {
     return styleList;
 }
 
+addNamesapces = function (ns) {
+    ns.push('message');
+    return ns;
+};
+
 /*** new ***/
 function init() {
     ut.loadStyleSheet();

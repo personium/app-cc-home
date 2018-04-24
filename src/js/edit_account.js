@@ -19,22 +19,29 @@ edit_account.appendEvent = function () {
     $("#editAccountName").blur(function () {
         edit_account.addAccountNameBlurEvent();
     });
-    $("#editNewPassword").blur(function () {
-        cm.charCheck($(this), '#editChangeMessage');
-    });
-    $("#editConfirmPassword").blur(function () {
-        cm.changePassCheck($('#editNewPassword').val(), $('#editConfirmPassword').val(), '#editConfirmMessage');
-    });
+    if (sessionStorage.getItem("accountType") == "basic") {
+        $("#editAccountName").attr("placeholder", i18next.t("accountNamePlaceHolder"));
+        $("#editNewPassword").blur(function () {
+            cm.charCheck($(this), '#editChangeMessage');
+        });
+        $("#editConfirmPassword").blur(function () {
+            cm.changePassCheck($('#editNewPassword').val(), $('#editConfirmPassword').val(), '#editConfirmMessage');
+        });
+    } else {
+        $("#editAccountName").attr("placeholder", i18next.t("gmailPlaceHolder"));
+        $("#editNewPassword").parents("li").hide();
+        $("#editConfirmPassword").parents("li").hide();
+    }
 }
 
 edit_account.addAccountNameBlurEvent = function () {
     var name = $("#editAccountName").val();
     var nameSpan = "popupEditAccountNameErrorMsg";
-    //if ($("input[name=accType]:checked").val() == "basic") {
+    if (sessionStorage.getItem("accountType") == "basic") {
         cm.validateName(name, nameSpan, "-_!\$\*=^`\{\|\}~.@", "");
-    //} else {
-    //    cm.validateMail(name, nameSpan);
-    //}
+    } else {
+        cm.validateMail(name, nameSpan);
+    }
 
 };
 
@@ -48,7 +55,7 @@ edit_account.editAccount = function () {
     };
 
     let pass = null;
-    //if (authType == "basic") {
+    if (authType == "basic") {
         if (!cm.validateName(name, "popupEditAccountNameErrorMsg", "-_!\$\*=^`\{\|\}~.@", "")) {
             return false;
         }
@@ -60,11 +67,11 @@ edit_account.editAccount = function () {
             }
         }
         
-    //} else {
-    //    if (!cm.validateMail(name, "popupAddAccountNameErrorMsg")) {
-    //        return false;
-    //    }
-    //}
+    } else {
+        if (!cm.validateMail(name, "popupAddAccountNameErrorMsg")) {
+            return false;
+        }
+    }
 
         edit_account.restEditAccountAPI(jsonData, $("#editNewPassword").val(), keyName);
     return false;

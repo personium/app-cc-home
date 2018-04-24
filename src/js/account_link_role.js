@@ -65,7 +65,7 @@ acc_link_role.displayRoleList = function () {
                 '<div class="pn-list pn-list-no-arrow">',
                     '<div class="account-info">',
                         '<div class="user-name">',
-                        '<img class="image-circle-small" style="margin-top:0px;" data-i18n="[src]profTrans:' + roleName + '_' + boxName + '_Image" src="https://demo.personium.io/app-cc-home/__/src/img/role_default.png">',
+                        '<img class="image-circle-small" style="margin-top:0px;" data-i18n="[src]profTrans:' + roleName + '_' + boxName + '_Image" src="' + cm.defaultRoleIcon + '">',
                             '<span data-i18n="profTrans:' + roleName + '_' + boxName + '_DisplayName">' + roleName + '</span>',
                         '</div>',
                         '<div data-i18n="profTrans:' + roleName + '_' + boxName + '_Description"></div>',

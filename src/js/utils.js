@@ -214,11 +214,7 @@ ut.getAppLaunchUrl = function(launchObj, boxName) {
 
     return result;
 };
-ut.getDefaultImage = function (cellUrl, cellType) {
-    if (cellType === "App") {
-        return cm.notAppImage;
-    }
-
+ut.getDefaultImage = function (cellUrl) {
     return ut.getJdenticon(cellUrl);
 }
 

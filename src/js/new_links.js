@@ -81,18 +81,22 @@ new_links.searchCells = function (searchVal) {
         });
     }).fail(function () {
         // ライブラリから検索
+        let res;
         new_links.searchDirectoryAPI(searchVal).done(function (data) {
-            let res = data.d.results;
+            res = data.d.results;
             res.sort(function (val1, val2) {
                 return (val1.url > val2.url ? 1 : -1);
             });
-            for (var i in res) {
-                new_links.displayDirectoryCellList(res[i].url);
+        }).always(function (data) {
+            if (res && res.length > 0) {
+                for (var i in res) {
+                    new_links.displayDirectoryCellList(res[i].url);
+                }
+                new_links.Add_Check_Mark();
+            } else {
+                // 無ければ見つからないメッセージ
+                new_links.displayNotExtCellList();
             }
-            new_links.Add_Check_Mark();
-        }).fail(function (data) {
-            // 無ければ見つからないメッセージ
-            new_links.displayNotExtCellList();
         })
     });
 }

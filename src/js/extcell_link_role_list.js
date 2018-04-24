@@ -63,6 +63,7 @@ extcell_link_role_list.displayBoxRoleList = function () {
 extcell_link_role_list.displayBoxRole = function (boxName, no) {
     let transDispName = "profTrans:" + boxName + "_DisplayName";
     let transImage = "[src]profTrans:" + boxName + "_Image";
+    let imgStyle = "style='border-radius: 10px;'";
     if (!boxName) {
         transDispName = "UserCustomRole";
         transImage = "[src]profTrans:myProfile_Image";
@@ -72,7 +73,7 @@ extcell_link_role_list.displayBoxRole = function (boxName, no) {
             '<a href="#" onclick="extcell_link_role_list.transitionAccountLinks(\''+boxName+'\')">',
                 '<div class="pn-list">',
                     '<div class="pn-list-icon app-icon">',
-                        '<img class="img-fluid" data-i18n="' + transImage + '">',
+                        '<img class="img-fluid" ' + imgStyle + ' data-i18n="' + transImage + '">',
                     '</div>',
                     '<div class="account-info text-hidden">',
                         '<span class="user-name" data-i18n="' + transDispName + '"></span>',
