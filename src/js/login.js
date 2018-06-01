@@ -181,7 +181,8 @@ lg.sendAccountNamePw = function(username, pw) {
         data: {
             grant_type: "password",
             username: username,
-            password: pw
+            password: pw,
+            p_cookie: true
         },
         headers: {'Accept':'application/json'}
     }).done(function(data) {
