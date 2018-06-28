@@ -289,7 +289,8 @@ personium.refreshTokenAPI = function (cellUrl, refToken) {
         dataType: 'json',
         data: {
             grant_type: "refresh_token",
-            refresh_token: refToken
+            refresh_token: refToken,
+            p_cookie: true
         },
         headers: { 'Accept': 'application/json' }
     })
