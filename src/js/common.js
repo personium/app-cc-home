@@ -95,25 +95,8 @@ $(function () {
 // Check 5 minutes before session expires
 setIdleTime = function () {
     cm.refreshToken();
-    setInterval(cm.checkIdleTime, 3300000);
-    document.onclick = function () {
-        cm.LASTACTIVITY = new Date().getTime();
-    };
-    document.onmousemove = function () {
-        cm.LASTACTIVITY = new Date().getTime();
-    };
-    document.onkeypress = function () {
-        cm.LASTACTIVITY = new Date().getTime();
-    };
+    setInterval(cm.refreshToken, 1800000);
 }
-cm.checkIdleTime = function () {
-    if (new Date().getTime() > cm.LASTACTIVITY + cm.IDLE_TIMEOUT) {
-        console.log(new Date());
-        $('#modal-session-expired').modal('show');
-    } else {
-        cm.refreshToken();
-    }
-};
 cm.refreshToken = function () {
     personium.refreshTokenAPI(cm.getMyCellUrl(), cm.getRefreshToken()).done(function (data) {
         cm.user.access_token = data.access_token;
