@@ -1247,53 +1247,6 @@ cm.editProfileHeaderMenu = function() {
     $("#tProfileDisplayName").html(cm.user.profile.DisplayName);
 }
 
-cm.execApp = function(aDom) {
-    let launchUrl = $(aDom).data('appLaunchUrl');
-    let openNewWindow = $(aDom).data('openNewWindow');
-    let childWindow;
-    // https://stackoverflow.com/questions/20696041/window-openurl-blank-not-working-on-imac-safari
-    if (openNewWindow) {
-        childWindow = window.open('about:blank');
-    }    
-        
-    cm.refreshTokenAPI().done(function(data) {
-        let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
-        let isDemo = (tempMyProfile.IsDemo || false);
-
-        var url = launchUrl;
-        url += '?lng=' + i18next.language;
-        url += '#cell=' + cm.user.cellUrl;
-        url += '&refresh_token=' + data.refresh_token;
-
-        /*
-         * Launch App according to device type if supported.
-         * If App is native, launch.json should specify "android" and "ios" key/value pairs.
-         * If native App is not defined, launch the web App as usual.
-         */
-        if (openNewWindow) {
-            childWindow.location.href = url;
-            childWindow = null;
-        } else {
-            window.location.href = url; // launch native App
-        }
-
-        if (isDemo && launchUrl.startsWith('https://demo.personium.io/app-myboard/')) {
-            demoSession.sideMenu = true;
-            sessionStorage.setItem("demoSession", JSON.stringify(demoSession));
-            demo.showModal('#modal-logout-start');
-        }
-    }).fail(function(error){
-        console.log(error);
-
-        if (openNewWindow) {
-            childWindow.close();
-            childWindow = null;
-        }
-    });
-
-    return false;
-};
-
 cm.getReceivedMessageCntAPI = function () {
     return $.ajax({
         type: "GET",

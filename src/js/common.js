@@ -596,40 +596,30 @@ cm.execApp = function (aDom) {
         childWindow = window.open('about:blank');
     }
 
-    personium.refreshTokenAPI(cm.getMyCellUrl(), cm.getRefreshToken()).done(function (data) {
-        let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
-        let isDemo = (tempMyProfile.IsDemo || false);
+    let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
+    let isDemo = (tempMyProfile.IsDemo || false);
 
-        var url = launchUrl;
-        url += '?lng=' + i18next.language;
-        url += '#cell=' + cm.user.cellUrl;
-        url += '&refresh_token=' + data.refresh_token;
+    var url = launchUrl;
+    url += '?lng=' + i18next.language;
+    url += '#cell=' + cm.user.cellUrl;
 
-        /*
-         * Launch App according to device type if supported.
-         * If App is native, launch.json should specify "android" and "ios" key/value pairs.
-         * If native App is not defined, launch the web App as usual.
-         */
-        if (openNewWindow) {
-            childWindow.location.href = url;
-            childWindow = null;
-        } else {
-            window.location.href = url; // launch native App
-        }
+    /*
+     * Launch App according to device type if supported.
+     * If App is native, launch.json should specify "android" and "ios" key/value pairs.
+     * If native App is not defined, launch the web App as usual.
+     */
+    if (openNewWindow) {
+        childWindow.location.href = url;
+        childWindow = null;
+    } else {
+        window.location.href = url; // launch native App
+    }
 
-        if (isDemo && launchUrl.startsWith('https://demo.personium.io/app-myboard/')) {
-            demoSession.sideMenu = true;
-            sessionStorage.setItem("demoSession", JSON.stringify(demoSession));
-            demo.showModal('#modal-logout-start');
-        }
-    }).fail(function (error) {
-        console.log(error);
-
-        if (openNewWindow) {
-            childWindow.close();
-            childWindow = null;
-        }
-    });
+    if (isDemo && launchUrl.startsWith('https://demo.personium.io/app-myboard/')) {
+        demoSession.sideMenu = true;
+        sessionStorage.setItem("demoSession", JSON.stringify(demoSession));
+        demo.showModal('#modal-logout-start');
+    }
 
     return false;
 };
