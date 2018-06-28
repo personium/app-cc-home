@@ -88,6 +88,25 @@ cm.getUserName = function () {
 }
 
 /*** new ***/
+$(function () {
+    setIdleTime();
+})
+// This method checks idle time
+// Check 5 minutes before session expires
+setIdleTime = function () {
+    cm.refreshToken();
+    setInterval(cm.refreshToken, 1800000);
+}
+cm.refreshToken = function () {
+    personium.refreshTokenAPI(cm.getMyCellUrl(), cm.getRefreshToken()).done(function (data) {
+        cm.user.access_token = data.access_token;
+        cm.user.refresh_token = data.refresh_token;
+        cm.access_token = cm.user.access_token;
+        cm.refresh_token = cm.user.refresh_token;
+        sessionStorage.setItem("sessionData", JSON.stringify(cm.user));
+    });
+};
+
 /**
    * Add_Check_Mark
    * param:none
