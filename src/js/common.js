@@ -602,6 +602,12 @@ cm.execApp = function (aDom) {
     var url = launchUrl;
     url += '?lng=' + i18next.language;
     url += '#cell=' + cm.user.cellUrl;
+    
+    var sendRefreshToken = $(aDom).data('sendRefreshToken');
+    
+    if (sendRefreshToken) {
+        url += '&refresh_token=' + cm.getRefreshToken();
+    }
 
     /*
      * Launch App according to device type if supported.
