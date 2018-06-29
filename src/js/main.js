@@ -339,7 +339,8 @@ ha.createLaunchLink = function (schema, boxName, msgCnt, id) {
             class: 'ins-app-icon',
             onClick: 'return cm.execApp(this)',
             'data-open-new-window': appLaunchInfo.openNewWindow, // $(this).data('openNewWindow')
-            'data-app-launch-url': appLaunchInfo.appLaunchUrl // $(this).data('appLaunchUrl')
+            'data-app-launch-url': appLaunchInfo.appLaunchUrl, // $(this).data('appLaunchUrl')
+            'data-send-refresh-token': data.personal.sendRefreshToken
         });
         aTag.append($(iconDiv), $(nameDiv));
 
