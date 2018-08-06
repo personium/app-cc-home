@@ -193,9 +193,9 @@ lg.sendAccountNamePw = function(username, pw) {
                 data.baseUrl = lg.rootUrl.substring(0, i + 1);
                 data.profile = lg.profile;
                 data.userName = username;
+                data.logoutUrl = location.href;
                 sessionStorage.setItem("sessionData", JSON.stringify(data));
-                location.href = "main.html";
-                //location.href = "main.html#" + JSON.stringify(data);
+                location.href = "https://demo.personium.io/app-cc-home/__/html/main.html";
     }).fail(function(){
                 // login failed
                 $('body > div.mySpinner').hide();

@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
     <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/personium.css">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/homeapp.css">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/common.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/personium.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/homeapp.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/common.css">
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -33,12 +33,12 @@
         };
     </script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/utils.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/personium.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/common.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/search_cell.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/settings.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/load.i18n.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/utils.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/personium.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/common.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/new_links.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/load.i18n.js"></script>
 
     <title>Personium</title>
 </head>
@@ -59,10 +59,10 @@
     </div>
 
     <header>
-        <a class="header-btn pn-back-btn pn-btn" href="create_message.html">
+        <a class="header-btn pn-back-btn pn-btn" href="links.html">
             <i id="back_btn" class="fas fa-angle-left fa-2x header-ic-01"></i>
         </a>
-        <span data-i18n="message:SelectMember"></span>
+        <span data-i18n="AddMember"></span>
     </header>
 
     <main>
@@ -91,7 +91,7 @@
         </div>
     </main>
     <footer class="account-info-footer">
-        <a href="#" onclick="search_cell.addExternalCell();">
+        <a href="#" onclick="new_links.addExternalCell();">
             <div class="edit-list">
                 <span class="add-member" data-i18n="Add"></span>
             </div>

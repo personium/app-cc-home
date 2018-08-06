@@ -1,16 +1,19 @@
 ﻿<!doctype html>
 <html lang="ja">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous">
+        crossorigin="anonymous">
     <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/personium.css">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/homeapp.css">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/common.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/personium.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/homeapp.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/common.css">
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -20,46 +23,49 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/2.0.0/i18nextBrowserLanguageDetector.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
     <script>
         FontAwesomeConfig = {
             searchPseudoElements: true
         };
     </script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/utils.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/personium.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/common.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/change_password.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/load.i18n.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/utils.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/personium.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/common.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/edit_account.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/load.i18n.js"></script>
+
     <title>Personium</title>
 </head>
-<body>
-    <div class="modal fade single-btn-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
-        <div class="modal-dialog pn-modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body pn-modal-body" data-i18n="successChangePass">
 
-                </div>
-                <div class="modal-footer pn-modal-footer">
-                    <button type="button" class="btn ok-btn" data-dismiss="modal">OK</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<body>
 
     <header>
-        <a class="header-btn pn-back-btn pn-btn" href="main.html">
+        <a class="header-btn pn-back-btn pn-btn" href="account.html">
             <i id="back_btn" class="fas fa-angle-left fa-2x header-ic-01"></i>
         </a>
-        <span data-i18n="ChangePass"></span>
+        <span data-i18n="EditAccount"></span>
     </header>
+
     <main>
         <div class="bg-gray">
             <div id="links">
                 <ul>
+                    <li>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text form-title form-no-border" data-i18n="Name"></span>
+                            </div>
+                            <input id="editAccountName" type="text" class="form-control account-form form-no-border" data-i18n="[placeholder]accountNamePlaceHolder" aria-describedby="basic-addon3">
+                        </div>
+                        <span class="popupAlertArea" style="color:red">
+                            <aside id="popupEditAccountNameErrorMsg"> </aside>
+                        </span>
+                    </li>
+
                     <li>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -71,6 +77,7 @@
                             <aside id="editChangeMessage"> </aside>
                         </span>
                     </li>
+
                     <li>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -88,9 +95,10 @@
     </main>
     <footer class="account-info-footer">
         <div class="edit-list footer-btn-area">
-            <button type="button" class="btn btn-secondary footer-btn" onclick="location.href='main.html'" data-i18n="Cancel"></button>
-            <button type="button" class="btn btn-primary footer-btn font-weight-bold" onclick="chg_pass.changePassword();" data-i18n="Update"></button>
+            <button type="button" class="btn btn-secondary footer-btn" onclick="location.href='account.html'" data-i18n="Cancel"></button>
+            <button type="button" class="btn btn-primary footer-btn font-weight-bold" onclick="edit_account.editAccount();" data-i18n="Edit"></button>
         </div>
     </footer>
 </body>
+
 </html>

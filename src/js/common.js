@@ -4,19 +4,32 @@ cm.user = JSON.parse(sessionStorage.getItem("sessionData"));
 
 // Do not display the following boxes in the installed list section
 cm.boxIgnoreList = ['https://demo.personium.io/app-cc-home/'];
+cm.logoutUrl = null;
 
 // Logout
 cm.logout = function() {
+  if (!cm.logoutUrl) {
+    cm.logoutUrl = cm.user.logoutUrl;
+  }
   sessionStorage.setItem("sessionData", null);
+/*
   var mode = sessionStorage.getItem("mode");
   if (mode) {
       location.href = "./login.html?mode=" + mode;
   } else {
       location.href = "./login.html";
   }
+*/
+  location.href = cm.logoutUrl;
 };
 
 if (!cm.user) {
+  var mode = sessionStorage.getItem("mode");
+  if (mode) {
+      cm.logoutUrl = "../login.html?mode=" + mode;
+  } else {
+      cm.logoutUrl = "../login.html";
+  }
   cm.logout();
 }
 
@@ -44,7 +57,7 @@ cm.user.nowPage = 0;
 cm.user.nowTitle = {};
 cm.user.settingNowPage = 0;
 cm.user.settingNowTitle = {};
-cm.defaultRoleIcon = "https://demo.personium.io/app-cc-home/__/src/img/role_default.png";
+cm.defaultRoleIcon = "https://demo.personium.io/app-cc-home/__/html/img/role_default.png";
 cm.notAppImage = "https://demo.personium.io/HomeApplication/__/icons/no_app_image.png";
 cm.cellUrl = cm.user.cellUrl;
 cm.userName = cm.user.userName;
