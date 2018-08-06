@@ -26,9 +26,9 @@ cm.logout = function() {
 if (!cm.user) {
   var mode = sessionStorage.getItem("mode");
   if (mode) {
-      cm.logoutUrl = "../login.html?mode=" + mode;
+      cm.logoutUrl = "./login.html?mode=" + mode;
   } else {
-      cm.logoutUrl = "../login.html";
+      cm.logoutUrl = "./login.html";
   }
   cm.logout();
 }
