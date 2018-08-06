@@ -33,9 +33,9 @@ account.dispAccountList = function (json) {
     for (var i = 0; i < results.length; i++) {
         var acc = json.d.results[i];
         var type = acc.Type;
-        var typeImgTag = '<img class="image-circle-small-border-less" src="https://demo.personium.io/app-cc-home/__/src/img/type_p.png">';
+        var typeImgTag = '<img class="image-circle-small-border-less" src="https://demo.personium.io/app-cc-home/__/html/img/type_p.png">';
         if (type !== "basic") {
-            typeImgTag = '<img class="image-circle-small-border-less" src="https://demo.personium.io/app-cc-home/__/src/img/type_g.png">';
+            typeImgTag = '<img class="image-circle-small-border-less" src="https://demo.personium.io/app-cc-home/__/html/img/type_g.png">';
         }
         html = '<li>';
         html += '<div class="slide-list-line">';

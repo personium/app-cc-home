@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
     <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/personium.css">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/homeapp.css">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/common.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/personium.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/homeapp.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/common.css">
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -32,12 +32,12 @@
         };
     </script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/utils.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/personium.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/common.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/arrow_to_role.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/settings.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/load.i18n.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/utils.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/personium.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/common.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/account.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/settings.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/load.i18n.js"></script>
 
     <title>Personium</title>
 </head>
@@ -45,39 +45,26 @@
 <body>
 
     <header>
-        <a class="header-btn pn-back-btn pn-btn" href="links_02.html">
+        <a class="header-btn pn-back-btn pn-btn" href="main.html">
             <i id="back_btn" class="fas fa-angle-left fa-2x header-ic-01"></i>
         </a>
-        <span data-i18n="GrantRole"></span>
-        <button class="header-btn header-btn-right pn-btn">
-            <i class="fas fa-cog fa-2x header-ic-02"></i>
+        <span data-i18n="Account"></span>
+        <button class="slide-list-edit-btn header-btn header-btn-right pn-btn">
+            <i class="fas fa-edit fa-2x header-ic-03"></i>
         </button>
     </header>
 
     <main>
-        <div class="bg-gray">
-            <div class="extcell-profile">
-                <div class="role-img-area">
-                    <div class="arrow-to-img">
-                        <div class="user-icon user-icon-large"></div>
-                        <div class="font-weight-bold"></div>
+        <!--account list-->
+        <ul class="slide-list">
+            <li>
+                <a href="new_account.html">
+                    <div class="slide-list-line">
+                        <div class="new-account slide-list-line-contents add-setting" data-i18n="CreateAccount">新規アカウント</div>
                     </div>
-                    <div class="arrow-to-img">
-                        <i class="fas fa-caret-right fa-3x"></i>
-                    </div>
-                    <div class="arrow-to-img">
-                        <div class="user-icon user-icon-large"></div>
-                        <div class="font-weight-bold"></div>
-                    </div>
-                </div>
-
-                <div class="user-description" data-i18n="arrowingRolesThisPerson"></div>
-            </div>
-
-            <div class="app-and-service">
-                
-            </div>
-        </div>
+                </a>
+            </li>
+        </ul>
     </main>
     <footer>
     </footer>

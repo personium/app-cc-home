@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
     <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/personium.css">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/homeapp.css">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/common.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/personium.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/homeapp.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/common.css">
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -32,11 +32,11 @@
         };
     </script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/utils.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/personium.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/common.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/edit_account.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/load.i18n.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/utils.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/personium.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/common.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/new_account.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/load.i18n.js"></script>
 
     <title>Personium</title>
 </head>
@@ -44,10 +44,10 @@
 <body>
 
     <header>
-        <a class="header-btn pn-back-btn pn-btn" href="account.html">
+        <a class="header-btn pn-back-btn pn-btn" href="select_accounttype.html">
             <i id="back_btn" class="fas fa-angle-left fa-2x header-ic-01"></i>
         </a>
-        <span data-i18n="EditAccount"></span>
+        <span data-i18n="CreateAccount"></span>
     </header>
 
     <main>
@@ -59,10 +59,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text form-title form-no-border" data-i18n="Name"></span>
                             </div>
-                            <input id="editAccountName" type="text" class="form-control account-form form-no-border" data-i18n="[placeholder]accountNamePlaceHolder" aria-describedby="basic-addon3">
+                            <input id="addAccountName" type="text" class="form-control account-form form-no-border" placeholder="アカウント名を入力" aria-describedby="basic-addon3">
                         </div>
                         <span class="popupAlertArea" style="color:red">
-                            <aside id="popupEditAccountNameErrorMsg"> </aside>
+                            <aside id="popupAddAccountNameErrorMsg"> </aside>
                         </span>
                     </li>
 
@@ -71,10 +71,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text form-title form-no-border" data-i18n="Password"></span>
                             </div>
-                            <input id="editNewPassword" type="password" class="form-control account-form form-no-border" data-i18n="[placeholder]newPassPlaceHolder" aria-describedby="basic-addon3">
+                            <input id="addNewPassword" type="password" class="form-control account-form form-no-border" data-i18n="[placeholder]newPassPlaceHolder" aria-describedby="basic-addon3">
                         </div>
                         <span class="popupAlertArea" style="color:red">
-                            <aside id="editChangeMessage"> </aside>
+                            <aside id="addChangeMessage"> </aside>
                         </span>
                     </li>
 
@@ -83,10 +83,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text form-title form-no-border" data-i18n="Confirmation"></span>
                             </div>
-                            <input id="editConfirmPassword" type="password" class="form-control account-form form-no-border" data-i18n="[placeholder]confirmNewPass" aria-describedby="basic-addon3">
+                            <input id="addConfirmPassword" type="password" class="form-control account-form form-no-border" data-i18n="[placeholder]confirmNewPass" aria-describedby="basic-addon3">
                         </div>
                         <span class="popupAlertArea" style="color:red">
-                            <aside id="editConfirmMessage"> </aside>
+                            <aside id="addConfirmMessage"> </aside>
                         </span>
                     </li>
                 </ul>
@@ -96,7 +96,7 @@
     <footer class="account-info-footer">
         <div class="edit-list footer-btn-area">
             <button type="button" class="btn btn-secondary footer-btn" onclick="location.href='account.html'" data-i18n="Cancel"></button>
-            <button type="button" class="btn btn-primary footer-btn font-weight-bold" onclick="edit_account.editAccount();" data-i18n="Edit"></button>
+            <button type="button" class="btn btn-primary footer-btn font-weight-bold" onclick="new_account.addAccount();" data-i18n="Register"></button>
         </div>
     </footer>
 </body>

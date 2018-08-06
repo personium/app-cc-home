@@ -1,5 +1,5 @@
 ﻿<!doctype html>
-<html lang="ja">
+<html>
 
 <head>
     <!-- Required meta tags -->
@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
     <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/personium.css">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/homeapp.css">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/src/css/common.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/personium.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/homeapp.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/common.css">
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -33,33 +33,46 @@
         };
     </script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/utils.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/personium.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/common.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/extcell_link_role.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/src/js/load.i18n.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/utils.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/personium.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/common.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/settings.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/load.i18n.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/change_language.js"></script>
     <title>Personium</title>
 </head>
 
 <body>
 
     <header>
-        <a class="header-btn pn-back-btn pn-btn" href="extcell_link_role_list.html">
+        <a class="header-btn pn-back-btn pn-btn" href="main.html">
             <i id="back_btn" class="fas fa-angle-left fa-2x header-ic-01"></i>
         </a>
-        <img class="title-icon-middle" alt="">
-        <span></span>
+        <img class=title-icon-middle" src="" alt="">
+        <span data-i18n="ChangeLng"></span>
     </header>
 
     <main>
-        <!--user account infomation-->
         <div class="bg-gray">
-            <div id="check-list">
+            <div id="language-list">
                 <div class="title">
-                    <span data-i18n="SelectRole"></span>
+                    <span data-i18n="changeLanguageDescription"></span>
                 </div>
-                <ul>
-                    
+                <ul class="hover-action">
+                    <li class="en pn-check-list check-position-l" style="pointer-events: auto;">
+                        <a href="#" onclick="i18next.changeLanguage('en'); location.href='main.html'">
+                            <div class="pn-list">
+                                <div class="account-info text-hidden"><span class="user-name" data-i18n="English">English</span></div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="ja pn-check-list check-position-l" style="pointer-events: auto;">
+                        <a href="#" onclick="i18next.changeLanguage('ja'); location.href='main.html'">
+                            <div class="pn-list">
+                                <div class="account-info text-hidden"><span class="user-name" data-i18n="Japanese">Japanese</span></div>
+                            </div>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
