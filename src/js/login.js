@@ -246,8 +246,6 @@ lg.automaticLogin = function () {
         $('body > div.mySpinner').hide();
         $('body > div.myHiddenDiv').show();
     }
-    // Clear fragments
-    location.hash = "";
 }
 
 lg.getCell = function(cellUrl) {
