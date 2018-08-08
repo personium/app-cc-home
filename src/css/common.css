@@ -88,3 +88,21 @@ div.ins-app-icon .badge {
 #icon-check-list ul {
     margin-bottom:80px;
 }
+
+/* load Content */
+.loadHiddenDiv {
+    height: 100%;
+    width: 100%;
+    display: none;
+    z-index: 10;
+    position: absolute;
+    overflow: hidden;
+}
+
+.subContent {
+    position: absolute;
+    display: none;
+    left: 100%;
+    height: 100%;
+    width: 100%;
+}

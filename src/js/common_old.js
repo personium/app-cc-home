@@ -484,7 +484,7 @@ cm.createBackMenu = function(moveUrl, flg) {
         var html = '<a href="#" class="allToggle" style="float:left;" onClick="cm.moveBackahead();return false;"><img id="imBack" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user"></a>';
         $("#backMenu").html(html);
     }
-    cm.user.prevUrl = moveUrl;
+    //cm.user.prevUrl = moveUrl;
 }
 
 // true: SettingTitle false: MainTitle

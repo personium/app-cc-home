@@ -21,7 +21,7 @@ $(window).on('resize', function () {
     }, 50);
 }).resize();
 
-function init() {
+ha.init = function() {
     ut.loadStyleSheet();
     ut.loadScript(function () {
         personium.setMoveEventSideMunu();
@@ -53,8 +53,6 @@ function init() {
 
 /*** new ***/
 ha.displayMyAccount = function () {
-    //$("#imProfilePicture").attr("data-i18n", "[src]profTrans:myProfile_Image").localize();
-    //$('.user-icon').css('background-image', "url(" + i18next.t("profTrans:myProfile_Image") + ")");
     $('.user-icon').append('<img class="user-icon-small" id="imProfilePicture" data-i18n="[src]profTrans:myProfile_Image" src="" alt="user">');
     $(".account-info div.user-name").attr("data-i18n", "profTrans:myProfile_DisplayName").localize();
     $(".account-info div span.account").html(cm.user.userName);
@@ -69,25 +67,25 @@ ha.createSideMenuList = function (sideMenuId) {
     // profile edit
     let paramObj = {
         title: "EditProfile",
-        callback: function () { location.href = "./profile.html"; }
+        callback: function () { cm.transitionHomeApp('profile.html'); }
     };
     personium.createSideMenuItem(paramObj);
     // change password
     paramObj = {
         title: "ChangePass",
-        callback: function () { location.href = "./change_password.html" }
+        callback: function () { cm.transitionHomeApp('change_password.html'); }
     };
     personium.createSideMenuItem(paramObj);
     // setting menu
     paramObj = {
         title: "Account",
-        callback: function () { location.href = "./account.html"; }
+        callback: function () { cm.transitionHomeApp('account.html'); }
     };
     personium.createSideMenuItem(paramObj);
     // Application Manager
     paramObj = {
         title: "Application",
-        callback: function () { location.href = "./application_management.html"; }
+        callback: function () { cm.transitionHomeApp('application_management.html'); }
     };
     personium.createSideMenuItem(paramObj);
     // Hiding role / relation management
@@ -104,7 +102,7 @@ ha.createSideMenuList = function (sideMenuId) {
     // change language
     paramObj = {
         title: "ChangeLng",
-        callback: function () { location.href = "./change_language.html"; }
+        callback: function () { cm.transitionHomeApp("change_language.html"); }
     };
     personium.createSideMenuItem(paramObj);
     // log out

@@ -5,33 +5,78 @@ cm.user = JSON.parse(sessionStorage.getItem("sessionData"));
 // Do not display the following boxes in the installed list section
 cm.boxIgnoreList = ['https://demo.personium.io/app-cc-home/'];
 cm.logoutUrl = null;
+cm.homeAppUrl = "https://demo.personium.io/app-cc-home/";
 
 // Logout
-cm.logout = function() {
+cm.logout = function () {
   if (!cm.logoutUrl) {
     cm.logoutUrl = cm.user.logoutUrl;
   }
   sessionStorage.setItem("sessionData", null);
-/*
-  var mode = sessionStorage.getItem("mode");
-  if (mode) {
-      location.href = "./login.html?mode=" + mode;
-  } else {
-      location.href = "./login.html";
-  }
-*/
   location.href = cm.logoutUrl;
 };
 
-if (!cm.user) {
-  var mode = sessionStorage.getItem("mode");
-  if (mode) {
-      cm.logoutUrl = "./login.html?mode=" + mode;
-  } else {
-      cm.logoutUrl = "./login.html";
-  }
-  cm.logout();
+// If it is other than the initial page and there is no cache, change to the login page
+if ((typeof initPage == 'undefined' || !initPage) && !cm.user) {
+    var mode = sessionStorage.getItem("mode");
+    if (mode) {
+        cm.logoutUrl = "../src/html/login.html?mode=" + mode;
+    } else {
+        cm.logoutUrl = "../src/html/login.html";
+    }
+    cm.logout();
 }
+
+// Load main screen
+cm.loadMain = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/main.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        ha.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
+}
+// Home application transition processing
+cm.transitionHomeApp = function (fileName) {
+    cm.user.prevUrl = location.href;
+    sessionStorage.setItem("sessionData", JSON.stringify(cm.user));
+    location.href = cm.homeAppUrl + "__/html/" + fileName;
+}
+// Return to the called screen
+cm.transitionPrevUrl = function () {
+    location.href = cm.user.prevUrl;
+}
+
+/*
+ * When isAdvancedMode is false, do not display the followings:
+ * 1. Create External Cell Dialog - Assign checkbox
+ * 2. Create External Cell Dialog - Role/Relation radio buttons
+ * 3. Create External Cell Dialog - Role/Relation options
+ */
+cm.setUserDate = function (data) {
+    cm.user = data;
+    cm.user.isAdvancedMode = false;
+    cm.user.nowPage = 0;
+    cm.user.nowTitle = {};
+    cm.user.settingNowPage = 0;
+    cm.user.settingNowTitle = {};
+    cm.defaultRoleIcon = "https://demo.personium.io/app-cc-home/__/html/img/role_default.png";
+    cm.notAppImage = "https://demo.personium.io/HomeApplication/__/icons/no_app_image.png";
+    cm.cellUrl = cm.user.cellUrl;
+    cm.userName = cm.user.userName;
+    cm.profDispName = cm.user.profile.DisplayName;
+    cm.image = cm.user.profile.Image;
+    cm.access_token = cm.user.access_token;
+    cm.refresh_token = cm.user.refresh_token;
+}
+
+if (cm.user) {
+    cm.setUserDate(cm.user);
+}
+
 
 // Icon quality
 cm.ICON_QUALITY = 0.8;
@@ -45,26 +90,6 @@ cm.IDLE_TIMEOUT = 3600000;
 // cm.IDLE_TIMEOUT =  10000;
 // Records last activity time.
 cm.LASTACTIVITY = new Date().getTime();
-
-/*
- * When isAdvancedMode is false, do not display the followings:
- * 1. Create External Cell Dialog - Assign checkbox
- * 2. Create External Cell Dialog - Role/Relation radio buttons
- * 3. Create External Cell Dialog - Role/Relation options
- */ 
-cm.user.isAdvancedMode = false;
-cm.user.nowPage = 0;
-cm.user.nowTitle = {};
-cm.user.settingNowPage = 0;
-cm.user.settingNowTitle = {};
-cm.defaultRoleIcon = "https://demo.personium.io/app-cc-home/__/html/img/role_default.png";
-cm.notAppImage = "https://demo.personium.io/HomeApplication/__/icons/no_app_image.png";
-cm.cellUrl = cm.user.cellUrl;
-cm.userName = cm.user.userName;
-cm.profDispName = cm.user.profile.DisplayName;
-cm.image = cm.user.profile.Image;
-cm.access_token = cm.user.access_token;
-cm.refresh_token = cm.user.refresh_token;
 
 cm.getAdvancedMode = function () {
     return cm.user.isAdvancedMode;
@@ -100,7 +125,6 @@ cm.getUserName = function () {
     return cm.userName;
 }
 
-/*** new ***/
 $(function () {
     setIdleTime();
 })
