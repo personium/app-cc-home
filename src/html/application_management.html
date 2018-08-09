@@ -7,14 +7,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
-    <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/common.css' rel='stylesheet' type='text/css'>
-    <link href='https://demo.personium.io/app-cc-home/__/html/css/settings.css' rel='stylesheet' type='text/css'>
-    <link href='https://demo.personium.io/app-cc-home/__/html/css/applicationmarket.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/personium.css">
+    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/homeapp.css">
+    <link href='https://demo.personium.io/app-cc-home/__/html/css/common.css' rel='stylesheet' type='text/css'>
+    <link href='https://demo.personium.io/app-cc-home/__/html/css/application_mgr.css' rel='stylesheet' type='text/css'>
+
     <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/bootstrap-switch/bootstrap-switch.min.css' rel='stylesheet' type='text/css'>
-    <!--     Fonts and icons     -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
@@ -24,11 +25,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/bootstrap-switch/bootstrap-switch.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <script>
+        FontAwesomeConfig = {
+            searchPseudoElements: true
+        };
+    </script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/utils.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/personium.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/html/js/settings.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/load.i18n.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/html/js/common_old.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/common.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/app_manage.js"></script>
     <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/demo.js"></script>
 
@@ -38,49 +44,34 @@
 </head>
 
 <body>
-    <div class="col-md-12 col-sm-12 display-table-cell v-align setting-menu slide-on">
-        <div class="row header-menu setting-header">
-            <div class="col-xs-1" id="settingBackMenu">
-                <a href="#" class="allToggle prev-icon" style="float:left;" onclick="cm.moveBackahead(true);return false;">
-                    <img id="imSettingBack" src="https://demo.personium.io/HomeApplication/__/icons/ico_back.png" alt="user">
-                </a>
-            </div>
-            <div class="col-xs-2">
-                <table class="table-fixed back-title">
-                    <tbody>
-                        <tr style="vertical-align: middle;">
-                            <td class="ellipsisText" id="settingBackTitle" align="left"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-xs-6 text-center title" id="settingTitleMenu">
-                <h4 class="ellipsisText" data-i18n="Application">
-                    アプリ管理
-                </h4>
-            </div>
-            <div class="col-xs-3 text-right">
-            </div>
-        </div>
-        <div class="row" id="settingboard" style="height:100%;">
-            <div style="height:100%;overflow:auto;padding-bottom:85px;" class="list-group panel-default" id="setting-panel1">
-                <div class="panel-body">
-                    <ul class="list menu-list">
-                        <li>
-                            <a href="#" class="list-group-item disabled" onclick="st.openAppliDelPanel(); return false;" data-i18n="ApplicationDelete">
-                                アプリ削除
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="list-group-item" onclick="st.openBoxInstall(); return false;" data-i18n="BoxInstall">
-                                Box インストール
-                            </a>
-                        </li>
-                    </ul>
+    <header>
+        <a class="header-btn pn-back-btn pn-btn" href="javascript:void(0)" onclick="cm.moveBackahead();">
+            <i id="back_btn" class="fas fa-angle-left fa-2x header-ic-01"></i>
+        </a>
+        <span data-i18n="Application"></span>
+    </header>
+    <main>
+        <div class="bg-gray" style="height:100%;">
+            <div class="user-dashboard" id="dashboard" style="height:100%;">
+                <div id="loadContent" class="loadHiddenDiv">
+                </div>
+                <div style="height:100%;overflow:auto;padding-bottom:85px;" class="list-group panel-default" id="setting-panel1">
+                    <div class="panel-body">
+                        <ul class="list">
+                            <li>
+                                <a href="#" class="list-group-item disabled" onclick="app_manage.openAppliDelPanel(); return false;" data-i18n="ApplicationDelete">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="list-group-item" onclick="app_manage.openBoxInstall(); return false;" data-i18n="BoxInstall">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 </body>
 </html>
 

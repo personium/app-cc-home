@@ -688,3 +688,40 @@ cm.validateDescription = function(descriptionDetails, descriptionSpan) {
 	}
 	return isValidDescription;
 };
+
+// Back ahead Setting
+cm.setBackahead = function () {
+    var boardId = "dashboard";
+    cm.user.nowPage = cm.user.nowPage + 1;
+    if (document.getElementById('toggle-panel' + cm.user.nowPage) == null) {
+        $("#" + boardId).append('<div class="list-group toggle-panel" id="toggle-panel' + cm.user.nowPage + '"></div>');
+    }
+    if (document.getElementById('toggle-panel' + (cm.user.nowPage + 1)) == null) {
+        $("#" + boardId).append('<div class="list-group toggle-panel" id="toggle-panel' + (cm.user.nowPage + 1) + '"></div>');
+    }
+}
+// Back ahead move
+cm.moveBackahead = function () {
+    var no = cm.user.nowPage;
+    switch (no) {
+        case 0:
+            window.location.href = cm.user.prevUrl;
+            break;
+        default:
+            personium.backSubContent();
+            break;
+    }
+
+    cm.user.nowPage = no - 1;
+    if (cm.user.nowPage >= 0) {
+        cm.setTitleMenu(cm.user.nowTitle[cm.user.nowPage]);
+    }
+}
+
+// true: SettingTitle false: MainTitle
+cm.setTitleMenu = function (title, flg) {
+    $("header span").html(title);
+    var titles = cm.user.nowTitle;
+    titles[cm.user.nowPage] = title;
+    cm.user.nowTitle = titles;
+}

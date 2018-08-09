@@ -444,6 +444,29 @@ personium.getExtCellLinksRole = function (cellUrl, token, extCellUrl) {
         }
     });
 }
+personium.getApplicationList = function () {
+    return $.ajax({
+        type: "GET",
+        url: cm.getAppListURL(),
+        datatype: 'json',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+};
+personium.recursiveDeleteBoxAPI = function (cellUrl, token, boxName) {
+    let header = {
+        "Accept": "application/json",
+        "Authorization": "Bearer " + token,
+        "X-Personium-Recursive": true
+    }
+
+    return $.ajax({
+        type: "DELETE",
+        url: cellUrl + boxName,
+        headers: header
+    });
+}
 
 /* Transition method */
 personium.init = function () {
@@ -483,6 +506,26 @@ personium.createSubContent = function (html, notSlide) {
     personium.slideShow('.subContent' + no, notSlide);
     return '.subContent' + no;
 };
+personium.backSubContent = function (allFlag) {
+    let result = "";
+    if (allFlag) {
+        personium.slideHide(".subContent", "right", function () {
+            $(".subContent").remove();
+            $("#loadContent").hide();
+        })
+    } else {
+        let no = $(".subContent").length - 1;
+        personium.slideHide(".subContent" + no, "right", function () {
+            $(".subContent" + no).remove();
+            if (no <= 0) {
+                $("#loadContent").hide();
+            }
+        });
+        result = ".subContent" + (no - 1);
+    }
+
+    return result;
+}
 personium.slideShow = function (id, notSlide) {
     $(id).show();
     let moveSec = 300;

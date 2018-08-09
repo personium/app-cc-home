@@ -129,3 +129,47 @@ section:last-of-type {
     font-weight: bold;
     text-align: center;
 }
+
+.list > li {
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.list > li > a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 16px 20px;
+    padding-right: 32px;
+    background-image: url(https://demo.personium.io/HomeApplication/__/icons/parts_list.png);
+    background-position: center right;
+    background-size: 20px 14px;
+    background-repeat: no-repeat;
+    color: #333333;
+}
+
+a.disabled {
+    color: #d4d4d4 !important;
+}
+
+#dvBoxInstall .row .col-2 {
+    padding-left: 15px;
+    padding-right: 0;
+}
+
+.modal-body input[type="text"] {
+    border: 1px solid #d4d9e3;
+    font-size: 14px;
+    font-weight: 300;
+    margin: 5px 0;
+    padding: 14px 10px;
+    width: 100%;
+    color: #8492af;
+}
+
+.barEllipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    margin: 0;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+}
