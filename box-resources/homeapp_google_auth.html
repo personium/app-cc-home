@@ -50,8 +50,9 @@
                     data.profile = JSON.parse(sessionStorage.getItem("myProfile"));
                     //data.userName = username;
                     data.userName = "googleAccount";
+                    data.logoutUrl = target;
                     sessionStorage.setItem("sessionData", JSON.stringify(data));
-                    location.href = target + "main.html";
+                    location.href = target;
                 }).fail(function (data) {
                     console.log(data);
                     logout(target);
@@ -62,7 +63,7 @@
 
             // Logout
             function logout(target, errorMsg) {
-                location.href = target + "login.html?glogin=err";
+                location.href = target;
             };
 
         </script>
