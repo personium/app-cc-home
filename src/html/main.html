@@ -5,57 +5,12 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/personium.css">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/homeapp.css">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/common.css">
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/8.4.3/i18next.min.js"></script>
-    <script src="https://unpkg.com/i18next-xhr-backend/i18nextXHRBackend.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/2.0.0/i18nextBrowserLanguageDetector.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-    <script>
-        FontAwesomeConfig = {
-            searchPseudoElements: true
-        };
-    </script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-
-    <script src="https://demo.personium.io/app-cc-home/__/html/js/utils.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/html/js/personium.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/html/js/common.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/html/js/main.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/html/js/settings.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/html/js/load.i18n.js"></script>
-
     <title>Personium</title>
 </head>
 
 <body>
-    <div class="modal fade double-btn-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog pn-modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body pn-modal-body" data-i18n="logoutConfirm">
-                </div>
-                <div class="modal-footer pn-modal-footer">
-                    <button type="button" class="btn" data-dismiss="modal" data-i18n="Cancel"></button>
-                    <button type="button" class="btn ok-btn" onclick="cm.logout();">OK</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <div id="drawer">
         <div id="menu-background">
             <div id="drawer_menu">
@@ -106,7 +61,7 @@
 
         <!--menu-->
         <div class="menu">
-            <a href="links.html">
+            <a href="javascript:void(0)" onclick="cm.transitionHomeApp('links.html');">
                 <div class="links">
                     <svg class="menu-ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
                         <title>ic_links</title>
@@ -119,7 +74,7 @@
                 </div>
             </a>
 
-            <a href="./applicationmarket.html">
+            <a href="javascript:void(0)" onclick="cm.transitionHomeApp('applicationmarket.html');">
                 <div class="app-market">
                     <svg class="menu-ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
                         <title>ic_app_market</title>
@@ -134,7 +89,7 @@
                 </div>
             </a>
 
-            <a href="message.html">
+            <a href="javascript:void(0)" onclick="cm.transitionHomeApp('message.html');">
                 <div class="message">
                     <svg class="menu-ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
                         <title>ic_message</title>

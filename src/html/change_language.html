@@ -45,7 +45,7 @@
 <body>
 
     <header>
-        <a class="header-btn pn-back-btn pn-btn" href="main.html">
+        <a class="header-btn pn-back-btn pn-btn" href="javascript:void(0)" onclick="cm.transitionPrevUrl();">
             <i id="back_btn" class="fas fa-angle-left fa-2x header-ic-01"></i>
         </a>
         <img class=title-icon-middle" src="" alt="">
@@ -60,14 +60,14 @@
                 </div>
                 <ul class="hover-action">
                     <li class="en pn-check-list check-position-l" style="pointer-events: auto;">
-                        <a href="#" onclick="i18next.changeLanguage('en'); location.href='main.html'">
+                        <a href="#" onclick="i18next.changeLanguage('en'); cm.transitionPrevUrl();">
                             <div class="pn-list">
                                 <div class="account-info text-hidden"><span class="user-name" data-i18n="English">English</span></div>
                             </div>
                         </a>
                     </li>
                     <li class="ja pn-check-list check-position-l" style="pointer-events: auto;">
-                        <a href="#" onclick="i18next.changeLanguage('ja'); location.href='main.html'">
+                        <a href="#" onclick="i18next.changeLanguage('ja'); cm.transitionPrevUrl();">
                             <div class="pn-list">
                                 <div class="account-info text-hidden"><span class="user-name" data-i18n="Japanese">Japanese</span></div>
                             </div>

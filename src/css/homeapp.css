@@ -85,6 +85,8 @@ main {
     flex-direction: column;
     flex: 1 1 auto;
     position: relative;
+    height: 100%;
+    background-color: #F7F7F7;
 }
 
 .home-footer {
@@ -175,6 +177,8 @@ main {
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
+    height: 65%;
+    overflow-y: auto;
 }
 
 /*Application & Service's title*/

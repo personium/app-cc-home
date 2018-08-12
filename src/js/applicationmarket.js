@@ -18,56 +18,51 @@ function init() {
 
 am.initAppMarket = function () {
     ut.loadStyleSheet();
-    ut.loadScript();
+    ut.loadScript(function () {
+        let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
+        let isDemo = (tempMyProfile.IsDemo || false);
 
-    let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
-    let isDemo = (tempMyProfile.IsDemo || false);
+        if (isDemo) {
+            demoSession = JSON.parse(sessionStorage.getItem("demoSession"));
+            demo.addTutorialDialogAppMarket();
+            demo.showModal("#modal-applicationlist-start");
+        }
 
-    if (isDemo) {
-        demoSession = JSON.parse(sessionStorage.getItem("demoSession"));
-        demo.addTutorialDialogAppMarket();
-        demo.showModal("#modal-applicationlist-start");
-    }
-    
-    cm.createTitleHeader(false, false);
-    cm.createSideMenu();
-    cm.createBackMenu("main.html");
-    cm.setAppMarketTitle();
+        cm.i18nSetBox();
 
-    if (isDemo) {
-        demo.initSettings();
-    } else {
-        st.initSettings();
-    }
+        //cm.createTitleHeader(false, false);
+        //cm.createSideMenu();
+        //cm.createBackMenu("main.html");
+        cm.setTitleMenu("AppMarket");
 
-    $("#dashboard").append('<div class="panel list-group toggle-panel" id="toggle-panel1"></div>');
+        /*    if (isDemo) {
+                demo.initSettings();
+            } else {
+                st.initSettings();
+            }
+        */
+        $("#dashboard").append('<div class="panel list-group toggle-panel" id="toggle-panel1"></div>');
 
-    if (isDemo) {
-        demo.createApplicationList();
-    } else {
-        am.createApplicationList();
-    }
+        if (isDemo) {
+            demo.createApplicationList();
+        } else {
+            am.createApplicationList();
+        }
 
-    // menu-toggle
-    $(".appInsMenu").css("display", "none");
-    $("#appInsToggle.toggle").on("click", function() {
-        $(this).toggleClass("active");
-        $(".appInsMenu").slideToggle();
-    });
-
-    if (isDemo) {
-        $('#b-applicationlist-start-ok').on('click', function () {
-            $('#modal-applicationlist-start').modal('hide');
+        // menu-toggle
+        $(".appInsMenu").css("display", "none");
+        $("#appInsToggle.toggle").on("click", function () {
+            $(this).toggleClass("active");
+            $(".appInsMenu").slideToggle();
         });
-        st.setBizTheme();
-    }
+    });
 }
 
 am.createApplicationList = function() {
     var html = '<div class="panel-body" id="app-panel"><section class="dashboard-block" id="installed-app"><h2 data-i18n="Installed"></h2><div id="insAppList1"></div></section><section class="dashboard-block" id="all-app"><h2 data-i18n="ApplicationList"></h2><div id="appList1"></div></section></div>';
     $("#dashboard").append(html);
     // install application list
-    cm.getBoxList().done(function(data) {
+    personium.getBoxList(cm.getMyCellUrl(), cm.getAccessToken()).done(function(data) {
         var insAppRes = data.d.results;
         insAppRes.sort(function(val1, val2) {
             return (val1.Name < val2.Name ? 1 : -1);
@@ -87,7 +82,7 @@ am.createApplicationList = function() {
         am.dispInsAppListSetting();
 
         // application list
-        st.getApplicationList().done(function(data) {
+        personium.getApplicationList().done(function(data) {
             am.dispApplicationList(data);
         }).fail(function(data) {
             alert(data);
@@ -105,7 +100,7 @@ am.dispInsAppListSchemaSetting = function(schema, boxName, no) {
     var profTrans = "profTrans";
     var dispName = profTrans + ":" + boxName + "_DisplayName";
     var imgName = profTrans + ":" + boxName + "_Image";
-    cm.getBoxStatus(boxName).done(function (data) {
+    personium.getBoxStatus(cm.getMyCellUrl(), cm.getAccessToken(), boxName).done(function (data) {
         var status = data.status;
         var html = '';
         if (status.indexOf('ready') >= 0) {
@@ -175,7 +170,7 @@ am.dispApplicationList = function(json) {
 };
 am.dispApplicationListSchema = function(schemaJson, no) {
     var schema = schemaJson.SchemaUrl;
-    cm.getProfile(schema).done(function(profData) {
+    personium.getProfile(schema).done(function(profData) {
         var profTrans = "profTrans";
         var dispName = profTrans + ":" + schemaJson.BoxName + "_DisplayName";
         var imgName = profTrans + ":" + schemaJson.BoxName + "_Image";
@@ -194,17 +189,16 @@ am.dispViewApp = function (schema, dispName, imgName, description, barUrl, barBo
     var html = '<div class="panel-body">';
     html += '<div class="app-info"><div class="app-icon"><img data-i18n="[src]' + imgName + '" src=""></div><div class="app-data"><div data-i18n="' + dispName + '"></div><div data-i18n="Provider"></div></div></div><section class="detail-section"><h2 data-i18n="Overview"></h2><div class="overview" data-i18n="' + description + '"></div>';
     if (insFlag) {
-        html += '<div class="app-install"><button class="round-btn"href="#" onClick="st.confBarInstall(\'' + schema + '\',\'' + barUrl + '\',\'' + barBoxName + '\', \'' + dispName + '\');return(false);" data-i18n="Install"></button></div></section>';
+        html += '<div class="app-install"><button class="round-btn"href="#" onClick="am.confBarInstall(\'' + schema + '\',\'' + barUrl + '\',\'' + barBoxName + '\', \'' + dispName + '\');return(false);" data-i18n="Install"></button></div></section>';
     } else {
         html += '<div class="app-install"><button class="round-btn"href="#" onClick="return(false);" data-i18n="Uninstall"></button></div></section>';
     }
 
-    $("#toggle-panel1").append(html).localize();
-    $("#toggle-panel1").toggleClass('slide-on');
+    let id = personium.createSubContent(html);
     cm.setTitleMenu("Details");
 };
 am.dispViewInsApp = function (schema, boxName) {
-    $("#toggle-panel1").empty();
+    //$("#toggle-panel1").empty();
     var profTrans = "profTrans";
     var dispName = profTrans + ":" + boxName + "_DisplayName";
     var imgName = profTrans + ":" + boxName + "_Image";
@@ -212,9 +206,125 @@ am.dispViewInsApp = function (schema, boxName) {
     cm.setBackahead();
     var html = '<div class="panel-body">';
     html += '<div class="app-info"><div class="app-icon"><img data-i18n="[src]' + imgName + '" src=""></div><div class="app-data"><div data-i18n="' + dispName + '"></div><div data-i18n="Provider"></div></div></div><section class="detail-section"><h2 data-i18n="Overview"></h2><div class="overview" data-i18n="' + description + '"></div>';
-    html += '<div class="app-install"><button class="round-btn"href="#" onClick="st.confUninstallApp(\'' + boxName + '\');return(false);" data-i18n="Uninstall"></button></div></section>';
+    html += '<div class="app-install"><button class="round-btn"href="#" onClick="am.confUninstallApp(\'' + boxName + '\');return(false);" data-i18n="Uninstall"></button></div></section>';
 
-    $("#toggle-panel1").append(html).localize();
-    $("#toggle-panel1").toggleClass('slide-on');
+    let id = personium.createSubContent(html);
+
     cm.setTitleMenu("Details");
 };
+
+am.confBarInstall = function (schema, barUrl, barBoxName, dispName) {
+    am.barSchemaUrl = schema;
+    am.barFileUrl = barUrl;
+    am.barBoxName = barBoxName;
+    $("#dvTextConfirmation").html(i18next.t("confirmInstallation"));
+    //$("#modal-confirmation-title").html(dispName);
+    $("#modal-confirmation-title").attr("data-i18n", dispName).localize();
+    $('#b-ins-bar-ok').show();
+    $('#b-unins-box-ok').hide();
+    $('#modal-confirmation').modal('show');
+};
+am.execBarInstall = function () {
+    var barFilePath = am.barSchemaUrl + am.barFileUrl;
+    var oReq = new XMLHttpRequest();
+    oReq.open("GET", barFilePath);
+    oReq.responseType = "arraybuffer";
+    oReq.setRequestHeader("Content-Type", "application/zip");
+    oReq.onload = function (e) {
+        var arrayBuffer = oReq.response;
+        var view = new Uint8Array(arrayBuffer);
+        var blob = new Blob([view], { "type": "application/zip" });
+        $.ajax({
+            type: "MKCOL",
+            url: cm.user.cellUrl + am.barBoxName + '/',
+            data: blob,
+            processData: false,
+            headers: {
+                'Authorization': 'Bearer ' + cm.user.access_token,
+                'Content-type': 'application/zip'
+            }
+        }).done(function (data) {
+            personium.getBoxList(cm.getMyCellUrl(), cm.getAccessToken()).done(function (data) {
+                var insAppRes = data.d.results;
+                insAppRes.sort(function (val1, val2) {
+                    return (val1.Name < val2.Name ? 1 : -1);
+                })
+                am.insAppList = new Array();
+                am.insAppBoxList = new Array();
+                for (var i in insAppRes) {
+                    var schema = insAppRes[i].Schema;
+                    if (schema && schema.length > 0) {
+                        am.insAppList.push(schema);
+                        // hotfix for not showing HomeApplication/Cell Manager's box inside a data subject's cell
+                        if (!_.contains(cm.boxIgnoreList, insAppRes[i].Schema)) {
+                            am.insAppBoxList.push(insAppRes[i].Name);
+                        };
+                    }
+                }
+                am.dispInsAppListSetting();
+
+                // application list
+                personium.getApplicationList().done(function (data) {
+                    am.dispApplicationList(data);
+                    $("#modal-confirmation").modal("hide");
+                    cm.moveBackahead();
+                }).fail(function (data) {
+                    alert(data);
+                });
+            });
+        }).fail(function (data) {
+            var res = JSON.parse(data.responseText);
+            alert("An error has occurred.\n" + res.message.value);
+        });
+    }
+    oReq.send();
+};
+
+am.confUninstallApp = function (boxName) {
+    am.barBoxName = boxName;
+    $("#dvTextConfirmation").html(i18next.t("confirmUninstallation"));
+    //$("#modal-confirmation-title").html(dispName);
+    $("#modal-confirmation-title").attr("data-i18n", "profTrans:" + boxName + "_DisplayName").localize();
+    $('#b-unins-box-ok').show();
+    $('#b-ins-bar-ok').hide();
+    $('#modal-confirmation').modal('show');
+};
+am.execUninstallBox = function () {
+    personium.recursiveDeleteBoxAPI(cm.getMyCellUrl(), cm.getAccessToken(), am.barBoxName).done(function () {
+        personium.getBoxList(cm.getMyCellUrl(), cm.getAccessToken()).done(function (data) {
+            var insAppRes = data.d.results;
+            insAppRes.sort(function (val1, val2) {
+                return (val1.Name < val2.Name ? 1 : -1);
+            })
+            am.insAppList = new Array();
+            am.insAppBoxList = new Array();
+            for (var i in insAppRes) {
+                var schema = insAppRes[i].Schema;
+                if (schema && schema.length > 0) {
+                    am.insAppList.push(schema);
+                    // hotfix for not showing HomeApplication/Cell Manager's box inside a data subject's cell
+                    if (!_.contains(cm.boxIgnoreList, insAppRes[i].Schema)) {
+                        am.insAppBoxList.push(insAppRes[i].Name);
+                    };
+                }
+            }
+            am.dispInsAppListSetting();
+
+            // application list
+            personium.getApplicationList().done(function (data) {
+                am.dispApplicationList(data);
+                $("#modal-confirmation").modal("hide");
+                cm.moveBackahead();
+            }).fail(function (data) {
+                var res = JSON.parse(data.responseText);
+                alert("An error has occurred.\n" + res.message.value);
+            });
+        }).fail(function (data) {
+            var res = JSON.parse(data.responseText);
+            alert("An error has occurred.\n" + res.message.value);
+        });
+    }).fail(function (data) {
+        var res = JSON.parse(data.responseText);
+        alert("An error has occurred.\n" + res.message.value);
+    });
+}

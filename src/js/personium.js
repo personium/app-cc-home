@@ -444,3 +444,110 @@ personium.getExtCellLinksRole = function (cellUrl, token, extCellUrl) {
         }
     });
 }
+personium.getApplicationList = function () {
+    return $.ajax({
+        type: "GET",
+        url: cm.getAppListURL(),
+        datatype: 'json',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+};
+personium.recursiveDeleteBoxAPI = function (cellUrl, token, boxName) {
+    let header = {
+        "Accept": "application/json",
+        "Authorization": "Bearer " + token,
+        "X-Personium-Recursive": true
+    }
+
+    return $.ajax({
+        type: "DELETE",
+        url: cellUrl + boxName,
+        headers: header
+    });
+}
+
+/* Transition method */
+personium.init = function () {
+    if (!cm.user) {
+        cm.user = {};
+        personium.loadContent(cm.homeAppUrl + "__/html/login.html").done(function (data) {
+            let out_html = $($.parseHTML(data));
+            let id = personium.createSubContent(out_html, true);
+            lg.initTarget();
+        }).fail(function (error) {
+            console.log(error);
+        });
+    } else {
+        cm.loadMain();
+    }
+}
+personium.loadContent = function (contentUrl) {
+    return $.ajax({
+        url: contentUrl,
+        type: "GET",
+        dataType: "html"
+    });
+}
+personium.createSubContent = function (html, notSlide) {
+    let no = $(".subContent").length;
+    if (no == 0) {
+        $("#loadContent").show();
+    }
+
+    let aDiv = $("<div>", {
+        id: "subContent" + no,
+        class: "subContent subContent" + no,
+        style: "z-index: " + (10 + no)
+    }).append(html);
+
+    $("#loadContent").append($(aDiv)).localize();
+    personium.slideShow('.subContent' + no, notSlide);
+    return '.subContent' + no;
+};
+personium.backSubContent = function (allFlag) {
+    let result = "";
+    if (allFlag) {
+        personium.slideHide(".subContent", "right", function () {
+            $(".subContent").remove();
+            $("#loadContent").hide();
+        })
+    } else {
+        let no = $(".subContent").length - 1;
+        personium.slideHide(".subContent" + no, "right", function () {
+            $(".subContent" + no).remove();
+            if (no <= 0) {
+                $("#loadContent").hide();
+            }
+        });
+        result = ".subContent" + (no - 1);
+    }
+
+    return result;
+}
+personium.slideShow = function (id, notSlide) {
+    $(id).show();
+    let moveSec = 300;
+    if (notSlide) {
+        moveSec = 0;
+    }
+    $(id).animate({
+        left: 0
+    }, moveSec);
+}
+personium.slideHide = function (id, direction, callback) {
+    let m = "100%";
+    if (direction == "left") {
+        m = "200%";
+    }
+
+    $(id).animate({
+        "left": m
+    }, 300, function () {
+        $(id).hide();
+        if ((typeof callback !== "undefined") && $.isFunction(callback)) {
+            callback();
+        }
+    });
+}
