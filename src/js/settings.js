@@ -1838,14 +1838,13 @@ st.restDeleteRelationLinkRole = function() {
 
 st.checkBoxInstall = function() {
     var elements = document.getElementsByName("nowInstall");
-    if (elements.length > 0) {
-        for (var i in elements) {
-            var ele = elements[i];
-            var no = ele.id.split("_")[1];
-            st.updateProgress(no, ele.id);
-        }
-    } else {
+    if (_.isEmpty(elements)) {
         clearInterval(st.nowInstalledID);
+    } else {
+        _.each(elements, function(ele, i, list) {
+            let no = ele.id.split('_')[1];
+            st.updateProgress(no, ele.id);
+        });
     }
 };
 st.updateProgress = function(no, id) {
@@ -1868,18 +1867,4 @@ st.updateProgress = function(no, id) {
             clearInterval(st.nowInstalledID);
         }
     });
-};
-st.checkBoxInstallTest = function() {
-    var elements = document.getElementsByName("nowInstall");
-    for (var i in elements) {
-        var ele = elements[i];
-        testProgPar += 1;
-        if (testProgPar > 100) {
-            var no = ele.id.split("_")[1];
-            $("#nowInstallParent_" + no).remove();
-            clearInterval(st.nowInstalledID);
-        } else {
-            $('#' + ele.id).css("width", testProgPar + "%");
-        }
-    }
 };
