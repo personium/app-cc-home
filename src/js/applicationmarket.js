@@ -124,14 +124,13 @@ am.dispInsAppListSchemaSetting = function(schema, boxName, no) {
 };
 am.checkBoxInstall = function () {
     var elements = document.getElementsByName("nowInstall");
-    if (elements.length > 0) {
-        for (var i in elements) {
-            var ele = elements[i];
-            var no = ele.id.split("_")[1];
-            am.updateProgress(no, ele.id);
-        }
-    } else {
+    if (_.isEmpty(elements)) {
         clearInterval(am.nowInstalledID);
+    } else {
+        _.each(elements, function(ele, i, list) {
+            let no = ele.id.split('_')[1];
+            am.updateProgress(no, ele.id);
+        });
     }
 };
 am.updateProgress = function (no, id) {
