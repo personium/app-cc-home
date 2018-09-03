@@ -1,3 +1,12 @@
+addLoadScript = function (scriptList) {
+    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
+    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
+    return scriptList;
+}
+addLoadStyleSheet = function (styleList) {
+    return styleList;
+}
+
 var cm = {};
 cm.imgBinaryFile = null;
 cm.user = JSON.parse(sessionStorage.getItem("sessionData"));
@@ -27,18 +36,6 @@ if ((typeof initPage == 'undefined' || !initPage) && !cm.user) {
     cm.logout();
 }
 
-// Load main screen
-cm.loadMain = function () {
-    personium.loadContent(cm.homeAppUrl + "__/html/main.html").done(function (data) {
-        let out_html = $($.parseHTML(data));
-        let id = personium.createSubContent(out_html, true);
-        ha.init();
-        $('body > div.mySpinner').hide();
-        $('body > div.myHiddenDiv').show();
-    }).fail(function (error) {
-        console.log(error);
-    });
-}
 // Home application transition processing
 cm.transitionHomeApp = function (fileName) {
     cm.user.prevUrl = location.href;
@@ -195,16 +192,18 @@ function Control_Dialog() {
    * Control_Slide_List
    * param: none
    */
-cm.Control_Slide_List = function() {
-    var visible_area = $('.slide-list>li');
-    var wide_line = $('.slide-list-line');
-    var line_contents = $('.slide-list-line-contents');
-    var line_contents_p = $('.slide-list-line-contents>p');
-    var a_tag = $('.slide-list-line-contents>a');
+cm.Control_Slide_List = function () {
+    cm.Edit_Btn_Event();
+    cm.Delete_List_Event();
+}
+cm.Edit_Btn_Event = function () {
     var edit_btn = $('.slide-list-edit-btn');
-
     /*Edit Button Clicked(Page's Header)*/
     edit_btn.on('click', function () {
+        var visible_area = $('.slide-list>li');
+        var wide_line = $('.slide-list-line');
+        var line_contents = $('.slide-list-line-contents');
+        var a_tag = $('.slide-list-line-contents>a');
         if (!($(this).hasClass('editing'))) {
             if (($(this).hasClass('edited'))) {
                 $(this).removeClass('edited');
@@ -231,6 +230,10 @@ cm.Control_Slide_List = function() {
             a_tag.removeClass('disabled');
         }
     })
+}
+cm.Delete_List_Event = function () {
+    var line_contents = $('.slide-list-line-contents');
+    var edit_btn = $('.slide-list-edit-btn');
 
     /*Circle Delete Button Clicked(Page's List Left)*/
     $('.delete-check-btn').on('click', function () {

@@ -1,18 +1,21 @@
 var edit_account = {};
 
-addLoadScript = function (scriptList) {
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
+// Load edit_account screen
+edit_account.loadEditAccount = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/edit_account.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        edit_account.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(function () {
-        edit_account.appendEvent();
-        $("#editAccountName").val(sessionStorage.getItem("accountName"));
-    });
+edit_account.init = function() {
+    edit_account.appendEvent();
+    $("#editAccountName").val(sessionStorage.getItem("accountName"));
 }
 
 edit_account.appendEvent = function () {
@@ -89,7 +92,8 @@ edit_account.restEditAccountAPI = function (json, pass, updUser) {
         data: JSON.stringify(json),
         headers: headers
     }).done(function (data) {
-        location.href = "account.html";
+        account.createAccountList();
+        personium.backSubContent();
     }).fail(function (data) {
         var res = JSON.parse(data.responseText);
         alert("An error has occurred.\n" + res.message.value);

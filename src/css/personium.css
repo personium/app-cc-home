@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Personium
  * Copyright 2018 FUJITSU LIMITED
  *
@@ -470,7 +470,6 @@ main {
     display: inline-block;
     flex: 1;
     position: relative;
-    overflow: auto;
     word-wrap: break-word;
 }
 

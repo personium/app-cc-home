@@ -1,33 +1,28 @@
 var acc_link_role = {};
-acc_link_role.accountName = sessionStorage.getItem("accountName");
-acc_link_role.roleList = JSON.parse(sessionStorage.getItem("roleList"));
-if (!acc_link_role.accountName && !acc_link_role.roleList) {
-    location.href = "./account.html";
-}
 
-if (sessionStorage.getItem("linksList")) {
-    acc_link_role.linksList = JSON.parse(sessionStorage.getItem("linksList"));
-} else {
-    acc_link_role.linksList = [];
-}
-
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
-}
-
-/*** new ***/
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(acc_link_role.init);
+// Load account_link_role_list screen
+acc_link_role.loadAccountLinkRole = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/account_link_role.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        acc_link_role.id = personium.createSubContent(out_html, true);
+        acc_link_role.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
 acc_link_role.init = function () {
     // Initialization
+    acc_link_role.accountName = sessionStorage.getItem("accountName");
+    acc_link_role.roleList = JSON.parse(sessionStorage.getItem("roleList"));
+    if (sessionStorage.getItem("linksList")) {
+        acc_link_role.linksList = JSON.parse(sessionStorage.getItem("linksList"));
+    } else {
+        acc_link_role.linksList = [];
+    }
+
     cm.i18nSetProfile();
     cm.i18nSetRole();
     cm.i18nSetBox();
@@ -40,11 +35,11 @@ acc_link_role.init = function () {
 acc_link_role.displayTitle = function () {
     let boxName = sessionStorage.getItem("boxName");
     if (boxName) {
-        $("header span").attr("data-i18n", "profTrans:" + boxName + "_DisplayName").localize();
-        $("header img").attr("data-i18n", "[src]profTrans:" + boxName + "_Image").localize();
+        $(acc_link_role.id + " header span").attr("data-i18n", "profTrans:" + boxName + "_DisplayName").localize();
+        $(acc_link_role.id + " header img").attr("data-i18n", "[src]profTrans:" + boxName + "_Image").localize();
     } else {
-        $("header span").attr("data-i18n", "UserCustomRole").localize();
-        $("header img").attr("data-i18n", "[src]profTrans:myProfile_Image").localize();
+        $(acc_link_role.id + " header span").attr("data-i18n", "UserCustomRole").localize();
+        $(acc_link_role.id + " header img").attr("data-i18n", "[src]profTrans:myProfile_Image").localize();
     }
 }
 
@@ -104,6 +99,8 @@ acc_link_role.addAccountLink = function (obj) {
             sessionStorage.setItem("linksList", JSON.stringify(acc_link_role.linksList));
         }
         obj.addClass('check-mark-left');
+        acc_link_role_list.displayLinksCount(boxName);
+        accinfo.appendBoxRole(boxName);
     }).fail(function (data) {
         var res = JSON.parse(data.responseText);
         alert("An error has occurred.\n" + res.message.value);
@@ -122,6 +119,8 @@ acc_link_role.deleteAccountLink = function (obj) {
             sessionStorage.setItem("linksList", JSON.stringify(acc_link_role.linksList));
         }
         obj.removeClass('check-mark-left');
+        acc_link_role_list.displayLinksCount(boxName);
+        accinfo.appendBoxRole(boxName);
     }).fail(function (data) {
         var res = JSON.parse(data.responseText);
         alert("An error has occurred.\n" + res.message.value);

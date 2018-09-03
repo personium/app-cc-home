@@ -1,13 +1,5 @@
 ﻿var ha = {};
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
-}
-
 var timer = false;
 $(window).on('resize', function () {
     if (timer !== false) {
@@ -20,6 +12,19 @@ $(window).on('resize', function () {
         $('.app-list').css('padding-left', padding);
     }, 50);
 }).resize();
+
+// Load main screen
+ha.loadMain = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/main.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        ha.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
+}
 
 ha.init = function() {
     ut.loadStyleSheet();
@@ -79,7 +84,7 @@ ha.createSideMenuList = function (sideMenuId) {
     // setting menu
     paramObj = {
         title: "Account",
-        callback: function () { cm.transitionHomeApp('account.html'); }
+        callback: function () { account.loadAccount(); }
     };
     personium.createSideMenuItem(paramObj);
     // Application Manager

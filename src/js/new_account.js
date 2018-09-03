@@ -1,17 +1,20 @@
 var new_account = {};
 
-addLoadScript = function (scriptList) {
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
+// Load new_account screen
+new_account.loadNewAccount = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/new_account.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        new_account.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(function () {
-        new_account.appendEvent();
-    });
+new_account.init = function() {
+    new_account.appendEvent();
 }
 
 new_account.appendEvent = function () {
@@ -87,7 +90,8 @@ new_account.restCreateAccountAPI = function (json, pass) {
         data: JSON.stringify(json),
         headers: headerObj
     }).done(function (data) {
-        location.href = "account.html";
+        account.createAccountList();
+        personium.backSubContent(2);
     }).fail(function (data) {
         var res = JSON.parse(data.responseText);
         alert("An error has occurred.\n" + res.message.value);
