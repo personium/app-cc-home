@@ -46,18 +46,15 @@ profile.Control_Input_Editer = function(pushed_btn, target_input) {
 }
 
 profile.init = function() {
-    ut.loadStyleSheet();
-    ut.loadScript(function () {
-        /*Edit button clicked action*/
-        $('#edit-btn').on('click', function () {
-            profile.Control_Input_Editer($(this));
-        })
+    /*Edit button clicked action*/
+    $('#edit-btn').on('click', function () {
+        profile.Control_Input_Editer($(this));
+    })
 
-        // Create Cropper Modal
-        ut.createCropperModal({ dispCircleMaskBool: true });
-        cm.i18nSetProfile();
-        profile.setProfileValue();
-    });
+    // Create Cropper Modal
+    ut.createCropperModal({ dispCircleMaskBool: true });
+    cm.i18nSetProfile();
+    profile.setProfileValue();
 }
 
 profile.setProfileValue = function () {
