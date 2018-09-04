@@ -72,7 +72,7 @@ ha.createSideMenuList = function (sideMenuId) {
     // profile edit
     let paramObj = {
         title: "EditProfile",
-        callback: function () { cm.transitionHomeApp('profile.html'); }
+        callback: function () { profile.loadProfile(); }
     };
     personium.createSideMenuItem(paramObj);
     // change password

@@ -1,14 +1,16 @@
 var profile = {};
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/cropper/3.1.4/cropper.min.js");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    styleList.push("https://demo.personium.io/HomeApplication/__/appcell-resources/css/cropper/cropper.min.css");
-    styleList.push("https://demo.personium.io/HomeApplication/__/appcell-resources/css/cropper/cropper_circle_mask.css");
-    return styleList;
+// Load profile screen
+profile.loadProfile = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/profile.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        profile.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
 /**
@@ -43,7 +45,7 @@ profile.Control_Input_Editer = function(pushed_btn, target_input) {
     }
 }
 
-function init() {
+profile.init = function() {
     ut.loadStyleSheet();
     ut.loadScript(function () {
         /*Edit button clicked action*/
