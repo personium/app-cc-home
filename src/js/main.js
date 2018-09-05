@@ -107,7 +107,7 @@ ha.createSideMenuList = function (sideMenuId) {
     // change language
     paramObj = {
         title: "ChangeLng",
-        callback: function () { cm.transitionHomeApp("change_language.html"); }
+        callback: function () { chg_lang.loadChangeLanguage(); }
     };
     personium.createSideMenuItem(paramObj);
     // log out
