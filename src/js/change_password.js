@@ -1,17 +1,20 @@
 var chg_pass = {};
 
-addLoadScript = function (scriptList) {
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
+// Load change_password screen
+chg_pass.loadChangePassword = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/change_password.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        chg_pass.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(function () {
-        chg_pass.appendEvent();
-    });
+chg_pass.init = function() {
+    chg_pass.appendEvent();
 }
 
 chg_pass.appendEvent = function () {

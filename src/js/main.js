@@ -78,7 +78,7 @@ ha.createSideMenuList = function (sideMenuId) {
     // change password
     paramObj = {
         title: "ChangePass",
-        callback: function () { cm.transitionHomeApp('change_password.html'); }
+        callback: function () { chg_pass.loadChangePassword(); }
     };
     personium.createSideMenuItem(paramObj);
     // setting menu
