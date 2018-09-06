@@ -90,7 +90,7 @@ ha.createSideMenuList = function (sideMenuId) {
     // Application Manager
     paramObj = {
         title: "Application",
-        callback: function () { cm.transitionHomeApp('application_management.html'); }
+        callback: function () { chg_lang.loadAppManage(); }
     };
     personium.createSideMenuItem(paramObj);
     // Hiding role / relation management
