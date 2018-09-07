@@ -34,8 +34,6 @@ ha.init = function() {
         let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
         let isDemo = (tempMyProfile.IsDemo || false);
 
-        ha.displaySystemMenuItems();
-
         //if (isDemo) {
         //    demo.createProfileHeaderMenu();
         //    demo.createSideMenu();
@@ -160,83 +158,6 @@ ha.createReLoginModal = function () {
     $(document.body).append(modal);
     $('#b-relogin-ok').on('click', function () { cm.logout(); });
 }
-
-ha.displaySystemMenuItems = function () {
-    let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
-    let isDemo = (tempMyProfile.IsDemo || false);
-    let systemMenuItems = [
-        {
-            "name": "Community",
-            "icon": "003lighticons-03full.png",
-            "url": "socialgraph.html"
-        }, {
-            "name": "AppMarket", // With context properly set, it can be AppMarket_biz
-            "icon": "001lighticons-31full.png",
-            "url": "applicationmarket.html"
-        }, {
-            "name": "Message",
-            "icon": "001lighticons-02full.png",
-            "url": "message.html"
-        }
-    ];
-
-    /*
-     * For older profile.json that might not have CellType key,
-     * assign default cell type (Person) to it.
-     */
-    let cellType = cm.getCellType();
-
-    for (var i in systemMenuItems) {
-        var app = systemMenuItems[i];
-
-        var imgTag = $('<img>', {
-            src: 'https://demo.personium.io/HomeApplication/__/icons/' + app.icon,
-            class: 'p-app-icon'
-        });
-
-        var divTag1 = $('<div>', {
-            class: 'p-app-icon'
-        });
-        divTag1.append($(imgTag));
-
-        if (app.name == "Message") {
-            var spanTag = $('<span>', {
-                class: 'badge',
-                id: 'messageCnt'
-            });
-            divTag1.append($(spanTag));
-            personium.getReceivedMessageCntAPI(cm.getMyCellUrl(), cm.getAccessToken()).done(function (res) {
-                var results = res.d.results;
-                var cnt = 0;
-                for (var i in results) {
-                    if (!results[i]["_Box.Name"]) {
-                        cnt++;
-                    }
-                }
-
-                if (cnt > 0) $("#messageCnt").html(cnt);
-            })
-        }
-
-        var divTag2 = $('<div>', {
-            class: 'p-app-name',
-            'data-i18n': app.name,
-            'data-i18n-options': JSON.stringify({ context: cellType })
-        });
-
-        var aTag = $('<a>', {
-            class: 'p-app'
-        });
-        if (isDemo && _.contains(["Community", "Message"], app.name)) {
-            aTag.attr('href', "javascript:void(0)");
-        } else {
-            aTag.attr('href', app.url);
-        }
-        aTag.append($(divTag1), $(divTag2));
-
-        $("#dashboard").append($(aTag));
-    }
-};
 
 ha.dispInsAppList = function () {
     $(".app-list").empty();

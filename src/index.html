@@ -55,6 +55,7 @@
     <script src="https://demo.personium.io/app-cc-home/__/html/js/change_password.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/change_language.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/app_manage.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/applicationmarket.js"></script>
     <script type="text/javascript">
         FontAwesomeConfig = {
             searchPseudoElements: true
@@ -96,6 +97,24 @@
                 </div>
                 <div class="modal-footer pn-modal-footer">
                     <button type="button" class="btn ok-btn" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-confirmation" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title" id="modal-confirmation-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div id="dvTextConfirmation"></div>
+                </div>
+                <div class="modal-footer pn-modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Cancel"></button>
+                    <button type="button" class="btn" id="b-ins-bar-ok" onclick="am.execBarInstall();" style="display:none">OK</button>
+                    <button type="button" class="btn" id="b-unins-box-ok" onclick="am.execUninstallBox();" style="display:none">OK</button>
                 </div>
             </div>
         </div>
