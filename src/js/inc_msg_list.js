@@ -97,6 +97,7 @@ inc_msg_list.transitionMessage = function (count) {
         sessionStorage.setItem("messageType", "incomming");
         $("#msgUserName" + count).addClass("read-msg");
         $("#msgTitle" + count).addClass("read-msg");
+        message.dispReciveMsgCnt();
         msg_info.loadMessageInfo();
     })
 }
