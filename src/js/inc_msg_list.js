@@ -1,29 +1,20 @@
 var inc_msg_list = {};
-inc_msg_list.msgInfoList = [];
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/cropper/3.1.4/cropper.min.js");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    styleList.push("https://demo.personium.io/HomeApplication/__/appcell-resources/css/cropper/cropper.min.css");
-    styleList.push("https://demo.personium.io/HomeApplication/__/appcell-resources/css/cropper/cropper_circle_mask.css");
-    return styleList;
+// Load incoming_message_list screen
+inc_msg_list.loadIncomingMessageList = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/incoming_message_list.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        inc_msg_list.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
-addNamesapces = function (ns) {
-    ns.push('message');
-    return ns;
-};
-
-init = function () {
-    ut.loadStyleSheet();
-    ut.loadScript(inc_msg_list.init);
-}
 inc_msg_list.init = function () {
-
+    inc_msg_list.msgInfoList = [];
     inc_msg_list.displayReceivedMsgList();
 }
 /*
@@ -66,7 +57,7 @@ inc_msg_list.displayReceivedMsgList = function () {
                             '<img id="msgIcon' + count + '">',
                         '</div>',
                         '<div class="message-list">',
-                            '<div class="message-list-title text-hidden ' + unreadCss + '">',
+                            '<div id="msgTitle' + count + '" class="message-list-title text-hidden ' + unreadCss + '">',
                                 title,
                             '</div>',
                             '<div class="received-info">',
@@ -104,6 +95,8 @@ inc_msg_list.transitionMessage = function (count) {
         sessionStorage.setItem("msgUrl", inc_msg_list.msgInfoList[count].url);
         sessionStorage.setItem("msgId", inc_msg_list.msgInfoList[count].id);
         sessionStorage.setItem("messageType", "incomming");
-        location.href = "message_info.html";
+        $("#msgUserName" + count).addClass("read-msg");
+        $("#msgTitle" + count).addClass("read-msg");
+        msg_info.loadMessageInfo();
     })
 }

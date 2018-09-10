@@ -37,6 +37,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/bootstrap-switch/bootstrap-switch.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment-with-locales.min.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/load.i18n.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/utils.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/personium.js"></script>
@@ -56,6 +57,12 @@
     <script src="https://demo.personium.io/app-cc-home/__/html/js/change_language.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/app_manage.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/applicationmarket.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/message.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/inc_msg_list.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/msg_info.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/create_msg.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/search_cell.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/outg_msg_list.js"></script>
     <script type="text/javascript">
         FontAwesomeConfig = {
             searchPseudoElements: true
@@ -76,7 +83,7 @@
     </div>
 
     <!-- modal -->
-    <div class="modal fade double-btn-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div id="logout_modal" class="modal fade double-btn-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog pn-modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body pn-modal-body" data-i18n="logoutConfirm">
@@ -115,6 +122,19 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Cancel"></button>
                     <button type="button" class="btn" id="b-ins-bar-ok" onclick="am.execBarInstall();" style="display:none">OK</button>
                     <button type="button" class="btn" id="b-unins-box-ok" onclick="am.execUninstallBox();" style="display:none">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="confSendMsg_modal" class="modal fade double-btn-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog pn-modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body pn-modal-body" data-i18n="confirmSendMessage">
+                </div>
+                <div class="modal-footer pn-modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal" data-i18n="Cancel"></button>
+                    <button type="button" class="btn ok-btn">OK</button>
                 </div>
             </div>
         </div>

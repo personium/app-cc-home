@@ -1,4 +1,4 @@
-var nameSpaces = ['translation'];
+var nameSpaces = ['translation', 'message'];
 
 $(document).ready(function () {
     if (typeof addNamesapces == "function") {

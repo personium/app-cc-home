@@ -1,27 +1,20 @@
 var search_cell = {};
-search_cell.links_list = [];
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
-}
-
-addNamesapces = function (ns) {
-    ns.push('message');
-    return ns;
-};
-
-/*** new ***/
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(search_cell.init);
+// Load search_cell screen
+create_msg.loadSearchCell = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/search_cell.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        search_cell.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
 search_cell.init = function () {
+    search_cell.links_list = [];
     // Initialization
     search_cell.Add_Search_Event();
     // External Cell List
@@ -61,7 +54,7 @@ search_cell.dispExtCellList = function (searchVal) {
     personium.getExtCellList(cm.getMyCellUrl(), cm.getAccessToken(), searchVal).done(function (data) {
         let results = data.d.results;
         if (results.length == 0) {
-            // 無ければ見つからないメッセージ
+            // Messages not found if not found
             search_cell.displayNotExtCellList();
         }
 
@@ -143,7 +136,7 @@ search_cell.searchCells = function (searchVal) {
                 search_cell.Add_Check_Mark();
             });
         }).fail(function () {
-            // 外部セルから検索
+            // Search from external cell
             search_cell.dispExtCellList(searchVal);
         });
     } else {
@@ -202,10 +195,12 @@ search_cell.addExternalCell = function () {
     for (var i in addList) {
         cellList.push(addList[i]);
     }
+    cellList.sort();
     $.uniqueSort(cellList);
     cellList.sort(function (val1, val2) {
         return (val1 < val2 ? 1 : -1);
     });
     sessionStorage.setItem("sendMsgList", JSON.stringify(cellList));
-    location.href = "create_message.html";
+    create_msg.init();
+    personium.backSubContent();
 }
