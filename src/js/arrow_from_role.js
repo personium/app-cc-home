@@ -38,7 +38,7 @@ afr.displayTargetImage = function () {
     $(".arrow-to-img .user-icon").eq(0).append('<img class="user-icon-large" data-i18n="[src]profTrans:'+transName+'_Image" src="" alt="user">');
 }
 afr.displayArrowFromRole = function () {
-    $(".app-and-service").empty();
+    $("#fromAppendRoleList").empty();
     personium.getTargetToken(cm.getMyCellUrl(), cm.getRefreshToken(), afr.extCellUrl).done(function (extToken) {
         afr.targetAccessToken = extToken.access_token;
         personium.getExtCellLinksRole(afr.extCellUrl, afr.targetAccessToken, cm.getMyCellUrl()).done(function (data) {
@@ -96,7 +96,7 @@ afr.displayLinksRole = function (boxName, roleList) {
         });
     }
 
-    $(".app-and-service").append([
+    $("#fromAppendRoleList").append([
         '<div class="title">',
         '<img class="title-icon" data-i18n="[src]' + transImage + '" alt="">',
         '<span style="margin-left:0.43rem;" data-i18n="' + transDispName + '">' + boxName + '</span>',

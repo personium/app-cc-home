@@ -47,7 +47,7 @@ atr.displayTargetImage = function () {
 atr.displayArrowToRole = function () {
     // Get Box list
     personium.getBoxList(cm.getMyCellUrl(), cm.getAccessToken()).done(function (data) {
-        $(".app-and-service").empty();
+        $("#appendRoleList").empty();
         // Specify Box to get assigned Role
         var res = data.d.results;
         for (var i in res) {
