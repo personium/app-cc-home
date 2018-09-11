@@ -63,6 +63,13 @@
     <script src="https://demo.personium.io/app-cc-home/__/html/js/create_msg.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/search_cell.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/outg_msg_list.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/links.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/new_links.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/links_02.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/arrow_to_role.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/extcell_link_role_list.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/extcell_link_role.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/arrow_from_role.js"></script>
     <script type="text/javascript">
         FontAwesomeConfig = {
             searchPseudoElements: true
@@ -131,6 +138,20 @@
         <div class="modal-dialog pn-modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body pn-modal-body" data-i18n="confirmSendMessage">
+                </div>
+                <div class="modal-footer pn-modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal" data-i18n="Cancel"></button>
+                    <button type="button" class="btn ok-btn">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="confDeleteLink_modal" class="modal fade double-btn-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog pn-modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body pn-modal-body" id="deleteMessage">
+
                 </div>
                 <div class="modal-footer pn-modal-footer">
                     <button type="button" class="btn" data-dismiss="modal" data-i18n="Cancel"></button>

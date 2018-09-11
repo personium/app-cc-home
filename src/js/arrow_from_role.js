@@ -1,44 +1,31 @@
 var afr = {};
-afr.linksRoleList = {};
-afr.roleCustom = [];
 
-afr.extCellUrl = sessionStorage.getItem("extCellUrl");
-if (!afr.extCellUrl) {
-    location.href = "./links.html";
-}
-afr.extCellUrl = ut.changeLocalUnitToUnitUrl(afr.extCellUrl);
-
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
-}
-
-/*** new ***/
-
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(afr.init);
+// Load arrow_from_role screen
+afr.loadArrowFromRole = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/arrow_from_role.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        afr.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
 afr.init = function () {
     // Initialization
-    afr.Add_Btn_Event();
+    afr.linksRoleList = {};
+    afr.roleCustom = [];
+    afr.extCellUrl = sessionStorage.getItem("extCellUrl");
+    afr.extCellUrl = ut.changeLocalUnitToUnitUrl(afr.extCellUrl);
+
     cm.i18nSetProfile();
     cm.i18nSetTargetProfile(afr.extCellUrl);
 
     afr.displayMyImage();
     afr.displayTargetImage();
     afr.displayArrowFromRole();
-}
-
-afr.Add_Btn_Event = function () {
-    $('.header-btn-right').click(function () {
-        location.href = "extcell_link_role_list.html";
-    });
 }
 
 afr.displayMyImage = function () {

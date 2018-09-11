@@ -1,29 +1,24 @@
 var atr = {};
-atr.extCellUrl = sessionStorage.getItem("extCellUrl");
-if (!atr.extCellUrl) {
-    location.href = "./links.html";
-}
-atr.extCellUrl = ut.changeLocalUnitToUnitUrl(atr.extCellUrl);
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
-}
-
-/*** new ***/
-
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(atr.init);
+// Load arrow_to_role screen
+atr.loadArrowToRole = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/arrow_to_role.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        atr.init();
+        atr.Add_Btn_Event(id);
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
 atr.init = function () {
     // Initialization
-    atr.Add_Btn_Event();
+    atr.extCellUrl = sessionStorage.getItem("extCellUrl");
+    atr.extCellUrl = ut.changeLocalUnitToUnitUrl(atr.extCellUrl);
+    
     cm.i18nSetProfile();
     cm.i18nSetTargetProfile(atr.extCellUrl);
     cm.i18nSetRole();
@@ -34,9 +29,9 @@ atr.init = function () {
     atr.displayArrowToRole();
 }
 
-atr.Add_Btn_Event = function () {
-    $('.header-btn-right').click(function () {
-        location.href = "extcell_link_role_list.html";
+atr.Add_Btn_Event = function (id) {
+    $(id + ' .header-btn-right').click(function () {
+        link_info.loadExtCellLinkRoleList();
     });
 }
 
@@ -50,10 +45,10 @@ atr.displayTargetImage = function () {
     $(".arrow-to-img .user-icon").eq(1).append('<img class="user-icon-large" data-i18n="[src]profTrans:'+transName+'_Image" src="" alt="user">');
 }
 atr.displayArrowToRole = function () {
-    // Box一覧取得
+    // Get Box list
     personium.getBoxList(cm.getMyCellUrl(), cm.getAccessToken()).done(function (data) {
         $(".app-and-service").empty();
-        // Boxを指定して割り当てRoleを取得
+        // Specify Box to get assigned Role
         var res = data.d.results;
         for (var i in res) {
             var boxName = res[i].Name;
@@ -64,7 +59,7 @@ atr.displayArrowToRole = function () {
     });
 }
 atr.appendBoxRole = function (boxName) {
-    // アプリヘッダー作成
+    // Create application headers
     let profTrans = "profTrans";
     let dispName = profTrans + ":" + boxName + "_DisplayName";
     let imgName = profTrans + ":" + boxName + "_Image";
@@ -78,7 +73,7 @@ atr.appendBoxRole = function (boxName) {
         transImgTag = '';
     }
     
-    $(".app-and-service").append([
+    $("#appendRoleList").append([
         '<div class="title" id="role_' + id + '" style="display:none;">',
             '<img class="ins-app-img title-icon" data-i18n="[src]' + imgName + '" alt="">',
             '<span style="margin-left:0.43rem;" data-i18n="' + dispName + '"></span>',
@@ -89,7 +84,7 @@ atr.appendBoxRole = function (boxName) {
         '</div>'
     ].join("")).localize();
 
-    // 割り当てRoleを取得
+    // Get assigned Role
     personium.getExtCellRoleList(cm.getMyCellUrl(), cm.getAccessToken(), sessionStorage.getItem("extCellUrl")).done(function (data) {
         var results = data.d.results;
         results.sort(function (val1, val2) {
@@ -107,12 +102,12 @@ atr.appendBoxRole = function (boxName) {
             }
             if (boxName == roleBox) {
                 if (!createFlg) {
-                    // Roleがアレば、アプリヘッダー表示
+                    // If Role is, application header display
                     $("#role_" + id).show();
                     createFlg = true;
                 }
                 
-                // 割り当てRoleを表示
+                // Show assigned Role
                 var matchName = uri.match(/\(Name='(.+)',/);
                 var name = matchName[1];
                 let transName = profTrans + ":" + name + "_" + transId + "_DisplayName";
@@ -132,7 +127,7 @@ atr.appendBoxRole = function (boxName) {
             }
         }
         if (!createFlg) {
-            // Roleが無ければ、アプリヘッダー削除
+            // If there is no Role, delete the application header
             $("#role_" + id).remove();
             $("#role_list_" + id).parent().remove();
         }

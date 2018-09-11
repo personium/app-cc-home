@@ -1,33 +1,29 @@
 var extcell_link_role = {};
-extcell_link_role.extCellUrl = sessionStorage.getItem("extCellUrl");
-extcell_link_role.roleList = JSON.parse(sessionStorage.getItem("roleList"));
-if (!extcell_link_role.extCellUrl && !extcell_link_role.roleList) {
-    location.href = "./arrow_to_role.html";
-}
 
-if (sessionStorage.getItem("linksList")) {
-    extcell_link_role.linksList = JSON.parse(sessionStorage.getItem("linksList"));
-} else {
-    extcell_link_role.linksList = [];
-}
-
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
-}
-
-/*** new ***/
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(extcell_link_role.init);
+// Load extcell_link_role screen
+atr.loadExtCellLinkRole = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/extcell_link_role.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        extcell_link_role.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
 extcell_link_role.init = function () {
     // Initialization
+    extcell_link_role.extCellUrl = sessionStorage.getItem("extCellUrl");
+    extcell_link_role.roleList = JSON.parse(sessionStorage.getItem("roleList"));
+
+    if (sessionStorage.getItem("linksList")) {
+        extcell_link_role.linksList = JSON.parse(sessionStorage.getItem("linksList"));
+    } else {
+        extcell_link_role.linksList = [];
+    }
+
     cm.i18nSetProfile();
     cm.i18nSetRole();
     cm.i18nSetBox();
@@ -111,6 +107,8 @@ extcell_link_role.addExtCellLink = function (obj) {
     }).always(function () {
         // Enable click event
         obj.css("pointer-events", "auto");
+        extcell_link_role_list.displayBoxRoleList();
+        atr.displayArrowToRole();
     });
 }
 extcell_link_role.deleteExtCellLink = function (obj) {
@@ -129,5 +127,7 @@ extcell_link_role.deleteExtCellLink = function (obj) {
     }).always(function () {
         // Enable click event
         obj.css("pointer-events", "auto");
+        extcell_link_role_list.displayBoxRoleList();
+        atr.displayArrowToRole();
     });
 };
