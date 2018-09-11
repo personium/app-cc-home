@@ -81,6 +81,7 @@ extcell_link_role_list.displayBoxRole = function (boxName) {
     extcell_link_role_list.displayLinksCount(boxName);
 }
 extcell_link_role_list.displayLinksCount = function (boxName, no) {
+    extcell_link_role_list.linksRoleList[boxName] = [];
     personium.getExtCellRoleList(cm.getMyCellUrl(), cm.getAccessToken(), sessionStorage.getItem("extCellUrl")).done(function (data) {
         var results = data.d.results;
         let count = 0;
@@ -98,14 +99,15 @@ extcell_link_role_list.displayLinksCount = function (boxName, no) {
             }
 
             if (boxName == roleBox) {
-                if (!extcell_link_role_list.linksRoleList[boxName]) {
-                    extcell_link_role_list.linksRoleList[boxName] = [];
-                }
                 extcell_link_role_list.linksRoleList[boxName].push(roleName);
                 count++;
             }
         }
-        if (count > 0) $("#roleLinksCnt_" + boxName).html(count);
+        if (count > 0) {
+            $("#roleLinksCnt_" + boxName).html(count);
+        } else {
+            $("#roleLinksCnt_" + boxName).html("");
+        }
     })
 }
 extcell_link_role_list.transitionAccountLinks = function (boxName) {

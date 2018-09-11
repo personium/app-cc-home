@@ -78,6 +78,7 @@ acc_link_role_list.displayBoxRole = function (boxName) {
     acc_link_role_list.displayLinksCount(boxName);
 }
 acc_link_role_list.displayLinksCount = function (boxName) {
+    acc_link_role_list.linksRoleList[boxName] = [];
     personium.getAccountRoleList(cm.getMyCellUrl(), cm.getAccessToken(), acc_link_role_list.accountName).done(function (data) {
         var results = data.d.results;
         let count = 0;
@@ -95,14 +96,15 @@ acc_link_role_list.displayLinksCount = function (boxName) {
             }
 
             if (boxName == roleBox) {
-                if (!acc_link_role_list.linksRoleList[boxName]) {
-                    acc_link_role_list.linksRoleList[boxName] = [];
-                }
                 acc_link_role_list.linksRoleList[boxName].push(roleName);
                 count++;
             }
         }
-        if (count > 0) $("#roleLinksCnt_" + boxName).html(count);
+        if (count > 0) {
+            $("#roleLinksCnt_" + boxName).html(count);
+        } else {
+            $("#roleLinksCnt_" + boxName).html("");
+        }
     })
 }
 acc_link_role_list.transitionAccountLinks = function (boxName) {
