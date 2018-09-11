@@ -20,7 +20,6 @@ am.init = function() {
 am.initAppMarket = function () {
     let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
 
-    cm.i18nSetBox();
     $("#dashboard").append('<div class="panel list-group toggle-panel" id="toggle-panel1"></div>');
     am.createApplicationList();
 
@@ -115,6 +114,7 @@ am.updateProgress = function (no, id) {
             $("#insAppNo_" + no).on('click', function () { am.dispViewInsApp(am.insAppList[no], am.insAppBoxList[no]) });
             if (typeof (ha) != "undefined") {
                 cm.i18nSetBox();
+                cm.i18nSetRole();
                 ha.dispInsAppList();
             }
         } else if (status.indexOf('progress') >= 0) {
@@ -251,6 +251,7 @@ am.execBarInstall = function () {
 
                 if (typeof (ha) != "undefined") {
                     cm.i18nSetBox();
+                    cm.i18nSetRole();
                     ha.dispInsAppList();
                 }
 

@@ -24,10 +24,6 @@ extcell_link_role.init = function () {
         extcell_link_role.linksList = [];
     }
 
-    cm.i18nSetProfile();
-    cm.i18nSetRole();
-    cm.i18nSetBox();
-
     extcell_link_role.displayTitle();
     extcell_link_role.displayRoleList();
 
@@ -101,14 +97,14 @@ extcell_link_role.addExtCellLink = function (obj) {
             sessionStorage.setItem("linksList", JSON.stringify(extcell_link_role.linksList));
         }
         obj.addClass('check-mark-left');
+        extcell_link_role_list.displayLinksCount(boxName);
+        atr.displayArrowToRole();
     }).fail(function (data) {
         var res = JSON.parse(data.responseText);
         alert("An error has occurred.\n" + res.message.value);
     }).always(function () {
         // Enable click event
         obj.css("pointer-events", "auto");
-        extcell_link_role_list.init();
-        atr.displayArrowToRole();
     });
 }
 extcell_link_role.deleteExtCellLink = function (obj) {
@@ -121,13 +117,13 @@ extcell_link_role.deleteExtCellLink = function (obj) {
             sessionStorage.setItem("linksList", JSON.stringify(extcell_link_role.linksList));
         }
         obj.removeClass('check-mark-left');
+        extcell_link_role_list.displayLinksCount(boxName);
+        atr.displayArrowToRole();
     }).fail(function (data) {
         var res = JSON.parse(data.responseText);
         alert("An error has occurred.\n" + res.message.value);
     }).always(function () {
         // Enable click event
         obj.css("pointer-events", "auto");
-        extcell_link_role_list.init();
-        atr.displayArrowToRole();
     });
 };

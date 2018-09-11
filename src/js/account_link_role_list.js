@@ -23,8 +23,6 @@ acc_link_role_list.init = function () {
     sessionStorage.removeItem("roleList");
     sessionStorage.removeItem("boxName");
     sessionStorage.removeItem("linksList");
-    cm.i18nSetProfile();
-    cm.i18nSetBox();
     acc_link_role_list.displayBoxRoleList();
 }
 
@@ -46,10 +44,8 @@ acc_link_role_list.displayBoxRoleList = function () {
                 acc_link_role_list.roleCustom.push(res[i].Name);
             }
         }
-        let no = 0;
         for (var boxName in acc_link_role_list.roleList) {
             acc_link_role_list.displayBoxRole(boxName);
-            no++;
         }
         acc_link_role_list.displayBoxRole(null);
     })

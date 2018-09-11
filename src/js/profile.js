@@ -53,7 +53,6 @@ profile.init = function() {
 
     // Create Cropper Modal
     ut.createCropperModal({ dispCircleMaskBool: true });
-    cm.i18nSetProfile();
     profile.setProfileValue();
 }
 

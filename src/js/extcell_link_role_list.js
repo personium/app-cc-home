@@ -24,8 +24,6 @@ extcell_link_role_list.init = function () {
     sessionStorage.removeItem("roleList");
     sessionStorage.removeItem("boxName");
     sessionStorage.removeItem("linksList");
-    cm.i18nSetProfile();
-    cm.i18nSetBox();
 
     extcell_link_role_list.displayBoxRoleList();
 }
@@ -48,15 +46,13 @@ extcell_link_role_list.displayBoxRoleList = function () {
                 extcell_link_role_list.roleCustom.push(res[i].Name);
             }
         }
-        let no = 0;
         for (var boxName in extcell_link_role_list.roleList) {
-            extcell_link_role_list.displayBoxRole(boxName, no);
-            no++;
+            extcell_link_role_list.displayBoxRole(boxName);
         }
-        extcell_link_role_list.displayBoxRole(null, no);
+        extcell_link_role_list.displayBoxRole(null);
     })
 }
-extcell_link_role_list.displayBoxRole = function (boxName, no) {
+extcell_link_role_list.displayBoxRole = function (boxName) {
     let transDispName = "profTrans:" + boxName + "_DisplayName";
     let transImage = "[src]profTrans:" + boxName + "_Image";
     let imgStyle = "style='border-radius: 10px;'";
@@ -75,14 +71,14 @@ extcell_link_role_list.displayBoxRole = function (boxName, no) {
                         '<span class="user-name" data-i18n="' + transDispName + '"></span>',
                     '</div>',
                     '<span class="pn-list-batch role-list-batch">',
-                        '<span id="roleLinksCnt' + no + '"></span>',
+                        '<span id="roleLinksCnt_' + boxName + '"></span>',
                     '</span>',
                 '</div>',
             '</a>',
         '</li>'
     ].join("");
     $("#roles ul").append(html).localize();
-    extcell_link_role_list.displayLinksCount(boxName, no);
+    extcell_link_role_list.displayLinksCount(boxName);
 }
 extcell_link_role_list.displayLinksCount = function (boxName, no) {
     personium.getExtCellRoleList(cm.getMyCellUrl(), cm.getAccessToken(), sessionStorage.getItem("extCellUrl")).done(function (data) {
@@ -109,7 +105,7 @@ extcell_link_role_list.displayLinksCount = function (boxName, no) {
                 count++;
             }
         }
-        if (count > 0) $("#roleLinksCnt" + no).html(count);
+        if (count > 0) $("#roleLinksCnt_" + boxName).html(count);
     })
 }
 extcell_link_role_list.transitionAccountLinks = function (boxName) {

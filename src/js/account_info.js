@@ -15,9 +15,6 @@ accinfo.loadAccountInfo = function () {
 
 accinfo.init = function () {
     // Initialization
-    cm.i18nSetProfile();
-    cm.i18nSetRole();
-    cm.i18nSetBox();
     accinfo.accountName = ut.changeLocalUnitToUnitUrl(sessionStorage.getItem("accountName"));
     accinfo.displayTitle();
     accinfo.displayAccountToRole();
@@ -38,9 +35,6 @@ accinfo.displayAccountToRole = function () {
         for (var i in res) {
             var schema = res[i].Schema;
             var boxName = res[i].Name;
-            if (schema && schema.length > 0) {
-                cm.registerProfI18n(schema, boxName, "profile", "App");
-            }
             accinfo.createBoxRoleHeader(boxName);
             accinfo.appendBoxRole(boxName);
         }

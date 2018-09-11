@@ -327,6 +327,7 @@ app_manage.dispUnofficialBoxInsProgress = function (boxname) {
                 // Redraw the application list if it is the main screen
                 // Register Schema Profile in data-i18n
                 cm.i18nSetBox();
+                cm.i18nSetRole();
                 ha.dispInsAppList();
             }
         } else if (status.indexOf('progress') >= 0) {
@@ -371,6 +372,7 @@ app_manage.updateUnofficialBoxInsProgress = function (no) {
                 // Redraw the application list if it is the main screen
                 // Register Schema Profile in data-i18n
                 cm.i18nSetBox();
+                cm.i18nSetRole();
                 ha.dispInsAppList();
             }
         } else if (status.indexOf('progress') >= 0) {

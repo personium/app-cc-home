@@ -23,10 +23,6 @@ acc_link_role.init = function () {
         acc_link_role.linksList = [];
     }
 
-    cm.i18nSetProfile();
-    cm.i18nSetRole();
-    cm.i18nSetBox();
-
     acc_link_role.displayTitle();
     acc_link_role.displayRoleList();
 
@@ -100,7 +96,7 @@ acc_link_role.addAccountLink = function (obj) {
         }
         obj.addClass('check-mark-left');
         acc_link_role_list.displayLinksCount(boxName);
-        accinfo.appendBoxRole(boxName);
+        accinfo.displayAccountToRole();
     }).fail(function (data) {
         var res = JSON.parse(data.responseText);
         alert("An error has occurred.\n" + res.message.value);
@@ -120,7 +116,7 @@ acc_link_role.deleteAccountLink = function (obj) {
         }
         obj.removeClass('check-mark-left');
         acc_link_role_list.displayLinksCount(boxName);
-        accinfo.appendBoxRole(boxName);
+        accinfo.displayAccountToRole();
     }).fail(function (data) {
         var res = JSON.parse(data.responseText);
         alert("An error has occurred.\n" + res.message.value);

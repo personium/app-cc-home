@@ -19,10 +19,7 @@ atr.init = function () {
     atr.extCellUrl = sessionStorage.getItem("extCellUrl");
     atr.extCellUrl = ut.changeLocalUnitToUnitUrl(atr.extCellUrl);
     
-    cm.i18nSetProfile();
     cm.i18nSetTargetProfile(atr.extCellUrl);
-    cm.i18nSetRole();
-    cm.i18nSetBox();
 
     atr.displayMyImage();
     atr.displayTargetImage();

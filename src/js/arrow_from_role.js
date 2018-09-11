@@ -20,7 +20,6 @@ afr.init = function () {
     afr.extCellUrl = sessionStorage.getItem("extCellUrl");
     afr.extCellUrl = ut.changeLocalUnitToUnitUrl(afr.extCellUrl);
 
-    cm.i18nSetProfile();
     cm.i18nSetTargetProfile(afr.extCellUrl);
 
     afr.displayMyImage();
