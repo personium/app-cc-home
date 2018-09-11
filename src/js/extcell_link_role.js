@@ -107,7 +107,7 @@ extcell_link_role.addExtCellLink = function (obj) {
     }).always(function () {
         // Enable click event
         obj.css("pointer-events", "auto");
-        extcell_link_role_list.displayBoxRoleList();
+        extcell_link_role_list.init();
         atr.displayArrowToRole();
     });
 }
@@ -127,7 +127,7 @@ extcell_link_role.deleteExtCellLink = function (obj) {
     }).always(function () {
         // Enable click event
         obj.css("pointer-events", "auto");
-        extcell_link_role_list.displayBoxRoleList();
+        extcell_link_role_list.init();
         atr.displayArrowToRole();
     });
 };
