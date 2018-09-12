@@ -4,7 +4,7 @@ var msg_info = {};
 msg_info.loadMessageInfo = function () {
     personium.loadContent(cm.homeAppUrl + "__/html/message_info.html").done(function (data) {
         let out_html = $($.parseHTML(data));
-        let id = personium.createSubContent(out_html, true);
+        msg_info.id = personium.createSubContent(out_html, true);
         msg_info.init();
         $('body > div.mySpinner').hide();
         $('body > div.myHiddenDiv').show();
@@ -15,10 +15,10 @@ msg_info.loadMessageInfo = function () {
 
 msg_info.init = function () {
     if (sessionStorage.getItem("messageType") === "outgoing") {
-        $("header span").attr("data-i18n", "message:SentMessage").localize();
-        $("footer").hide();
+        $(msg_info.id + " header span").attr("data-i18n", "message:SentMessage").localize();
+        $(msg_info.id + " footer").hide();
     } else {
-        $("header span").attr("data-i18n", "message:ReceiveMessage").localize();
+        $(msg_info.id + " header span").attr("data-i18n", "message:ReceiveMessage").localize();
     }
     msg_info.displayReceivedMsg();
 

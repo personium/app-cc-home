@@ -4,9 +4,9 @@ var link_info = {};
 link_info.loadLinks02 = function () {
     personium.loadContent(cm.homeAppUrl + "__/html/links_02.html").done(function (data) {
         let out_html = $($.parseHTML(data));
-        let id = personium.createSubContent(out_html, true);
+        link_info.id = personium.createSubContent(out_html, true);
         link_info.init();
-        link_info.Add_Btn_Event(id);
+        link_info.Add_Btn_Event();
         $('body > div.mySpinner').hide();
         $('body > div.myHiddenDiv').show();
     }).fail(function (error) {
@@ -14,11 +14,11 @@ link_info.loadLinks02 = function () {
     });
 }
 
-link_info.Add_Btn_Event = function (id) {
+link_info.Add_Btn_Event = function () {
     $('#confDeleteLink_modal .ok-btn').click(function () {
         link_info.restDeleteExtCellAPI();
     });
-    $(id + ' .header-btn-right').click(function () {
+    $(link_info.id + ' .header-btn-right').click(function () {
         link_info.confDelete();
     });
 }
@@ -33,7 +33,7 @@ link_info.init = function () {
 
 link_info.displayExtProfile = function () {
     var transName = cm.getTargetProfTransName(link_info.extCellUrl);
-    $("header span").attr("data-i18n", "profTrans:"+transName+"_DisplayName").localize();
+    $(link_info.id + " header span").attr("data-i18n", "profTrans:"+transName+"_DisplayName").localize();
     $(".user-cell-url").html(link_info.extCellUrl);
     $(".user-description").attr("data-i18n", "profTrans:" + transName +"_Description").localize();
     $(".extcell-profile .user-icon").append('<img class="user-icon-large" data-i18n="[src]profTrans:'+transName+'_Image" src="" alt="user">');

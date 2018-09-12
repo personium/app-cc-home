@@ -4,7 +4,7 @@ var extcell_link_role = {};
 atr.loadExtCellLinkRole = function () {
     personium.loadContent(cm.homeAppUrl + "__/html/extcell_link_role.html").done(function (data) {
         let out_html = $($.parseHTML(data));
-        let id = personium.createSubContent(out_html, true);
+        extcell_link_role.id = personium.createSubContent(out_html, true);
         extcell_link_role.init();
         $('body > div.mySpinner').hide();
         $('body > div.myHiddenDiv').show();
@@ -32,13 +32,13 @@ extcell_link_role.init = function () {
 extcell_link_role.displayTitle = function () {
     let boxName = sessionStorage.getItem("boxName");
     if (boxName) {
-        $("header span").attr("data-i18n", "profTrans:" + boxName + "_DisplayName").localize();
-        $("header img").attr("data-i18n", "[src]profTrans:" + boxName + "_Image").localize();
+        $(extcell_link_role.id + " header span").attr("data-i18n", "profTrans:" + boxName + "_DisplayName").localize();
+        $(extcell_link_role.id + " header img").attr("data-i18n", "[src]profTrans:" + boxName + "_Image").localize();
     } else {
-        $("header span").attr("data-i18n", "UserCustomRole").localize();
-        $("header img").attr("data-i18n", "[src]profTrans:myProfile_Image").localize();
+        $(extcell_link_role.id + " header span").attr("data-i18n", "UserCustomRole").localize();
+        $(extcell_link_role.id + " header img").attr("data-i18n", "[src]profTrans:myProfile_Image").localize();
     }
-    $("header img").css("border-radius", "10px");
+    $(extcell_link_role.id + " header img").css("border-radius", "10px");
 }
 
 extcell_link_role.displayRoleList = function () {
