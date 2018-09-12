@@ -51,7 +51,7 @@ outg_msg_list.displaySentMsgList = function () {
             outg_msg_list.msgInfoList.push(msgInfo);
             var html = [
                 '<li>',
-                    '<a href="#" onclick="outg_msg_list.transitionMessage(' + count + ');">',
+                    '<a href="javascript:void(0)" onclick="outg_msg_list.transitionMessage(' + count + ');">',
                     '<div class="pn-list">',
                         '<div class="pn-list-icon">',
                             '<img id="msgIcon' + count + '">',

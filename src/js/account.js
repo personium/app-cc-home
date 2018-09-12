@@ -44,9 +44,9 @@ account.dispAccountList = function (json) {
             html += '<button class="delete-check-btn">';
             html += '<i class="fas fa-minus-circle fa-2x"></i>';
             html += '</button>';
-            html += '<div class="account-name slide-list-line-contents ellipsisText"><a href="#" onclick="account.transitionAccountLinks(this, \'' + acc.Name + '\', \'' + type + '\')"><p class="ellipsisText" style="margin-right:25px;">' + typeImgTag + acc.Name + '</p></a></div>';
+            html += '<div class="account-name slide-list-line-contents ellipsisText"><a href="javascript:void(0)" onclick="account.transitionAccountLinks(this, \'' + acc.Name + '\', \'' + type + '\')"><p class="ellipsisText" style="margin-right:25px;">' + typeImgTag + acc.Name + '</p></a></div>';
         } else {
-            html += '<div style="padding-left: 70px;" class="account-name slide-list-line-contents ellipsisText login-ic"><a href="#" onclick="account.transitionAccountLinks(this, \'' + acc.Name + '\', \'' + type + '\')"><p class="ellipsisText" style="margin-right:25px;">' + typeImgTag + acc.Name + '</p></a></div>';
+            html += '<div style="padding-left: 70px;" class="account-name slide-list-line-contents ellipsisText login-ic"><a href="javascript:void(0)" onclick="account.transitionAccountLinks(this, \'' + acc.Name + '\', \'' + type + '\')"><p class="ellipsisText" style="margin-right:25px;">' + typeImgTag + acc.Name + '</p></a></div>';
         }
         html += '<button class="line-delete-btn" data-i18n="Del" onClick="account.deleteAccount(\'' + acc.Name + '\');return(false)"></button>';
         html += '</div></li>';

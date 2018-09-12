@@ -111,7 +111,7 @@ ha.createSideMenuList = function (sideMenuId) {
     // log out
     paramObj = {
         title: "Logout",
-        callback: function () { $('.double-btn-modal').modal('show'); }
+        callback: function () { $('#logout_modal').modal('show'); }
     };
     personium.createSideMenuItem(paramObj);
 
@@ -259,7 +259,7 @@ ha.createLaunchLink = function (schema, boxName, msgCnt, id) {
         });
 
         let aTag = $('<a>', {
-            href: '#',
+            href: 'javascript:void(0)',
             class: 'ins-app-icon',
             onClick: 'return cm.execApp(this)',
             'data-open-new-window': appLaunchInfo.openNewWindow, // $(this).data('openNewWindow')

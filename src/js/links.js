@@ -81,7 +81,7 @@ links.appendRelationLinkExtCell = function (extObj, transName, no) {
     let published = extObj.date;
 
     let linksTag = [
-        '<a href="#" onClick="transitionTargetLinks(\'' + extObj.url + '\');">',
+        '<a href="javascript:void(0)" onClick="transitionTargetLinks(\'' + extObj.url + '\');">',
             '<div class="pn-list">',
                 '<div class="pn-list-icon">',
                     '<img data-i18n="[src]' + transName + '_Image">',

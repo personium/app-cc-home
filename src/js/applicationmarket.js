@@ -78,16 +78,16 @@ am.dispInsAppListSchemaSetting = function(schema, boxName, no) {
         var html = '';
         if (status.indexOf('ready') >= 0) {
             // ready
-            html = '<a href="#" id="insAppNo_' + no + '" class="ins-app-icon" onClick="am.dispViewInsApp(\'' + schema + '\', \'' + boxName + '\')"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name" data-i18n="' + dispName + '"></div>';
+            html = '<a href="javascript:void(0)" id="insAppNo_' + no + '" class="ins-app-icon" onClick="am.dispViewInsApp(\'' + schema + '\', \'' + boxName + '\')"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name" data-i18n="' + dispName + '"></div>';
         } else if (status.indexOf('progress') >= 0) {
             // progress
-            html = '<a href="#" id="insAppNo_' + no + '" class="ins-app-icon"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name" data-i18n="' + dispName + '"></div><div id="nowInstallParent_' + no + '" class="progress progress-striped active"><div name="nowInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';"></div></div>';
+            html = '<a href="javascript:void(0)" id="insAppNo_' + no + '" class="ins-app-icon"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name" data-i18n="' + dispName + '"></div><div id="nowInstallParent_' + no + '" class="progress progress-striped active"><div name="nowInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';"></div></div>';
             if (am.nowInstalledID === null) {
                 am.nowInstalledID = setInterval(am.checkBoxInstall, 1000);
             }
         } else {
             // failed
-            html = '<a href="#" class="ins-app-icon"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div><span id="appid_' + no + '" class="ins-app-name" data-i18n-"' + dispName + '"></span>(<font color="red"> ! </font>)</div>';
+            html = '<a href="javascript:void(0)" class="ins-app-icon"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div><span id="appid_' + no + '" class="ins-app-name" data-i18n-"' + dispName + '"></span>(<font color="red"> ! </font>)</div>';
         }
 
         $("#insAppList1").append('<a class="ins-app" id="ins-app_' + no + '"></a>');
@@ -153,7 +153,7 @@ am.dispApplicationListSchema = function(schemaJson, no) {
         var description = profTrans + ":" + schemaJson.BoxName + "_Description";
         $("#appList1").append('<a class="p-app" id="p-app_' + no + '"></a>');
         var pAppId = 'p-app_' + no;
-        var html = '<a href="#" class="ins-app-icon" onClick="am.dispViewApp(\'' + schema + '\',\'' + dispName + '\',\'' + imgName + '\',\'' + description + '\',\'' + schemaJson.BarUrl + '\',\'' + schemaJson.BoxName + '\',true)"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div class="ins-app-name" data-i18n="' + dispName + '"></div>';
+        var html = '<a href="javascript:void(0)" class="ins-app-icon" onClick="am.dispViewApp(\'' + schema + '\',\'' + dispName + '\',\'' + imgName + '\',\'' + description + '\',\'' + schemaJson.BarUrl + '\',\'' + schemaJson.BoxName + '\',true)"><img data-i18n="[src]' + imgName + '" src="" class="ins-app-icon"></a><div class="ins-app-name" data-i18n="' + dispName + '"></div>';
         $('#' + pAppId).append(html).localize();
    });
 };
@@ -169,9 +169,9 @@ am.dispViewApp = function (schema, dispName, imgName, description, barUrl, barBo
     html += '<main><div class="panel-body">';
     html += '<div class="app-info"><div class="app-icon"><img data-i18n="[src]' + imgName + '" src=""></div><div class="app-data"><div data-i18n="' + dispName + '"></div><div data-i18n="Provider"></div></div></div><section class="detail-section"><h2 data-i18n="Overview"></h2><div class="overview" data-i18n="' + description + '"></div>';
     if (insFlag) {
-        html += '<div class="app-install"><button class="round-btn"href="#" onClick="am.confBarInstall(\'' + schema + '\',\'' + barUrl + '\',\'' + barBoxName + '\', \'' + dispName + '\');return(false);" data-i18n="Install"></button></div></section>';
+        html += '<div class="app-install"><button class="round-btn"href="javascript:void(0)" onClick="am.confBarInstall(\'' + schema + '\',\'' + barUrl + '\',\'' + barBoxName + '\', \'' + dispName + '\');return(false);" data-i18n="Install"></button></div></section>';
     } else {
-        html += '<div class="app-install"><button class="round-btn"href="#" onClick="return(false);" data-i18n="Uninstall"></button></div></section>';
+        html += '<div class="app-install"><button class="round-btn"href="javascript:void(0)" onClick="return(false);" data-i18n="Uninstall"></button></div></section>';
     }
     html += '</main>';
 
@@ -193,7 +193,7 @@ am.dispViewInsApp = function (schema, boxName) {
     ].join("");
     html += '<main><div class="panel-body">';
     html += '<div class="app-info"><div class="app-icon"><img data-i18n="[src]' + imgName + '" src=""></div><div class="app-data"><div data-i18n="' + dispName + '"></div><div data-i18n="Provider"></div></div></div><section class="detail-section"><h2 data-i18n="Overview"></h2><div class="overview" data-i18n="' + description + '"></div>';
-    html += '<div class="app-install"><button class="round-btn"href="#" onClick="am.confUninstallApp(\'' + boxName + '\');return(false);" data-i18n="Uninstall"></button></div></section>';
+    html += '<div class="app-install"><button class="round-btn"href="javascript:void(0)" onClick="am.confUninstallApp(\'' + boxName + '\');return(false);" data-i18n="Uninstall"></button></div></section>';
     html += '</main>';
 
     let id = personium.createSubContent(html);

@@ -424,12 +424,12 @@ st.dispAccountRoleList = function(json, accName, no) {
     //html += '<div class="list-group-item">';
     //html += '<table class="table-fixed"><tr>';
     //html += '<td style="width: 85%;"><p class="ellipsisText" data-i18n="profTrans:' + name + '_' + boxName + '_DisplayName">' + name + '(' + boxName + ')</p></td>';
-    //html += '<td colspan="2" style="width: 15%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelAccountRoleModal(\'' + accName + '\',\'' + name + '\',\'' + boxName + '\',\'' + no + '\');return(false)">' + i18next.t("Detach") + '</a></td>';
+    //html += '<td colspan="2" style="width: 15%;"><a class="del-button list-group-item" href="javascript:void(0)" onClick="st.dispDelAccountRoleModal(\'' + accName + '\',\'' + name + '\',\'' + boxName + '\',\'' + no + '\');return(false)">' + i18next.t("Detach") + '</a></td>';
     //html += '</tr>';
     //html += '</table></div>';
   }
   html += '<div class="list-group-item">';
-  html += '<a class="allToggle" href="#" onClick="cm.dispAssignRole(\'acc\', true)" data-i18n="AssigningRolesPlus"></a></div>';
+  html += '<a class="allToggle" href="javascript:void(0)" onClick="cm.dispAssignRole(\'acc\', true)" data-i18n="AssigningRolesPlus"></a></div>';
   $("#accRoleList").append(html).localize();
 }
 st.dispDelAccountRoleModal = function(accName, roleName, boxName, no) {
@@ -540,16 +540,16 @@ st.dispInsAppListSchemaSetting = function(schema, boxName, no) {
             var html = '';
             if (status.indexOf('ready') >= 0) {
                 // ready
-                html = '<a href="#" id="insAppNo_' + no + '" class="ins-app-icon" onClick="uninstallApp(\'' + schema + '\', \'' + boxName + '\')"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div>';
+                html = '<a href="javascript:void(0)" id="insAppNo_' + no + '" class="ins-app-icon" onClick="uninstallApp(\'' + schema + '\', \'' + boxName + '\')"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div>';
             } else if (status.indexOf('progress') >= 0) {
                 // progress
-                html = '<a href="#" id="insAppNo_' + no + '" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div><div id="nowInstallParent_' + no + '" class="progress progress-striped active"><div name="nowInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';"></div></div>';
+                html = '<a href="javascript:void(0)" id="insAppNo_' + no + '" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '</div><div id="nowInstallParent_' + no + '" class="progress progress-striped active"><div name="nowInstall" id="nowInstall_' + no + '" class="progress-bar progress-bar-success" style="width: ' + data.progress + ';"></div></div>';
                 if (st.nowInstalledID === null) {
                     st.nowInstalledID = setInterval(st.checkBoxInstall, 1000);
                 }
             } else {
                 // failed
-                html = '<a href="#" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '(<font color="red"> ! </font>)</div>';
+                html = '<a href="javascript:void(0)" class="ins-app-icon"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div id="appid_' + no + '" class="ins-app-name">' + dispName + '(<font color="red"> ! </font>)</div>';
             }
             $("#insAppList").append('<a class="ins-app" id="ins-app-' + no + '"></a>');
             var insAppId = 'ins-app-' + no;
@@ -581,7 +581,7 @@ st.dispApplicationListSchema = function(schemaJson, no) {
         }
         $("#appList").append('<a class="p-app" id="p-app-' + no + '"></a>');
         var pAppId = 'p-app-' + no;
-        var html = '<a href="#" class="ins-app-icon" onClick="st.dispViewApp(\'' + schema + '\',\'' + dispName + '\',\'' + imageSrc + '\',\'' + description + '\',\'' + schemaJson.BarUrl + '\',\'' + schemaJson.BoxName + '\',true)"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div>';
+        var html = '<a href="javascript:void(0)" class="ins-app-icon" onClick="st.dispViewApp(\'' + schema + '\',\'' + dispName + '\',\'' + imageSrc + '\',\'' + description + '\',\'' + schemaJson.BarUrl + '\',\'' + schemaJson.BoxName + '\',true)"><img src = "' + imageSrc + '" class="ins-app-icon"></a><div class="ins-app-name">' + dispName + '</div>';
         $('#' + pAppId).append(html);
    });
 };
@@ -591,9 +591,9 @@ st.dispViewApp = function(schema, dispName, imageSrc, description, barUrl, barBo
     var html = '<div class="panel-body">';
     html += '<div class="app-info"><div class="app-icon"><img src="' + imageSrc + '"></div><div class="app-data"><div>' + dispName + '</div><div>提供元：</div></div></div><section class="detail-section"><h2>概要</h2><div class="overview">' + description + '</div>';
     if (insFlag) {
-        html += '<div class="app-install"><button class="round-btn"href="#" onClick="st.confBarInstall(\'' + schema + '\',\'' + barUrl + '\',\'' + barBoxName + '\', \'' + dispName + '\');return(false);">' + i18next.t("Install") + '</button></div></section>';
+        html += '<div class="app-install"><button class="round-btn"href="javascript:void(0)" onClick="st.confBarInstall(\'' + schema + '\',\'' + barUrl + '\',\'' + barBoxName + '\', \'' + dispName + '\');return(false);">' + i18next.t("Install") + '</button></div></section>';
     } else {
-        html += '<div class="app-install"><button class="round-btn"href="#" onClick="return(false);">' + i18next.t("Uninstall") + '</button></div></section>';
+        html += '<div class="app-install"><button class="round-btn"href="javascript:void(0)" onClick="return(false);">' + i18next.t("Uninstall") + '</button></div></section>';
     }
 
     $("#setting-panel2").append(html);
@@ -725,11 +725,11 @@ st.createApplicationMgr = function () {
         '<div class="panel-body">',
         '<ul class="list menu-list">',
         '<li>',
-        '<a href="#" class="list-group-item disabled" onclick="st.openAppliDelPanel(); return false;" data-i18n="ApplicationDelete"></a>',
+        '<a href="javascript:void(0)" class="list-group-item disabled" onclick="st.openAppliDelPanel(); return false;" data-i18n="ApplicationDelete"></a>',
         '<span class="badge" id="receiveBadge"></span>',
         '</li>',
         '<li>',
-        '<a href="#" class="list-group-item" onclick="st.openBoxInstall(); return false;" data-i18n="BoxInstall"></a>',
+        '<a href="javascript:void(0)" class="list-group-item" onclick="st.openBoxInstall(); return false;" data-i18n="BoxInstall"></a>',
         '<span class="badge" id="receiveBadge"></span>',
         '</li>',
         '</ul>',
@@ -1164,14 +1164,14 @@ st.dispRoleList = function(json) {
     html += '<div class="list-group-item">';
     html += '<table class="table-fixed"><tr>';
     html += '<td style="width: 70%;"><p class="ellipsisText">' + objRole.Name + '(' + boxName + ')</p></td>';
-    html += '<td style="width: 15%;"><a href="#" class="edit-button list-group-item" href="#" onClick="st.createEditRole(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + i18next.t("Edit") + '</a></td>';
-    html += '<td style="width: 15%;"><a href="#" class="del-button list-group-item" href="#" onClick="st.dispDelRoleModal(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + i18next.t("Del") + '</a></td>';
+    html += '<td style="width: 15%;"><a href="javascript:void(0)" class="edit-button list-group-item" href="#" onClick="st.createEditRole(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + i18next.t("Edit") + '</a></td>';
+    html += '<td style="width: 15%;"><a href="javascript:void(0)" class="del-button list-group-item" href="#" onClick="st.dispDelRoleModal(\'' + objRole.Name + '\',\'' + boxName + '\');return(false)">' + i18next.t("Del") + '</a></td>';
     html += '</tr>';
     html += '</table></div>';
   }
 
   html += '<div class="list-group-item">';
-  html += '<a class="allToggle" href="#" onClick="st.createAddRole()" data-i18n="CreateRolePlus"></a></div>';
+  html += '<a class="allToggle" href="javascript:void(0)" onClick="st.createAddRole()" data-i18n="CreateRolePlus"></a></div>';
   html += '</div>';
   $("#setting-panel1").append(html).localize();
 };
@@ -1299,16 +1299,16 @@ st.dispRelationList = function(json) {
     // relation list
     html += '<div class="list-group-item">';
     html += '<table style="width: 100%;"><tr>';
-    html += '<td style="width: 80%;"><a href="#" id="relationLinkToRoleToggle' + i + '" onClick="st.createRelationRole(\'' + objRelation.Name + '\',\'' + boxName + '\',\'' + i + '\')">';
+    html += '<td style="width: 80%;"><a href="javascript:void(0)" id="relationLinkToRoleToggle' + i + '" onClick="st.createRelationRole(\'' + objRelation.Name + '\',\'' + boxName + '\',\'' + i + '\')">';
     html += '<table class="table-fixed"><tr><td><p class="ellipsisText">' + objRelation.Name + '(' + boxName + ')</p></td></tr></table>';
     html += '</a></td>';
-    html += '<td style="width: 10%;"><a class="edit-button list-group-item" href="#" onClick="st.createEditRelation(\'' + objRelation.Name + '\',\'' + boxName + '\');return(false)">' + i18next.t("Edit") + '</a></td>';
-    html += '<td style="width: 10%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelRelationModal(\'' + objRelation.Name + '\',\'' + boxName + '\');return(false)">' + i18next.t("Del") + '</a></td>';
+    html += '<td style="width: 10%;"><a class="edit-button list-group-item" href="javascript:void(0)" onClick="st.createEditRelation(\'' + objRelation.Name + '\',\'' + boxName + '\');return(false)">' + i18next.t("Edit") + '</a></td>';
+    html += '<td style="width: 10%;"><a class="del-button list-group-item" href="javascript:void(0)" onClick="st.dispDelRelationModal(\'' + objRelation.Name + '\',\'' + boxName + '\');return(false)">' + i18next.t("Del") + '</a></td>';
     html += '</tr></table></div>';
   }
 
   html += '<div class="list-group-item">';
-  html += '<a class="allToggle" href="#" onClick="st.createAddRelation()" data-i18n="CreateRelationPlus"></a></div>';
+  html += '<a class="allToggle" href="javascript:void(0)" onClick="st.createAddRelation()" data-i18n="CreateRelationPlus"></a></div>';
   html += '</div>';
   $("#setting-panel1").append(html).localize();
 };
@@ -1404,12 +1404,12 @@ st.dispRelationRoleList = function(json, relName, relBoxName, no) {
     html += '<div class="list-group-item">';
     html += '<table style="width: 100%;"><tr>';
     html += '<td style="width: 90%;"><table class="table-fixed"><tr><td><p class="ellipsisText">' + name + '(' + boxName + ')</p></td></tr></table></td>';
-    html += '<td style="width: 10%;"><a class="del-button list-group-item" href="#" onClick="st.dispDelRelationRoleModal(\'' + relName + '\',\'' + relBoxName + '\',\'' + name + '\',\'' + boxName + '\',\'' + no + '\');return(false)">' + i18next.t("Detach") + '</a></td>';
+    html += '<td style="width: 10%;"><a class="del-button list-group-item" href="javascript:void(0)" onClick="st.dispDelRelationRoleModal(\'' + relName + '\',\'' + relBoxName + '\',\'' + name + '\',\'' + boxName + '\',\'' + no + '\');return(false)">' + i18next.t("Detach") + '</a></td>';
     html += '</tr></table></div>';
   }
 
   html += '<div class="list-group-item">';
-  html += '<a class="allToggle" href="#" onClick="cm.dispAssignRole(\'rel\', true)" data-i18n="AssigningRolesPlus"></a></div>';
+  html += '<a class="allToggle" href="javascript:void(0)" onClick="cm.dispAssignRole(\'rel\', true)" data-i18n="AssigningRolesPlus"></a></div>';
   html += '</div>';
   $("#setting-panel2").append(html).localize();
 }

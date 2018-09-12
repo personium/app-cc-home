@@ -62,7 +62,7 @@ extcell_link_role_list.displayBoxRole = function (boxName) {
     }
     let html = [
         '<li>',
-            '<a href="#" onclick="extcell_link_role_list.transitionAccountLinks(\''+boxName+'\')">',
+            '<a href="javascript:void(0)" onclick="extcell_link_role_list.transitionAccountLinks(\''+boxName+'\')">',
                 '<div class="pn-list">',
                     '<div class="pn-list-icon app-icon">',
                         '<img class="img-fluid" ' + imgStyle + ' data-i18n="' + transImage + '">',

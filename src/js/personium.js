@@ -33,7 +33,7 @@ personium.createSideMenuItem = function (paramObj) {
     });
     let aTag = $("<a>", {
         class: "allToggle",
-        href: "#",
+        href: "javascript:void(0)",
         "data-i18n": title,
     });
     if ((typeof paramObj.callback !== "undefined") && $.isFunction(paramObj.callback)) {
