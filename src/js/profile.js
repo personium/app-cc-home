@@ -58,9 +58,9 @@ profile.init = function() {
 
 profile.setProfileValue = function () {
     let cellUrl = JSON.parse(sessionStorage.getItem("sessionData")).cellUrl;
-    $("#user-name-form").attr("data-i18n", "[placeholder]profTrans:myProfile_DisplayName");
-    $("#description-form-area").attr("data-i18n", "profTrans:myProfile_Description");
-    $("div.my_icon").prepend('<img class="user-icon" style="margin: auto;" id="idImgFile" data-i18n="[src]profTrans:myProfile_Image" src="#" alt="image" />');
+    $("#user-name-form").attr("data-i18n", "[placeholder]profTrans:myProfile_DisplayName").localize();
+    $("#description-form-area").attr("data-i18n", "profTrans:myProfile_Description").localize();
+    $("div.my_icon").prepend('<img class="user-icon" style="margin: auto;" id="idImgFile" data-i18n="[src]profTrans:myProfile_Image" src="#" alt="image" />').localize();
     $("div.my_icon").prepend('<input type="file" class="fileUpload" onclick="profile.clearInput(this);" onchange="profile.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile" accept="image/*" style="display: none">');
     $("div.my_icon>span").click(function () {
         profile.editProfileImage();
