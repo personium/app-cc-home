@@ -197,7 +197,7 @@ ha.dispInsAppListSchema = function (schema, boxName, id) {
         var html = '';
         if (status.indexOf('ready') >= 0) {
             var msgCnt = '';
-            personium.getNotCompMessageCnt().done(function (data) {
+            personium.getNotCompMessageCnt(cm.getMyCellUrl(), cm.getAccessToken()).done(function (data) {
                 if (data.d.__count > 0) {
                     var count = 0;
                     for (i in data.d.results) {
