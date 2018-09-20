@@ -292,7 +292,10 @@ personium.refreshTokenAPI = function (cellUrl, refToken) {
             refresh_token: refToken,
             p_cookie: true
         },
-        headers: { 'Accept': 'application/json' }
+        headers: {
+            'Accept': 'application/json',
+            'content-type': 'application/x-www-form-urlencoded'
+        }
     })
 }
 personium.getTargetToken = function (cellUrl, refToken, extCellUrl) {
@@ -306,7 +309,10 @@ personium.getTargetToken = function (cellUrl, refToken, extCellUrl) {
             refresh_token: refToken,
             p_target: extCellUrl
         },
-        headers: { 'Accept': 'application/json' }
+        headers: {
+            'Accept': 'application/json',
+            'content-type': 'application/x-www-form-urlencoded'
+        }
     });
 };
 personium.getBoxInfo = function (cellUrl, token, boxName) {

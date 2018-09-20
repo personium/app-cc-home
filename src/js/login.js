@@ -181,7 +181,10 @@ lg.sendAccountNamePw = function(username, pw) {
             password: pw,
             p_cookie: true
         },
-        headers: {'Accept':'application/json'}
+        headers: {
+            'Accept': 'application/json',
+            'content-type': 'application/x-www-form-urlencoded'
+        }
     }).done(function(data) {
                 data.username=username;
                 data.cellUrl = lg.rootUrl;
