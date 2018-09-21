@@ -33,7 +33,7 @@ personium.createSideMenuItem = function (paramObj) {
     });
     let aTag = $("<a>", {
         class: "allToggle",
-        href: "#",
+        href: "javascript:void(0)",
         "data-i18n": title,
     });
     if ((typeof paramObj.callback !== "undefined") && $.isFunction(paramObj.callback)) {
@@ -292,7 +292,10 @@ personium.refreshTokenAPI = function (cellUrl, refToken) {
             refresh_token: refToken,
             p_cookie: true
         },
-        headers: { 'Accept': 'application/json' }
+        headers: {
+            'Accept': 'application/json',
+            'content-type': 'application/x-www-form-urlencoded'
+        }
     })
 }
 personium.getTargetToken = function (cellUrl, refToken, extCellUrl) {
@@ -306,7 +309,10 @@ personium.getTargetToken = function (cellUrl, refToken, extCellUrl) {
             refresh_token: refToken,
             p_target: extCellUrl
         },
-        headers: { 'Accept': 'application/json' }
+        headers: {
+            'Accept': 'application/json',
+            'content-type': 'application/x-www-form-urlencoded'
+        }
     });
 };
 personium.getBoxInfo = function (cellUrl, token, boxName) {
@@ -472,15 +478,9 @@ personium.recursiveDeleteBoxAPI = function (cellUrl, token, boxName) {
 personium.init = function () {
     if (!cm.user) {
         cm.user = {};
-        personium.loadContent(cm.homeAppUrl + "__/html/login.html").done(function (data) {
-            let out_html = $($.parseHTML(data));
-            let id = personium.createSubContent(out_html, true);
-            lg.initTarget();
-        }).fail(function (error) {
-            console.log(error);
-        });
+        lg.loadLogin();
     } else {
-        cm.loadMain();
+        ha.loadMain();
     }
 }
 personium.loadContent = function (contentUrl) {
@@ -506,13 +506,24 @@ personium.createSubContent = function (html, notSlide) {
     personium.slideShow('.subContent' + no, notSlide);
     return '.subContent' + no;
 };
-personium.backSubContent = function (allFlag) {
+personium.backSubContent = function (backCnt) {
     let result = "";
-    if (allFlag) {
-        personium.slideHide(".subContent", "right", function () {
-            $(".subContent").remove();
-            $("#loadContent").hide();
-        })
+    if (backCnt) {
+        let no = $(".subContent").length - 1;
+        personium.slideHide(".subContent" + no, "right", function () {
+            $(".subContent" + no).remove();
+            if (no <= 0) {
+                $("#loadContent").hide();
+            }
+            let next = backCnt - 1;
+            if (next > 1) {
+                personium.backSubContent(next);
+            } else {
+                personium.backSubContent();
+            }
+            
+        });
+        result = ".subContent" + (no - 1);
     } else {
         let no = $(".subContent").length - 1;
         personium.slideHide(".subContent" + no, "right", function () {

@@ -1,18 +1,16 @@
 var links = {};
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
-}
-
-/*** new ***/
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(links.init);
+// Load links screen
+create_msg.loadLinks = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/links.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        links.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
 links.init = function () {
@@ -42,7 +40,7 @@ links.dispExtCellList = function (json) {
     }
     let addLinksTag = [
         '<li>',
-            '<a href="new_links.html">',
+            '<a href="javascript:void(0)" onclick="new_links.loadNewLinks();">',
                 '<div class="edit-list">',
                     '<span class="add-member" data-i18n="AddMember"></span>',
                 '</div>',
@@ -83,7 +81,7 @@ links.appendRelationLinkExtCell = function (extObj, transName, no) {
     let published = extObj.date;
 
     let linksTag = [
-        '<a href="#" onClick="transitionTargetLinks(\'' + extObj.url + '\');">',
+        '<a href="javascript:void(0)" onClick="transitionTargetLinks(\'' + extObj.url + '\');">',
             '<div class="pn-list">',
                 '<div class="pn-list-icon">',
                     '<img data-i18n="[src]' + transName + '_Image">',
@@ -103,8 +101,5 @@ links.appendRelationLinkExtCell = function (extObj, transName, no) {
 
 function transitionTargetLinks(url) {
     sessionStorage.setItem("extCellUrl", url);
-    location.href = "links_02.html";
+    link_info.loadLinks02();
 };
-
-
-/*** old ***/

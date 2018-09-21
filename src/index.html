@@ -7,6 +7,7 @@
     <title>Personium Cell</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
+    <link href='https://demo.personium.io/app-cc-home/__/html/css/bootstrap-switch/bootstrap-switch.min.css' rel='stylesheet' type='text/css'>
     <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
     <!--     Fonts and icons     -->
@@ -15,6 +16,7 @@
     <link href='https://demo.personium.io/app-cc-home/__/html/css/login.css' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/personium.css">
     <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/homeapp.css">
+    <link href='https://demo.personium.io/app-cc-home/__/html/css/application_mgr.css' rel='stylesheet' type='text/css'>
 
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -34,13 +36,40 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/bootstrap-switch/bootstrap-switch.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment-with-locales.min.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/load.i18n.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/utils.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/personium.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/login.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/common.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/main.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/account.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/account_info.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/account_link_role_list.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/account_link_role.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/edit_account.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/select_accounttype.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/new_account.js"></script>
     <script src="https://demo.personium.io/app-cc-home/__/html/js/settings.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/profile.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/change_password.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/change_language.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/app_manage.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/applicationmarket.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/message.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/inc_msg_list.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/msg_info.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/create_msg.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/search_cell.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/outg_msg_list.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/links.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/new_links.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/links_02.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/arrow_to_role.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/extcell_link_role_list.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/extcell_link_role.js"></script>
+    <script src="https://demo.personium.io/app-cc-home/__/html/js/arrow_from_role.js"></script>
     <script type="text/javascript">
         FontAwesomeConfig = {
             searchPseudoElements: true
@@ -61,7 +90,7 @@
     </div>
 
     <!-- modal -->
-    <div class="modal fade double-btn-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div id="logout_modal" class="modal fade double-btn-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog pn-modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body pn-modal-body" data-i18n="logoutConfirm">
@@ -69,6 +98,64 @@
                 <div class="modal-footer pn-modal-footer">
                     <button type="button" class="btn" data-dismiss="modal" data-i18n="Cancel"></button>
                     <button type="button" class="btn ok-btn" onclick="cm.logout();">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade single-btn-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog pn-modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body pn-modal-body" data-i18n="successChangePass">
+
+                </div>
+                <div class="modal-footer pn-modal-footer">
+                    <button type="button" class="btn ok-btn" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-confirmation" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title" id="modal-confirmation-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div id="dvTextConfirmation"></div>
+                </div>
+                <div class="modal-footer pn-modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" data-i18n="Cancel"></button>
+                    <button type="button" class="btn" id="b-ins-bar-ok" onclick="am.execBarInstall();" style="display:none">OK</button>
+                    <button type="button" class="btn" id="b-unins-box-ok" onclick="am.execUninstallBox();" style="display:none">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="confSendMsg_modal" class="modal fade double-btn-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog pn-modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body pn-modal-body" data-i18n="confirmSendMessage">
+                </div>
+                <div class="modal-footer pn-modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal" data-i18n="Cancel"></button>
+                    <button type="button" class="btn ok-btn">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="confDeleteLink_modal" class="modal fade double-btn-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog pn-modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body pn-modal-body" id="deleteMessage">
+
+                </div>
+                <div class="modal-footer pn-modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal" data-i18n="Cancel"></button>
+                    <button type="button" class="btn ok-btn">OK</button>
                 </div>
             </div>
         </div>

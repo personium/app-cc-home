@@ -1,35 +1,28 @@
 var acc_link_role_list = {};
-acc_link_role_list.roleList = {};
-acc_link_role_list.linksRoleList = {};
-acc_link_role_list.roleCustom = [];
-acc_link_role_list.accountName = sessionStorage.getItem("accountName");
-if (!acc_link_role_list.accountName) {
-    location.href = "./account.html";
-}
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
-}
-
-/*** new ***/
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(acc_link_role_list.init);
+// Load account_link_role_list screen
+acc_link_role_list.loadAccountLinkRoleList = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/account_link_role_list.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        acc_link_role_list.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
 acc_link_role_list.init = function () {
     // Initialization
+    acc_link_role_list.roleList = {};
+    acc_link_role_list.linksRoleList = {};
+    acc_link_role_list.roleCustom = [];
+    acc_link_role_list.accountName = sessionStorage.getItem("accountName");
+
     sessionStorage.removeItem("roleList");
     sessionStorage.removeItem("boxName");
     sessionStorage.removeItem("linksList");
-    cm.i18nSetProfile();
-    cm.i18nSetBox();
-
     acc_link_role_list.displayBoxRoleList();
 }
 
@@ -51,15 +44,13 @@ acc_link_role_list.displayBoxRoleList = function () {
                 acc_link_role_list.roleCustom.push(res[i].Name);
             }
         }
-        let no = 0;
         for (var boxName in acc_link_role_list.roleList) {
-            acc_link_role_list.displayBoxRole(boxName, no);
-            no++;
+            acc_link_role_list.displayBoxRole(boxName);
         }
-        acc_link_role_list.displayBoxRole(null, no);
+        acc_link_role_list.displayBoxRole(null);
     })
 }
-acc_link_role_list.displayBoxRole = function (boxName, no) {
+acc_link_role_list.displayBoxRole = function (boxName) {
     let transDispName = "profTrans:" + boxName + "_DisplayName";
     let transImage = "[src]profTrans:" + boxName + "_Image";
     if (!boxName) {
@@ -68,7 +59,7 @@ acc_link_role_list.displayBoxRole = function (boxName, no) {
     }
     let html = [
         '<li>',
-            '<a href="#" onclick="acc_link_role_list.transitionAccountLinks(\''+boxName+'\')">',
+            '<a href="javascript:void(0)" onclick="acc_link_role_list.transitionAccountLinks(\''+boxName+'\')">',
                 '<div class="pn-list">',
                     '<div class="pn-list-icon app-icon">',
                         '<img class="img-fluid" data-i18n="' + transImage + '">',
@@ -77,16 +68,17 @@ acc_link_role_list.displayBoxRole = function (boxName, no) {
                         '<span class="user-name" data-i18n="' + transDispName + '"></span>',
                     '</div>',
                     '<span class="pn-list-batch role-list-batch">',
-                        '<span id="roleLinksCnt' + no + '"></span>',
+                        '<span id="roleLinksCnt_' + boxName + '"></span>',
                     '</span>',
                 '</div>',
             '</a>',
         '</li>'
     ].join("");
     $("#roles ul").append(html).localize();
-    acc_link_role_list.displayLinksCount(boxName, no);
+    acc_link_role_list.displayLinksCount(boxName);
 }
-acc_link_role_list.displayLinksCount = function (boxName, no) {
+acc_link_role_list.displayLinksCount = function (boxName) {
+    acc_link_role_list.linksRoleList[boxName] = [];
     personium.getAccountRoleList(cm.getMyCellUrl(), cm.getAccessToken(), acc_link_role_list.accountName).done(function (data) {
         var results = data.d.results;
         let count = 0;
@@ -104,14 +96,15 @@ acc_link_role_list.displayLinksCount = function (boxName, no) {
             }
 
             if (boxName == roleBox) {
-                if (!acc_link_role_list.linksRoleList[boxName]) {
-                    acc_link_role_list.linksRoleList[boxName] = [];
-                }
                 acc_link_role_list.linksRoleList[boxName].push(roleName);
                 count++;
             }
         }
-        if (count > 0) $("#roleLinksCnt" + no).html(count);
+        if (count > 0) {
+            $("#roleLinksCnt_" + boxName).html(count);
+        } else {
+            $("#roleLinksCnt_" + boxName).html("");
+        }
     })
 }
 acc_link_role_list.transitionAccountLinks = function (boxName) {
@@ -129,5 +122,5 @@ acc_link_role_list.transitionAccountLinks = function (boxName) {
         sessionStorage.removeItem("linksList");
     }
     
-    location.href = "account_link_role.html";
+    acc_link_role.loadAccountLinkRole();
 }

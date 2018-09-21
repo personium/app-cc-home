@@ -297,7 +297,7 @@ demo.createProfileHeaderMenu = function() {
 
     // create a profile menu in to "profile-menu" class
     var html = '<div>';
-    html += '<a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">';
+    html += '<a class="allToggle" href="javascript:void(0)" data-toggle="modal" data-target="#modal-edit-profile">';
     html += '<img class="icon-profile" id="imProfilePicture" data-i18n="[src]profTrans:myProfile_Image" src="" alt="user">';
     html += '</a>';
     html += '</div>';
@@ -305,7 +305,7 @@ demo.createProfileHeaderMenu = function() {
     html += '<div id="tProfileDisplayName" class="sizeBody" data-i18n="profTrans:myProfile_DisplayName"></div>';
     html += '<div class="sizeCaption">' + i18next.t("Account") + ': ' + cm.user.userName +  '</div>';
     html += '</div>';
-    html += '<a href="#" onClick="demo.toggleSlide();">';
+    html += '<a href="javascript:void(0)" onClick="demo.toggleSlide();">';
     html += '<img src="https://demo.personium.io/HomeApplication/__/icons/ico_menu.png">';
     html += '</a>';
     $(".profile-menu").html(html);
@@ -450,15 +450,15 @@ demo.createSideMenu = function() {
     // Menu Title
     html += '<li class="menu-title">' + i18next.t("Menu") + '</li>';
     // profile edit
-    html += '<li><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-edit-profile">' + itemName.EditProf + '</a></li>';
-    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-change-password">' + itemName.ChgPass + '</a></li>';
+    html += '<li><a class="allToggle" href="javascript:void(0)" data-toggle="modal" data-target="#modal-edit-profile">' + itemName.EditProf + '</a></li>';
+    html += '<li class="menu-separator"><a class="allToggle" href="javascript:void(0)" data-toggle="modal" data-target="#modal-change-password">' + itemName.ChgPass + '</a></li>';
     // setting menu
-    html += '<li><a class="allToggle" id="accountToggle" href="#">' + i18next.t("Account") + '</a></li>';
-    html += '<li><a class="allToggle" id="applicationToggle" href="#">' + i18next.t("Application") + '</a></li>';
-    html += '<li><a class="allToggle" id="roleToggle" href="#">' + i18next.t("Role") + '</a></li>';
-    html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="#">' + i18next.t("Relation") + '</a></li>';
+    html += '<li><a class="allToggle" id="accountToggle" href="javascript:void(0)">' + i18next.t("Account") + '</a></li>';
+    html += '<li><a class="allToggle" id="applicationToggle" href="javascript:void(0)">' + i18next.t("Application") + '</a></li>';
+    html += '<li><a class="allToggle" id="roleToggle" href="javascript:void(0)">' + i18next.t("Role") + '</a></li>';
+    html += '<li class="menu-separator"><a class="allToggle" id="relationToggle" href="javascript:void(0)">' + i18next.t("Relation") + '</a></li>';
     // log out
-    html += '<li class="menu-separator"><a class="allToggle" href="#" data-toggle="modal" data-target="#modal-logout">' + itemName.Logout + '</a></li>';
+    html += '<li class="menu-separator"><a class="allToggle" href="javascript:void(0)" data-toggle="modal" data-target="#modal-logout">' + itemName.Logout + '</a></li>';
 
     html += '</ul>';
     html += '</nav>';

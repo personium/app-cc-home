@@ -1,44 +1,30 @@
 var afr = {};
-afr.linksRoleList = {};
-afr.roleCustom = [];
 
-afr.extCellUrl = sessionStorage.getItem("extCellUrl");
-if (!afr.extCellUrl) {
-    location.href = "./links.html";
-}
-afr.extCellUrl = ut.changeLocalUnitToUnitUrl(afr.extCellUrl);
-
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
-}
-
-/*** new ***/
-
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(afr.init);
+// Load arrow_from_role screen
+afr.loadArrowFromRole = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/arrow_from_role.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        afr.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
 afr.init = function () {
     // Initialization
-    afr.Add_Btn_Event();
-    cm.i18nSetProfile();
+    afr.linksRoleList = {};
+    afr.roleCustom = [];
+    afr.extCellUrl = sessionStorage.getItem("extCellUrl");
+    afr.extCellUrl = ut.changeLocalUnitToUnitUrl(afr.extCellUrl);
+
     cm.i18nSetTargetProfile(afr.extCellUrl);
 
     afr.displayMyImage();
     afr.displayTargetImage();
     afr.displayArrowFromRole();
-}
-
-afr.Add_Btn_Event = function () {
-    $('.header-btn-right').click(function () {
-        location.href = "extcell_link_role_list.html";
-    });
 }
 
 afr.displayMyImage = function () {
@@ -51,7 +37,7 @@ afr.displayTargetImage = function () {
     $(".arrow-to-img .user-icon").eq(0).append('<img class="user-icon-large" data-i18n="[src]profTrans:'+transName+'_Image" src="" alt="user">');
 }
 afr.displayArrowFromRole = function () {
-    $(".app-and-service").empty();
+    $("#fromAppendRoleList").empty();
     personium.getTargetToken(cm.getMyCellUrl(), cm.getRefreshToken(), afr.extCellUrl).done(function (extToken) {
         afr.targetAccessToken = extToken.access_token;
         personium.getExtCellLinksRole(afr.extCellUrl, afr.targetAccessToken, cm.getMyCellUrl()).done(function (data) {
@@ -109,7 +95,7 @@ afr.displayLinksRole = function (boxName, roleList) {
         });
     }
 
-    $(".app-and-service").append([
+    $("#fromAppendRoleList").append([
         '<div class="title">',
         '<img class="title-icon" data-i18n="[src]' + transImage + '" alt="">',
         '<span style="margin-left:0.43rem;" data-i18n="' + transDispName + '">' + boxName + '</span>',

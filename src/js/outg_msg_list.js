@@ -1,29 +1,20 @@
 var outg_msg_list = {};
-outg_msg_list.msgInfoList = [];
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/cropper/3.1.4/cropper.min.js");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    styleList.push("https://demo.personium.io/HomeApplication/__/appcell-resources/css/cropper/cropper.min.css");
-    styleList.push("https://demo.personium.io/HomeApplication/__/appcell-resources/css/cropper/cropper_circle_mask.css");
-    return styleList;
+// Load outgoing_message_list screen
+outg_msg_list.loadOutgoingMessageList = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/outgoing_message_list.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        outg_msg_list.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
-addNamesapces = function (ns) {
-    ns.push('message');
-    return ns;
-};
-
-init = function () {
-    ut.loadStyleSheet();
-    ut.loadScript(outg_msg_list.init);
-}
 outg_msg_list.init = function () {
-
+    outg_msg_list.msgInfoList = [];
     outg_msg_list.displaySentMsgList();
 }
 /*
@@ -60,7 +51,7 @@ outg_msg_list.displaySentMsgList = function () {
             outg_msg_list.msgInfoList.push(msgInfo);
             var html = [
                 '<li>',
-                    '<a href="#" onclick="outg_msg_list.transitionMessage(' + count + ');">',
+                    '<a href="javascript:void(0)" onclick="outg_msg_list.transitionMessage(' + count + ');">',
                     '<div class="pn-list">',
                         '<div class="pn-list-icon">',
                             '<img id="msgIcon' + count + '">',
@@ -103,6 +94,6 @@ outg_msg_list.transitionMessage = function (count) {
         sessionStorage.setItem("msgDate", outg_msg_list.msgInfoList[count].date);
         sessionStorage.setItem("msgUrl", outg_msg_list.msgInfoList[count].url);
         sessionStorage.setItem("messageType", "outgoing");
-        location.href = "message_info.html";
+        msg_info.loadMessageInfo();
     })
 }

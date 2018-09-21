@@ -1,26 +1,21 @@
 var create_msg = {};
-create_msg.cellUrlList = [];
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
+// Load create_message screen
+create_msg.loadCreateMessage = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/create_message.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        create_msg.init();
+        create_msg.Add_Btn_Event();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
-addNamesapces = function (ns) {
-    ns.push('message');
-    return ns;
-};
-
-init = function () {
-    ut.loadStyleSheet();
-    ut.loadScript(create_msg.init);
-}
 create_msg.init = function () {
-    create_msg.Add_Btn_Event();
+    create_msg.cellUrlList = [];
     if (sessionStorage.getItem("sendMsgList")) {
         create_msg.cellUrlList = JSON.parse(sessionStorage.getItem("sendMsgList"));
     }
@@ -31,8 +26,6 @@ create_msg.init = function () {
         } else {
             create_msg.displayMsg("FW:");
         }
-    } else {
-        $("header a").attr("href", "message.html");
     }
     create_msg.displayAddress();
 }
@@ -40,11 +33,11 @@ create_msg.Add_Btn_Event = function () {
     $('.double-btn-modal .ok-btn').click(function () {
         create_msg.sendMessage();
     });
-    $('.header-btn-right').click(function () {
+    $('#create_send_btn').click(function () {
         create_msg.confirmSendMessage();
     });
     $('#add-to-account').click(function () {
-        location.href = "search_cell.html";
+        create_msg.loadSearchCell();
     });
 }
 create_msg.delAddress = function (obj) {
@@ -56,18 +49,20 @@ create_msg.delAddress = function (obj) {
     }
 
     if (!$(".to-user-info").length) {
-        create_msg.toggleSendIcon();
+        create_msg.disableSendIcon();
     }
 }
-create_msg.toggleSendIcon = function () {
-    $('.to-user-info-area').toggle();
-    if (!($('.to-address-info').css('display') == 'none')) {
-        $('.send-icon').removeClass('disable');
-        $('.send-icon').addClass('active');
-    } else {
-        $('.send-icon').removeClass('active');
-        $('.send-icon').addClass('disable');
-    }
+create_msg.activeSendIcon = function () {
+    $('.to-address-title').hide();
+    $('.to-address-info').show();
+    $('.send-icon').removeClass('disable');
+    $('.send-icon').addClass('active');
+}
+create_msg.disableSendIcon = function () {
+    $('.to-address-title').show();
+    $('.to-address-info').hide();
+    $('.send-icon').removeClass('active');
+    $('.send-icon').addClass('disable');
 }
 /*
  * Display Receive Message
@@ -77,7 +72,6 @@ create_msg.displayMsg = function (headStr) {
 
     $(".create-title").html(headStr + sessionStorage.getItem("msgTitle"));
     $(".create-msg").html("\n" + msg.replace(/\r?\n/g, '\n>'));
-    $("header a").attr("href", "message_info.html");
 }
 
 /*
@@ -88,7 +82,7 @@ create_msg.displayAddress = function () {
 
     $('.to-address-info').empty();
     if (urlList.length) {
-        create_msg.toggleSendIcon();
+        create_msg.activeSendIcon();
     }
     for (var i in urlList) {
         create_msg.displayAddressInfo(urlList[i]);
@@ -134,7 +128,7 @@ create_msg.confirmSendMessage = function () {
         return;
     }
 
-    $('.double-btn-modal').modal('show');
+    $('#confSendMsg_modal').modal('show');
 }
 create_msg.sendMessage = function () {
     var msg = {};
@@ -150,16 +144,13 @@ create_msg.sendMessage = function () {
         personium.postSendAPI(cm.getMyCellUrl(), cm.getAccessToken(), msg).done(function () {
             sendCount++;
             if (sendCount >= listCount) {
-                if (sessionStorage.getItem("createMsgType")) {
-                    location.href = "message_info.html";
-                } else {
-                    location.href = "message.html";
-                }
+                personium.backSubContent();
             }
         }).fail(function (data) {
             $("#main").prepend('<div class="alert alert-warning alert-dismissable"><a href="JavaScript:void(0)" class="close" data-dismiss="alert" aria-label="close">&times;</a><span data-i18n="message:failSendMessage"></span></div>').localize();
-            $(".double-btn-modal").modal("hide");
             console.log(data);
+        }).always(function () {
+            $("#confSendMsg_modal").modal("hide");
         });
     }
 }

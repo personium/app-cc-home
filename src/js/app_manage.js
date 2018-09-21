@@ -1,23 +1,26 @@
 var app_manage = {};
 
-addLoadScript = function (scriptList) {
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
-}
-
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(function () {
-        cm.setTitleMenu("Application");
+// Load app_manage screen
+chg_lang.loadAppManage = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/application_management.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
     });
 }
 
 app_manage.openBoxInstall = function () {
-    cm.setBackahead();
-
     html = [
+        '<header>',
+            '<a class="header-btn pn-back-btn pn-btn" href="javascript:void(0)" onclick="personium.backSubContent();">',
+                '<i id="back_btn" class="fas fa-angle-left fa-2x header-ic-01"></i>',
+            '</a>',
+            '<span data-i18n="BoxInstall"></span>',
+        '</header>',
+        '<main>',
         '<div class="modal-body">',
         '<div>',
         '<span data-i18n="BoxInstall" style="margin-right:10px;"></span>',
@@ -75,7 +78,8 @@ app_manage.openBoxInstall = function () {
         '<div class="container" id="installStatus">',
         '</div>',
         '</div>',
-        '</div>'
+        '</div>',
+        '</main>'
     ].join("");
 
     let id = personium.createSubContent(html);
@@ -140,7 +144,6 @@ app_manage.openBoxInstall = function () {
 
     $("#setting-panel2").toggleClass('slide-on');
     $("#setting-panel1").toggleClass('slide-on-holder');
-    cm.setTitleMenu("BoxInstall", true);
 }
 
 app_manage.unofficialBoxInstall = function () {
@@ -323,16 +326,9 @@ app_manage.dispUnofficialBoxInsProgress = function (boxname) {
             if (typeof (ha) != "undefined") {
                 // Redraw the application list if it is the main screen
                 // Register Schema Profile in data-i18n
-                personium.getBoxList(cm.getMyCellUrl(), cm.getAccessToken()).done(function (data) {
-                    var insAppRes = data.d.results;
-                    for (var i in insAppRes) {
-                        var schema = insAppRes[i].Schema;
-                        var boxName = insAppRes[i].Name;
-                        if (schema && schema.length > 0) {
-                            cm.registerProfI18n(schema, boxName, "profile", "App");
-                        }
-                    }
-                })
+                cm.i18nSetBox();
+                cm.i18nSetRole();
+                ha.dispInsAppList();
             }
         } else if (status.indexOf('progress') >= 0) {
             // progress
@@ -374,6 +370,9 @@ app_manage.updateUnofficialBoxInsProgress = function (no) {
             $("#boxIns_" + insArray[no]).html(html).localize();
             if (typeof (ha) != "undefined") {
                 // Redraw the application list if it is the main screen
+                // Register Schema Profile in data-i18n
+                cm.i18nSetBox();
+                cm.i18nSetRole();
                 ha.dispInsAppList();
             }
         } else if (status.indexOf('progress') >= 0) {

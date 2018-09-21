@@ -1,30 +1,24 @@
 var msg_info = {};
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
+// Load message_info screen
+msg_info.loadMessageInfo = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/message_info.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        msg_info.id = personium.createSubContent(out_html, true);
+        msg_info.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
-addNamesapces = function (ns) {
-    ns.push('message');
-    return ns;
-};
-
-init = function () {
-    ut.loadStyleSheet();
-    ut.loadScript(msg_info.init);
-}
 msg_info.init = function () {
     if (sessionStorage.getItem("messageType") === "outgoing") {
-        $("header a").attr("href", "outgoing_message_list.html");
-        $("header span").attr("data-i18n", "message:SentMessage").localize();
-        $("footer").hide();
+        $(msg_info.id + " header span").attr("data-i18n", "message:SentMessage").localize();
+        $(msg_info.id + " footer").hide();
     } else {
-        $("header span").attr("data-i18n", "message:ReceiveMessage").localize();
+        $(msg_info.id + " header span").attr("data-i18n", "message:ReceiveMessage").localize();
     }
     msg_info.displayReceivedMsg();
 
@@ -45,11 +39,11 @@ msg_info.transitionReplyMessage = function () {
     sessionStorage.setItem("createMsgType", "reply");
     let msgCellList = [sessionStorage.getItem("msgUrl")];
     sessionStorage.setItem("sendMsgList", JSON.stringify(msgCellList));
-    location.href = "create_message.html";
+    create_msg.loadCreateMessage();
 }
 
 msg_info.transitionTransferMessage = function () {
     sessionStorage.setItem("createMsgType", "transfer");
     sessionStorage.removeItem("sendMsgList");
-    location.href = "create_message.html";
+    create_msg.loadCreateMessage();
 }

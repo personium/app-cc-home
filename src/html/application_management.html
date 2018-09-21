@@ -3,49 +3,14 @@
 <html>
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous">
-    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/personium.css">
-    <link rel="stylesheet" href="https://demo.personium.io/app-cc-home/__/html/css/homeapp.css">
-    <link href='https://demo.personium.io/app-cc-home/__/html/css/common.css' rel='stylesheet' type='text/css'>
-    <link href='https://demo.personium.io/app-cc-home/__/html/css/application_mgr.css' rel='stylesheet' type='text/css'>
-
-    <link href='https://demo.personium.io/HomeApplication/__/appcell-resources/css/bootstrap-switch/bootstrap-switch.min.css' rel='stylesheet' type='text/css'>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/8.4.3/i18next.min.js"></script>
-    <script src="https://unpkg.com/i18next-xhr-backend/i18nextXHRBackend.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/2.0.0/i18nextBrowserLanguageDetector.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/bootstrap-switch/bootstrap-switch.min.js"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <script>
-        FontAwesomeConfig = {
-            searchPseudoElements: true
-        };
-    </script>
-    <script src="https://demo.personium.io/app-cc-home/__/html/js/utils.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/html/js/personium.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/html/js/load.i18n.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/html/js/common.js"></script>
-    <script src="https://demo.personium.io/app-cc-home/__/html/js/app_manage.js"></script>
-    <script src="https://demo.personium.io/HomeApplication/__/appcell-resources/js/demo.js"></script>
-
-    <title>
-        Personium Cell
-    </title>
 </head>
 
 <body>
     <header>
-        <a class="header-btn pn-back-btn pn-btn" href="javascript:void(0)" onclick="cm.moveBackahead();">
+        <a class="header-btn pn-back-btn pn-btn" href="javascript:void(0)" onclick="personium.backSubContent();">
             <i id="back_btn" class="fas fa-angle-left fa-2x header-ic-01"></i>
         </a>
         <span data-i18n="Application"></span>
@@ -59,11 +24,11 @@
                     <div class="panel-body">
                         <ul class="list">
                             <li>
-                                <a href="#" class="list-group-item disabled" onclick="app_manage.openAppliDelPanel(); return false;" data-i18n="ApplicationDelete">
+                                <a href="javascript:void(0)" class="list-group-item disabled" onclick="app_manage.openAppliDelPanel(); return false;" data-i18n="ApplicationDelete">
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="list-group-item" onclick="app_manage.openBoxInstall(); return false;" data-i18n="BoxInstall">
+                                <a href="javascript:void(0)" class="list-group-item" onclick="app_manage.openBoxInstall(); return false;" data-i18n="BoxInstall">
                                 </a>
                             </li>
                         </ul>

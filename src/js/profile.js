@@ -1,14 +1,16 @@
 var profile = {};
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/cropper/3.1.4/cropper.min.js");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    styleList.push("https://demo.personium.io/HomeApplication/__/appcell-resources/css/cropper/cropper.min.css");
-    styleList.push("https://demo.personium.io/HomeApplication/__/appcell-resources/css/cropper/cropper_circle_mask.css");
-    return styleList;
+// Load profile screen
+profile.loadProfile = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/profile.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        profile.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
 /**
@@ -43,26 +45,22 @@ profile.Control_Input_Editer = function(pushed_btn, target_input) {
     }
 }
 
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(function () {
-        /*Edit button clicked action*/
-        $('#edit-btn').on('click', function () {
-            profile.Control_Input_Editer($(this));
-        })
+profile.init = function() {
+    /*Edit button clicked action*/
+    $('#edit-btn').on('click', function () {
+        profile.Control_Input_Editer($(this));
+    })
 
-        // Create Cropper Modal
-        ut.createCropperModal({ dispCircleMaskBool: true });
-        cm.i18nSetProfile();
-        profile.setProfileValue();
-    });
+    // Create Cropper Modal
+    ut.createCropperModal({ dispCircleMaskBool: true });
+    profile.setProfileValue();
 }
 
 profile.setProfileValue = function () {
     let cellUrl = JSON.parse(sessionStorage.getItem("sessionData")).cellUrl;
-    $("#user-name-form").attr("data-i18n", "[placeholder]profTrans:myProfile_DisplayName");
-    $("#description-form-area").attr("data-i18n", "profTrans:myProfile_Description");
-    $("div.my_icon").prepend('<img class="user-icon" style="margin: auto;" id="idImgFile" data-i18n="[src]profTrans:myProfile_Image" src="#" alt="image" />');
+    $("#user-name-form").attr("data-i18n", "[placeholder]profTrans:myProfile_DisplayName").localize();
+    $("#description-form-area").attr("data-i18n", "profTrans:myProfile_Description").localize();
+    $("div.my_icon").prepend('<img class="user-icon" style="margin: auto;" id="idImgFile" data-i18n="[src]profTrans:myProfile_Image" src="#" alt="image" />').localize();
     $("div.my_icon").prepend('<input type="file" class="fileUpload" onclick="profile.clearInput(this);" onchange="profile.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile" accept="image/*" style="display: none">');
     $("div.my_icon>span").click(function () {
         profile.editProfileImage();

@@ -1,35 +1,29 @@
 var extcell_link_role_list = {};
-extcell_link_role_list.roleList = {};
-extcell_link_role_list.linksRoleList = {};
-extcell_link_role_list.roleCustom = [];
-extcell_link_role_list.extCellUrl = sessionStorage.getItem("extCellUrl");
-if (!extcell_link_role_list.extCellUrl) {
-    location.href = "./links.html";
-}
-extcell_link_role_list.extCellUrl = ut.changeLocalUnitToUnitUrl(extcell_link_role_list.extCellUrl);
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
-}
-
-/*** new ***/
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(extcell_link_role_list.init);
+// Load extcell_link_role_list screen
+link_info.loadExtCellLinkRoleList = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/extcell_link_role_list.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        extcell_link_role_list.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
 extcell_link_role_list.init = function () {
     // Initialization
+    extcell_link_role_list.roleList = {};
+    extcell_link_role_list.linksRoleList = {};
+    extcell_link_role_list.roleCustom = [];
+    extcell_link_role_list.extCellUrl = sessionStorage.getItem("extCellUrl");
+    extcell_link_role_list.extCellUrl = ut.changeLocalUnitToUnitUrl(extcell_link_role_list.extCellUrl);
+
     sessionStorage.removeItem("roleList");
     sessionStorage.removeItem("boxName");
     sessionStorage.removeItem("linksList");
-    cm.i18nSetProfile();
-    cm.i18nSetBox();
 
     extcell_link_role_list.displayBoxRoleList();
 }
@@ -52,15 +46,13 @@ extcell_link_role_list.displayBoxRoleList = function () {
                 extcell_link_role_list.roleCustom.push(res[i].Name);
             }
         }
-        let no = 0;
         for (var boxName in extcell_link_role_list.roleList) {
-            extcell_link_role_list.displayBoxRole(boxName, no);
-            no++;
+            extcell_link_role_list.displayBoxRole(boxName);
         }
-        extcell_link_role_list.displayBoxRole(null, no);
+        extcell_link_role_list.displayBoxRole(null);
     })
 }
-extcell_link_role_list.displayBoxRole = function (boxName, no) {
+extcell_link_role_list.displayBoxRole = function (boxName) {
     let transDispName = "profTrans:" + boxName + "_DisplayName";
     let transImage = "[src]profTrans:" + boxName + "_Image";
     let imgStyle = "style='border-radius: 10px;'";
@@ -70,7 +62,7 @@ extcell_link_role_list.displayBoxRole = function (boxName, no) {
     }
     let html = [
         '<li>',
-            '<a href="#" onclick="extcell_link_role_list.transitionAccountLinks(\''+boxName+'\')">',
+            '<a href="javascript:void(0)" onclick="extcell_link_role_list.transitionAccountLinks(\''+boxName+'\')">',
                 '<div class="pn-list">',
                     '<div class="pn-list-icon app-icon">',
                         '<img class="img-fluid" ' + imgStyle + ' data-i18n="' + transImage + '">',
@@ -79,16 +71,17 @@ extcell_link_role_list.displayBoxRole = function (boxName, no) {
                         '<span class="user-name" data-i18n="' + transDispName + '"></span>',
                     '</div>',
                     '<span class="pn-list-batch role-list-batch">',
-                        '<span id="roleLinksCnt' + no + '"></span>',
+                        '<span id="roleLinksCnt_' + boxName + '"></span>',
                     '</span>',
                 '</div>',
             '</a>',
         '</li>'
     ].join("");
     $("#roles ul").append(html).localize();
-    extcell_link_role_list.displayLinksCount(boxName, no);
+    extcell_link_role_list.displayLinksCount(boxName);
 }
 extcell_link_role_list.displayLinksCount = function (boxName, no) {
+    extcell_link_role_list.linksRoleList[boxName] = [];
     personium.getExtCellRoleList(cm.getMyCellUrl(), cm.getAccessToken(), sessionStorage.getItem("extCellUrl")).done(function (data) {
         var results = data.d.results;
         let count = 0;
@@ -106,14 +99,15 @@ extcell_link_role_list.displayLinksCount = function (boxName, no) {
             }
 
             if (boxName == roleBox) {
-                if (!extcell_link_role_list.linksRoleList[boxName]) {
-                    extcell_link_role_list.linksRoleList[boxName] = [];
-                }
                 extcell_link_role_list.linksRoleList[boxName].push(roleName);
                 count++;
             }
         }
-        if (count > 0) $("#roleLinksCnt" + no).html(count);
+        if (count > 0) {
+            $("#roleLinksCnt_" + boxName).html(count);
+        } else {
+            $("#roleLinksCnt_" + boxName).html("");
+        }
     })
 }
 extcell_link_role_list.transitionAccountLinks = function (boxName) {
@@ -130,6 +124,6 @@ extcell_link_role_list.transitionAccountLinks = function (boxName) {
     } else {
         sessionStorage.removeItem("linksList");
     }
-    
-    location.href = "extcell_link_role.html";
+
+    atr.loadExtCellLinkRole();
 }

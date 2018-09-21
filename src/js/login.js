@@ -1,8 +1,14 @@
 var lg = {};
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
+// Load login screen
+lg.loadLogin = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/login.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        lg.initTarget();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
 lg.initTarget = function () {
@@ -175,7 +181,10 @@ lg.sendAccountNamePw = function(username, pw) {
             password: pw,
             p_cookie: true
         },
-        headers: {'Accept':'application/json'}
+        headers: {
+            'Accept': 'application/json',
+            'content-type': 'application/x-www-form-urlencoded'
+        }
     }).done(function(data) {
                 data.username=username;
                 data.cellUrl = lg.rootUrl;
@@ -190,7 +199,7 @@ lg.sendAccountNamePw = function(username, pw) {
                 data.logoutUrl = location.origin + location.pathname + location.search;
                 sessionStorage.setItem("sessionData", JSON.stringify(data));
                 cm.setUserDate(data);
-                cm.loadMain();
+                ha.loadMain();
     }).fail(function(){
                 // login failed
                 lg.dispErrorMessage(i18next.t("incorrectAccountOrPass"));

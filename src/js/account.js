@@ -1,28 +1,29 @@
 var account = {};
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
-}
-
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(function () {
-        account.createAccountList();
+// Load account screen
+account.loadAccount = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/account.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        account.init();
+    }).fail(function (error) {
+        console.log(error);
     });
 }
 
-// アカウントリストの作成
+account.init = function () {
+    cm.Edit_Btn_Event();
+    account.createAccountList();
+}
+
+// Create account list
 account.createAccountList = function () {
     personium.getAccountList(cm.getMyCellUrl(), cm.getAccessToken()).done(function (data) {
         account.dispAccountList(data);
-        cm.Control_Slide_List();
+        cm.Delete_List_Event();
     });
 };
-// アカウントリストの表示
+// View account list
 account.dispAccountList = function (json) {
     $(".slide-list").empty();
     var results = json.d.results;
@@ -43,16 +44,16 @@ account.dispAccountList = function (json) {
             html += '<button class="delete-check-btn">';
             html += '<i class="fas fa-minus-circle fa-2x"></i>';
             html += '</button>';
-            html += '<div class="account-name slide-list-line-contents ellipsisText"><a href="#" onclick="account.transitionAccountLinks(this, \'' + acc.Name + '\', \'' + type + '\')"><p class="ellipsisText" style="margin-right:25px;">' + typeImgTag + acc.Name + '</p></a></div>';
+            html += '<div class="account-name slide-list-line-contents ellipsisText"><a href="javascript:void(0)" onclick="account.transitionAccountLinks(this, \'' + acc.Name + '\', \'' + type + '\')"><p class="ellipsisText" style="margin-right:25px;">' + typeImgTag + acc.Name + '</p></a></div>';
         } else {
-            html += '<div style="padding-left: 70px;" class="account-name slide-list-line-contents ellipsisText login-ic"><a href="#" onclick="account.transitionAccountLinks(this, \'' + acc.Name + '\', \'' + type + '\')"><p class="ellipsisText" style="margin-right:25px;">' + typeImgTag + acc.Name + '</p></a></div>';
+            html += '<div style="padding-left: 70px;" class="account-name slide-list-line-contents ellipsisText login-ic"><a href="javascript:void(0)" onclick="account.transitionAccountLinks(this, \'' + acc.Name + '\', \'' + type + '\')"><p class="ellipsisText" style="margin-right:25px;">' + typeImgTag + acc.Name + '</p></a></div>';
         }
         html += '<button class="line-delete-btn" data-i18n="Del" onClick="account.deleteAccount(\'' + acc.Name + '\');return(false)"></button>';
         html += '</div></li>';
         $(".slide-list").append(html).localize();
     }
     html = '<li>';
-    html += '<a href="select_accounttype.html">';
+    html += '<a onclick="sel_accType.loadSelectAccountType();">';
     html += '<div class="slide-list-line">';
     html += '<div class="new-account slide-list-line-contents add-setting" data-i18n="CreateAccount">';
     html += '</div></div></a></li>';
@@ -63,10 +64,10 @@ account.transitionAccountLinks = function (obj, acc, type) {
     if ($(obj).hasClass("edit_margin")) {
         if (!$(obj).parent().hasClass("login-ic")) {
             sessionStorage.setItem("accountType", type);
-            location.href = "./edit_account.html";
+            edit_account.loadEditAccount();
         }
     } else {
-        location.href = "./account_info.html";
+        accinfo.loadAccountInfo();
     }
 }
 account.deleteAccount = function (name) {
@@ -97,12 +98,12 @@ account.createEditAccount = function (name, type) {
     cm.setTitleMenu("EditAccount", true);
 };
 
-// 割り当て先アカウント名設定
+// Assigned account name setting
 account.setLinkAccName = function (accName, no) {
     st.linkAccName = accName;
     st.linkAccNameNo = no;
 }
-// アカウント割り当てロール一覧作成
+// Create account assignment role list
 account.createAccountRole = function (obj, accName, no) {
     // Do not process while editing
     if ($(obj).hasClass('edit-ic')) return false;

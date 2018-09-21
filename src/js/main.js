@@ -1,13 +1,5 @@
 ﻿var ha = {};
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
-}
-
 var timer = false;
 $(window).on('resize', function () {
     if (timer !== false) {
@@ -21,6 +13,19 @@ $(window).on('resize', function () {
     }, 50);
 }).resize();
 
+// Load main screen
+ha.loadMain = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/main.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        ha.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
+}
+
 ha.init = function() {
     ut.loadStyleSheet();
     ut.loadScript(function () {
@@ -28,8 +33,6 @@ ha.init = function() {
 
         let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
         let isDemo = (tempMyProfile.IsDemo || false);
-
-        ha.displaySystemMenuItems();
 
         //if (isDemo) {
         //    demo.createProfileHeaderMenu();
@@ -67,25 +70,25 @@ ha.createSideMenuList = function (sideMenuId) {
     // profile edit
     let paramObj = {
         title: "EditProfile",
-        callback: function () { cm.transitionHomeApp('profile.html'); }
+        callback: function () { profile.loadProfile(); }
     };
     personium.createSideMenuItem(paramObj);
     // change password
     paramObj = {
         title: "ChangePass",
-        callback: function () { cm.transitionHomeApp('change_password.html'); }
+        callback: function () { chg_pass.loadChangePassword(); }
     };
     personium.createSideMenuItem(paramObj);
     // setting menu
     paramObj = {
         title: "Account",
-        callback: function () { cm.transitionHomeApp('account.html'); }
+        callback: function () { account.loadAccount(); }
     };
     personium.createSideMenuItem(paramObj);
     // Application Manager
     paramObj = {
         title: "Application",
-        callback: function () { cm.transitionHomeApp('application_management.html'); }
+        callback: function () { chg_lang.loadAppManage(); }
     };
     personium.createSideMenuItem(paramObj);
     // Hiding role / relation management
@@ -102,13 +105,13 @@ ha.createSideMenuList = function (sideMenuId) {
     // change language
     paramObj = {
         title: "ChangeLng",
-        callback: function () { cm.transitionHomeApp("change_language.html"); }
+        callback: function () { chg_lang.loadChangeLanguage(); }
     };
     personium.createSideMenuItem(paramObj);
     // log out
     paramObj = {
         title: "Logout",
-        callback: function () { $('.double-btn-modal').modal('show'); }
+        callback: function () { $('#logout_modal').modal('show'); }
     };
     personium.createSideMenuItem(paramObj);
 
@@ -156,83 +159,6 @@ ha.createReLoginModal = function () {
     $('#b-relogin-ok').on('click', function () { cm.logout(); });
 }
 
-ha.displaySystemMenuItems = function () {
-    let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
-    let isDemo = (tempMyProfile.IsDemo || false);
-    let systemMenuItems = [
-        {
-            "name": "Community",
-            "icon": "003lighticons-03full.png",
-            "url": "socialgraph.html"
-        }, {
-            "name": "AppMarket", // With context properly set, it can be AppMarket_biz
-            "icon": "001lighticons-31full.png",
-            "url": "applicationmarket.html"
-        }, {
-            "name": "Message",
-            "icon": "001lighticons-02full.png",
-            "url": "message.html"
-        }
-    ];
-
-    /*
-     * For older profile.json that might not have CellType key,
-     * assign default cell type (Person) to it.
-     */
-    let cellType = cm.getCellType();
-
-    for (var i in systemMenuItems) {
-        var app = systemMenuItems[i];
-
-        var imgTag = $('<img>', {
-            src: 'https://demo.personium.io/HomeApplication/__/icons/' + app.icon,
-            class: 'p-app-icon'
-        });
-
-        var divTag1 = $('<div>', {
-            class: 'p-app-icon'
-        });
-        divTag1.append($(imgTag));
-
-        if (app.name == "Message") {
-            var spanTag = $('<span>', {
-                class: 'badge',
-                id: 'messageCnt'
-            });
-            divTag1.append($(spanTag));
-            personium.getReceivedMessageCntAPI(cm.getMyCellUrl(), cm.getAccessToken()).done(function (res) {
-                var results = res.d.results;
-                var cnt = 0;
-                for (var i in results) {
-                    if (!results[i]["_Box.Name"]) {
-                        cnt++;
-                    }
-                }
-
-                if (cnt > 0) $("#messageCnt").html(cnt);
-            })
-        }
-
-        var divTag2 = $('<div>', {
-            class: 'p-app-name',
-            'data-i18n': app.name,
-            'data-i18n-options': JSON.stringify({ context: cellType })
-        });
-
-        var aTag = $('<a>', {
-            class: 'p-app'
-        });
-        if (isDemo && _.contains(["Community", "Message"], app.name)) {
-            aTag.attr('href', "javascript:void(0)");
-        } else {
-            aTag.attr('href', app.url);
-        }
-        aTag.append($(divTag1), $(divTag2));
-
-        $("#dashboard").append($(aTag));
-    }
-};
-
 ha.dispInsAppList = function () {
     $(".app-list").empty();
     personium.getBoxList(cm.getMyCellUrl(), cm.getAccessToken()).done(function (data) {
@@ -271,7 +197,7 @@ ha.dispInsAppListSchema = function (schema, boxName, id) {
         var html = '';
         if (status.indexOf('ready') >= 0) {
             var msgCnt = '';
-            personium.getNotCompMessageCnt().done(function (data) {
+            personium.getNotCompMessageCnt(cm.getMyCellUrl(), cm.getAccessToken()).done(function (data) {
                 if (data.d.__count > 0) {
                     var count = 0;
                     for (i in data.d.results) {
@@ -333,7 +259,7 @@ ha.createLaunchLink = function (schema, boxName, msgCnt, id) {
         });
 
         let aTag = $('<a>', {
-            href: '#',
+            href: 'javascript:void(0)',
             class: 'ins-app-icon',
             onClick: 'return cm.execApp(this)',
             'data-open-new-window': appLaunchInfo.openNewWindow, // $(this).data('openNewWindow')

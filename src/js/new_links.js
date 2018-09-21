@@ -1,23 +1,21 @@
 var new_links = {};
-new_links.links_list = [];
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js");
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
-}
-
-/*** new ***/
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(new_links.init);
+// Load new_links screen
+new_links.loadNewLinks = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/new_links.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        new_links.init();
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
+    });
 }
 
 new_links.init = function () {
     // Initialization
+    new_links.links_list = [];
     new_links.Add_Search_Event();
 }
 /**
@@ -80,7 +78,7 @@ new_links.searchCells = function (searchVal) {
             new_links.Add_Check_Mark();
         });
     }).fail(function () {
-        // ライブラリから検索
+        // Search from library
         let res;
         new_links.searchDirectoryAPI(searchVal).done(function (data) {
             res = data.d.results;
@@ -94,7 +92,7 @@ new_links.searchCells = function (searchVal) {
                 }
                 new_links.Add_Check_Mark();
             } else {
-                // 無ければ見つからないメッセージ
+                // Messages not found if not found
                 new_links.displayNotExtCellList();
             }
         })
@@ -193,14 +191,15 @@ new_links.addExternalCell = function () {
         }).fail(function (data) {
             var res = JSON.parse(data.responseText);
             if (res.code.indexOf("PR409") >= 0) {
-                // 衝突エラーは無視
+                // Ignore the collision error
                 addCnt++;
             } else {
                 alert("An error has occurred.\n" + res.message.value);
             }
         }).always(function () {
             if (addCnt >= listLen) {
-                location.href = "links.html";
+                links.init();
+                personium.backSubContent();
             }
         });
     }

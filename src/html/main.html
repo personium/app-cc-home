@@ -19,19 +19,19 @@
                         <a href="profile.html">プロフィール編集</a>
                     </li>
                     <li class="menu-list">
-                        <a href="#">パスワード変更</a>
+                        <a href="javascript:void(0)">パスワード変更</a>
                     </li>
                     <li class="menu-list">
-                        <a href="account.html">アカウント</a>
+                        <a href="javascript:void(0)">アカウント</a>
                     </li>
                     <li class="menu-list">
-                        <a href="#">アプリ管理</a>
+                        <a href="javascript:void(0)">アプリ管理</a>
                     </li>
                     <li class="menu-list">
-                        <a href="#">言語</a>
+                        <a href="javascript:void(0)">言語</a>
                     </li>
                     <li id="logout" class="menu-list">
-                        <a href="#">ログアウト</a>
+                        <a href="javascript:void(0)">ログアウト</a>
                     </li>
                 </ul>
             </div>
@@ -48,7 +48,7 @@
     <main>
         <!--user account infomation-->
         <div class="user-account">
-            <div class="my_icon user-icon user-icon-small">
+            <div class="main_my_icon user-icon user-icon-small">
             </div>
             <div class="account-info">
                 <div class="user-name"></div>
@@ -61,7 +61,7 @@
 
         <!--menu-->
         <div class="menu">
-            <a href="javascript:void(0)" onclick="cm.transitionHomeApp('links.html');">
+            <a href="javascript:void(0)" onclick="create_msg.loadLinks();">
                 <div class="links">
                     <svg class="menu-ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
                         <title>ic_links</title>
@@ -74,7 +74,7 @@
                 </div>
             </a>
 
-            <a href="javascript:void(0)" onclick="cm.transitionHomeApp('applicationmarket.html');">
+            <a href="javascript:void(0)" onclick="am.loadApplicationMarket();">
                 <div class="app-market">
                     <svg class="menu-ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
                         <title>ic_app_market</title>
@@ -89,7 +89,7 @@
                 </div>
             </a>
 
-            <a href="javascript:void(0)" onclick="cm.transitionHomeApp('message.html');">
+            <a href="javascript:void(0)" onclick="message.loadMessage();">
                 <div class="message">
                     <svg class="menu-ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
                         <title>ic_message</title>

@@ -1,25 +1,23 @@
 var sel_accType = {};
 
-addLoadScript = function (scriptList) {
-    scriptList.push("https://cdn.jsdelivr.net/npm/jdenticon@1.8.0");
-    return scriptList;
-}
-addLoadStyleSheet = function (styleList) {
-    return styleList;
-}
-
-function init() {
-    ut.loadStyleSheet();
-    ut.loadScript(function () {
+// Load select_accounttype screen
+sel_accType.loadSelectAccountType = function () {
+    personium.loadContent(cm.homeAppUrl + "__/html/select_accounttype.html").done(function (data) {
+        let out_html = $($.parseHTML(data));
+        let id = personium.createSubContent(out_html, true);
+        $('body > div.mySpinner').hide();
+        $('body > div.myHiddenDiv').show();
+    }).fail(function (error) {
+        console.log(error);
     });
 }
 
 sel_accType.dispPasswordAccount = function () {
     sessionStorage.setItem("accountType", "basic");
-    location.href = "new_account.html";
+    new_account.loadNewAccount();
 };
 
 sel_accType.dispGoogleAccount = function () {
     sessionStorage.setItem("accountType", "oidc:google");
-    location.href = "new_account.html";
+    new_account.loadNewAccount();
 };
