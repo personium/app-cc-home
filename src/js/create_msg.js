@@ -30,7 +30,7 @@ create_msg.init = function () {
     create_msg.displayAddress();
 }
 create_msg.Add_Btn_Event = function () {
-    $('.double-btn-modal .ok-btn').click(function () {
+    $('#confSendMsg_modal .ok-btn').off().click(function () {
         create_msg.sendMessage();
     });
     $('#create_send_btn').click(function () {
