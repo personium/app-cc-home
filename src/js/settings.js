@@ -38,7 +38,7 @@ st.initSettings = function() {
     $('#b-ins-bar-ok').on('click', function () { st.execBarInstall(); });
     $('#b-unins-box-ok').on('click', function () { st.execUninstallBox(); });
 
-    $("#modal-confirmation").on("hidden.bs.modal", function () {
+    $("#modal-confirmation").off().on("hidden.bs.modal", function () {
         st.updUser = null;
         st.updBox = null;
         $('#b-edit-relconfirm-ok').css("display","none");

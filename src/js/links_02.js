@@ -15,7 +15,7 @@ link_info.loadLinks02 = function () {
 }
 
 link_info.Add_Btn_Event = function () {
-    $('#confDeleteLink_modal .ok-btn').click(function () {
+    $('#confDeleteLink_modal .ok-btn').off().click(function () {
         link_info.restDeleteExtCellAPI();
     });
     $(link_info.id + ' .header-btn-right').click(function () {
