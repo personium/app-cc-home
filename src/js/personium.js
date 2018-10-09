@@ -477,8 +477,14 @@ personium.recursiveDeleteBoxAPI = function (cellUrl, token, boxName) {
 /* Transition method */
 personium.init = function () {
     if (!cm.user) {
-        cm.user = {};
-        lg.loadLogin();
+        var match = location.search.match(/id_token=(.*?)(&|$)/);
+        if (match) {
+            var gToken = decodeURIComponent(match[1]);
+            lg.googleLogin(gToken);
+        } else {
+            cm.user = {};
+            lg.loadLogin();
+        }
     } else {
         ha.loadMain();
     }

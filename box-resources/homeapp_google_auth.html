@@ -18,45 +18,20 @@
             var token = "";
             var match = location.hash.match(/id_token=(.*?)(&|$)/);
             if (match) {
-                token = decodeURIComponent(match[1]);
-                console.log(match);
-                console.log("token : " + token);
+                token = match[1];
             }
             var target = "";
             var matchState = location.hash.match(/state=(.*?)(&|$)/);
             if (matchState) {
                 target = decodeURIComponent(matchState[1]);
-                console.log("target : " + target);
             }
 
             if (token) {
-                var cellUrl = sessionStorage.getItem("targetCellUrl");
-                $.ajax({
-                    type: "POST",
-                    url: cellUrl + "__token",
-                    data: {
-                        grant_type: 'urn:x-personium:oidc:google',
-                        id_token: token
-                    },
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    }
-                }).done(function (data) {
-                    data.cellUrl = cellUrl;
-                    var i = cellUrl.indexOf("/"); // first slash
-                    i = cellUrl.indexOf("/", i + 2);  // second slash
-                    data.baseUrl = cellUrl.substring(0, i + 1);
-                    data.profile = JSON.parse(sessionStorage.getItem("myProfile"));
-                    //data.userName = username;
-                    data.userName = "googleAccount";
-                    data.logoutUrl = target;
-                    sessionStorage.setItem("sessionData", JSON.stringify(data));
-                    location.href = target;
-                }).fail(function (data) {
-                    console.log(data);
-                    logout(target);
-                });
+                if (target.indexOf("?") < 0) {
+                    location.href = target + "?id_token=" + token;
+                } else {
+                    location.href = target + "&id_token=" + token;
+                }
             } else {
                 logout(target);
             }

@@ -11,6 +11,40 @@ lg.loadLogin = function () {
     });
 }
 
+lg.googleLogin = function (gToken) {
+    var cellUrl = sessionStorage.googleLoginCell;
+    $.ajax({
+        type: "POST",
+        url: cellUrl + "__token",
+        data: {
+            grant_type: 'urn:x-personium:oidc:google',
+            id_token: gToken
+        },
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }).done(function (data) {
+        data.cellUrl = cellUrl;
+        var i = cellUrl.indexOf("/"); // first slash
+        i = cellUrl.indexOf("/", i + 2);  // second slash
+        data.baseUrl = cellUrl.substring(0, i + 1);
+        data.profile = JSON.parse(sessionStorage.getItem("myProfile"));
+        //data.userName = username;
+        data.userName = "googleAccount";
+        var pos = location.href.indexOf("id_token");
+        if (pos >= 0) {
+            // Exclude conjunctions that preceded id_token
+            data.logoutUrl = location.href.substring(0, pos - 1);
+        }
+        
+        sessionStorage.setItem("sessionData", JSON.stringify(data));
+        location.href = data.logoutUrl;
+    }).fail(function (data) {
+        console.log(data);
+    });
+}
+
 lg.initTarget = function () {
     ut.loadScript(function () {
         var mode = "local";
@@ -57,6 +91,7 @@ lg.initTarget = function () {
         });
         $("#gLogin").on("click", function (e) {
             var homeUrl = location.href;
+            sessionStorage.googleLoginCell = lg.rootUrl;
             var url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=102363313215-408im4hc7mtsgrda4ratkro2thn58bcd.apps.googleusercontent.com&response_type=code+id_token&scope=openid%20email%20profile&redirect_uri=https%3a%2f%2fdemo%2epersonium%2eio%2fapp%2dcc%2dhome%2f__%2fhtml%2fhomeapp_google_auth%2ehtml&display=popup&nonce=personium&state=" + homeUrl;
             window.location.href = url;
         });
