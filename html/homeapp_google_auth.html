@@ -1,0 +1,46 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <title>OpenID connect authentication completed!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" />
+
+</head>
+<body>
+    <div class="mySpinner">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div id="implicit">
+        <script type="text/javascript">
+            var token = "";
+            var match = location.hash.match(/id_token=(.*?)(&|$)/);
+            if (match) {
+                token = match[1];
+            }
+            var target = "";
+            var matchState = location.hash.match(/state=(.*?)(&|$)/);
+            if (matchState) {
+                target = decodeURIComponent(matchState[1]);
+            }
+
+            if (token) {
+                if (target.indexOf("?") < 0) {
+                    location.href = target + "?id_token=" + token;
+                } else {
+                    location.href = target + "&id_token=" + token;
+                }
+            } else {
+                logout(target);
+            }
+
+            // Logout
+            function logout(target, errorMsg) {
+                location.href = target;
+            };
+
+        </script>
+    </div>
+</body>
+</html>

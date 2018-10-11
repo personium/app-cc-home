@@ -1,0 +1,704 @@
+﻿/**
+ * Personium
+ * Copyright 2018 FUJITSU LIMITED
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * The followings should be shared among applications.
+ */
+
+@charset "UTF-8";
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #F7F7F7;
+}
+
+header {
+    line-height: 4.0rem;
+    background-image: url(../img/personium_header_bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: #ffffff;
+}
+
+.pn-back-btn,
+#drawer_btn,
+.header-btn-right {
+    color: #ffffff;
+}
+
+.pn-back-btn,
+#drawer_btn {
+    left: 20px;
+}
+
+.header-ic-01 {
+    width: 18px !important;
+}
+
+.header-ic-02 {
+    width: 22px !important;
+}
+
+.header-ic-03 {
+    width: 28px !important;
+}
+
+/*User Icon Size*/
+
+.user-icon-xs {
+    width: 24px;
+    height: 24px;
+}
+
+.user-icon-small {
+    width: 80px;
+    height: 80px;
+}
+
+.user-icon-middle {
+    width: 100px;
+    height: 100px;
+}
+
+.user-icon-large {
+    width: 120px;
+    height: 120px;
+}
+
+main {
+    flex-direction: column;
+    flex: 1 1 auto;
+    position: relative;
+    height: 100%;
+    background-color: #F7F7F7;
+}
+
+.home-footer {
+    padding-bottom: 5.0rem;
+}
+
+/*-------------------------top(From here)-------------------------*/
+
+/*User account（Overall）*/
+
+.user-account {
+    width: 100%;
+    padding: 15px 0px 20px 20px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+.user-icon {
+    background-size: cover;
+    position: relative;
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.user-icon>img {
+    overflow: hidden;
+    object-fit: cover;
+}
+
+/*Use name*/
+
+.user-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/*Account*/
+
+.account {
+    font-size: 1.2rem;
+}
+
+/*Menu*/
+
+.menu {
+    position: relative;
+    display: -webkit-flex;
+    display: flex;
+    padding: 0px 10px 20px;
+    flex: 0 0 auto;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
+}
+
+.menu>a {
+    -webkit-flex: 1;
+    flex: 1;
+    -webkit-flex: 1 1;
+    flex: 1 1;
+    -webkit-flex: 1 1 0;
+    flex: 1 1 0;
+    text-align: center;
+    color: #7D7F82;
+}
+
+.menu-ic {
+    width: 1em;
+    font-size: 2em;
+    fill: #7D7F82;
+}
+
+/*Application and Service(Overall)*/
+
+.app-and-service {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    height: 65%;
+    overflow-y: auto;
+}
+
+/*Application & Service's title*/
+
+.title {
+    background-color: #E5E6EB;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 1.0rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    flex: 0 0 auto;
+}
+
+/*Application list*/
+
+.app-list {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 15px;
+    flex: 1 1 auto;
+    overflow: auto;
+    background-color: #F6F7FB;
+    align-content: flex-start;
+}
+
+/*Application icon*/
+
+.app-icon {
+    width: 60px;
+    margin: 5px 15px;
+    text-align: center;
+    height: 100%;
+}
+
+.app-icon>img {
+    border-radius: 10px;
+}
+
+.app-name {
+    word-wrap: break-word;
+    font-size: 0.8rem;
+    line-height: 1.0rem;
+}
+
+/*-------------------------top page(To here)-------------------------*/
+
+/*-------------------------links page(From here)-------------------------*/
+
+.pn-list>.account-info>.user-name {
+    font-weight: normal;
+}
+
+.edit-list {
+    display: flex;
+    width: 100%;
+    position: relative;
+    height: 3.0rem;
+    background-color: #ffffff;
+    height: 80px;
+}
+
+.edit-list>span {
+    flex: 1;
+    position: relative;
+    line-height: 80px;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.edit-list>span::before {
+    font-family: "Font Awesome 5 Free";
+    font-size: 1.2em;
+    vertical-align: 0px;
+    font-weight: 900;
+    left: 0;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    padding-right: 10px;
+}
+
+.add-member::before {
+    content: "\f055";
+}
+
+/*-------------------------community page(To here)-------------------------*/
+
+/*-------------------------community more detail page(From here)-------------------------*/
+
+.extcell-profile {
+    text-align: center;
+    padding: 20px;
+}
+
+/*User Profile Description Text*/
+
+.extcell-profile>.user-description,
+.extcell-profile>.user-cell-url {
+    text-align: left;
+    margin-top: 10px;
+}
+
+.extcell-profile>.user-cell-url {
+    margin-bottom: 0px;
+    font-size: 0.9rem;
+}
+
+.extcell-role-list {
+    border-top: 1px solid #999999;
+    background-color: #ffffff;
+}
+
+.list-icon-left {
+    margin: auto 15px;
+    width: 60px;
+    text-align: center;
+}
+
+.pn-list-text {
+    margin: auto 0;
+    flex: 1;
+    font-size: 1.2rem;
+}
+
+.role-icon{
+    margin: 0 10px;
+    color: #818181;
+}
+
+.role-name{
+}
+
+/*-------------------------community more detail page(To here)-------------------------*/
+
+/*-------------------------profile page(From here)-------------------------*/
+
+/*Each Profile Block*/
+
+.profile-edit-block {
+    margin: 20px;
+    margin-bottom: 0px;
+    border-bottom: 1px solid #999999;
+}
+
+/*Each Profile Block's Title*/
+
+.block-title-text {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+/*Each Profile Block's Icon*/
+
+.profile-ic {
+    width: 1em;
+    font-size: 2em;
+    vertical-align: middle;
+}
+
+/*User Pict Icon*/
+
+.user-ic {
+    fill: #FF8800;
+}
+
+.card-ic {
+    fill: #FF1C2B;
+}
+
+.qr-code-ic {
+    fill: #7D4297
+}
+
+/*User Icon(Picture)*/
+
+.user-name-and-icon {
+    padding: 15px 0px;
+    display: flex;
+}
+
+/*User Icon (Picture) Above Text*/
+
+.user-name-and-icon>.user-icon>span {
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    text-align: center;
+    background-color: rgba(2, 2, 2, .5);
+    color: #fff;
+    font-size: 0.85rem;
+    padding: 5px 0px;
+}
+
+.user-name-and-icon>.account-info {
+    font-size: 1.2rem;
+    height: 100%;
+    margin: auto;
+    margin-left: 20px;
+    margin-right: 0px;
+}
+
+.user-name-and-icon>.account-info>.account-info-title {
+    margin-bottom: 10px;
+}
+
+/*Edit Button("User Name & Icon" or "Description")*/
+
+.edit-btn {
+    float: right;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    padding: 0;
+    color: #7D7F82;
+    font-size: 1.2rem;
+}
+
+/*User Name Form*/
+
+#user-name-form {
+    font-size: 1.2rem;
+}
+
+/*Descriptio Form*/
+
+.description-text {
+    padding: 15px 0px;
+    font-size: 1.2rem;
+}
+
+#description-form {
+    font-size: 1.2rem;
+}
+
+#description-form-area {
+    margin: 15px 0px;
+}
+
+/*QR Code*/
+
+.user-qr-code {
+    text-align: center;
+}
+
+.user-cell-url {
+    margin-bottom: 15px;
+    font-size: 0.8rem;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: #ffffff;
+    border: 0;
+    color: #495057;
+}
+
+/*-------------------------profile page(To here)-------------------------*/
+
+/*-------------------------account page(From here)-------------------------*/
+
+/*Account Management Icon(header)*/
+
+.header-btn-right {
+    right: 20px;
+}
+
+/*-------------------------account page(To here)-------------------------*/
+
+/*-------------------------arrow to role page(From here)-------------------------*/
+
+.role-img-area {
+    display: inline-block;
+}
+
+.arrow-to-img {
+    display: table-cell;
+    margin-bottom: 1px;
+    vertical-align: middle;
+    padding: 10px;
+}
+
+.title-icon {
+    width: 27px;
+    margin: 0.43rem;
+    vertical-align: -12px;
+}
+
+.role-list {
+    background-color: #ffffff;
+    font-size: 1.2rem;
+}
+
+.role-list>ul>li {
+    height: 2.5rem;
+    line-height: 2.5rem;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.thin-border>ul>li {
+    border-bottom: 1px solid #f7f7f7;
+}
+
+/*-------------------------arrow to role page(To here)-------------------------*/
+
+/*-------------------------account infomation page(From here)-------------------------*/
+
+.title-large {
+    height: 4.0rem;
+    line-height: 4.0rem;
+}
+
+.title-large>.title-icon {
+    width: 3.0rem;
+    margin: 0.5rem;
+    vertical-align: -1.2em;
+}
+
+.edit-role::before {
+    content: "\f044";
+}
+
+.account-info-footer {
+    border-top: 1px solid #999999;
+}
+
+/*-------------------------account infomation page(To here)-------------------------*/
+
+/*-------------------------add new account page(From here)-------------------------*/
+
+.form-title {
+    width: 160px;
+    font-size: 1.4rem;
+    background-color: #ffffff;
+}
+
+.account-form {
+    height: 80px;
+    font-size: 1.4rem;
+}
+
+.form-no-border {
+    border: 0 !important;
+}
+
+.footer-btn-area {
+    padding: 15px;
+}
+
+/*-------------------------add new account page(To here)-------------------------*/
+
+/*-------------------------incoming message page(From here)-------------------------*/
+
+.incoming_msg {
+    flex-direction: column;
+    background-color: #ffffff;
+    height: 100%;
+}
+
+.sender::after {
+    content: "";
+}
+
+.message-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 20px;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+}
+
+.message-text {
+    font-size: 1.2rem;
+    padding: 20px;
+}
+
+.replay-btn-area {
+    padding: 5px 90px;
+}
+
+.replay-btn-area>button {
+    border: 0;
+    background-color: #ffffff;
+    color: #707070;
+}
+
+/*-------------------------incoming message page(To here)-------------------------*/
+
+/*-------------------------message page(From here)-------------------------*/
+
+.msg-menu-text {
+    margin: auto 10px auto 0px;
+    flex: 1;
+    position: relative;
+    font-size: 1.1rem;
+}
+
+.msg-menu-text>span {
+    display: table-cell;
+}
+
+.msg-list-icon {
+    font-size: 1.5rem;
+}
+
+.msg-menu-text-area {
+    width: 100%;
+    position: relative;
+}
+
+.msg-list-batch {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 2px;
+}
+
+/*-------------------------message page(To here)-------------------------*/
+
+/*-------------------------incoming message list page(From here)-------------------------*/
+
+.message-list {
+    margin: auto 0px;
+    flex: 1;
+    overflow: hidden;
+}
+
+.message-list-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.received-info {
+    position: relative;
+    width: 100%;
+    font-size: 1.0rem;
+}
+
+.received-date {
+    position: absolute;
+    right: 0;
+}
+
+.received-info,
+.message-list-text {
+    font-size: 0.85rem;
+}
+
+/*-------------------------incoming message list page(To here)-------------------------*/
+
+/*-------------------------create message page(From here)-------------------------*/
+
+.send-icon.disable {
+    opacity: 0.5;
+}
+
+.send-icon.active {
+    opacity: 1.0;
+}
+
+.to-address {
+    padding-right: 0;
+    min-height: 50px;
+    border-bottom: 1px solid #999999;
+}
+
+.to-address::after {
+    content: '';
+}
+
+.to-user-info-area {
+    padding-right: 32px;
+    font-size: 1.2rem;
+    padding: .375rem .75rem;
+}
+
+.to-address-info {
+    display: none;
+}
+
+.to-user-info {
+    display: inline-flex;
+    padding: 5px;
+    position: relative;
+}
+
+.to-user-info>img {
+    border-radius: 50%;
+    flex: 0 0 auto;
+    margin: auto;
+}
+
+.dlt-circle-btn {
+    color: #b4b4b4;
+    padding: 0;
+    display: flex;
+}
+
+.add-circle-btn {
+    color: #2979FF;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 0.9rem;
+    margin-right: .75rem;
+}
+
+.to-user-name {
+    margin: auto 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.create-title {
+    font-size: 1.2rem;
+    height: 44px;
+    border-bottom: 1px solid #999999;
+}
+
+.create-msg-ta:focus,
+.create-msg-ta:hover,
+.create-msg-ta:active {
+    outline: 0;
+    border-color: none;
+    box-shadow: none;
+}
+
+.create-msg {
+    min-height: calc(100% - 95px);
+    font-size: 1.2rem;
+}
