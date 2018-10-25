@@ -90,35 +90,43 @@ create_msg.displayAddress = function () {
 }
 create_msg.displayAddressInfo = function (cellUrl) {
     let html;
-    personium.getCell(cellUrl).done(function () {
-        let cellName = ut.getName(cellUrl);
-        let urlParse = $.url(cellUrl);
-        let transName = urlParse.attr('host') + "_" + cellName;
-        if (!i18next.exists(transName)) {
-            cm.registerProfI18n(cellUrl, transName, "profile", "Person");
+    let cellName = "";
+    personium.getCell(cellUrl).done(function (cellObj) {
+        cellName = cellObj.cell.name;
+    }).fail(function (xmlObj) {
+        if (xmlObj.status == "200") {
+            cellName = ut.getName(cellUrl);
         }
-        html = [
-            '<div class="to-user-info">',
+    }).always(function () {
+        if (cellName !== "") {
+            let urlParse = $.url(cellUrl);
+            let transName = urlParse.attr('host') + "_" + cellName;
+            if (!i18next.exists(transName)) {
+                cm.registerProfI18n(cellUrl, transName, "profile", "Person");
+            }
+            html = [
+                '<div class="to-user-info">',
                 '<img class="user-icon-xs" data-i18n="[src]profTrans:' + transName + '_Image" alt="">',
                 '<div class="to-user-name" data-i18n="profTrans:' + transName + '_DisplayName"></div >',
                 '<button class="pn-btn dlt-circle-btn" data-cell-url="' + cellUrl + '" onclick="create_msg.delAddress(this);">',
-                    '<i class="fas fa-times-circle fa-2x user-icon-xs"></i>',
+                '<i class="fas fa-times-circle fa-2x user-icon-xs"></i>',
                 '</button>',
-            '</div>'
-        ].join("");
-    }).fail(function () {
-        let cellName = ut.getName(cellUrl);
-        let cellImage = ut.getDefaultImage(cellUrl);
-        html = [
-            '<div class="to-user-info">',
+                '</div>'
+            ].join("");
+        } else {
+            cellName = i18next.t("NoTarget");
+            let cellImage = ut.getDefaultImage(cellUrl);
+            html = [
+                '<div class="to-user-info">',
                 '<img class="user-icon-xs" src="" alt="">',
                 '<div class="to-user-name">' + cellName + '</div >',
                 '<button class="pn-btn dlt-circle-btn" data-cell-url="' + cellUrl + '" onclick="create_msg.delAddress(this);">',
-                    '<i class="fas fa-times-circle fa-2x user-icon-xs"></i>',
+                '<i class="fas fa-times-circle fa-2x user-icon-xs"></i>',
                 '</button>',
-            '</div>'
-        ].join("");
-    }).always(function () {
+                '</div>'
+            ].join("");
+        }
+
         $('.to-address-info').append(html);
     })
 }

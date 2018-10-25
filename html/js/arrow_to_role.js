@@ -37,9 +37,16 @@ atr.displayMyImage = function () {
     $(".arrow-to-img .user-icon").eq(0).append('<img class="user-icon-large" data-i18n="[src]profTrans:myProfile_Image" src="" alt="user">');
 }
 atr.displayTargetImage = function () {
-    var transName = cm.getTargetProfTransName(atr.extCellUrl);
-    $(".arrow-to-img .font-weight-bold").eq(1).attr("data-i18n", "profTrans:"+transName+"_DisplayName").localize();
-    $(".arrow-to-img .user-icon").eq(1).append('<img class="user-icon-large" data-i18n="[src]profTrans:'+transName+'_Image" src="" alt="user">');
+    let cellName = "";
+    personium.getCell(atr.extCellUrl).done(function (cellObj) {
+        cellName = cellObj.cell.name;
+    }).fail(function (xmlObj) {
+        cellName = ut.getName(atr.extCellUrl);
+    }).always(function () {
+        var transName = cm.getTargetProfTransName(atr.extCellUrl, cellName);
+        $(".arrow-to-img .font-weight-bold").eq(1).attr("data-i18n", "profTrans:" + transName + "_DisplayName").localize();
+        $(".arrow-to-img .user-icon").eq(1).append('<img class="user-icon-large" data-i18n="[src]profTrans:' + transName + '_Image" src="" alt="user">');
+    })
 }
 atr.displayArrowToRole = function () {
     // Get Box list

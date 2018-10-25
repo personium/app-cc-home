@@ -32,11 +32,18 @@ link_info.init = function () {
 }
 
 link_info.displayExtProfile = function () {
-    var transName = cm.getTargetProfTransName(link_info.extCellUrl);
-    $(link_info.id + " header span").attr("data-i18n", "profTrans:"+transName+"_DisplayName").localize();
-    $(".user-cell-url").html(link_info.extCellUrl);
-    $(".user-description").attr("data-i18n", "profTrans:" + transName +"_Description").localize();
-    $(".extcell-profile .user-icon").append('<img class="user-icon-large" data-i18n="[src]profTrans:'+transName+'_Image" src="" alt="user">');
+    let cellName = "";
+    personium.getCell(link_info.extCellUrl).done(function (cellObj) {
+        cellName = cellObj.cell.name;
+    }).fail(function (xmlObj) {
+        cellName = ut.getName(link_info.extCellUrl);
+    }).always(function () {
+        var transName = cm.getTargetProfTransName(link_info.extCellUrl, cellName);
+        $(link_info.id + " header span").attr("data-i18n", "profTrans:" + transName + "_DisplayName").localize();
+        $(".user-cell-url").html(link_info.extCellUrl);
+        $(".user-description").attr("data-i18n", "profTrans:" + transName + "_Description").localize();
+        $(".extcell-profile .user-icon").append('<img class="user-icon-large" data-i18n="[src]profTrans:' + transName + '_Image" src="" alt="user">').localize();
+    })
 }
 
 link_info.confDelete = function () {

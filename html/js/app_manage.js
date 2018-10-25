@@ -317,7 +317,11 @@ app_manage.resetInputFields = function () {
 
 app_manage.dispUnofficialBoxInsProgress = function (boxname) {
     var no = $("#boxIns_" + boxname).data("no");
-    personium.getBoxStatus(cm.getMyCellUrl(), cm.getAccessToken(), boxname).done(function (data) {
+    personium.getBoxStatus(cm.getMyCellUrl(), cm.getAccessToken(), boxname).done(function (boxObj) {
+        var data = boxObj.box;
+        if (!data) {
+            data = boxObj;
+        }
         var status = data.status;
         var resHtml = "";
         if (status.indexOf('ready') >= 0) {
@@ -340,7 +344,7 @@ app_manage.dispUnofficialBoxInsProgress = function (boxname) {
             ].join("");
         } else {
             // failed
-            resHtml = "<span data-i18n='Failed' title='" + data.message.message.value + "'></span>";
+            resHtml = "<span data-i18n='Failed' title='" + boxObj.box.message.message.value + "'></span>";
         }
 
         $("#boxIns_" + boxname).html(resHtml).localize();
@@ -362,7 +366,11 @@ app_manage.dispUnofficialBoxInsProgress = function (boxname) {
 
 app_manage.updateUnofficialBoxInsProgress = function (no) {
     var insArray = JSON.parse(sessionStorage.getItem("insBarList"));
-    personium.getBoxStatus(cm.getMyCellUrl(), cm.getAccessToken(), insArray[no]).done(function (data) {
+    personium.getBoxStatus(cm.getMyCellUrl(), cm.getAccessToken(), insArray[no]).done(function (boxObj) {
+        var data = boxObj.box;
+        if (!data) {
+            data = boxObj;
+        }
         var status = data.status;
         if (status.indexOf('ready') >= 0) {
             $("#boxInsParent_" + no).remove();

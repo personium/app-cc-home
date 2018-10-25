@@ -73,7 +73,11 @@ am.dispInsAppListSchemaSetting = function(schema, boxName, no) {
     var profTrans = "profTrans";
     var dispName = profTrans + ":" + boxName + "_DisplayName";
     var imgName = profTrans + ":" + boxName + "_Image";
-    personium.getBoxStatus(cm.getMyCellUrl(), cm.getAccessToken(), boxName).done(function (data) {
+    personium.getBoxStatus(cm.getMyCellUrl(), cm.getAccessToken(), boxName).done(function (boxObj) {
+        var data = boxObj.box;
+        if (!data) {
+            data = boxObj;
+        }
         var status = data.status;
         var html = '';
         if (status.indexOf('ready') >= 0) {
@@ -107,7 +111,11 @@ am.checkBoxInstall = function () {
     }
 };
 am.updateProgress = function (no, id) {
-    personium.getBoxStatus(cm.getMyCellUrl(), cm.getAccessToken(), am.insAppBoxList[no]).done(function (data) {
+    personium.getBoxStatus(cm.getMyCellUrl(), cm.getAccessToken(), am.insAppBoxList[no]).done(function (boxObj) {
+        var data = boxObj.box;
+        if (!data) {
+            data = boxObj;
+        }
         var status = data.status;
         if (status.indexOf('ready') >= 0) {
             $("#nowInstallParent_" + no).remove();

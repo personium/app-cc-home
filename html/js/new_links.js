@@ -23,7 +23,7 @@ new_links.init = function () {
    * param:none
    */
 new_links.Add_Check_Mark = function () {
-    $('.pn-check-list').click(function (event) {
+    $('.pn-check-list').off().click(function (event) {
         //CASE: icon list
         if ($(this).parents('#icon-check-list').length != 0) {
             $(this).find('.pn-icon-check').toggle();
@@ -49,90 +49,103 @@ new_links.Add_Search_Event = function () {
 }
 new_links.searchCells = function (searchVal) {
     let urlCnv = ut.changeLocalUnitToUnitUrl(searchVal);
-    personium.getCell(urlCnv).done(function () {
-        // Profile Modal Disp
-        var profObj = {
-            DisplayName: ut.getName(urlCnv),
-            Description: "",
-            Image: ut.getJdenticon(urlCnv)
+    let cellName = "";
+    personium.getCell(urlCnv).done(function (cellObj) {
+        cellName = cellObj.cell.name;
+    }).fail(function (xmlObj) {
+        if (xmlObj.status == "200") {
+            cellName = ut.getName(urlCnv);
         }
-        personium.getProfile(urlCnv).done(function (prof) {
-            // Profile Modal Settings
-            if (prof) {
-                profObj.DisplayName = _.escape(prof.DisplayName);
-                profObj.Description = _.escape(prof.Description);
-                if (prof.Image) {
-                    profObj.Image = prof.Image;
-                }
+    }).always(function () {
+        if (cellName !== "") {
+            // Profile Modal Disp
+            var profObj = {
+                DisplayName: cellName,
+                Description: "",
+                Image: ut.getJdenticon(urlCnv)
             }
-        }).always(function () {
-            var profTrans = "profTrans";
-            var urlParse = $.url(urlCnv);
-            var cellName = ut.getName(urlCnv);
-            var transName = urlParse.attr('host').replace(/\./g, "") + "_" + cellName;
-            cm.i18nAddProfile("en", "profTrans", transName, profObj, urlCnv, "profile");
-            cm.i18nAddProfile("ja", "profTrans", transName, profObj, urlCnv, "profile");
+            personium.getProfile(urlCnv).done(function (prof) {
+                // Profile Modal Settings
+                if (prof) {
+                    profObj.DisplayName = _.escape(prof.DisplayName);
+                    profObj.Description = _.escape(prof.Description);
+                    if (prof.Image) {
+                        profObj.Image = prof.Image;
+                    }
+                }
+            }).always(function () {
+                var profTrans = "profTrans";
+                var urlParse = $.url(urlCnv);
+                var transName = urlParse.attr('host').replace(/\./g, "") + "_" + cellName;
+                cm.i18nAddProfile("en", "profTrans", transName, profObj, urlCnv, "profile");
+                cm.i18nAddProfile("ja", "profTrans", transName, profObj, urlCnv, "profile");
 
-            new_links.displayExtCellInfo(profTrans + ":" + transName, urlCnv);
-            $("#cellList_" + profTrans + transName).css("display", "block");
-            new_links.Add_Check_Mark();
-        });
-    }).fail(function () {
-        // Search from library
-        let res;
-        new_links.searchDirectoryAPI(searchVal).done(function (data) {
-            res = data.d.results;
-            res.sort(function (val1, val2) {
-                return (val1.url > val2.url ? 1 : -1);
-            });
-        }).always(function (data) {
-            if (res && res.length > 0) {
-                for (var i in res) {
-                    new_links.displayDirectoryCellList(res[i].url);
-                }
+                new_links.displayExtCellInfo(profTrans + ":" + transName, urlCnv);
+                $("#cellList_" + profTrans + transName).css("display", "block");
                 new_links.Add_Check_Mark();
-            } else {
-                // Messages not found if not found
-                new_links.displayNotExtCellList();
-            }
-        })
+            });
+        } else {
+            // Search from library
+            let res;
+            new_links.searchDirectoryAPI(searchVal).done(function (data) {
+                res = data.d.results;
+                res.sort(function (val1, val2) {
+                    return (val1.url > val2.url ? 1 : -1);
+                });
+            }).always(function (data) {
+                if (res && res.length > 0) {
+                    for (var i in res) {
+                        new_links.displayDirectoryCellList(res[i].url);
+                    }
+                } else {
+                    // Messages not found if not found
+                    new_links.displayNotExtCellList();
+                }
+            })
+        }
     });
 }
 new_links.displayDirectoryCellList = function (url) {
     let urlCnv = ut.changeLocalUnitToUnitUrl(url);
-
-    var profTrans = "profTrans";
-    var urlParse = $.url(urlCnv);
-    var cellName = ut.getName(urlCnv);
-    var transName = urlParse.attr('host').replace(/\./g, "") + "_" + cellName;
-    if ($("#cellList_" + profTrans + transName).length) return;
-
-    new_links.displayExtCellInfo(profTrans + ":" + transName, urlCnv);
-    personium.getCell(urlCnv).done(function () {
-        // Profile Modal Disp
-        var profObj = {
-            DisplayName: ut.getName(urlCnv),
-            Description: "",
-            Image: ut.getJdenticon(urlCnv)
+    let cellName = "";
+    personium.getCell(urlCnv).done(function (cellObj) {
+        cellName = cellObj.cell.name;
+    }).fail(function (xmlObj) {
+        if (xmlObj.status == "200") {
+            cellName = ut.getName(urlCnv);
         }
-        personium.getProfile(urlCnv).done(function (prof) {
-            // Profile Modal Settings
-            if (prof) {
-                profObj.DisplayName = _.escape(prof.DisplayName);
-                profObj.Description = _.escape(prof.Description);
-                if (prof.Image) {
-                    profObj.Image = prof.Image;
-                }
-            }
-        }).always(function () {
-            cm.i18nAddProfile("en", "profTrans", transName, profObj, urlCnv, "profile");
-            cm.i18nAddProfile("ja", "profTrans", transName, profObj, urlCnv, "profile");
+    }).always(function () {
+        if (cellName !== "") {
+            var profTrans = "profTrans";
+            var urlParse = $.url(urlCnv);
+            var transName = urlParse.attr('host').replace(/\./g, "") + "_" + cellName;
+            if ($("#cellList_" + profTrans + transName).length) return;
+            new_links.displayExtCellInfo(profTrans + ":" + transName, urlCnv);
+            new_links.Add_Check_Mark();
 
-            $("#cellList_" + profTrans + transName).css("display", "block");
-        });
-    }).fail(function (data) {
-        $("#cellList_" + profTrans + transName).remove();
-    });
+            // Profile Modal Disp
+            var profObj = {
+                DisplayName: cellName,
+                Description: "",
+                Image: ut.getJdenticon(urlCnv)
+            }
+            personium.getProfile(urlCnv).done(function (prof) {
+                // Profile Modal Settings
+                if (prof) {
+                    profObj.DisplayName = _.escape(prof.DisplayName);
+                    profObj.Description = _.escape(prof.Description);
+                    if (prof.Image) {
+                        profObj.Image = prof.Image;
+                    }
+                }
+            }).always(function () {
+                cm.i18nAddProfile("en", "profTrans", transName, profObj, urlCnv, "profile");
+                cm.i18nAddProfile("ja", "profTrans", transName, profObj, urlCnv, "profile");
+
+                $("#cellList_" + profTrans + transName).css("display", "block");
+            });
+        }
+    })
 }
 new_links.displayExtCellInfo = function (transName, url) {
     let html = [
@@ -175,14 +188,31 @@ new_links.displayNotExtCellList = function () {
 new_links.addExternalCell = function () {
     let listLen = new_links.links_list.length;
     if (listLen == 0) {
-        $('.single-btn-modal').modal('show');
+        $('#notSelect_modal').modal('show');
         return;
     }
 
     let addCnt = 0;
     for (var i in new_links.links_list) {
+        addCnt++;
         let url = new_links.links_list[i];
-        var linksUrl = ut.changeUnitUrlToLocalUnit(url);
+
+        new_links.createExtCell(url, addCnt);
+    }
+}
+new_links.createExtCell = function (url, count) {
+    let cellName = "";
+    let unitUrl = "";
+    personium.getCell(url).done(function (cellObj) {
+        cellName = cellObj.cell.name;
+        unitUrl = cellObj.unit.url;
+    }).fail(function (xmlObj) {
+        cellName = ut.getName(url);
+        var i = url.indexOf("/"); // first slash
+        i = url.indexOf("/", i + 2);  // second slash
+        unitUrl = url.substring(0, i + 1);
+    }).always(function () {
+        var linksUrl = ut.changeUnitUrlToLocalUnit(url, cellName, unitUrl);
         var jsonData = {
             "Url": linksUrl
         };
@@ -202,7 +232,7 @@ new_links.addExternalCell = function () {
                 personium.backSubContent();
             }
         });
-    }
+    })
 }
 new_links.searchDirectoryAPI = function (searchVal) {
     return $.ajax({

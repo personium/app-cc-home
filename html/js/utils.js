@@ -11,7 +11,11 @@ var ut = {};
 ut.PERSONIUM_LOCALUNIT = "personium-localunit:";
 ut.PERSONIUM_LOCALBOX = "personium-localbox:";
 
-ut.cellUrlWithEndingSlash = function(tempUrl, raiseError) {
+ut.cellUrlWithEndingSlash = function (tempUrl, newUrlFlg, raiseError) {
+    if (tempUrl.slice(-1) != "/") {
+        tempUrl += "/";
+    }
+
     var i = tempUrl.indexOf("/", 8); // search after "http://" or "https://"
 
     if (raiseError && i == -1) {
@@ -19,11 +23,9 @@ ut.cellUrlWithEndingSlash = function(tempUrl, raiseError) {
         return tempUrl;
     }
 
-    if (tempUrl.slice(-1) != "/") {
-        tempUrl += "/";
+    if (!newUrlFlg) {
+        i = tempUrl.indexOf("/", i + 1);
     }
-
-    i = tempUrl.indexOf("/", i + 1);
 
     var cellUrl = tempUrl.substring(0, i + 1);
 
@@ -67,10 +69,10 @@ ut.getName = function(path, withoutExtension) {
 /*
  * Replace the same unit URL as my unit URL with personium-localunit
  */
-ut.changeUnitUrlToLocalUnit = function (cellUrl) {
+ut.changeUnitUrlToLocalUnit = function (cellUrl, cellName, unitUrl) {
     var result = cellUrl;
-    if (cellUrl.startsWith(cm.user.baseUrl)) {
-        result = cellUrl.replace(cm.user.baseUrl, ut.PERSONIUM_LOCALUNIT + "/");
+    if (unitUrl.startsWith(cm.user.baseUrl)) {
+        result = ut.PERSONIUM_LOCALUNIT + "/" + cellName;
     }
 
     return result;
@@ -82,7 +84,19 @@ ut.changeUnitUrlToLocalUnit = function (cellUrl) {
 ut.changeLocalUnitToUnitUrl = function (cellUrl) {
     var result = cellUrl;
     if (cellUrl.startsWith(ut.PERSONIUM_LOCALUNIT)) {
-        result = cellUrl.replace(ut.PERSONIUM_LOCALUNIT + "/", cm.user.baseUrl);
+        if (!cm.path_based_cellurl_enabled) {
+            // https://cellname.fqdn/
+            let cellname = cellUrl.replace(ut.PERSONIUM_LOCALUNIT + "/", "");
+            if (cellname.endsWith("/")) {
+                cellname = cellname.substring(0, cellname.length - 1);
+            }
+            let unitSplit = cm.unitUrl.split("/");
+            unitSplit[2] = cellname + "." + unitSplit[2];
+            result = unitSplit.join("/");
+        } else {
+            // https://fqdn/cellname/
+            result = cellUrl.replace(ut.PERSONIUM_LOCALUNIT + "/", cm.user.baseUrl);
+        }
     }
 
     return result;
