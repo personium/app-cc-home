@@ -50,60 +50,65 @@ new_links.Add_Search_Event = function () {
 new_links.searchCells = function (searchVal) {
     let urlCnv = ut.changeLocalUnitToUnitUrl(searchVal);
     let cellName = "";
-    personium.getCell(urlCnv).done(function (cellObj) {
-        cellName = cellObj.cell.name;
-    }).fail(function (xmlObj) {
-        if (xmlObj.status == "200") {
-            cellName = ut.getName(urlCnv);
-        }
-    }).always(function () {
-        if (cellName !== "") {
-            // Profile Modal Disp
-            var profObj = {
-                DisplayName: cellName,
-                Description: "",
-                Image: ut.getJdenticon(urlCnv)
+    if (urlCnv.startsWith("http://") || urlCnv.startsWith("https://")) {
+        personium.getCell(urlCnv).done(function (cellObj) {
+            cellName = cellObj.cell.name;
+        }).fail(function (xmlObj) {
+            if (xmlObj.status == "200") {
+                cellName = ut.getName(urlCnv);
             }
-            personium.getProfile(urlCnv).done(function (prof) {
-                // Profile Modal Settings
-                if (prof) {
-                    profObj.DisplayName = _.escape(prof.DisplayName);
-                    profObj.Description = _.escape(prof.Description);
-                    if (prof.Image) {
-                        profObj.Image = prof.Image;
-                    }
+        }).always(function () {
+            if (cellName !== "") {
+                // Profile Modal Disp
+                var profObj = {
+                    DisplayName: cellName,
+                    Description: "",
+                    Image: ut.getJdenticon(urlCnv)
                 }
-            }).always(function () {
-                var profTrans = "profTrans";
-                var urlParse = $.url(urlCnv);
-                var transName = urlParse.attr('host').replace(/\./g, "") + "_" + cellName;
-                cm.i18nAddProfile("en", "profTrans", transName, profObj, urlCnv, "profile");
-                cm.i18nAddProfile("ja", "profTrans", transName, profObj, urlCnv, "profile");
+                personium.getProfile(urlCnv).done(function (prof) {
+                    // Profile Modal Settings
+                    if (prof) {
+                        profObj.DisplayName = _.escape(prof.DisplayName);
+                        profObj.Description = _.escape(prof.Description);
+                        if (prof.Image) {
+                            profObj.Image = prof.Image;
+                        }
+                    }
+                }).always(function () {
+                    var profTrans = "profTrans";
+                    var urlParse = $.url(urlCnv);
+                    var transName = urlParse.attr('host').replace(/\./g, "") + "_" + cellName;
+                    cm.i18nAddProfile("en", "profTrans", transName, profObj, urlCnv, "profile");
+                    cm.i18nAddProfile("ja", "profTrans", transName, profObj, urlCnv, "profile");
 
-                new_links.displayExtCellInfo(profTrans + ":" + transName, urlCnv);
-                $("#cellList_" + profTrans + transName).css("display", "block");
-                new_links.Add_Check_Mark();
-            });
-        } else {
-            // Search from library
-            let res;
-            new_links.searchDirectoryAPI(searchVal).done(function (data) {
-                res = data.d.results;
-                res.sort(function (val1, val2) {
-                    return (val1.url > val2.url ? 1 : -1);
+                    new_links.displayExtCellInfo(profTrans + ":" + transName, urlCnv);
+                    $("#cellList_" + profTrans + transName).css("display", "block");
+                    new_links.Add_Check_Mark();
                 });
-            }).always(function (data) {
-                if (res && res.length > 0) {
-                    for (var i in res) {
-                        new_links.displayDirectoryCellList(res[i].url);
-                    }
-                } else {
-                    // Messages not found if not found
-                    new_links.displayNotExtCellList();
+            } else {
+                // Messages not found if not found
+                new_links.displayNotExtCellList();
+            }
+        });
+    } else {
+        // Search from library
+        let res;
+        new_links.searchDirectoryAPI(searchVal).done(function (data) {
+            res = data.d.results;
+            res.sort(function (val1, val2) {
+                return (val1.url > val2.url ? 1 : -1);
+            });
+        }).always(function (data) {
+            if (res && res.length > 0) {
+                for (var i in res) {
+                    new_links.displayDirectoryCellList(res[i].url);
                 }
-            })
-        }
-    });
+            } else {
+                // Messages not found if not found
+                new_links.displayNotExtCellList();
+            }
+        })
+    }
 }
 new_links.displayDirectoryCellList = function (url) {
     let urlCnv = ut.changeLocalUnitToUnitUrl(url);
