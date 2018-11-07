@@ -25,21 +25,26 @@ lg.googleLogin = function (gToken) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }).done(function (data) {
-        data.cellUrl = cellUrl;
-        var i = cellUrl.indexOf("/"); // first slash
-        i = cellUrl.indexOf("/", i + 2);  // second slash
-        data.baseUrl = cellUrl.substring(0, i + 1);
-        data.profile = JSON.parse(sessionStorage.getItem("myProfile"));
-        //data.userName = username;
-        data.userName = "googleAccount";
-        var pos = location.href.indexOf("id_token");
-        if (pos >= 0) {
-            // Exclude conjunctions that preceded id_token
-            data.logoutUrl = location.href.substring(0, pos - 1);
-        }
-        
-        sessionStorage.setItem("sessionData", JSON.stringify(data));
-        location.href = data.logoutUrl;
+        personium.getCell(cellUrl).done(function (cellObj) {
+            data.baseUrl = cellObj.unit.url;
+        }).fail(function (xmlObj) {
+            var i = cellUrl.indexOf("/"); // first slash
+            i = cellUrl.indexOf("/", i + 2);  // second slash
+            data.baseUrl = cellUrl.substring(0, i + 1);
+        }).always(function () {
+            data.cellUrl = cellUrl;
+            data.profile = JSON.parse(sessionStorage.getItem("myProfile"));
+            //data.userName = username;
+            data.userName = "googleAccount";
+            var pos = location.href.indexOf("id_token");
+            if (pos >= 0) {
+                // Exclude conjunctions that preceded id_token
+                data.logoutUrl = location.href.substring(0, pos - 1);
+            }
+
+            sessionStorage.setItem("sessionData", JSON.stringify(data));
+            location.href = data.logoutUrl;
+        });
     }).fail(function (data) {
         console.log(data);
     });
@@ -68,11 +73,28 @@ lg.initTarget = function () {
         // Call the following function explicitly in order to prompt the user to enter the cell URL.
         lg.targetCellLogin(target);
     } else {
-        lg.rootUrl = lg.cellUrl();
-        lg.loadProfile();
 
-        sessionStorage.setItem("mode", "local");
-        sessionStorage.setItem("targetCellUrl", lg.rootUrl);
+        var u = location.href;
+        if (u.indexOf("file:") == 0) {
+            return "https://demo.personium.io/app-cc-home/";
+        }
+        var tempUrl = ut.cellUrlWithEndingSlash(u, false, true);
+        personium.getCell(tempUrl).done(function (cellObj) {
+            lg.setRootUrl(tempUrl);
+            lg.baseUrl = cellObj.unit.url;
+        }).fail(function (xmlObj) {
+            if (xmlObj.status == "200") {
+                lg.setRootUrl(tempUrl);
+            } else {
+                tempUrl = ut.cellUrlWithEndingSlash(u, true, true);
+                personium.getCell(tempUrl).done(function (cellObj) {
+                    lg.setRootUrl(tempUrl);
+                }).fail(function () {
+                    lg.setRootUrl("https://demo.personium.io/app-cc-home/");
+                });
+            }
+        });
+        
     }
 
     $('#b-input-cell-ok').on('click', function () {
@@ -118,18 +140,28 @@ lg.initTarget = function () {
         }
     }
 };
+lg.setRootUrl = function (cellUrl) {
+    lg.rootUrl = cellUrl;
+    lg.loadProfile();
+
+    sessionStorage.setItem("mode", "local");
+    sessionStorage.setItem("targetCellUrl", lg.rootUrl);
+}
 
 lg.targetCellLogin = function(tempUrl) {
     // Do the best to prepare a proper cell URL
-    var cellUrl = "";
-    if (tempUrl) {
-        cellUrl = ut.cellUrlWithEndingSlash(tempUrl, true);
-    }
+    var cellUrl = tempUrl;
 
-    lg.getCell(cellUrl).done(function(data, status, xhr) {
-        if (xhr.responseText.match(/urn:x-personium:xmlns/)) {
+    personium.getCell(cellUrl).done(function(cellObj) {
+        lg.rootUrl = cellUrl;
+    }).fail(function (xmlObj) {
+        if (xmlObj.status == "200") {
             lg.rootUrl = cellUrl;
-
+        } else {
+            lg.rootUrl = "";
+        }
+    }).always(function () {
+        if (lg.rootUrl !== "") {
             sessionStorage.setItem("targetCellUrl", lg.rootUrl);
             sessionStorage.setItem("mode", "global");
             $('#iAccountName').focus();
@@ -138,9 +170,6 @@ lg.targetCellLogin = function(tempUrl) {
             $("#pCellUrl").val(cellUrl)
             $('#modal-input-cell').modal('show');
         }
-    }).fail(function(data) {
-        $("#pCellUrl").val(cellUrl)
-        $('#modal-input-cell').modal('show');
     });
 };
 
@@ -218,24 +247,29 @@ lg.sendAccountNamePw = function(username, pw) {
             'Accept': 'application/json',
             'content-type': 'application/x-www-form-urlencoded'
         }
-    }).done(function(data) {
-                data.username=username;
-                data.cellUrl = lg.rootUrl;
-                var i = lg.rootUrl.indexOf("/"); // first slash
-                i = lg.rootUrl.indexOf("/", i + 2);  // second slash
-                data.baseUrl = lg.rootUrl.substring(0, i + 1);
-                data.profile = lg.profile;
-                data.userName = username;
-                if (location.origin === undefined) {
-                    location.origin = location.protocol + "//" + location.hostname + (location.port ? ":" + location.port : "");
-                }
-                data.logoutUrl = location.origin + location.pathname + location.search;
-                sessionStorage.setItem("sessionData", JSON.stringify(data));
-                cm.setUserDate(data);
-                ha.loadMain();
+    }).done(function (data) {
+        personium.getCell(lg.rootUrl).done(function (cellObj) {
+            data.baseUrl = cellObj.unit.url;
+        }).fail(function (xmlObj) {
+            var i = lg.rootUrl.indexOf("/"); // first slash
+            i = lg.rootUrl.indexOf("/", i + 2);  // second slash
+            data.baseUrl = lg.rootUrl.substring(0, i + 1);
+        }).always(function () {
+            data.username = username;
+            data.cellUrl = lg.rootUrl;
+            data.profile = lg.profile;
+            data.userName = username;
+            if (location.origin === undefined) {
+                location.origin = location.protocol + "//" + location.hostname + (location.port ? ":" + location.port : "");
+            }
+            data.logoutUrl = location.origin + location.pathname + location.search;
+            sessionStorage.setItem("sessionData", JSON.stringify(data));
+            cm.setUserDate(data);
+            ha.loadMain();
+        })
     }).fail(function(){
-                // login failed
-                lg.dispErrorMessage(i18next.t("incorrectAccountOrPass"));
+        // login failed
+        lg.dispErrorMessage(i18next.t("incorrectAccountOrPass"));
     });
 };
 lg.dispErrorMessage = function (errMsg) {
@@ -279,13 +313,3 @@ lg.automaticLogin = function () {
         $('body > div.myHiddenDiv').show();
     }
 }
-
-lg.getCell = function(cellUrl) {
-    return $.ajax({
-                type: "GET",
-                url: cellUrl,
-                headers:{
-                    'Accept':'application/xml'
-                }
-    });
-};

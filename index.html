@@ -151,10 +151,23 @@
         </div>
     </div>
 
-    <div class="modal fade single-btn-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+    <div id="changePass_modal" class="modal fade single-btn-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog pn-modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body pn-modal-body" data-i18n="successChangePass">
+
+                </div>
+                <div class="modal-footer pn-modal-footer">
+                    <button type="button" class="btn ok-btn" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notSelect_modal" class="modal fade single-btn-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog pn-modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body pn-modal-body" data-i18n="notSelectTarget">
 
                 </div>
                 <div class="modal-footer pn-modal-footer">
@@ -204,6 +217,28 @@
                 <div class="modal-footer pn-modal-footer">
                     <button type="button" class="btn" data-dismiss="modal" data-i18n="Cancel"></button>
                     <button type="button" class="btn ok-btn">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-input-cell" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <h4 class="modal-title" data-i18n="inputLoginCellTitle">Login cell input</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <div id="dvCellUrl">Cell URL</div>
+                            <input id="pCellUrl" type="text" class="fontBlack" />
+                            <span id="errorCellUrl" style="color:red"></span>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="b-input-cell-ok">OK</button>
                 </div>
             </div>
         </div>

@@ -35,7 +35,7 @@ chg_pass.changePassword = function () {
     if (cm.changePassCheck(newpass, confirm, '#editConfirmMessage')) {
         $('#confirmMessage').html("");
         personium.changePassAPI(cm.getMyCellUrl(), cm.getAccessToken(), newpass).done(function (data) {
-            $('.single-btn-modal').modal('show');
+            $('#changePass_modal').modal('show');
         }).fail(function (data) {
             var res = JSON.parse(data.responseText);
             alert("An error has occurred.\n" + res.message.value);

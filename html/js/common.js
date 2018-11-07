@@ -170,12 +170,7 @@ function Add_Check_Mark() {
 function Control_Dialog() {
     //clicked logout button
     $('#logout').on('click', function () {
-        $('.double-btn-modal').modal('show');
-    });
-
-    //single button modal
-    $('.pn-single-modal').on('click', function () {
-        $('.single-btn-modal').modal('show');
+        $('#logout_modal').modal('show');
     });
 }
 /**
@@ -260,51 +255,73 @@ cm.Delete_List_Event = function () {
 }
 cm.i18nSetProfile = function () {
     let cellUrl = cm.user.cellUrl;
-    let defProf = {
-        DisplayName: ut.getName(cellUrl),
-        Description: "",
-        Image: ut.getJdenticon(cellUrl)
-    };
-    personium.getProfile(cellUrl).done(function (prof) {
-        defProf = {
-            DisplayName: prof.DisplayName,
-            Description: prof.Description,
-            Image: prof.Image
+    var cellName = "";
+    personium.getCell(cellUrl).done(function (cellObj) {
+        cellName = cellObj.cell.name;
+    }).fail(function (xmlObj) {
+        if (xmlObj.status == "200") {
+            cellName = ut.getName(cellUrl);
+        } else {
+            cellName = i18next.t("NoTarget");
         }
     }).always(function () {
-        if (!defProf.Image) {
-            defProf.Image = ut.getJdenticon(cellUrl);
-        }
-        let transName = "myProfile";
-        cm.i18nAddProfile("en", "profTrans", transName, defProf, cellUrl, "profile");
-        cm.i18nAddProfile("ja", "profTrans", transName, defProf, cellUrl, "profile");
+        let defProf = {
+            DisplayName: cellName,
+            Description: "",
+            Image: ut.getJdenticon(cellUrl)
+        };
+        personium.getProfile(cellUrl).done(function (prof) {
+            defProf = {
+                DisplayName: prof.DisplayName,
+                Description: prof.Description,
+                Image: prof.Image
+            }
+        }).always(function () {
+            if (!defProf.Image) {
+                defProf.Image = ut.getJdenticon(cellUrl);
+            }
+            let transName = "myProfile";
+            cm.i18nAddProfile("en", "profTrans", transName, defProf, cellUrl, "profile");
+            cm.i18nAddProfile("ja", "profTrans", transName, defProf, cellUrl, "profile");
+        });
     });
 }
 cm.i18nSetTargetProfile = function (targetUrl) {
     let cellUrl = targetUrl;
-    var cellName = ut.getName(cellUrl);
-    let defProf = {
-        DisplayName: cellName,
-        Description: "",
-        Image: ut.getJdenticon(cellUrl)
-    };
-    personium.getProfile(cellUrl).done(function (prof) {
-        defProf = {
-            DisplayName: prof.DisplayName,
-            Description: prof.Description,
-            Image: prof.Image
+    var cellName = "";
+    let dispCellName = "";
+    personium.getCell(cellUrl).done(function (cellObj) {
+        cellName = cellObj.cell.name;
+    }).fail(function () {
+        cellName = ut.getName(cellUrl);
+        if (xmlObj.status == "200") {
+            dispCellName = cellName;
+        } else {
+            dispCellName = i18next.t("NoTarget");
         }
     }).always(function () {
-        if (!defProf.Image) {
-            defProf.Image = ut.getJdenticon(cellUrl);
-        }
-        var transName = cm.getTargetProfTransName(cellUrl);
-        cm.i18nAddProfile("en", "profTrans", transName, defProf, cellUrl, "profile");
-        cm.i18nAddProfile("ja", "profTrans", transName, defProf, cellUrl, "profile");
-    });
+        let defProf = {
+            DisplayName: dispCellName,
+            Description: "",
+            Image: ut.getJdenticon(cellUrl)
+        };
+        personium.getProfile(cellUrl).done(function (prof) {
+            defProf = {
+                DisplayName: prof.DisplayName,
+                Description: prof.Description,
+                Image: prof.Image
+            }
+        }).always(function () {
+            if (!defProf.Image) {
+                defProf.Image = ut.getJdenticon(cellUrl);
+            }
+            var transName = cm.getTargetProfTransName(cellUrl, cellName);
+            cm.i18nAddProfile("en", "profTrans", transName, defProf, cellUrl, "profile");
+            cm.i18nAddProfile("ja", "profTrans", transName, defProf, cellUrl, "profile");
+        });
+    })
 }
-cm.getTargetProfTransName = function(targetUrl) {
-    let cellName = ut.getName(targetUrl);
+cm.getTargetProfTransName = function(targetUrl, cellName) {
     let urlParse = $.url(targetUrl);
     return urlParse.attr('host') + "_" + cellName;
 }
@@ -541,17 +558,25 @@ cm.validateMail = function (displayMail, displayMailSpan) {
 }
 /*** message ***/
 cm.displayProfile = function (cellUrl, num) {
-    personium.getCell(cellUrl).done(function () {
-        var cellName = ut.getName(cellUrl);
-        var urlParse = $.url(cellUrl);
-        var transName = urlParse.attr('host') + "_" + cellName;
-        if (!i18next.exists(transName)) {
-            cm.registerProfI18n(cellUrl, transName, "profile", "Person");
+    var cellName = "";
+    personium.getCell(cellUrl).done(function (cellObj) {
+        cellName = cellObj.cell.name;
+    }).fail(function (xmlObj) {
+        if (xmlObj.status == "200") {
+            cellName = ut.getName(cellUrl);
         }
-        $('#msgUserName' + num).attr('data-i18n', 'profTrans:' + transName + '_DisplayName').localize();
-        $('#msgIcon' + num).attr('data-i18n', '[src]profTrans:' + transName + '_Image').localize();
-    }).fail(function () {
-        $('#msgUserName' + num).attr('data-i18n','notExistTargetCell').localize();
+    }).always(function () {
+        if (cellName !== "") {
+            var urlParse = $.url(cellUrl);
+            var transName = urlParse.attr('host') + "_" + cellName;
+            if (!i18next.exists(transName)) {
+                cm.registerProfI18n(cellUrl, transName, "profile", "Person");
+            }
+            $('#msgUserName' + num).attr('data-i18n', 'profTrans:' + transName + '_DisplayName').localize();
+            $('#msgIcon' + num).attr('data-i18n', '[src]profTrans:' + transName + '_Image').localize();
+        } else {
+            $('#msgUserName' + num).attr('data-i18n', 'notExistTargetCell').localize();
+        }
     })
 }
 
@@ -577,21 +602,32 @@ cm.getCellType = function () {
 
 cm.registerProfI18n = function (schema, boxName, fileName, cellType) {
     let defImage = ut.getDefaultImage(schema);
-    let defProf = {
-        DisplayName: ut.getName(schema),
-        Description: "",
-        Image: defImage
-    }
-    personium.getProfile(schema).done(function (defRes) {
-        defProf.DisplayName = defRes.DisplayName;
-        defProf.Description = defRes.Description;
-        if (defRes.Image) {
-            defProf.Image = defRes.Image;
+    let cellName = "";
+    personium.getCell(schema).done(function (cellObj) {
+        cellName = cellObj.cell.name;
+    }).fail(function (xmlObj) {
+        if (xmlObj.status == "200") {
+            cellName = ut.getName(schema);
+        } else {
+            cellName = i18next.t("NoTarget");
         }
     }).always(function () {
-        cm.i18nAddProfile("en", "profTrans", boxName, defProf, schema, fileName, null);
-        cm.i18nAddProfile("ja", "profTrans", boxName, defProf, schema, fileName, null);
-    });
+        let defProf = {
+            DisplayName: cellName,
+            Description: "",
+            Image: defImage
+        }
+        personium.getProfile(schema).done(function (defRes) {
+            defProf.DisplayName = defRes.DisplayName;
+            defProf.Description = defRes.Description;
+            if (defRes.Image) {
+                defProf.Image = defRes.Image;
+            }
+        }).always(function () {
+            cm.i18nAddProfile("en", "profTrans", boxName, defProf, schema, fileName, null);
+            cm.i18nAddProfile("ja", "profTrans", boxName, defProf, schema, fileName, null);
+        });
+    })
 }
 cm.registerRoleRelProfI18n = function (name, boxName, fileName) {
     personium.getBoxInfo(cm.getMyCellUrl(), cm.getAccessToken(), boxName).done(function (boxRes) {

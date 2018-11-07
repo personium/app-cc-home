@@ -25,7 +25,7 @@ search_cell.init = function () {
    * param:none
    */
 search_cell.Add_Check_Mark = function () {
-    $('.pn-check-list').click(function (event) {
+    $('.pn-check-list').off().click(function (event) {
         //CASE: icon list
         if ($(this).parents('#icon-check-list').length != 0) {
             $(this).find('.pn-icon-check').toggle();
@@ -65,52 +65,30 @@ search_cell.dispExtCellList = function (searchVal) {
             let extCellUrl = results[i].Url;
             search_cell.displayCell(extCellUrl);
         }
-        search_cell.Add_Check_Mark();
     });
 }
 search_cell.displayCell = function (url) {
     let urlCnv = ut.changeLocalUnitToUnitUrl(url);
-
-    var profTrans = "profTrans";
-    var urlParse = $.url(urlCnv);
-    var cellName = ut.getName(urlCnv);
-    var transName = urlParse.attr('host').replace(/\./g, "") + "_" + cellName;
-    if ($("#cellList_" + profTrans + transName).length) return;
-
-    search_cell.displayExtCellInfo(profTrans + ":" + transName, urlCnv);
-    personium.getCell(urlCnv).done(function () {
-        // Profile Modal Disp
-        var profObj = {
-            DisplayName: ut.getName(urlCnv),
-            Description: "",
-            Image: ut.getJdenticon(urlCnv)
+    let cellName = "";
+    personium.getCell(urlCnv).done(function (cellObj) {
+        cellName = cellObj.cell.name;
+    }).fail(function (xmlObj) {
+        if (xmlObj.status == "200") {
+            cellName = ut.getName(urlCnv);
         }
-        personium.getProfile(urlCnv).done(function (prof) {
-            // Profile Modal Settings
-            if (prof) {
-                profObj.DisplayName = _.escape(prof.DisplayName);
-                profObj.Description = _.escape(prof.Description);
-                if (prof.Image) {
-                    profObj.Image = prof.Image;
-                }
-            }
-        }).always(function () {
-            cm.i18nAddProfile("en", "profTrans", transName, profObj, urlCnv, "profile");
-            cm.i18nAddProfile("ja", "profTrans", transName, profObj, urlCnv, "profile");
+    }).always(function () {
+        if (cellName !== "") {
+            var profTrans = "profTrans";
+            var urlParse = $.url(urlCnv);
+            var transName = urlParse.attr('host').replace(/\./g, "") + "_" + cellName;
+            if ($("#cellList_" + profTrans + transName).length) return;
 
-            $("#cellList_" + profTrans + transName).css("display", "block");
-        });
-    }).fail(function (data) {
-        $("#cellList_" + profTrans + transName).remove();
-    });
-}
-search_cell.searchCells = function (searchVal) {
-    if (searchVal) {
-        let urlCnv = ut.changeLocalUnitToUnitUrl(searchVal);
-        personium.getCell(urlCnv).done(function () {
+            search_cell.displayExtCellInfo(profTrans + ":" + transName, urlCnv);
+            search_cell.Add_Check_Mark();
+
             // Profile Modal Disp
             var profObj = {
-                DisplayName: ut.getName(urlCnv),
+                DisplayName: cellName,
                 Description: "",
                 Image: ut.getJdenticon(urlCnv)
             }
@@ -124,20 +102,56 @@ search_cell.searchCells = function (searchVal) {
                     }
                 }
             }).always(function () {
-                var profTrans = "profTrans";
-                var urlParse = $.url(urlCnv);
-                var cellName = ut.getName(urlCnv);
-                var transName = urlParse.attr('host').replace(/\./g, "") + "_" + cellName;
                 cm.i18nAddProfile("en", "profTrans", transName, profObj, urlCnv, "profile");
                 cm.i18nAddProfile("ja", "profTrans", transName, profObj, urlCnv, "profile");
 
-                search_cell.displayExtCellInfo(profTrans + ":" + transName, urlCnv);
                 $("#cellList_" + profTrans + transName).css("display", "block");
-                search_cell.Add_Check_Mark();
             });
-        }).fail(function () {
-            // Search from external cell
-            search_cell.dispExtCellList(searchVal);
+        }
+    });
+}
+search_cell.searchCells = function (searchVal) {
+    if (searchVal) {
+        let urlCnv = ut.changeLocalUnitToUnitUrl(searchVal);
+        let cellName = "";
+        personium.getCell(urlCnv).done(function (cellObj) {
+            cellName = cellObj.cell.name;
+        }).fail(function (xmlObj) {
+            if (xmlObj.status == "200") {
+                cellName = ut.getName(urlCnv);
+            }
+        }).always(function () {
+            if (cellName !== "") {
+                // Profile Modal Disp
+                var profObj = {
+                    DisplayName: cellName,
+                    Description: "",
+                    Image: ut.getJdenticon(urlCnv)
+                }
+                personium.getProfile(urlCnv).done(function (prof) {
+                    // Profile Modal Settings
+                    if (prof) {
+                        profObj.DisplayName = _.escape(prof.DisplayName);
+                        profObj.Description = _.escape(prof.Description);
+                        if (prof.Image) {
+                            profObj.Image = prof.Image;
+                        }
+                    }
+                }).always(function () {
+                    var profTrans = "profTrans";
+                    var urlParse = $.url(urlCnv);
+                    var transName = urlParse.attr('host').replace(/\./g, "") + "_" + cellName;
+                    cm.i18nAddProfile("en", "profTrans", transName, profObj, urlCnv, "profile");
+                    cm.i18nAddProfile("ja", "profTrans", transName, profObj, urlCnv, "profile");
+
+                    search_cell.displayExtCellInfo(profTrans + ":" + transName, urlCnv);
+                    $("#cellList_" + profTrans + transName).css("display", "block");
+                    search_cell.Add_Check_Mark();
+                });
+            } else {
+                // Search from external cell
+                search_cell.dispExtCellList(searchVal);
+            }
         });
     } else {
         search_cell.dispExtCellList();
@@ -185,7 +199,7 @@ search_cell.addExternalCell = function () {
     let cellList = [];
     let addList = search_cell.links_list;
     if (addList.length == 0) {
-        $(".single-btn-modal").modal("show");
+        $("#notSelect_modal").modal("show");
         return;
     }
 

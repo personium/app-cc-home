@@ -32,9 +32,16 @@ afr.displayMyImage = function () {
     $(".arrow-to-img .user-icon").eq(1).append('<img class="user-icon-large" data-i18n="[src]profTrans:myProfile_Image" src="" alt="user">');
 }
 afr.displayTargetImage = function () {
-    var transName = cm.getTargetProfTransName(afr.extCellUrl);
-    $(".arrow-to-img .font-weight-bold").eq(0).attr("data-i18n", "profTrans:"+transName+"_DisplayName").localize();
-    $(".arrow-to-img .user-icon").eq(0).append('<img class="user-icon-large" data-i18n="[src]profTrans:'+transName+'_Image" src="" alt="user">');
+    let cellName = "";
+    personium.getCell(afr.extCellUrl).done(function (cellObj) {
+        cellName = cellObj.cell.name;
+    }).fail(function (xmlObj) {
+        cellName = ut.getName(afr.extCellUrl);
+    }).always(function () {
+        var transName = cm.getTargetProfTransName(afr.extCellUrl, cellName);
+        $(".arrow-to-img .font-weight-bold").eq(0).attr("data-i18n", "profTrans:" + transName + "_DisplayName").localize();
+        $(".arrow-to-img .user-icon").eq(0).append('<img class="user-icon-large" data-i18n="[src]profTrans:' + transName + '_Image" src="" alt="user">');
+    })
 }
 afr.displayArrowFromRole = function () {
     $("#fromAppendRoleList").empty();
@@ -43,12 +50,24 @@ afr.displayArrowFromRole = function () {
         personium.getExtCellLinksRole(afr.extCellUrl, afr.targetAccessToken, cm.getMyCellUrl()).done(function (data) {
             afr.displayLinksRoleList(data);
         }).fail(function () {
-            let localUnitCell = ut.changeUnitUrlToLocalUnit(cm.getMyCellUrl());
-            personium.getExtCellLinksRole(afr.extCellUrl, afr.targetAccessToken, localUnitCell).done(function (data) {
-                afr.displayLinksRoleList(data);
-            }).fail(function (data) {
-                console.log(data);
-            });
+            let cellName = "";
+            let unitUrl = "";
+            personium.getCell(cm.getMyCellUrl()).done(function (cellObj) {
+                cellName = cellObj.cell.name;
+                unitUrl = cellObj.unit.url;
+            }).fail(function (xmlObj) {
+                cellName = ut.getName(cm.getMyCellUrl());
+                var i = cm.getMyCellUrl().indexOf("/"); // first slash
+                i = cm.getMyCellUrl().indexOf("/", i + 2);  // second slash
+                unitUrl = cm.getMyCellUrl().substring(0, i + 1);
+            }).always(function () {
+                let localUnitCell = ut.changeUnitUrlToLocalUnit(cm.getMyCellUrl(), cellName, unitUrl);
+                personium.getExtCellLinksRole(afr.extCellUrl, afr.targetAccessToken, localUnitCell).done(function (data) {
+                    afr.displayLinksRoleList(data);
+                }).fail(function (data) {
+                    console.log(data);
+                });
+            })
         })
     })
 }

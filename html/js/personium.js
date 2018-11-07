@@ -215,10 +215,19 @@ personium.getCell = function (cellUrl) {
         type: "GET",
         url: cellUrl,
         headers: {
-            'Accept': 'application/xml'
+            'Accept': 'application/json'
         }
     });
 };
+personium.getUnit = function (unitUrl) {
+    return $.ajax({
+        type: "GET",
+        url: unitUrl,
+        headers: {
+            'Accept': 'application/json'
+        }
+    });
+}
 personium.readMessageAPI = function (cellUrl, token, id) {
     var cmd = {
         "Command": "read"

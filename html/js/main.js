@@ -42,6 +42,11 @@ ha.init = function() {
     //    }
     //    st.setBizTheme();
     //} else {
+    personium.getUnit(cm.user.baseUrl).done(function (unitObj) {
+        cm.path_based_cellurl_enabled = unitObj.unit.path_based_cellurl_enabled;
+    }).fail(function () {
+        cm.path_based_cellurl_enabled = true;
+    });
     cm.i18nSetProfile();
     cm.i18nSetRole();
     cm.i18nSetBox();
@@ -189,7 +194,11 @@ ha.dispInsAppList = function () {
 };
 
 ha.dispInsAppListSchema = function (schema, boxName, id) {
-    personium.getBoxStatus(cm.getMyCellUrl(), cm.getAccessToken(), boxName).done(function (data) {
+    personium.getBoxStatus(cm.getMyCellUrl(), cm.getAccessToken(), boxName).done(function (boxObj) {
+        var data = boxObj.box;
+        if (!data) {
+            data = boxObj;
+        }
         var status = data.status;
         var html = '';
         if (status.indexOf('ready') >= 0) {
