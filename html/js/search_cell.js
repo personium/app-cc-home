@@ -114,45 +114,50 @@ search_cell.searchCells = function (searchVal) {
     if (searchVal) {
         let urlCnv = ut.changeLocalUnitToUnitUrl(searchVal);
         let cellName = "";
-        personium.getCell(urlCnv).done(function (cellObj) {
-            cellName = cellObj.cell.name;
-        }).fail(function (xmlObj) {
-            if (xmlObj.status == "200") {
-                cellName = ut.getName(urlCnv);
-            }
-        }).always(function () {
-            if (cellName !== "") {
-                // Profile Modal Disp
-                var profObj = {
-                    DisplayName: cellName,
-                    Description: "",
-                    Image: ut.getJdenticon(urlCnv)
+        if (urlCnv.startsWith("http://") || urlCnv.startsWith("https://")) {
+            personium.getCell(urlCnv).done(function (cellObj) {
+                cellName = cellObj.cell.name;
+            }).fail(function (xmlObj) {
+                if (xmlObj.status == "200") {
+                    cellName = ut.getName(urlCnv);
                 }
-                personium.getProfile(urlCnv).done(function (prof) {
-                    // Profile Modal Settings
-                    if (prof) {
-                        profObj.DisplayName = _.escape(prof.DisplayName);
-                        profObj.Description = _.escape(prof.Description);
-                        if (prof.Image) {
-                            profObj.Image = prof.Image;
-                        }
+            }).always(function () {
+                if (cellName !== "") {
+                    // Profile Modal Disp
+                    var profObj = {
+                        DisplayName: cellName,
+                        Description: "",
+                        Image: ut.getJdenticon(urlCnv)
                     }
-                }).always(function () {
-                    var profTrans = "profTrans";
-                    var urlParse = $.url(urlCnv);
-                    var transName = urlParse.attr('host').replace(/\./g, "") + "_" + cellName;
-                    cm.i18nAddProfile("en", "profTrans", transName, profObj, urlCnv, "profile");
-                    cm.i18nAddProfile("ja", "profTrans", transName, profObj, urlCnv, "profile");
+                    personium.getProfile(urlCnv).done(function (prof) {
+                        // Profile Modal Settings
+                        if (prof) {
+                            profObj.DisplayName = _.escape(prof.DisplayName);
+                            profObj.Description = _.escape(prof.Description);
+                            if (prof.Image) {
+                                profObj.Image = prof.Image;
+                            }
+                        }
+                    }).always(function () {
+                        var profTrans = "profTrans";
+                        var urlParse = $.url(urlCnv);
+                        var transName = urlParse.attr('host').replace(/\./g, "") + "_" + cellName;
+                        cm.i18nAddProfile("en", "profTrans", transName, profObj, urlCnv, "profile");
+                        cm.i18nAddProfile("ja", "profTrans", transName, profObj, urlCnv, "profile");
 
-                    search_cell.displayExtCellInfo(profTrans + ":" + transName, urlCnv);
-                    $("#cellList_" + profTrans + transName).css("display", "block");
-                    search_cell.Add_Check_Mark();
-                });
-            } else {
-                // Search from external cell
-                search_cell.dispExtCellList(searchVal);
-            }
-        });
+                        search_cell.displayExtCellInfo(profTrans + ":" + transName, urlCnv);
+                        $("#cellList_" + profTrans + transName).css("display", "block");
+                        search_cell.Add_Check_Mark();
+                    });
+                } else {
+                    // Search from external cell
+                    search_cell.dispExtCellList(searchVal);
+                }
+            });
+        } else {
+            // Search from external cell
+            search_cell.dispExtCellList(searchVal);
+        }
     } else {
         search_cell.dispExtCellList();
     }

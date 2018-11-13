@@ -72,7 +72,7 @@ ut.getName = function(path, withoutExtension) {
 ut.changeUnitUrlToLocalUnit = function (cellUrl, cellName, unitUrl) {
     var result = cellUrl;
     if (unitUrl.startsWith(cm.user.baseUrl)) {
-        result = ut.PERSONIUM_LOCALUNIT + "/" + cellName;
+        result = ut.PERSONIUM_LOCALUNIT + "/" + cellName + "/";
     }
 
     return result;
@@ -90,7 +90,7 @@ ut.changeLocalUnitToUnitUrl = function (cellUrl) {
             if (cellname.endsWith("/")) {
                 cellname = cellname.substring(0, cellname.length - 1);
             }
-            let unitSplit = cm.unitUrl.split("/");
+            let unitSplit = cm.user.baseUrl.split("/");
             unitSplit[2] = cellname + "." + unitSplit[2];
             result = unitSplit.join("/");
         } else {

@@ -222,17 +222,17 @@ new_links.createExtCell = function (url, count) {
             "Url": linksUrl
         };
         personium.restCreateExtCellAPI(cm.getMyCellUrl(), cm.getAccessToken(), jsonData).done(function (data) {
-            addCnt++;
+            
         }).fail(function (data) {
             var res = JSON.parse(data.responseText);
             if (res.code.indexOf("PR409") >= 0) {
                 // Ignore the collision error
-                addCnt++;
             } else {
                 alert("An error has occurred.\n" + res.message.value);
             }
         }).always(function () {
-            if (addCnt >= listLen) {
+            let listLen = new_links.links_list.length;
+            if (count >= listLen) {
                 links.init();
                 personium.backSubContent();
             }
@@ -242,7 +242,7 @@ new_links.createExtCell = function (url, count) {
 new_links.searchDirectoryAPI = function (searchVal) {
     return $.ajax({
         type: "GET",
-        url: "https://demo.personium.io/directory/app-uc-directory/OData/directory?$filter=substringof%28%27" + searchVal + "%27%2CalternateName%29+or+substringof%28%27" + searchVal + "%27%2Curl%29",
+        url: "https://directory.demo-fi.personium.io/app-uc-directory/OData/directory?$filter=substringof%28%27" + searchVal + "%27%2CalternateName%29+or+substringof%28%27" + searchVal + "%27%2Curl%29",
         datatype: "json",
         headers: {
             "Accept": "application/json"
