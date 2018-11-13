@@ -242,7 +242,7 @@ new_links.createExtCell = function (url, count) {
 new_links.searchDirectoryAPI = function (searchVal) {
     return $.ajax({
         type: "GET",
-        url: "https://directory.demo-fi.personium.io/app-uc-directory/OData/directory?$filter=substringof%28%27" + searchVal + "%27%2CalternateName%29+or+substringof%28%27" + searchVal + "%27%2Curl%29",
+        url: "https://demo.personium.io/directory/app-uc-directory/OData/directory?$filter=substringof%28%27" + searchVal + "%27%2CalternateName%29+or+substringof%28%27" + searchVal + "%27%2Curl%29",
         datatype: "json",
         headers: {
             "Accept": "application/json"
