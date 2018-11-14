@@ -222,17 +222,17 @@ new_links.createExtCell = function (url, count) {
             "Url": linksUrl
         };
         personium.restCreateExtCellAPI(cm.getMyCellUrl(), cm.getAccessToken(), jsonData).done(function (data) {
-            addCnt++;
+            
         }).fail(function (data) {
             var res = JSON.parse(data.responseText);
             if (res.code.indexOf("PR409") >= 0) {
                 // Ignore the collision error
-                addCnt++;
             } else {
                 alert("An error has occurred.\n" + res.message.value);
             }
         }).always(function () {
-            if (addCnt >= listLen) {
+            let listLen = new_links.links_list.length;
+            if (count >= listLen) {
                 links.init();
                 personium.backSubContent();
             }
