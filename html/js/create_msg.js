@@ -2,7 +2,7 @@ var create_msg = {};
 
 // Load create_message screen
 create_msg.loadCreateMessage = function () {
-    personium.loadContent(homeAppUrl + "__/html/create_message.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/create_message.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         create_msg.init();

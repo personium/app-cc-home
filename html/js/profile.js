@@ -2,7 +2,7 @@ var profile = {};
 
 // Load profile screen
 profile.loadProfile = function () {
-    personium.loadContent(homeAppUrl + "__/html/profile.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/profile.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         profile.init();

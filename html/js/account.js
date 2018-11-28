@@ -2,7 +2,7 @@ var account = {};
 
 // Load account screen
 account.loadAccount = function () {
-    personium.loadContent(homeAppUrl + "__/html/account.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/account.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         account.init();
@@ -34,9 +34,9 @@ account.dispAccountList = function (json) {
     for (var i = 0; i < results.length; i++) {
         var acc = json.d.results[i];
         var type = acc.Type;
-        var typeImgTag = '<img class="image-circle-small-border-less" src="' + homeAppUrl + '__/html/img/type_p.png">';
+        var typeImgTag = '<img class="image-circle-small-border-less" src="' + homeAppUrl + appUseBox + '/html/img/type_p.png">';
         if (type !== "basic") {
-            typeImgTag = '<img class="image-circle-small-border-less" src="' + homeAppUrl + '__/html/img/type_g.png">';
+            typeImgTag = '<img class="image-circle-small-border-less" src="' + homeAppUrl + appUseBox + '/html/img/type_g.png">';
         }
         html = '<li>';
         html += '<div class="slide-list-line">';

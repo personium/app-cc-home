@@ -15,7 +15,7 @@ $(window).on('resize', function () {
 
 // Load main screen
 ha.loadMain = function () {
-    personium.loadContent(homeAppUrl + "__/html/main.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/main.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         ha.init();

@@ -2,7 +2,7 @@ var message = {};
 
 // Load message screen
 message.loadMessage = function () {
-    personium.loadContent(homeAppUrl + "__/html/message.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/message.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         message.init();

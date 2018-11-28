@@ -2,7 +2,7 @@ var links = {};
 
 // Load links screen
 create_msg.loadLinks = function () {
-    personium.loadContent(homeAppUrl + "__/html/links.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/links.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         links.init();

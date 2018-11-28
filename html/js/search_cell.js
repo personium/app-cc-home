@@ -2,7 +2,7 @@ var search_cell = {};
 
 // Load search_cell screen
 create_msg.loadSearchCell = function () {
-    personium.loadContent(homeAppUrl + "__/html/search_cell.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/search_cell.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         search_cell.init();

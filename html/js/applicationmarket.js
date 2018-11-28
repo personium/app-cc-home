@@ -2,7 +2,7 @@ var am = {};
 
 // Load applicationmarket screen
 am.loadApplicationMarket = function () {
-    personium.loadContent(homeAppUrl + "__/html/applicationmarket.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/applicationmarket.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         am.init();

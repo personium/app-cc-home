@@ -2,7 +2,7 @@ var edit_account = {};
 
 // Load edit_account screen
 edit_account.loadEditAccount = function () {
-    personium.loadContent(homeAppUrl + "__/html/edit_account.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/edit_account.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         edit_account.init();
