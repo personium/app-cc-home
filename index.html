@@ -36,7 +36,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/3.1.4/cropper.min.js"></script>
     <script type="text/javascript">
         /* Specify the URL of the source that the home application loads. */
-        homeAppUrl = "https://demo.personium.io/app-cc-home/__/";
+        appUnitFQDN = "demo.personium.io";
+        $.ajax({
+            type: "GET",
+            url: "https://" + appUnitFQDN + "/",
+            headers: {
+                'Accept': 'application/json'
+            }
+        }).done(function (unitObj) {
+            if (unitObj.unit.path_based_cellurl_enabled) {
+                homeAppUrl = "https://" + appUnitFQDN + "/app-cc-home/";
+            } else {
+                homeAppUrl = "https://app-cc-home." + appUnitFQDN + "/";
+            }
+        }).fail(function (res) {
+            homeAppUrl = "https://" + appUnitFQDN + "/app-cc-home/";
+        }).always(function () {
+            loadStyleSheet();
+            loadScript();
+        });
 
         FontAwesomeConfig = {
             searchPseudoElements: true
@@ -48,14 +66,14 @@
         function loadStyleSheet() {
             let head = document.getElementsByTagName('head')[0];
             let styleList = [
-                homeAppUrl + "html/css/cropper/cropper.min.css",
-                homeAppUrl + "html/css/cropper/cropper_circle_mask.css",
-                homeAppUrl + "html/css/bootstrap-switch/bootstrap-switch.min.css",
-                homeAppUrl + "html/css/common.css",
-                homeAppUrl + "html/css/login.css",
-                homeAppUrl + "html/css/personium.css",
-                homeAppUrl + "html/css/homeapp.css",
-                homeAppUrl + "html/css/application_mgr.css"
+                homeAppUrl + "__/html/css/cropper/cropper.min.css",
+                homeAppUrl + "__/html/css/cropper/cropper_circle_mask.css",
+                homeAppUrl + "__/html/css/bootstrap-switch/bootstrap-switch.min.css",
+                homeAppUrl + "__/html/css/common.css",
+                homeAppUrl + "__/html/css/login.css",
+                homeAppUrl + "__/html/css/personium.css",
+                homeAppUrl + "__/html/css/homeapp.css",
+                homeAppUrl + "__/html/css/application_mgr.css"
             ];
 
             for (var i = 0; i < styleList.length; i++) {
@@ -69,39 +87,39 @@
         function loadScript(callback) {
             let head = document.getElementsByTagName('head')[0];
             let scriptList = [
-                homeAppUrl + "html/js/bootstrap-switch/bootstrap-switch.min.js",
-                homeAppUrl + "html/js/personium.js",
-                homeAppUrl + "html/js/common.js",
-                homeAppUrl + "html/js/login.js",
-                homeAppUrl + "html/js/main.js",
-                homeAppUrl + "html/js/load.i18n.js",
-                homeAppUrl + "html/js/utils.js",
-                homeAppUrl + "html/js/account.js",
-                homeAppUrl + "html/js/account_info.js",
-                homeAppUrl + "html/js/account_link_role_list.js",
-                homeAppUrl + "html/js/account_link_role.js",
-                homeAppUrl + "html/js/edit_account.js",
-                homeAppUrl + "html/js/select_accounttype.js",
-                homeAppUrl + "html/js/new_account.js",
-                homeAppUrl + "html/js/settings.js",
-                homeAppUrl + "html/js/profile.js",
-                homeAppUrl + "html/js/change_password.js",
-                homeAppUrl + "html/js/change_language.js",
-                homeAppUrl + "html/js/app_manage.js",
-                homeAppUrl + "html/js/applicationmarket.js",
-                homeAppUrl + "html/js/message.js",
-                homeAppUrl + "html/js/inc_msg_list.js",
-                homeAppUrl + "html/js/msg_info.js",
-                homeAppUrl + "html/js/create_msg.js",
-                homeAppUrl + "html/js/search_cell.js",
-                homeAppUrl + "html/js/outg_msg_list.js",
-                homeAppUrl + "html/js/links.js",
-                homeAppUrl + "html/js/new_links.js",
-                homeAppUrl + "html/js/links_02.js",
-                homeAppUrl + "html/js/arrow_to_role.js",
-                homeAppUrl + "html/js/extcell_link_role_list.js",
-                homeAppUrl + "html/js/extcell_link_role.js",
-                homeAppUrl + "html/js/arrow_from_role.js"
+                homeAppUrl + "__/html/js/bootstrap-switch/bootstrap-switch.min.js",
+                homeAppUrl + "__/html/js/personium.js",
+                homeAppUrl + "__/html/js/common.js",
+                homeAppUrl + "__/html/js/login.js",
+                homeAppUrl + "__/html/js/main.js",
+                homeAppUrl + "__/html/js/load.i18n.js",
+                homeAppUrl + "__/html/js/utils.js",
+                homeAppUrl + "__/html/js/account.js",
+                homeAppUrl + "__/html/js/account_info.js",
+                homeAppUrl + "__/html/js/account_link_role_list.js",
+                homeAppUrl + "__/html/js/account_link_role.js",
+                homeAppUrl + "__/html/js/edit_account.js",
+                homeAppUrl + "__/html/js/select_accounttype.js",
+                homeAppUrl + "__/html/js/new_account.js",
+                homeAppUrl + "__/html/js/settings.js",
+                homeAppUrl + "__/html/js/profile.js",
+                homeAppUrl + "__/html/js/change_password.js",
+                homeAppUrl + "__/html/js/change_language.js",
+                homeAppUrl + "__/html/js/app_manage.js",
+                homeAppUrl + "__/html/js/applicationmarket.js",
+                homeAppUrl + "__/html/js/message.js",
+                homeAppUrl + "__/html/js/inc_msg_list.js",
+                homeAppUrl + "__/html/js/msg_info.js",
+                homeAppUrl + "__/html/js/create_msg.js",
+                homeAppUrl + "__/html/js/search_cell.js",
+                homeAppUrl + "__/html/js/outg_msg_list.js",
+                homeAppUrl + "__/html/js/links.js",
+                homeAppUrl + "__/html/js/new_links.js",
+                homeAppUrl + "__/html/js/links_02.js",
+                homeAppUrl + "__/html/js/arrow_to_role.js",
+                homeAppUrl + "__/html/js/extcell_link_role_list.js",
+                homeAppUrl + "__/html/js/extcell_link_role.js",
+                homeAppUrl + "__/html/js/arrow_from_role.js"
             ];
 
             let i = 0;
@@ -122,9 +140,6 @@
                 }
             })();
         };
-
-        loadStyleSheet();
-        loadScript();
     </script>
 </head>
 <body>

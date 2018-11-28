@@ -2,7 +2,7 @@ var link_info = {};
 
 // Load links_02 screen
 link_info.loadLinks02 = function () {
-    personium.loadContent(homeAppUrl + "html/links_02.html").done(function (data) {
+    personium.loadContent(homeAppUrl + "__/html/links_02.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         link_info.id = personium.createSubContent(out_html, true);
         link_info.init();

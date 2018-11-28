@@ -2,7 +2,7 @@ var afr = {};
 
 // Load arrow_from_role screen
 afr.loadArrowFromRole = function () {
-    personium.loadContent(homeAppUrl + "html/arrow_from_role.html").done(function (data) {
+    personium.loadContent(homeAppUrl + "__/html/arrow_from_role.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         afr.init();

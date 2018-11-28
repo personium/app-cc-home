@@ -3,7 +3,7 @@ cm.imgBinaryFile = null;
 cm.user = JSON.parse(sessionStorage.getItem("sessionData"));
 
 // Do not display the following boxes in the installed list section
-cm.boxIgnoreList = ['https://demo.personium.io/app-cc-home/'];
+cm.boxIgnoreList = [homeAppUrl];
 cm.logoutUrl = null;
 
 // Logout
@@ -30,7 +30,7 @@ if ((typeof initPage == 'undefined' || !initPage) && !cm.user) {
 cm.transitionHomeApp = function (fileName) {
     cm.user.prevUrl = location.href;
     sessionStorage.setItem("sessionData", JSON.stringify(cm.user));
-    location.href = homeAppUrl + "html/" + fileName;
+    location.href = homeAppUrl + "__/html/" + fileName;
 }
 // Return to the called screen
 cm.transitionPrevUrl = function () {
@@ -50,8 +50,8 @@ cm.setUserDate = function (data) {
     cm.user.nowTitle = {};
     cm.user.settingNowPage = 0;
     cm.user.settingNowTitle = {};
-    cm.defaultRoleIcon = homeAppUrl + "html/img/role_default.png";
-    cm.notAppImage = homeAppUrl + "html/img/no_app_image.png";
+    cm.defaultRoleIcon = homeAppUrl + "__/html/img/role_default.png";
+    cm.notAppImage = homeAppUrl + "__/html/img/no_app_image.png";
     cm.cellUrl = cm.user.cellUrl;
     cm.userName = cm.user.userName;
     cm.profDispName = cm.user.profile.DisplayName;

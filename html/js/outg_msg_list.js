@@ -2,7 +2,7 @@ var outg_msg_list = {};
 
 // Load outgoing_message_list screen
 outg_msg_list.loadOutgoingMessageList = function () {
-    personium.loadContent(homeAppUrl + "html/outgoing_message_list.html").done(function (data) {
+    personium.loadContent(homeAppUrl + "__/html/outgoing_message_list.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         outg_msg_list.init();

@@ -2,7 +2,7 @@ var chg_pass = {};
 
 // Load change_password screen
 chg_pass.loadChangePassword = function () {
-    personium.loadContent(homeAppUrl + "html/change_password.html").done(function (data) {
+    personium.loadContent(homeAppUrl + "__/html/change_password.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         chg_pass.init();

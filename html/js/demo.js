@@ -306,7 +306,7 @@ demo.createProfileHeaderMenu = function() {
     html += '<div class="sizeCaption">' + i18next.t("Account") + ': ' + cm.user.userName +  '</div>';
     html += '</div>';
     html += '<a href="javascript:void(0)" onClick="demo.toggleSlide();">';
-    html += '<img src="' + homeAppUrl + 'html/img/ico_menu.png">';
+    html += '<img src="' + homeAppUrl + '__/html/img/ico_menu.png">';
     html += '</a>';
     $(".profile-menu").html(html);
 

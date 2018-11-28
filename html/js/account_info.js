@@ -2,7 +2,7 @@ var accinfo = {};
 
 // Load account_info screen
 accinfo.loadAccountInfo = function () {
-    personium.loadContent(homeAppUrl + "html/account_info.html").done(function (data) {
+    personium.loadContent(homeAppUrl + "__/html/account_info.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         accinfo.init();

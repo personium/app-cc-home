@@ -2,7 +2,7 @@ var lg = {};
 
 // Load login screen
 lg.loadLogin = function () {
-    personium.loadContent(homeAppUrl + "html/login.html").done(function (data) {
+    personium.loadContent(homeAppUrl + "__/html/login.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         lg.initTarget();
@@ -76,7 +76,7 @@ lg.initTarget = function () {
 
         var u = location.href;
         if (u.indexOf("file:") == 0) {
-            return "https://demo.personium.io/app-cc-home/";
+            return homeAppUrl;
         }
         var tempUrl = ut.cellUrlWithEndingSlash(u, false, true);
         personium.getCell(tempUrl).done(function (cellObj) {
@@ -90,7 +90,7 @@ lg.initTarget = function () {
                 personium.getCell(tempUrl).done(function (cellObj) {
                     lg.setRootUrl(tempUrl);
                 }).fail(function () {
-                    lg.setRootUrl("https://demo.personium.io/app-cc-home/");
+                    lg.setRootUrl(homeAppUrl);
                 });
             }
         });
@@ -176,7 +176,7 @@ lg.targetCellLogin = function(tempUrl) {
 lg.cellUrl = function() {
     var u = location.href;
     if (u.indexOf("file:") == 0) {
-        return "https://demo.personium.io/app-cc-home/";
+        return homeAppUrl;
     }
 
     var tempUrl = ut.cellUrlWithEndingSlash(u, true);

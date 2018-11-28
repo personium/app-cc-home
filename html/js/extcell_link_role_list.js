@@ -2,7 +2,7 @@ var extcell_link_role_list = {};
 
 // Load extcell_link_role_list screen
 link_info.loadExtCellLinkRoleList = function () {
-    personium.loadContent(homeAppUrl + "html/extcell_link_role_list.html").done(function (data) {
+    personium.loadContent(homeAppUrl + "__/html/extcell_link_role_list.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         extcell_link_role_list.init();

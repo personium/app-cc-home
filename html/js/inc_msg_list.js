@@ -2,7 +2,7 @@ var inc_msg_list = {};
 
 // Load incoming_message_list screen
 inc_msg_list.loadIncomingMessageList = function () {
-    personium.loadContent(homeAppUrl + "html/incoming_message_list.html").done(function (data) {
+    personium.loadContent(homeAppUrl + "__/html/incoming_message_list.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         inc_msg_list.init();

@@ -2,7 +2,7 @@ var app_manage = {};
 
 // Load app_manage screen
 chg_lang.loadAppManage = function () {
-    personium.loadContent(homeAppUrl + "html/application_management.html").done(function (data) {
+    personium.loadContent(homeAppUrl + "__/html/application_management.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         $('body > div.mySpinner').hide();
