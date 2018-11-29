@@ -208,9 +208,16 @@ new_links.addExternalCell = function () {
 new_links.createExtCell = function (url, count) {
     let cellName = "";
     let unitUrl = "";
-    personium.getCell(url).done(function (cellObj) {
+    personium.getCell(url).done(function (cellObj, status, xhr) {
         cellName = cellObj.cell.name;
-        unitUrl = cellObj.unit.url;
+        let ver = xhr.getResponseHeader("x-personium-version");
+        if (ver >= "1.7.1") {
+            unitUrl = cellObj.unit.url;
+        } else {
+            var i = url.indexOf("/"); // first slash
+            i = url.indexOf("/", i + 2);  // second slash
+            unitUrl = url.substring(0, i + 1);
+        }
     }).fail(function (xmlObj) {
         cellName = ut.getName(url);
         var i = url.indexOf("/"); // first slash

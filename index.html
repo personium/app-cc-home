@@ -44,8 +44,9 @@
             headers: {
                 'Accept': 'application/json'
             }
-        }).done(function (unitObj) {
-            if (unitObj.unit.path_based_cellurl_enabled) {
+        }).done(function (unitObj, status, xhr) {
+            let ver = xhr.getResponseHeader("x-personium-version");
+            if (ver < "1.7.1" || unitObj.unit.path_based_cellurl_enabled) {
                 homeAppUrl = "https://" + appUnitFQDN + "/app-cc-home/";
             } else {
                 homeAppUrl = "https://app-cc-home." + appUnitFQDN + "/";

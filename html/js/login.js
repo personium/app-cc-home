@@ -25,8 +25,15 @@ lg.googleLogin = function (gToken) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }).done(function (data) {
-        personium.getCell(cellUrl).done(function (cellObj) {
-            data.baseUrl = cellObj.unit.url;
+        personium.getCell(cellUrl).done(function (cellObj, status, xhr) {
+            let ver = xhr.getResponseHeader("x-personium-version");
+            if (ver >= "1.7.1") {
+                data.baseUrl = cellObj.unit.url;
+            } else {
+                var i = cellUrl.indexOf("/"); // first slash
+                i = cellUrl.indexOf("/", i + 2);  // second slash
+                data.baseUrl = cellUrl.substring(0, i + 1);
+            }
         }).fail(function (xmlObj) {
             var i = cellUrl.indexOf("/"); // first slash
             i = cellUrl.indexOf("/", i + 2);  // second slash
@@ -81,7 +88,6 @@ lg.initTarget = function () {
         var tempUrl = ut.cellUrlWithEndingSlash(u, false, true);
         personium.getCell(tempUrl).done(function (cellObj) {
             lg.setRootUrl(tempUrl);
-            lg.baseUrl = cellObj.unit.url;
         }).fail(function (xmlObj) {
             if (xmlObj.status == "200") {
                 lg.setRootUrl(tempUrl);
@@ -248,8 +254,15 @@ lg.sendAccountNamePw = function(username, pw) {
             'content-type': 'application/x-www-form-urlencoded'
         }
     }).done(function (data) {
-        personium.getCell(lg.rootUrl).done(function (cellObj) {
-            data.baseUrl = cellObj.unit.url;
+        personium.getCell(lg.rootUrl).done(function (cellObj, status, xhr) {
+            let ver = xhr.getResponseHeader("x-personium-version");
+            if (ver >= "1.7.1") {
+                data.baseUrl = cellObj.unit.url;
+            } else {
+                var i = lg.rootUrl.indexOf("/"); // first slash
+                i = lg.rootUrl.indexOf("/", i + 2);  // second slash
+                data.baseUrl = lg.rootUrl.substring(0, i + 1);
+            }
         }).fail(function (xmlObj) {
             var i = lg.rootUrl.indexOf("/"); // first slash
             i = lg.rootUrl.indexOf("/", i + 2);  // second slash
