@@ -73,7 +73,7 @@ search_cell.displayCell = function (url) {
     personium.getCell(urlCnv).done(function (cellObj) {
         cellName = cellObj.cell.name;
     }).fail(function (xmlObj) {
-        if (xmlObj.status == "200") {
+        if (xmlObj.status == "200" || xmlObj.status == "412") {
             cellName = ut.getName(urlCnv);
         }
     }).always(function () {
@@ -118,7 +118,7 @@ search_cell.searchCells = function (searchVal) {
             personium.getCell(urlCnv).done(function (cellObj) {
                 cellName = cellObj.cell.name;
             }).fail(function (xmlObj) {
-                if (xmlObj.status == "200") {
+                if (xmlObj.status == "200" || xmlObj.status == "412") {
                     cellName = ut.getName(urlCnv);
                 }
             }).always(function () {

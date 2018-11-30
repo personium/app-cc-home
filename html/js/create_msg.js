@@ -94,7 +94,7 @@ create_msg.displayAddressInfo = function (cellUrl) {
     personium.getCell(cellUrl).done(function (cellObj) {
         cellName = cellObj.cell.name;
     }).fail(function (xmlObj) {
-        if (xmlObj.status == "200") {
+        if (xmlObj.status == "200" || xmlObj.status == "412") {
             cellName = ut.getName(cellUrl);
         }
     }).always(function () {

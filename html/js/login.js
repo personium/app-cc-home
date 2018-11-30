@@ -89,7 +89,7 @@ lg.initTarget = function () {
         personium.getCell(tempUrl).done(function (cellObj) {
             lg.setRootUrl(tempUrl);
         }).fail(function (xmlObj) {
-            if (xmlObj.status == "200") {
+            if (xmlObj.status == "200" || xmlObj.status == "412") {
                 lg.setRootUrl(tempUrl);
             } else {
                 tempUrl = ut.cellUrlWithEndingSlash(u, true, true);
@@ -161,7 +161,7 @@ lg.targetCellLogin = function(tempUrl) {
     personium.getCell(cellUrl).done(function(cellObj) {
         lg.rootUrl = cellUrl;
     }).fail(function (xmlObj) {
-        if (xmlObj.status == "200") {
+        if (xmlObj.status == "200" || xmlObj.status == "412") {
             lg.rootUrl = cellUrl;
         } else {
             lg.rootUrl = "";

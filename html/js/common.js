@@ -259,7 +259,7 @@ cm.i18nSetProfile = function () {
     personium.getCell(cellUrl).done(function (cellObj) {
         cellName = cellObj.cell.name;
     }).fail(function (xmlObj) {
-        if (xmlObj.status == "200") {
+        if (xmlObj.status == "200" || xmlObj.status == "412") {
             cellName = ut.getName(cellUrl);
         } else {
             cellName = i18next.t("NoTarget");
@@ -294,7 +294,7 @@ cm.i18nSetTargetProfile = function (targetUrl) {
         cellName = cellObj.cell.name;
     }).fail(function (xmlObj) {
         cellName = ut.getName(cellUrl);
-        if (xmlObj.status == "200") {
+        if (xmlObj.status == "200" || xmlObj.status == "412") {
             dispCellName = cellName;
         } else {
             dispCellName = i18next.t("NoTarget");
@@ -562,7 +562,7 @@ cm.displayProfile = function (cellUrl, num) {
     personium.getCell(cellUrl).done(function (cellObj) {
         cellName = cellObj.cell.name;
     }).fail(function (xmlObj) {
-        if (xmlObj.status == "200") {
+        if (xmlObj.status == "200" || xmlObj.status == "412") {
             cellName = ut.getName(cellUrl);
         }
     }).always(function () {
@@ -606,7 +606,7 @@ cm.registerProfI18n = function (schema, boxName, fileName, cellType) {
     personium.getCell(schema).done(function (cellObj) {
         cellName = cellObj.cell.name;
     }).fail(function (xmlObj) {
-        if (xmlObj.status == "200") {
+        if (xmlObj.status == "200" || xmlObj.status == "412") {
             cellName = ut.getName(schema);
         } else {
             cellName = i18next.t("NoTarget");
