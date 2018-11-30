@@ -292,7 +292,7 @@ cm.i18nSetTargetProfile = function (targetUrl) {
     let dispCellName = "";
     personium.getCell(cellUrl).done(function (cellObj) {
         cellName = cellObj.cell.name;
-    }).fail(function () {
+    }).fail(function (xmlObj) {
         cellName = ut.getName(cellUrl);
         if (xmlObj.status == "200") {
             dispCellName = cellName;
