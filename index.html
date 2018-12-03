@@ -36,8 +36,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/3.1.4/cropper.min.js"></script>
     <script type="text/javascript">
         /* Specify the URL of the source that the home application loads. */
-        appUnitFQDN = "demo.personium.io";
-        appUseBox = "__";
+        var appUnitFQDN = "demo.personium.io";
+        var homeAppUrl;
+        var appUseBox = "__";
         $.ajax({
             type: "GET",
             url: "https://" + appUnitFQDN + "/",
