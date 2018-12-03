@@ -2,7 +2,7 @@ var sel_accType = {};
 
 // Load select_accounttype screen
 sel_accType.loadSelectAccountType = function () {
-    personium.loadContent(homeAppUrl + "html/select_accounttype.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/select_accounttype.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         $('body > div.mySpinner').hide();

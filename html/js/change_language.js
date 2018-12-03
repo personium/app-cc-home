@@ -2,7 +2,7 @@ var chg_lang = {};
 
 // Load change_language screen
 chg_lang.loadChangeLanguage = function () {
-    personium.loadContent(homeAppUrl + "html/change_language.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/change_language.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         chg_lang.init();

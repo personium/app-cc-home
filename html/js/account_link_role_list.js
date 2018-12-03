@@ -2,7 +2,7 @@ var acc_link_role_list = {};
 
 // Load account_link_role_list screen
 acc_link_role_list.loadAccountLinkRoleList = function () {
-    personium.loadContent(homeAppUrl + "html/account_link_role_list.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/account_link_role_list.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         acc_link_role_list.init();

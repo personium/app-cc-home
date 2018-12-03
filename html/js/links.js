@@ -2,7 +2,7 @@ var links = {};
 
 // Load links screen
 create_msg.loadLinks = function () {
-    personium.loadContent(homeAppUrl + "html/links.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/links.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         links.init();
@@ -59,7 +59,7 @@ links.dispExtCellListProf = function (extObj, no) {
         cellName = cellObj.cell.name;
     }).fail(function (xmlObj) {
         cellName = ut.getName(extCellUrlCnv);
-        if (xmlObj.status == "200") {
+        if (xmlObj.status == "200" || xmlObj.status == "412") {
             dispCellName = cellName;
         } else {
             dispCellName = i18next.t("NoTarget");

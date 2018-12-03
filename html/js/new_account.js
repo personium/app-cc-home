@@ -2,7 +2,7 @@ var new_account = {};
 
 // Load new_account screen
 new_account.loadNewAccount = function () {
-    personium.loadContent(homeAppUrl + "html/new_account.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/new_account.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         new_account.init();

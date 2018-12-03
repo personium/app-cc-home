@@ -14,7 +14,7 @@ $(document).ready(function () {
             defaultNS: 'translation',
             debug: true,
             backend: {
-                loadPath: homeAppUrl + 'html/locales/{{lng}}/{{ns}}.json'
+                loadPath: homeAppUrl + appUseBox + '/html/locales/{{lng}}/{{ns}}.json'
                ,crossDomain: true
             }
         }, function(err, t) {

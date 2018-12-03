@@ -2,7 +2,7 @@ var afr = {};
 
 // Load arrow_from_role screen
 afr.loadArrowFromRole = function () {
-    personium.loadContent(homeAppUrl + "html/arrow_from_role.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/arrow_from_role.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         afr.init();
@@ -52,9 +52,16 @@ afr.displayArrowFromRole = function () {
         }).fail(function () {
             let cellName = "";
             let unitUrl = "";
-            personium.getCell(cm.getMyCellUrl()).done(function (cellObj) {
+            personium.getCell(cm.getMyCellUrl()).done(function (cellObj, status, xhr) {
                 cellName = cellObj.cell.name;
-                unitUrl = cellObj.unit.url;
+                let ver = xhr.getResponseHeader("x-personium-version");
+                if (ver >= "1.7.1") {
+                    unitUrl = cellObj.unit.url;
+                } else {
+                    var i = cm.getMyCellUrl().indexOf("/"); // first slash
+                    i = cm.getMyCellUrl().indexOf("/", i + 2);  // second slash
+                    unitUrl = cm.getMyCellUrl().substring(0, i + 1);
+                }
             }).fail(function (xmlObj) {
                 cellName = ut.getName(cm.getMyCellUrl());
                 var i = cm.getMyCellUrl().indexOf("/"); // first slash

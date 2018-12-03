@@ -36,7 +36,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/3.1.4/cropper.min.js"></script>
     <script type="text/javascript">
         /* Specify the URL of the source that the home application loads. */
-        homeAppUrl = "https://demo.personium.io/app-cc-home/__/";
+        var appUnitFQDN = "demo.personium.io";
+        var homeAppUrl;
+        var appUseBox = "__";
+        $.ajax({
+            type: "GET",
+            url: "https://" + appUnitFQDN + "/",
+            headers: {
+                'Accept': 'application/json'
+            }
+        }).done(function (unitObj, status, xhr) {
+            let ver = xhr.getResponseHeader("x-personium-version");
+            if (ver < "1.7.1" || unitObj.unit.path_based_cellurl_enabled) {
+                homeAppUrl = "https://" + appUnitFQDN + "/app-cc-home/";
+            } else {
+                homeAppUrl = "https://app-cc-home." + appUnitFQDN + "/";
+            }
+        }).fail(function (res) {
+            homeAppUrl = "https://" + appUnitFQDN + "/app-cc-home/";
+        }).always(function () {
+            loadStyleSheet();
+            loadScript();
+        });
 
         FontAwesomeConfig = {
             searchPseudoElements: true
@@ -48,14 +69,14 @@
         function loadStyleSheet() {
             let head = document.getElementsByTagName('head')[0];
             let styleList = [
-                homeAppUrl + "html/css/cropper/cropper.min.css",
-                homeAppUrl + "html/css/cropper/cropper_circle_mask.css",
-                homeAppUrl + "html/css/bootstrap-switch/bootstrap-switch.min.css",
-                homeAppUrl + "html/css/common.css",
-                homeAppUrl + "html/css/login.css",
-                homeAppUrl + "html/css/personium.css",
-                homeAppUrl + "html/css/homeapp.css",
-                homeAppUrl + "html/css/application_mgr.css"
+                homeAppUrl + appUseBox + "/html/css/cropper/cropper.min.css",
+                homeAppUrl + appUseBox + "/html/css/cropper/cropper_circle_mask.css",
+                homeAppUrl + appUseBox + "/html/css/bootstrap-switch/bootstrap-switch.min.css",
+                homeAppUrl + appUseBox + "/html/css/common.css",
+                homeAppUrl + appUseBox + "/html/css/login.css",
+                homeAppUrl + appUseBox + "/html/css/personium.css",
+                homeAppUrl + appUseBox + "/html/css/homeapp.css",
+                homeAppUrl + appUseBox + "/html/css/application_mgr.css"
             ];
 
             for (var i = 0; i < styleList.length; i++) {
@@ -69,39 +90,39 @@
         function loadScript(callback) {
             let head = document.getElementsByTagName('head')[0];
             let scriptList = [
-                homeAppUrl + "html/js/bootstrap-switch/bootstrap-switch.min.js",
-                homeAppUrl + "html/js/personium.js",
-                homeAppUrl + "html/js/common.js",
-                homeAppUrl + "html/js/login.js",
-                homeAppUrl + "html/js/main.js",
-                homeAppUrl + "html/js/load.i18n.js",
-                homeAppUrl + "html/js/utils.js",
-                homeAppUrl + "html/js/account.js",
-                homeAppUrl + "html/js/account_info.js",
-                homeAppUrl + "html/js/account_link_role_list.js",
-                homeAppUrl + "html/js/account_link_role.js",
-                homeAppUrl + "html/js/edit_account.js",
-                homeAppUrl + "html/js/select_accounttype.js",
-                homeAppUrl + "html/js/new_account.js",
-                homeAppUrl + "html/js/settings.js",
-                homeAppUrl + "html/js/profile.js",
-                homeAppUrl + "html/js/change_password.js",
-                homeAppUrl + "html/js/change_language.js",
-                homeAppUrl + "html/js/app_manage.js",
-                homeAppUrl + "html/js/applicationmarket.js",
-                homeAppUrl + "html/js/message.js",
-                homeAppUrl + "html/js/inc_msg_list.js",
-                homeAppUrl + "html/js/msg_info.js",
-                homeAppUrl + "html/js/create_msg.js",
-                homeAppUrl + "html/js/search_cell.js",
-                homeAppUrl + "html/js/outg_msg_list.js",
-                homeAppUrl + "html/js/links.js",
-                homeAppUrl + "html/js/new_links.js",
-                homeAppUrl + "html/js/links_02.js",
-                homeAppUrl + "html/js/arrow_to_role.js",
-                homeAppUrl + "html/js/extcell_link_role_list.js",
-                homeAppUrl + "html/js/extcell_link_role.js",
-                homeAppUrl + "html/js/arrow_from_role.js"
+                homeAppUrl + appUseBox + "/html/js/bootstrap-switch/bootstrap-switch.min.js",
+                homeAppUrl + appUseBox + "/html/js/personium.js",
+                homeAppUrl + appUseBox + "/html/js/common.js",
+                homeAppUrl + appUseBox + "/html/js/login.js",
+                homeAppUrl + appUseBox + "/html/js/main.js",
+                homeAppUrl + appUseBox + "/html/js/load.i18n.js",
+                homeAppUrl + appUseBox + "/html/js/utils.js",
+                homeAppUrl + appUseBox + "/html/js/account.js",
+                homeAppUrl + appUseBox + "/html/js/account_info.js",
+                homeAppUrl + appUseBox + "/html/js/account_link_role_list.js",
+                homeAppUrl + appUseBox + "/html/js/account_link_role.js",
+                homeAppUrl + appUseBox + "/html/js/edit_account.js",
+                homeAppUrl + appUseBox + "/html/js/select_accounttype.js",
+                homeAppUrl + appUseBox + "/html/js/new_account.js",
+                homeAppUrl + appUseBox + "/html/js/settings.js",
+                homeAppUrl + appUseBox + "/html/js/profile.js",
+                homeAppUrl + appUseBox + "/html/js/change_password.js",
+                homeAppUrl + appUseBox + "/html/js/change_language.js",
+                homeAppUrl + appUseBox + "/html/js/app_manage.js",
+                homeAppUrl + appUseBox + "/html/js/applicationmarket.js",
+                homeAppUrl + appUseBox + "/html/js/message.js",
+                homeAppUrl + appUseBox + "/html/js/inc_msg_list.js",
+                homeAppUrl + appUseBox + "/html/js/msg_info.js",
+                homeAppUrl + appUseBox + "/html/js/create_msg.js",
+                homeAppUrl + appUseBox + "/html/js/search_cell.js",
+                homeAppUrl + appUseBox + "/html/js/outg_msg_list.js",
+                homeAppUrl + appUseBox + "/html/js/links.js",
+                homeAppUrl + appUseBox + "/html/js/new_links.js",
+                homeAppUrl + appUseBox + "/html/js/links_02.js",
+                homeAppUrl + appUseBox + "/html/js/arrow_to_role.js",
+                homeAppUrl + appUseBox + "/html/js/extcell_link_role_list.js",
+                homeAppUrl + appUseBox + "/html/js/extcell_link_role.js",
+                homeAppUrl + appUseBox + "/html/js/arrow_from_role.js"
             ];
 
             let i = 0;
@@ -122,9 +143,6 @@
                 }
             })();
         };
-
-        loadStyleSheet();
-        loadScript();
     </script>
 </head>
 <body>

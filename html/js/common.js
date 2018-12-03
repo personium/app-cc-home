@@ -3,7 +3,7 @@ cm.imgBinaryFile = null;
 cm.user = JSON.parse(sessionStorage.getItem("sessionData"));
 
 // Do not display the following boxes in the installed list section
-cm.boxIgnoreList = ['https://demo.personium.io/app-cc-home/'];
+cm.boxIgnoreList = [homeAppUrl];
 cm.logoutUrl = null;
 
 // Logout
@@ -30,7 +30,7 @@ if ((typeof initPage == 'undefined' || !initPage) && !cm.user) {
 cm.transitionHomeApp = function (fileName) {
     cm.user.prevUrl = location.href;
     sessionStorage.setItem("sessionData", JSON.stringify(cm.user));
-    location.href = homeAppUrl + "html/" + fileName;
+    location.href = homeAppUrl + appUseBox + "/html/" + fileName;
 }
 // Return to the called screen
 cm.transitionPrevUrl = function () {
@@ -50,8 +50,8 @@ cm.setUserDate = function (data) {
     cm.user.nowTitle = {};
     cm.user.settingNowPage = 0;
     cm.user.settingNowTitle = {};
-    cm.defaultRoleIcon = homeAppUrl + "html/img/role_default.png";
-    cm.notAppImage = homeAppUrl + "html/img/no_app_image.png";
+    cm.defaultRoleIcon = homeAppUrl + appUseBox + "/html/img/role_default.png";
+    cm.notAppImage = homeAppUrl + appUseBox + "/html/img/no_app_image.png";
     cm.cellUrl = cm.user.cellUrl;
     cm.userName = cm.user.userName;
     cm.profDispName = cm.user.profile.DisplayName;
@@ -259,7 +259,7 @@ cm.i18nSetProfile = function () {
     personium.getCell(cellUrl).done(function (cellObj) {
         cellName = cellObj.cell.name;
     }).fail(function (xmlObj) {
-        if (xmlObj.status == "200") {
+        if (xmlObj.status == "200" || xmlObj.status == "412") {
             cellName = ut.getName(cellUrl);
         } else {
             cellName = i18next.t("NoTarget");
@@ -292,9 +292,9 @@ cm.i18nSetTargetProfile = function (targetUrl) {
     let dispCellName = "";
     personium.getCell(cellUrl).done(function (cellObj) {
         cellName = cellObj.cell.name;
-    }).fail(function () {
+    }).fail(function (xmlObj) {
         cellName = ut.getName(cellUrl);
-        if (xmlObj.status == "200") {
+        if (xmlObj.status == "200" || xmlObj.status == "412") {
             dispCellName = cellName;
         } else {
             dispCellName = i18next.t("NoTarget");
@@ -562,7 +562,7 @@ cm.displayProfile = function (cellUrl, num) {
     personium.getCell(cellUrl).done(function (cellObj) {
         cellName = cellObj.cell.name;
     }).fail(function (xmlObj) {
-        if (xmlObj.status == "200") {
+        if (xmlObj.status == "200" || xmlObj.status == "412") {
             cellName = ut.getName(cellUrl);
         }
     }).always(function () {
@@ -606,7 +606,7 @@ cm.registerProfI18n = function (schema, boxName, fileName, cellType) {
     personium.getCell(schema).done(function (cellObj) {
         cellName = cellObj.cell.name;
     }).fail(function (xmlObj) {
-        if (xmlObj.status == "200") {
+        if (xmlObj.status == "200" || xmlObj.status == "412") {
             cellName = ut.getName(schema);
         } else {
             cellName = i18next.t("NoTarget");

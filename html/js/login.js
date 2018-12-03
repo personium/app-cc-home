@@ -2,7 +2,7 @@ var lg = {};
 
 // Load login screen
 lg.loadLogin = function () {
-    personium.loadContent(homeAppUrl + "html/login.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/login.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         lg.initTarget();
@@ -25,8 +25,15 @@ lg.googleLogin = function (gToken) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }).done(function (data) {
-        personium.getCell(cellUrl).done(function (cellObj) {
-            data.baseUrl = cellObj.unit.url;
+        personium.getCell(cellUrl).done(function (cellObj, status, xhr) {
+            let ver = xhr.getResponseHeader("x-personium-version");
+            if (ver >= "1.7.1") {
+                data.baseUrl = cellObj.unit.url;
+            } else {
+                var i = cellUrl.indexOf("/"); // first slash
+                i = cellUrl.indexOf("/", i + 2);  // second slash
+                data.baseUrl = cellUrl.substring(0, i + 1);
+            }
         }).fail(function (xmlObj) {
             var i = cellUrl.indexOf("/"); // first slash
             i = cellUrl.indexOf("/", i + 2);  // second slash
@@ -76,21 +83,20 @@ lg.initTarget = function () {
 
         var u = location.href;
         if (u.indexOf("file:") == 0) {
-            return "https://demo.personium.io/app-cc-home/";
+            return homeAppUrl;
         }
         var tempUrl = ut.cellUrlWithEndingSlash(u, false, true);
         personium.getCell(tempUrl).done(function (cellObj) {
             lg.setRootUrl(tempUrl);
-            lg.baseUrl = cellObj.unit.url;
         }).fail(function (xmlObj) {
-            if (xmlObj.status == "200") {
+            if (xmlObj.status == "200" || xmlObj.status == "412") {
                 lg.setRootUrl(tempUrl);
             } else {
                 tempUrl = ut.cellUrlWithEndingSlash(u, true, true);
                 personium.getCell(tempUrl).done(function (cellObj) {
                     lg.setRootUrl(tempUrl);
                 }).fail(function () {
-                    lg.setRootUrl("https://demo.personium.io/app-cc-home/");
+                    lg.setRootUrl(homeAppUrl);
                 });
             }
         });
@@ -155,7 +161,7 @@ lg.targetCellLogin = function(tempUrl) {
     personium.getCell(cellUrl).done(function(cellObj) {
         lg.rootUrl = cellUrl;
     }).fail(function (xmlObj) {
-        if (xmlObj.status == "200") {
+        if (xmlObj.status == "200" || xmlObj.status == "412") {
             lg.rootUrl = cellUrl;
         } else {
             lg.rootUrl = "";
@@ -176,7 +182,7 @@ lg.targetCellLogin = function(tempUrl) {
 lg.cellUrl = function() {
     var u = location.href;
     if (u.indexOf("file:") == 0) {
-        return "https://demo.personium.io/app-cc-home/";
+        return homeAppUrl;
     }
 
     var tempUrl = ut.cellUrlWithEndingSlash(u, true);
@@ -248,8 +254,15 @@ lg.sendAccountNamePw = function(username, pw) {
             'content-type': 'application/x-www-form-urlencoded'
         }
     }).done(function (data) {
-        personium.getCell(lg.rootUrl).done(function (cellObj) {
-            data.baseUrl = cellObj.unit.url;
+        personium.getCell(lg.rootUrl).done(function (cellObj, status, xhr) {
+            let ver = xhr.getResponseHeader("x-personium-version");
+            if (ver >= "1.7.1") {
+                data.baseUrl = cellObj.unit.url;
+            } else {
+                var i = lg.rootUrl.indexOf("/"); // first slash
+                i = lg.rootUrl.indexOf("/", i + 2);  // second slash
+                data.baseUrl = lg.rootUrl.substring(0, i + 1);
+            }
         }).fail(function (xmlObj) {
             var i = lg.rootUrl.indexOf("/"); // first slash
             i = lg.rootUrl.indexOf("/", i + 2);  // second slash

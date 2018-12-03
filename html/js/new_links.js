@@ -2,7 +2,7 @@ var new_links = {};
 
 // Load new_links screen
 new_links.loadNewLinks = function () {
-    personium.loadContent(homeAppUrl + "html/new_links.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/new_links.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         new_links.init();
@@ -54,7 +54,7 @@ new_links.searchCells = function (searchVal) {
         personium.getCell(urlCnv).done(function (cellObj) {
             cellName = cellObj.cell.name;
         }).fail(function (xmlObj) {
-            if (xmlObj.status == "200") {
+            if (xmlObj.status == "200" || xmlObj.status == "412") {
                 cellName = ut.getName(urlCnv);
             }
         }).always(function () {
@@ -116,7 +116,7 @@ new_links.displayDirectoryCellList = function (url) {
     personium.getCell(urlCnv).done(function (cellObj) {
         cellName = cellObj.cell.name;
     }).fail(function (xmlObj) {
-        if (xmlObj.status == "200") {
+        if (xmlObj.status == "200" || xmlObj.status == "412") {
             cellName = ut.getName(urlCnv);
         }
     }).always(function () {
@@ -208,9 +208,16 @@ new_links.addExternalCell = function () {
 new_links.createExtCell = function (url, count) {
     let cellName = "";
     let unitUrl = "";
-    personium.getCell(url).done(function (cellObj) {
+    personium.getCell(url).done(function (cellObj, status, xhr) {
         cellName = cellObj.cell.name;
-        unitUrl = cellObj.unit.url;
+        let ver = xhr.getResponseHeader("x-personium-version");
+        if (ver >= "1.7.1") {
+            unitUrl = cellObj.unit.url;
+        } else {
+            var i = url.indexOf("/"); // first slash
+            i = url.indexOf("/", i + 2);  // second slash
+            unitUrl = url.substring(0, i + 1);
+        }
     }).fail(function (xmlObj) {
         cellName = ut.getName(url);
         var i = url.indexOf("/"); // first slash

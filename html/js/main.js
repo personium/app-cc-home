@@ -15,7 +15,7 @@ $(window).on('resize', function () {
 
 // Load main screen
 ha.loadMain = function () {
-    personium.loadContent(homeAppUrl + "html/main.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/main.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         ha.init();
@@ -42,8 +42,13 @@ ha.init = function() {
     //    }
     //    st.setBizTheme();
     //} else {
-    personium.getUnit(cm.user.baseUrl).done(function (unitObj) {
-        cm.path_based_cellurl_enabled = unitObj.unit.path_based_cellurl_enabled;
+    personium.getUnit(cm.user.baseUrl).done(function (unitObj, status, xhr) {
+        let ver = xhr.getResponseHeader("x-personium-version");
+        if (ver >= "1.7.1") {
+            cm.path_based_cellurl_enabled = unitObj.unit.path_based_cellurl_enabled;
+        } else {
+            cm.path_based_cellurl_enabled = true;
+        }
     }).fail(function () {
         cm.path_based_cellurl_enabled = true;
     });

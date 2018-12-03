@@ -2,7 +2,7 @@ var search_cell = {};
 
 // Load search_cell screen
 create_msg.loadSearchCell = function () {
-    personium.loadContent(homeAppUrl + "html/search_cell.html").done(function (data) {
+    personium.loadContent(homeAppUrl + appUseBox + "/html/search_cell.html").done(function (data) {
         let out_html = $($.parseHTML(data));
         let id = personium.createSubContent(out_html, true);
         search_cell.init();
@@ -73,7 +73,7 @@ search_cell.displayCell = function (url) {
     personium.getCell(urlCnv).done(function (cellObj) {
         cellName = cellObj.cell.name;
     }).fail(function (xmlObj) {
-        if (xmlObj.status == "200") {
+        if (xmlObj.status == "200" || xmlObj.status == "412") {
             cellName = ut.getName(urlCnv);
         }
     }).always(function () {
@@ -118,7 +118,7 @@ search_cell.searchCells = function (searchVal) {
             personium.getCell(urlCnv).done(function (cellObj) {
                 cellName = cellObj.cell.name;
             }).fail(function (xmlObj) {
-                if (xmlObj.status == "200") {
+                if (xmlObj.status == "200" || xmlObj.status == "412") {
                     cellName = ut.getName(urlCnv);
                 }
             }).always(function () {
