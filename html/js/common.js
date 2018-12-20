@@ -19,9 +19,9 @@ cm.logout = function () {
 if ((typeof initPage == 'undefined' || !initPage) && !cm.user) {
     var mode = sessionStorage.getItem("mode");
     if (mode) {
-        cm.logoutUrl = "../src/html/login.html?mode=" + mode;
+        cm.logoutUrl = "../html/login.html?mode=" + mode;
     } else {
-        cm.logoutUrl = "../src/html/login.html";
+        cm.logoutUrl = "../html/login.html";
     }
     cm.logout();
 }
