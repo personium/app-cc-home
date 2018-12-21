@@ -46,6 +46,16 @@ new_links.Add_Search_Event = function () {
         new_links.searchCells($("#inputSearch").val());
         //new_links.displayNotExtCellList();
     });
+    $("#inputSearch").keypress(function (e) {
+        e = e ? e : event;
+        var keyCode = e.charCode ? e.charCode : ((e.which) ? e.which : e.keyCode);
+        var elem = e.target ? e.target : e.srcElement;
+        // KeyCode:13 = Enter
+        if (Number(keyCode) == 13) {
+            $('.pn-search-btn').click();
+            return false;
+        }
+    });
 }
 new_links.searchCells = function (searchVal) {
     let urlCnv = ut.changeLocalUnitToUnitUrl(searchVal);

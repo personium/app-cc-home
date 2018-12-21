@@ -123,7 +123,7 @@ lg.initTarget = function () {
         window.location.href = url;
     });
 
-    document.onkeypress = function (e) {
+    $("#iAccountName, #iAccountPw").keypress(function (e) {
         e = e ? e : event;
         var keyCode = e.charCode ? e.charCode : ((e.which) ? e.which : e.keyCode);
         var elem = e.target ? e.target : e.srcElement;
@@ -136,7 +136,8 @@ lg.initTarget = function () {
             }
             return false;
         }
-    }
+    });
+
 
     match = location.search.match(/glogin=(.*?)(&|$)/);
     if (match) {
