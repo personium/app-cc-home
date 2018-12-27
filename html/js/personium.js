@@ -304,6 +304,12 @@ personium.refreshTokenAPI = function (cellUrl, refToken) {
         headers: {
             'Accept': 'application/json',
             'content-type': 'application/x-www-form-urlencoded'
+        },
+        beforeSend: function(xhr, opts) {
+            if (_.isNull(cellUrl) || _.isUndefined(cellUrl)) {
+                xhr.abort();
+                return false;
+            }
         }
     })
 }
