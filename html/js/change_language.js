@@ -18,7 +18,9 @@ chg_lang.init = function() {
 }
 
 chg_lang.updateLanguage = function (lng) {
-    i18next.changeLanguage(lng);
-    updateContent();
-    personium.backSubContent();
+    i18next.changeLanguage(lng, function (err, t){
+        updateContent();
+        personium.backSubContent();
+    });
+    return false;
 }
