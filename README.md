@@ -10,11 +10,8 @@ HomeApp is already running in [an App Cell in the Demo environment](https://demo
 
 # Files to be modified and uploaded to your HomeApp Cell  
 
-    │  index.html
     │          
-    └─html
-        └─js
-            common.js (must use your app Cell's information)
+    └─ index.html
 
 # Before you start  
 Make sure you have Unit Admin level permission.  
