@@ -592,7 +592,7 @@ cm.getAppListURL = function () {
         filter = "?$filter=Type%20eq%20null%20or%20Type%20eq%20'Organization'%20";
     }
 
-    let appListURL = ['https://demo.personium.io/market/__/applist/Apps', filter].join("");
+    let appListURL = [appMarketListEndpoint, filter].join("");
 
     return appListURL;
 };
