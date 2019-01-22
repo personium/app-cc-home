@@ -29,9 +29,9 @@ msg_info.init = function () {
  * Display Receive Message
  */
 msg_info.displayReceivedMsg = function () {
-    $(".message-title").html(sessionStorage.getItem("msgTitle"));
-    $(".message-text").html(sessionStorage.getItem("msgBody").replace(/\r?\n/g, '<br>'));
-    $("#msgDate").html(sessionStorage.getItem("msgDate"));
+    $(".message-title").text(sessionStorage.getItem("msgTitle"));
+    $(".message-text").text(sessionStorage.getItem("msgBody").replace(/\r?\n/g, '<br>'));
+    $("#msgDate").text(sessionStorage.getItem("msgDate"));
     cm.displayProfile(sessionStorage.getItem("msgUrl"), "");
 }
 

@@ -114,7 +114,7 @@ st.slideToggle = function(id) {
 st.checkAccLinkRole = function() {
     var value = $("#ddlAddAccLinkRoleList option:selected").val();
     if (value === undefined) {
-        $("#popupAddAccountLinkRoleErrorMsg").html(i18next.t("selectRole"));
+        $("#popupAddAccountLinkRoleErrorMsg").text(i18next.t("selectRole"));
         return false;
     } else {
         $("#popupAddAccountLinkRoleErrorMsg").empty();
@@ -319,14 +319,14 @@ st.createAddAccount = function() {
         $("#setting-panel2").append(html).localize();
         $("input[name=accType]").change(function () {
             $("#addAccountName").val("");
-            $("#popupAddAccountNameErrorMsg").html("");
+            $("#popupAddAccountNameErrorMsg").text("");
             if ($("input[name=accType]:checked").val() == "basic") {
                 $("#passField").css("display", "block");
-                $("#dvAddName").html(i18next.t("AccountName"));
+                $("#dvAddName").text(i18next.t("AccountName"));
                 $("#addAccountName").attr("placeholder", i18next.t("accountNamePlaceHolder"));
             } else {
                 $("#passField").css("display", "none");
-                $("#dvAddName").html(i18next.t("GMailAddress"));
+                $("#dvAddName").text(i18next.t("GMailAddress"));
                 $("#addAccountName").attr("placeholder", i18next.t("gmailPlaceHolder"));
             }
         });
@@ -437,14 +437,14 @@ st.dispDelAccountRoleModal = function(accName, roleName, boxName, no) {
     cm.linkName = roleName;
     if (boxName === "[main]") {
         cm.linkBoxName = null;
-        $("#dvTextConfirmation").html(i18next.t("removeAssociationRole", { value1: roleName, value2: boxName })).localize();
+        $("#dvTextConfirmation").text(i18next.t("removeAssociationRole", { value1: roleName, value2: boxName })).localize();
     } else {
         cm.linkBoxName = boxName;
-        $("#dvTextConfirmation").html(i18next.t("removeAssociationRole", { value1: i18next.t("profTrans:" + roleName + "_" + boxName + "_DisplayName"), value2: "" })).localize();
+        $("#dvTextConfirmation").text(i18next.t("removeAssociationRole", { value1: i18next.t("profTrans:" + roleName + "_" + boxName + "_DisplayName"), value2: "" })).localize();
     }
     st.linkAccNameNo = no;
     
-    $("#modal-confirmation-title").html(i18next.t("DeleteAssigningRole"));
+    $("#modal-confirmation-title").text(i18next.t("DeleteAssigningRole"));
     $('#b-del-acclinkrole-ok').css("display","");
     $('#modal-confirmation').modal('show');
 }
@@ -452,8 +452,8 @@ st.dispDelAccountRoleModal = function(accName, roleName, boxName, no) {
 
 st.dispDelModal = function(name) {
     st.updUser = name;
-    $("#dvTextConfirmation").html(i18next.t("confirmDeleteAccount", {value: name}));
-    $('#modal-confirmation-title').html(i18next.t("DeleteAccount"));
+    $("#dvTextConfirmation").text(i18next.t("confirmDeleteAccount", {value: name}));
+    $('#modal-confirmation-title').text(i18next.t("DeleteAccount"));
     $('#b-del-account-ok').css("display","");
     $('#modal-confirmation').modal('show');
 }
@@ -497,8 +497,8 @@ st.validateEditedInfo = function() {
         return false;
     }
 
-    $('#dvTextConfirmation').html(i18next.t("confirmChangeContentEnter"));
-    $('#modal-confirmation-title').html(i18next.t("EditAccount"));
+    $('#dvTextConfirmation').text(i18next.t("confirmChangeContentEnter"));
+    $('#modal-confirmation-title').text(i18next.t("EditAccount"));
     $('#b-edit-accconfirm-ok').css("display", "");
     $('#modal-confirmation').modal('show');
   }
@@ -605,7 +605,7 @@ st.confBarInstall = function(schema, barUrl, barBoxName, dispName) {
     st.barSchemaUrl = schema;
     st.barFileUrl = barUrl;
     st.barBoxName = barBoxName;
-    $("#dvTextConfirmation").html(i18next.t("confirmInstallation"));
+    $("#dvTextConfirmation").text(i18next.t("confirmInstallation"));
     //$("#modal-confirmation-title").html(dispName);
     $("#modal-confirmation-title").attr("data-i18n", dispName).localize();
     $('#b-ins-bar-ok').css("display","");
@@ -668,7 +668,7 @@ st.execBarInstall = function() {
 };
 st.confUninstallApp = function (boxName) {
     st.barBoxName = boxName;
-    $("#dvTextConfirmation").html(i18next.t("confirmUninstallation"));
+    $("#dvTextConfirmation").text(i18next.t("confirmUninstallation"));
     //$("#modal-confirmation-title").html(dispName);
     $("#modal-confirmation-title").attr("data-i18n", "profTrans:" + boxName + "_DisplayName").localize();
     $('#b-unins-box-ok').css("display", "");
@@ -887,7 +887,7 @@ st.attachBarFile = function () {
         reader.readAsArrayBuffer(file);
         reader.onload = function (evt) {
             st.barFileArrayBuffer = evt.target.result;
-            $("#selectBarFileLbl").html(fileUrl);
+            $("#selectBarFileLbl").text(fileUrl);
             $("#inputBoxName").val(ut.getName(fileUrl, true));
             st.checkUnofficialBoxInsConditions();
         }
@@ -1034,7 +1034,7 @@ st.checkUnofficialBoxInsConditions = function () {
     var insFlg = true;
     if ($("input[name=boxInsType]:checked").val() == "typeSelect") {
         // select bar file
-        if ($("#selectBarErrorMsg").html()) {
+        if ($("#selectBarErrorMsg").text()) {
             insFlg = false;
         }
         if (!st.barFileArrayBuffer) {
@@ -1042,14 +1042,14 @@ st.checkUnofficialBoxInsConditions = function () {
         }
     } else {
         // input bar file
-        if ($("#inputBarErrorMsg").html()) {
+        if ($("#inputBarErrorMsg").text()) {
             insFlg = false;
         }
         if (!$("#input_barUrl").val()) {
             insFlg = false;
         }
     }
-    if ($("#inputBoxErrorMsg").html()) {
+    if ($("#inputBoxErrorMsg").text()) {
         insFlg = false;
     }
 
@@ -1237,8 +1237,8 @@ st.dispDelRoleModal = function(name, box) {
     } else {
       st.updBox = box;
     }
-    $('#dvTextConfirmation').html(i18next.t("confirmDeleteRole", {value1:name, value2:box}));
-    $('#modal-confirmation-title').html(i18next.t("DeleteRole"));
+    $('#dvTextConfirmation').text(i18next.t("confirmDeleteRole", {value1:name, value2:box}));
+    $('#modal-confirmation-title').text(i18next.t("DeleteRole"));
     $('#b-del-role-ok').css("display","");
     $('#modal-confirmation').modal('show');
 }
@@ -1251,7 +1251,7 @@ st.addRole = function() {
   var name = $("#addRoleName").val();
   var box = $("#ddlRoleBoxList option:selected").val();
   if (box === "") {
-      $("#addRoleBoxMessage").html(i18next.t("selectBox"));
+      $("#addRoleBoxMessage").text(i18next.t("selectBox"));
       return false;
   } else if (box === "[main]") {
       box = null;
@@ -1427,8 +1427,8 @@ st.dispDelRelationRoleModal = function(relName, relBoxName, roleName, boxName, n
       cm.linkBoxName = boxName
     }
     st.linkRelNameNo = no;
-    $("#dvTextConfirmation").html(i18next.t("removeAssociationRole", {value1:roleName, value2:boxName})).localize();
-    $("#modal-confirmation-title").html(i18next.t("DeleteAssigningRole"));
+    $("#dvTextConfirmation").text(i18next.t("removeAssociationRole", {value1:roleName, value2:boxName})).localize();
+    $("#modal-confirmation-title").text(i18next.t("DeleteAssigningRole"));
     $('#b-del-rellinkrole-ok').css("display","");
     $('#modal-confirmation').modal('show');
 }
@@ -1461,8 +1461,8 @@ st.createEditRelation = function(name, box) {
     cm.setTitleMenu("EditRelation", true);
 }
 st.editRelationOk = function() {
-    $('#dvTextConfirmation').html(i18next.t("confirmChangeContentEnter"));
-    $('#modal-confirmation-title').html(i18next.t("EditRelation"));
+    $('#dvTextConfirmation').text(i18next.t("confirmChangeContentEnter"));
+    $('#modal-confirmation-title').text(i18next.t("EditRelation"));
     $('#b-edit-relconfirm-ok').css("display","");
     $('#modal-confirmation').modal('show');
 };
@@ -1473,8 +1473,8 @@ st.dispDelRelationModal = function(name, box) {
     } else {
       st.updBox = box;
     }
-    $('#dvTextConfirmation').html(i18next.t("confirmDeleteRelation", {value1:name, value2:box}));
-    $('#modal-confirmation-title').html(i18next.t("DeleteRelation"));
+    $('#dvTextConfirmation').text(i18next.t("confirmDeleteRelation", {value1:name, value2:box}));
+    $('#modal-confirmation-title').text(i18next.t("DeleteRelation"));
     $('#b-del-relation-ok').css("display","");
     $('#modal-confirmation').modal('show');
 }
@@ -1495,7 +1495,7 @@ st.addRelation = function() {
   var name = $("#addRelationName").val();
   var box = $("#ddlAddRelationBoxList option:selected").val();
   if (box === "") {
-      $("#addRelationBoxMessage").html(i18next.t("selectBox"));
+      $("#addRelationBoxMessage").text(i18next.t("selectBox"));
       return false;
   } else if (box === "[main]") {
       box = null;
@@ -1519,7 +1519,7 @@ st.addRelation = function() {
 st.checkRelationLinkRole = function() {
     var value = $("#ddlAddRelLinkRoleList option:selected").val();
     if (value === undefined) {
-        $("#popupAddRelationLinkErrorMsg").html(i18next.t("selectRole"));
+        $("#popupAddRelationLinkErrorMsg").text(i18next.t("selectRole"));
         return false;
     } else {
         $("#popupAddRelationLinkErrorMsg").empty();
@@ -1591,7 +1591,7 @@ st.editRelation = function() {
     var name = $("#editRelationName").val();
     var box = $("#ddlEditRelationBoxList option:selected").val();
     if (box === "") {
-        $("#addRelationBoxMessage").html(i18next.t("selectBox"));
+        $("#addRelationBoxMessage").text(i18next.t("selectBox"));
         return false;
     } else if (box === "[main]") {
         box = null;

@@ -28,9 +28,9 @@ new_links.Add_Check_Mark = function () {
         if ($(this).parents('#icon-check-list').length != 0) {
             $(this).find('.pn-icon-check').toggle();
             if ($(this).find('.pn-icon-check').is(":visible")) {
-                new_links.links_list.push($(this).find(".external-url").html());
+                new_links.links_list.push($(this).find(".external-url").text());
             } else {
-                let listNo = $.inArray($(this).find(".external-url").html(), new_links.links_list);
+                let listNo = $.inArray($(this).find(".external-url").text(), new_links.links_list);
                 if (listNo >= 0) {
                     new_links.links_list.splice(listNo, 1);
                 }

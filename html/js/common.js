@@ -368,14 +368,14 @@ cm.validateDisplayName = function (displayName, displayNameSpan) {
     var MINLENGTH = 1;
     var lenDisplayName = displayName.length;
     if (lenDisplayName < MINLENGTH || displayName == undefined || displayName == null || displayName == "") {
-        $("#" + displayNameSpan).html(i18next.t("pleaseEnterName"));
+        $("#" + displayNameSpan).text(i18next.t("pleaseEnterName"));
         return false;
     }
 
     var MAXLENGTH = 128;
-    $("#" + displayNameSpan).html("");
+    $("#" + displayNameSpan).text("");
     if (lenDisplayName > MAXLENGTH) {
-        $("#" + displayNameSpan).html(i18next.t("errorValidateNameLength"));
+        $("#" + displayNameSpan).text(i18next.t("errorValidateNameLength"));
         return false;
     }
     return true;
@@ -471,7 +471,7 @@ cm.charCheck = function (check, displayNameSpan) {
             bool = false;
         }
 
-        $(displayNameSpan).html(msg);
+        $(displayNameSpan).text(msg);
     }
 
     return bool;
@@ -479,7 +479,7 @@ cm.charCheck = function (check, displayNameSpan) {
 cm.changePassCheck = function (newpass, confirm, displayNameSpan) {
     $(displayNameSpan).empty();
     if (newpass !== confirm) {
-        $(displayNameSpan).html(i18next.t("passwordNotMatch"));
+        $(displayNameSpan).text(i18next.t("passwordNotMatch"));
         return false
     }
 
@@ -488,7 +488,7 @@ cm.changePassCheck = function (newpass, confirm, displayNameSpan) {
 cm.passInputCheck = function (newpass, displayNameSpan) {
     $(displayNameSpan).empty();
     if (newpass.length == 0) {
-        $(displayNameSpan).html(i18next.t("pleaseEnterPassword"));
+        $(displayNameSpan).text(i18next.t("pleaseEnterPassword"));
         return false;
     }
 
@@ -749,7 +749,7 @@ cm.moveBackahead = function () {
 
 // true: SettingTitle false: MainTitle
 cm.setTitleMenu = function (title, flg) {
-    $("header span").html(title);
+    $("header span").text(title);
     var titles = cm.user.nowTitle;
     titles[cm.user.nowPage] = title;
     cm.user.nowTitle = titles;

@@ -74,7 +74,7 @@ lg.initTarget = function () {
         } else {
             // Cell URL is not provided in the URL's parameter, try to get the previously used cell URL from session.
             target = sessionStorage.getItem("targetCellUrl") || "";
-            $('#errorCellUrl').html("");
+            $('#errorCellUrl').text("");
         }
 
         // Call the following function explicitly in order to prompt the user to enter the cell URL.
@@ -219,7 +219,7 @@ lg.loadProfile = function() {
     });
 };
 lg.populateProfile = function(profile) {
-    $("#tProfileDisplayName").html(profile.DisplayName);
+    $("#tProfileDisplayName").text(profile.DisplayName);
     document.title = "" + profile.DisplayName;
         if (profile.Image) {
             $("#imProfile").attr("src", profile.Image);
@@ -289,7 +289,7 @@ lg.sendAccountNamePw = function(username, pw) {
 lg.dispErrorMessage = function (errMsg) {
     $("#error_area").removeClass('frames_active');
     $("#error_area").removeClass('frames_hide');
-    $("#error_msg").html(errMsg);
+    $("#error_msg").text(errMsg);
     $("#error_area").addClass('frames_active').on('transitionend', function () {
         $(this).addClass('frames_hide');
     })

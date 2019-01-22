@@ -33,7 +33,7 @@ chg_pass.changePassword = function () {
     let newpass = $('#editNewPassword').val();
     let confirm = $('#editConfirmPassword').val()
     if (cm.changePassCheck(newpass, confirm, '#editConfirmMessage')) {
-        $('#confirmMessage').html("");
+        $('#confirmMessage').text("");
         personium.changePassAPI(cm.getMyCellUrl(), cm.getAccessToken(), newpass).done(function (data) {
             $('#changePass_modal').modal('show');
         }).fail(function (data) {

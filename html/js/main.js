@@ -65,7 +65,7 @@ ha.init = function() {
 ha.displayMyAccount = function () {
     $('.user-icon').append('<img class="user-icon-small" id="imProfilePicture" data-i18n="[src]profTrans:myProfile_Image" src="" alt="user">');
     $(".account-info div.user-name").attr("data-i18n", "profTrans:myProfile_DisplayName").localize();
-    $(".account-info div span.account").html(cm.user.userName);
+    $(".account-info div span.account").text(cm.user.userName);
     $(".account-info div span.account").attr("title", cm.user.userName);
 };
 

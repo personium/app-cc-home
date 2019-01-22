@@ -19,7 +19,7 @@ ut.cellUrlWithEndingSlash = function (tempUrl, newUrlFlg, raiseError) {
     var i = tempUrl.indexOf("/", 8); // search after "http://" or "https://"
 
     if (raiseError && i == -1) {
-        $('#errorCellUrl').html(i18next.t("pleaseValidExternalCellUrl"));
+        $('#errorCellUrl').text(i18next.t("pleaseValidExternalCellUrl"));
         return tempUrl;
     }
 
@@ -212,7 +212,7 @@ ut.createModalFooterTag = function (id, callback) {
         type: "button",
         class: "btn btn-primary",
         id: id
-    }).html("OK");
+    }).text("OK");
     okBtnTag.click(function () {
         if ((typeof callback !== "undefined") && $.isFunction(callback)) {
             callback();

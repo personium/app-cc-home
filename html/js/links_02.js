@@ -40,14 +40,14 @@ link_info.displayExtProfile = function () {
     }).always(function () {
         var transName = cm.getTargetProfTransName(link_info.extCellUrl, cellName);
         $(link_info.id + " header span").attr("data-i18n", "profTrans:" + transName + "_DisplayName").localize();
-        $(".user-cell-url").html(link_info.extCellUrl);
+        $(".user-cell-url").text(link_info.extCellUrl);
         $(".user-description").attr("data-i18n", "profTrans:" + transName + "_Description").localize();
         $(".extcell-profile .user-icon").append('<img class="user-icon-large" data-i18n="[src]profTrans:' + transName + '_Image" src="" alt="user">').localize();
     })
 }
 
 link_info.confDelete = function () {
-    $("#deleteMessage").html(i18next.t("confirmDeleteExternalCell", { value: link_info.extCellUrl }));
+    $("#deleteMessage").text(i18next.t("confirmDeleteExternalCell", { value: link_info.extCellUrl }));
     $('#confDeleteLink_modal').modal('show');
 }
 link_info.restDeleteExtCellAPI = function () {
