@@ -66,7 +66,7 @@ profile.setProfileValue = function () {
         profile.editProfileImage();
     });
     let aImg = cm.createQRCodeImg('https://chart.googleapis.com/chart?cht=qr&chs=177x177&chl=' + cellUrl);
-    $(".user-qr-code").text($(aImg));
+    $(".user-qr-code").html($(aImg));
     $(".user-cell-url").text(cm.getMyCellUrl());
 };
 
