@@ -24,7 +24,7 @@ accinfo.displayTitle = function () {
     $("header").addClass("ellipsisText");
     $("header").css("padding-right", "30px");
     $("header span").css("margin-left", "30px");
-    $("header span").html(accinfo.accountName);
+    $("header span").text(accinfo.accountName);
 }
 accinfo.displayAccountToRole = function () {
     // Get Box list

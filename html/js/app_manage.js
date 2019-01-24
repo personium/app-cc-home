@@ -187,7 +187,7 @@ app_manage.checkUnofficialBoxInsConditions = function () {
     var insFlg = true;
     if ($("input[name=boxInsType]:checked").val() == "typeSelect") {
         // select bar file
-        if ($("#selectBarErrorMsg").html()) {
+        if ($("#selectBarErrorMsg").text()) {
             insFlg = false;
         }
         if (!app_manage.barFileArrayBuffer) {
@@ -195,14 +195,14 @@ app_manage.checkUnofficialBoxInsConditions = function () {
         }
     } else {
         // input bar file
-        if ($("#inputBarErrorMsg").html()) {
+        if ($("#inputBarErrorMsg").text()) {
             insFlg = false;
         }
         if (!$("#input_barUrl").val()) {
             insFlg = false;
         }
     }
-    if ($("#inputBoxErrorMsg").html()) {
+    if ($("#inputBoxErrorMsg").text()) {
         insFlg = false;
     }
 
@@ -229,7 +229,7 @@ app_manage.attachBarFile = function () {
         reader.readAsArrayBuffer(file);
         reader.onload = function (evt) {
             app_manage.barFileArrayBuffer = evt.target.result;
-            $("#selectBarFileLbl").html(fileUrl);
+            $("#selectBarFileLbl").text(fileUrl);
             $("#inputBoxName").val(ut.getName(fileUrl, true));
             app_manage.checkUnofficialBoxInsConditions();
         }

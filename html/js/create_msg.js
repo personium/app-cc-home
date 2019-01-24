@@ -70,8 +70,8 @@ create_msg.disableSendIcon = function () {
 create_msg.displayMsg = function (headStr) {
     let msg = '\n' + sessionStorage.getItem("msgBody");
 
-    $(".create-title").html(headStr + sessionStorage.getItem("msgTitle"));
-    $(".create-msg").html("\n" + msg.replace(/\r?\n/g, '\n>'));
+    $(".create-title").text(headStr + sessionStorage.getItem("msgTitle"));
+    $(".create-msg").text("\n" + msg.replace(/\r?\n/g, '\n>'));
 }
 
 /*

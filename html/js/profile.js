@@ -67,7 +67,7 @@ profile.setProfileValue = function () {
     });
     let aImg = cm.createQRCodeImg('https://chart.googleapis.com/chart?cht=qr&chs=177x177&chl=' + cellUrl);
     $(".user-qr-code").html($(aImg));
-    $(".user-cell-url").html(cm.getMyCellUrl());
+    $(".user-cell-url").text(cm.getMyCellUrl());
 };
 
 profile.editProfileImage = function () {
@@ -137,7 +137,7 @@ profile.updateCellProfile = function () {
     }
     var validDisplayName = cm.validateDisplayName(displayName, "popupEditDisplayNameErrorMsg", '#user-name-form');
     if (validDisplayName) {
-        $('#popupEditDisplayNameErrorMsg').html('');
+        $('#popupEditDisplayNameErrorMsg').text('');
         var validDesciption = cm.validateDescription(description, "popupEditDescriptionErrorMsg");
         if (validDesciption) {
             fileData = {

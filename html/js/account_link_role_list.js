@@ -101,9 +101,9 @@ acc_link_role_list.displayLinksCount = function (boxName) {
             }
         }
         if (count > 0) {
-            $("#roleLinksCnt_" + boxName).html(count);
+            $("#roleLinksCnt_" + boxName).text(count);
         } else {
-            $("#roleLinksCnt_" + boxName).html("");
+            $("#roleLinksCnt_" + boxName).text("");
         }
     })
 }

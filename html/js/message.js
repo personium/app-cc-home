@@ -31,9 +31,9 @@ message.dispReciveMsgCnt = function () {
         }
 
         if (cnt > 0) {
-            $("#receiveCnt").html(cnt);
+            $("#receiveCnt").text(cnt);
         } else {
-            $("#receiveCnt").html("");
+            $("#receiveCnt").text("");
         }
     })
 }

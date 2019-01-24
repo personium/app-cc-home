@@ -211,7 +211,7 @@ am.confBarInstall = function (schema, barUrl, barBoxName, dispName) {
     am.barSchemaUrl = schema;
     am.barFileUrl = barUrl;
     am.barBoxName = barBoxName;
-    $("#dvTextConfirmation").html(i18next.t("confirmInstallation"));
+    $("#dvTextConfirmation").text(i18next.t("confirmInstallation"));
     //$("#modal-confirmation-title").html(dispName);
     $("#modal-confirmation-title").attr("data-i18n", dispName).localize();
     $('#b-ins-bar-ok').show();
@@ -282,7 +282,7 @@ am.execBarInstall = function () {
 
 am.confUninstallApp = function (boxName) {
     am.barBoxName = boxName;
-    $("#dvTextConfirmation").html(i18next.t("confirmUninstallation"));
+    $("#dvTextConfirmation").text(i18next.t("confirmUninstallation"));
     //$("#modal-confirmation-title").html(dispName);
     $("#modal-confirmation-title").attr("data-i18n", "profTrans:" + boxName + "_DisplayName").localize();
     $('#b-unins-box-ok').show();
