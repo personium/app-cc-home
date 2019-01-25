@@ -32,16 +32,6 @@ ha.init = function() {
     let tempMyProfile = JSON.parse(sessionStorage.getItem("myProfile")) || {};
     let isDemo = (tempMyProfile.IsDemo || false);
 
-    //if (isDemo) {
-    //    demo.createProfileHeaderMenu();
-    //    demo.createSideMenu();
-    //    demo.initSettings();
-    //    demo.initMain();
-    //    if (demoSession.insApp) {
-    //        ha.dispInsAppList();
-    //    }
-    //    st.setBizTheme();
-    //} else {
     personium.getUnit(cm.user.baseUrl).done(function (unitObj, status, xhr) {
         let ver = xhr.getResponseHeader("x-personium-version");
         if (ver >= "1.7.1") {
