@@ -103,18 +103,3 @@ account.setLinkAccName = function (accName, no) {
     st.linkAccName = accName;
     st.linkAccNameNo = no;
 }
-// Create account assignment role list
-account.createAccountRole = function (obj, accName, no) {
-    // Do not process while editing
-    if ($(obj).hasClass('edit-ic')) return false;
-
-    st.setLinkAccName(accName, no);
-    $("#setting-panel2").remove();
-    cm.setBackahead(true);
-    personium.getAccountRoleList(cm.getMyCellUrl(), cm.getAccessToken(), accName, no).done(function (data) {
-        st.dispAccountRoleList(data, accName, no);
-        $("#setting-panel2").toggleClass('slide-on');
-        $("#setting-panel1").toggleClass('slide-on-holder');
-        cm.setTitleMenu(accName, true);
-    });
-}
