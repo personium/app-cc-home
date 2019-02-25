@@ -23,31 +23,31 @@ If your browser displays error message, ignore it and reload the page.
 
                 39: var appUnitFQDN = "{your FQDN}";
 
-                52: homeAppUrl = "https://" + appUnitFQDN + "/{your cellname}/";
+                53: homeAppUrl = "https://" + appUnitFQDN + "/{your cellname}/";
 
-                54: homeAppUrl = "https://{your cellname}." + appUnitFQDN + "/";
+                55: homeAppUrl = "https://{your cellname}." + appUnitFQDN + "/";
 
-                57: homeAppUrl = "https://" + appUnitFQDN + "/{your cellname}/";
+                58: homeAppUrl = "https://" + appUnitFQDN + "/{your cellname}/";
 
         - Before:  
 
                 39: var appUnitFQDN = "demo.personium.io";
 
-                52: homeAppUrl = "https://" + appUnitFQDN + "/app-cc-home/";
+                53: homeAppUrl = "https://" + appUnitFQDN + "/app-cc-home/";
 
-                54: homeAppUrl = "https://app-cc-home." + appUnitFQDN + "/";
+                55: homeAppUrl = "https://app-cc-home." + appUnitFQDN + "/";
 
-                57: homeAppUrl = "https://" + appUnitFQDN + "/app-cc-home/";
+                58: homeAppUrl = "https://" + appUnitFQDN + "/app-cc-home/";
 
         - After (example):  
 
                 39: var appUnitFQDN = "demo-fi.personium.io";
 
-                52: homeAppUrl = "https://" + appUnitFQDN + "/app-cc-home/";
+                53: homeAppUrl = "https://" + appUnitFQDN + "/app-cc-home/";
 
-                54: homeAppUrl = "https://app-cc-home." + appUnitFQDN + "/";
+                55: homeAppUrl = "https://app-cc-home." + appUnitFQDN + "/";
 
-                57: homeAppUrl = "https://" + appUnitFQDN + "/app-cc-home/";
+                58: homeAppUrl = "https://" + appUnitFQDN + "/app-cc-home/";
 
 
 1. Specify the app Cell URL in the following files:  
@@ -64,3 +64,16 @@ If your browser displays error message, ignore it and reload the page.
 
                 40: var appMarketListEndpoint = "https://market.demo-fi.personium.io/__/applist/Apps";
                 
+1. Specify the app Cell URL in the following files:  
+    1. Download, modify then upload the main/[index.html](https://github.com/personium/app-cc-home/blob/master/index.html#L41)  
+        - Format:  
+
+                41: var appDirectoryEndpoint = "https://{Directory cell url}/app-uc-directory/OData/directory";
+
+        - Before:  
+
+                41: var appDirectoryEndpoint = "https://demo.personium.io/directory/app-uc-directory/OData/directory";
+
+        - After (example):  
+
+                41: var appDirectoryEndpoint = "https://directory.demo-fi.personium.io/app-uc-directory/OData/directory";
