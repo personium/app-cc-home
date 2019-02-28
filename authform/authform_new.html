@@ -1,0 +1,98 @@
+<!--
+
+    personium.io
+    Copyright 2014 FUJITSU LIMITED
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://app-cc-home.demo.personium.io/__/authform/login.css">
+        <link rel="stylesheet" type="text/css" href="https://app-cc-home.demo.personium.io/__/authform/personium.css">
+
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/8.4.3/i18next.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-xhr-backend/1.5.1/i18nextXHRBackend.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/2.0.0/i18nextBrowserLanguageDetector.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
+        <script defer src="https://app-cc-home.demo.personium.io/__/authform/sample.js"></script>
+
+        <title>OAuth2 authorization endpoint</title>
+    </head>
+    <body>
+        <div class="body">
+            <section class="login-section">
+                <h1 class="login-h1" data-i18n="title">Personium Login</h1>
+                <form action="{4}" id="form" name="form" method="POST">
+                    <div>
+                        <table class="authz-table" align="center">
+                            <tr>
+                                <td class="cell-info"><IMG class="image-circle-large" id="userimg" SRC=""/></td>
+                                <td style="padding: 10px;width:10%;color:#707070;"><i class="fas fa-caret-right fa-3x"></i></td>
+                                <td class="cell-info"><IMG class="image-circle-large" id="logo" SRC=""/></td>
+                            </tr>
+                            <tr>
+                                <td><div id="dataUserName"></div></td>
+                                <td></td>
+                                <td><div id="appName"></div></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td><div id="description"></div></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br>
+                    <div id="warningMessage" style="display:none;">
+                        <font data-i18n="warningMessage" style="color:red;"></font>
+                    </div><br>
+                    <div data-i18n="description1">The above application is trying to access your Personium.</div>
+                    <div data-i18n="description2">If there is no problem please enter the account name and password and login.</div>
+                    <div class="login-form-controls">
+                        <div>
+                            <input type="checkbox" name="keeplogin" id="keeplogin" style="margin-bottom: 16px;" checked/>keeplogin
+                        </div>
+                        <div>
+                            <input type="text" name="username" id="username" data-i18n="[placeholder]accountNamePlaceHolder" placeholder="Please enter the account name."/>
+                        </div>
+                        <div>
+                            <input type="password" name="password" id="password" data-i18n="[placeholder]accountPassPlaceHolder" placeholder="Please enter a password."/>
+                        </div>
+                        <div>
+                            <input class="login_btn round-btn" type="submit" data-i18n="[value]login" value="login"/>
+                        </div>
+                        <div>
+                            <input class="cancel_btn round-btn" type="button" data-i18n="[value]cancel" value="cancel" onclick="onCancel()"/>
+                        </div>
+                    </div>
+                    <input type="hidden" name="state" id="state" value="{6}"/>
+                    <input type="hidden" name="response_type" id="response_type" value="{7}"/>
+                    <input type="hidden" name="p_target" id="p_target" value="{8}"/>
+                    <input type="hidden" name="p_owner" id="p_owner" value="{9}"/>
+                    <input type="hidden" name="client_id" id="client_id" value="{10}"/>
+                    <input type="hidden" name="redirect_uri" id="redirect_uri" value="{11}"/>
+                    <input type="hidden" name="cancel_flg" id="cancel_flg" value="0"/>
+                </form>
+            </section>
+            <select name="language">
+                <option value="ja">日本語</option>
+                <option value="en">English</option>
+            </select>
+
+        </div>
+    </body>
+</html>

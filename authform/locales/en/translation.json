@@ -1,0 +1,11 @@
+{
+  "title": "Personium Login"
+  ,"description1": "The above application is trying to access your Personium."
+  ,"description2": "If there is no problem please enter the account name and password and login."
+  ,"accountNamePlaceHolder": "Please enter the account name."
+  ,"accountPassPlaceHolder": "Please enter a password."
+  ,"unknownApplication": "Unknown application"
+  ,"warningMessage": "An unknown application is trying to access your Personium."
+  ,"login": "Login"
+  ,"cancel": "Cancel"
+}
