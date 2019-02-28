@@ -1,0 +1,251 @@
+.header-body {
+    flex: 1 1 auto;
+}
+/* Round button */
+.round-btn {
+    width: 288px;
+    height: 40px;
+    padding: 0 16px;
+    margin-bottom: 30px;
+    background-color: #2b44b2;
+    border: 0 none;
+    border-radius: 20px;
+    color: #ffffff;
+    outline: 0;
+}
+
+.image-circle-small {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #000;
+    margin-right: 10px;
+}
+
+.image-circle {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #000;
+    margin-right: 10px;
+}
+
+.image-error {
+    width: 48px;
+    height: 48px;
+}
+
+.error_box {
+    width: 100%;
+    height: 70px;
+    clear: both;
+}
+
+.error_area {
+    background: #d10b0b;
+    margin-top: 70px;
+    opacity: 0;
+}
+
+.error_msg {
+    font-size: 14px;
+}
+
+.frames_active {
+    -webkit-transform: translate3d(0, -50px, 0);
+    transform: translate3d(0, -50px, 0);
+    opacity: 1;
+    -webkit-transition: all 1.5s ease;
+    transition: all 1.5s ease;
+}
+
+.frames_hide {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
+}
+
+.modal-content {
+    background-color: rgba(255,255,255,1);
+}
+
+/* Modal CSS */
+.modal-header.login-header {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.modal {
+    top: 0%;
+}
+
+.modal-body input[type="text"] {
+    border: 1px solid #d4d9e3;
+    font-size: 14px;
+    font-weight: 300;
+    margin: 5px 0;
+    padding: 14px 10px;
+    width: 100%;
+    color: #8492af;
+}
+
+.modal-header h4 {
+    color: #030;
+}
+
+.modal-footer {
+    border: 0 none;
+    padding: 10px 15px 26px;
+    text-align: right;
+}
+
+div.mySpinner {
+    position: fixed;
+    z-index: 999;
+    height: 5em;
+    width: 5em;
+    overflow: show;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+div.mySpinner > i {
+    color: #D3D3D3 !important;
+    font-size: 5em;
+}
+
+div.myHiddenDiv {
+    display: none;
+}
+
+.body {
+    height: 100%;
+    padding-top: 80px;
+    background-color: #4D6CEF !important;
+    font-family: 'Raleway', sans-serif;
+    color: #FFF;
+}
+
+.body-biz {
+    background-color: #31437a;
+}
+
+.login-h1 {
+    margin:0 0 44px;
+    font-weight: normal;
+    font-size: 36px;
+}
+
+.login-section {
+    text-align: center;
+    border: 0;
+}
+
+.login-form-controls {
+    margin: 24px 0 30px;
+}
+
+.login-form-controls input[type=text], .login-form-controls input[type=password] {
+    width: 288px;
+    padding: 0 16px;
+    margin-bottom: 16px;
+    line-height: 40px;
+    border: 0 none;
+    border-radius: 20px;
+    color: #333333;
+}
+
+/*
+ * IE hack for line-height
+ */
+.login-form-controls input[type=text], .login-form-controls input[type=password] {
+    height: 40px !important;
+}
+
+.login-form-controls input:focus {
+    outline: none;
+    border: none;
+}
+
+.login_btn {
+    width: 288px;
+    height: 40px;
+    padding: 0 16px;
+    margin-bottom: 30px;
+    background-color: #2A34B7;
+    border: 0 none;
+    border-radius: 20px;
+    outline: 0;
+}
+
+.cancel_btn {
+    background-color: #5a6268 !important;
+}
+
+.login_btn-biz {
+    background-color: #416BBF;
+}
+
+.login_btn:hover, .login_btn:focus {
+    background-color: #44447f;
+}
+
+.login_btn-biz:hover, .login_btn-biz:focus {
+    background-color: #8391B2;
+}
+
+.login_btn_g {
+    background-color: transparent;
+    border: 0 none;
+    border-radius: 0;
+    margin: 5px;
+    padding: 5px;
+    width: 272px;
+    outline: none;
+    font-size: 16px;
+    font-weight: inherit;
+}
+
+.login_btn_g:hover, .login_btn_g:focus {
+    background-color: rgba(0,0,0,0.2);
+    border: 0 none;
+    border-radius: 0;
+    margin: 5px;
+    padding: 5px;
+    width: 272px;
+    font-size: 16px;
+    font-weight: inherit;
+    outline: none;
+}
+
+.image-circle-large {
+    border-radius: 50%;
+    width: 92px;
+    height: 92px;
+    border: 0px none;
+}
+
+.fontBlack {
+    color: #000000 !important;
+    font-weight: inherit !important;
+}
+.fontWhite {
+    color: #ffffff !important;
+    font-weight: inherit !important;
+}
+
+#tProfileDisplayName {
+    font-size: 24px;
+    margin: 16px 0 24px;
+}
+
+.authz-table .cell-info {
+    width: 45%;
+    text-align: center;
+    color: #FFF !important;
+}

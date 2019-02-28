@@ -1,0 +1,11 @@
+{
+  "title": "Personium ログイン"
+  ,"description1": "上記のアプリがあなたのPersoniumにアクセスしようとしています。"
+  ,"description2": "問題が無ければアカウント名とパスワードを入力してログインして下さい。"
+  ,"accountNamePlaceHolder": "アカウント名を入力して下さい。"
+  ,"accountPassPlaceHolder": "パスワードを入力して下さい。"
+  ,"unknownApplication": "不明なアプリ"
+  ,"warningMessage": "不明なアプリがあなたのPersoniumにアクセスしようとしています。"
+  ,"login": "ログイン"
+  ,"cancel": "キャンセル"
+}
