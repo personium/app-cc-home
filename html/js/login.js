@@ -119,7 +119,16 @@ lg.initTarget = function () {
     $("#gLogin").on("click", function (e) {
         var homeUrl = location.href;
         sessionStorage.googleLoginCell = lg.rootUrl;
-        var url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=102363313215-408im4hc7mtsgrda4ratkro2thn58bcd.apps.googleusercontent.com&response_type=code+id_token&scope=openid%20email%20profile&redirect_uri=https%3a%2f%2fdemo%2epersonium%2eio%2fapp%2dcc%2dhome%2f__%2fhtml%2fhomeapp_google_auth%2ehtml&display=popup&nonce=personium&state=" + homeUrl;
+        let params = $.param({
+            client_id: "102363313215-408im4hc7mtsgrda4ratkro2thn58bcd.apps.googleusercontent.com",
+            response_type: "code id_token",
+            scope: "openid email profile",
+            redirect_uri: homeAppUrl + "__/html/homeapp_google_auth.html",
+            display: "popup",
+            nonce: "personium",
+            state: homeUrl
+        });
+        var url = "https://accounts.google.com/o/oauth2/v2/auth?" + params;
         window.location.href = url;
     });
     $("#gLogin > img").attr("src", homeAppUrl + "__/html/img/parts_ico_google.png");
