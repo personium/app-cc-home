@@ -22,4 +22,22 @@ Due to current implemetation of Personium Core, the followings will happen and r
 1. Unit/Cell Manager will be logged out automatically after importing a Cell.  
 
 # How to deploy  
-Follow the steps described in [How to deploy](doc/HowToDeploy.md) to import the Cell, customize and install your Personium HomeApp.Then, experience 
+Follow the steps described in [How to deploy](doc/HowToDeploy.md) to import the Cell, customize and install your Personium HomeApp.  
+`
+# Google Login  
+HomeApp allows user to login using Google authentication.  
+
+## App Developer  
+If you want to deploy your own HomeApp which supports Google Login, make sure you perform the following procedures.  
+
+1. Access the following URL to create your own OAuth 2.0 Client ID.   
+`https://console.developers.google.com/`
+
+1. Replace the client_id's value in [this line](https://github.com/personium/app-cc-home/blob/master/html/js/login.js#L123) with your Client ID.  
+
+## User  
+1. From the hamburger button, click "Account".  
+1. Click "Create Account".  
+1. Click "Google".  
+1. Enter email address.  
+1. Click "Register".  
