@@ -654,7 +654,11 @@ cm.registerRoleRelProfI18n = function (name, boxName, fileName) {
 }
 
 cm.execApp = function (aDom) {
+    let myProf = JSON.parse(sessionStorage.myProfile);
     let launchUrl = $(aDom).data('appLaunchUrl');
+    if (myProf.CellType == "Organization" && $(aDom).data('appLaunchOrgUrl')) {
+        launchUrl = $(aDom).data('appLaunchOrgUrl');
+    }
     let openNewWindow = $(aDom).data('openNewWindow');
     let childWindow;
     // https://stackoverflow.com/questions/20696041/window-openurl-blank-not-working-on-imac-safari

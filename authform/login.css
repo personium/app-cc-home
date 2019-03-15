@@ -132,7 +132,7 @@ div.myHiddenDiv {
 }
 
 .body-biz {
-    background-color: #31437a;
+    background-color: #31437a !important;
 }
 
 .login-h1 {

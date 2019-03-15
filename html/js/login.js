@@ -232,11 +232,10 @@ lg.populateProfile = function(profile) {
 
 lg.setBizTheme = function() {
     let cellType = (JSON.parse(sessionStorage.getItem("myProfile")).CellType || "Person");
+    $('#loginForm').addClass('body');
     if (cellType == "Organization") {
         $('#loginForm').addClass('body-biz');
         $('.login_btn').addClass('login_btn-biz');
-    } else {
-        $('#loginForm').addClass('body');
     };
 };
 
