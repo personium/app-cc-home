@@ -238,6 +238,10 @@ ha.createLaunchLink = function (schema, boxName, msgCnt, id) {
         }
     }).done(function (data) {
         let appLaunchInfo = ut.getAppLaunchUrl(data.personal, boxName);
+        let appOrgLaunchInfo = {};
+        if (data.organization) {
+            appOrgLaunchInfo = ut.getAppLaunchUrl(data.organization, boxName);
+        }
 
         let imgTag = $('<img>', {
             class: 'ins-app-img',
@@ -265,6 +269,7 @@ ha.createLaunchLink = function (schema, boxName, msgCnt, id) {
             onClick: 'return cm.execApp(this)',
             'data-open-new-window': appLaunchInfo.openNewWindow, // $(this).data('openNewWindow')
             'data-app-launch-url': appLaunchInfo.appLaunchUrl, // $(this).data('appLaunchUrl')
+            'data-app-launch-org-url': appOrgLaunchInfo.appLaunchUrl,
             'data-send-refresh-token': data.personal.sendRefreshToken
         });
         aTag.append($(iconDiv), $(nameDiv));
