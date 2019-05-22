@@ -35,6 +35,7 @@ function initJqueryI18next() {
 }
 
 function initContent() {
+    $('body > div.mySpinner').show();
     if (typeof init == "function") {
         init();
     }
