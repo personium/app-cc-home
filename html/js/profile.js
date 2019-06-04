@@ -58,7 +58,7 @@ profile.init = function() {
 
 profile.setProfileValue = function () {
     let cellUrl = JSON.parse(sessionStorage.getItem("sessionData")).cellUrl;
-    $("#user-name-form").attr("data-i18n", "[placeholder]profTrans:myProfile_DisplayName").localize();
+    $("#user-name-form").attr("data-i18n", "[placeholder]pleaseEnterName;[data-previous-value]profTrans:myProfile_DisplayName;[value]profTrans:myProfile_DisplayName").localize();
     $("#description-form-area").attr("data-i18n", "profTrans:myProfile_Description").localize();
     $("div.my_icon").prepend('<img class="user-icon" style="margin: auto;" id="idImgFile" data-i18n="[src]profTrans:myProfile_Image" src="#" alt="image" />').localize();
     $("div.my_icon").prepend('<input type="file" class="fileUpload" onclick="profile.clearInput(this);" onchange="profile.attachFile(\'popupEditUserPhotoErrorMsg\', \'editImgFile\');" id="editImgFile" accept="image/*" style="display: none">');
@@ -127,7 +127,7 @@ profile.clearInput = function (e) {
 profile.updateCellProfile = function () {
     var displayName = $("#user-name-form").val();
     if (!displayName) {
-        displayName = $("#user-name-form").attr("placeholder");
+        displayName = $("#user-name-form").data("previousValue");
     }
     var description = $("#description-form-area").val();
     var fileData = null;
@@ -135,6 +135,7 @@ profile.updateCellProfile = function () {
     if (!profileBoxImageName) {
         profileBoxImageName = i18next.t("profTrans:myProfile_ProfileImageName");
     }
+    // Currently popupEditDisplayNameErrorMsg is not implemented
     var validDisplayName = cm.validateDisplayName(displayName, "popupEditDisplayNameErrorMsg", '#user-name-form');
     if (validDisplayName) {
         $('#popupEditDisplayNameErrorMsg').text('');
@@ -190,7 +191,7 @@ profile.retrieveCollectionAPIResponse = function (json) {
 profile.putFileProcess = function (profileUrl, json) {
     ut.putFileAPI(profileUrl, json).done(function (data) {
         cm.i18nAddProfile(i18next.language, "profTrans", "myProfile", json, cm.getMyCellUrl(), "profile");
-        $("#user-name-form").attr("placeholder", json.DisplayName);
+        $("#user-name-form").val(json.DisplayName).data("previousValue", json.DisplayName);
     }).fail(function () {
         alert("fail");
     });
