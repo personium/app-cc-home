@@ -108,7 +108,6 @@
  ,"arrowedRolesFromThisPerson": "あなたがこの人から許可されている役割です。"
  ,"barfileUrlInput": "barファイルURLを入力して下さい。"
  ,"boxUsedRelation": "リレーションで使用するBOX"
- ,"changeLanguageDescription": "表示する言語を選択して下さい。"
  ,"confirmChangeContentEnter": "入力した内容で変更します。よろしいですか？"
  ,"confirmDeleteAccount": "このアカウントを削除します ( {{value}} )。 よろしいですか？"
  ,"confirmDeleteExternalCell": "この外部セルを削除します ( {{value}} )。 よろしいですか？"
