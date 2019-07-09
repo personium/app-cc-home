@@ -63,8 +63,8 @@
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
     opacity: 0;
-    -webkit-transition: all 1s ease;
-    transition: all 1s ease;
+    -webkit-transition: all 1.5s ease 2s;
+    transition: all 1.5s ease 2s;
 }
 
 .modal-content {
@@ -139,6 +139,18 @@ div.myHiddenDiv {
     margin:0 0 44px;
     font-weight: normal;
     font-size: 36px;
+}
+
+@media (max-height:600px) {
+    .body {
+        padding-top: 30px;
+    }
+    .login-h1 {
+        margin:0 0 20px;
+    }
+    .error_msg {
+        font-size: 9pt;
+    }
 }
 
 .login-section {
