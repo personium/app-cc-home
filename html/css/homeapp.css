@@ -701,3 +701,13 @@ main {
     min-height: calc(100% - 95px);
     font-size: 1.2rem;
 }
+
+.change_password .form-title {
+    width: 100px;
+}
+
+.change_password li.passwordSpecification {
+    border-bottom: none;
+    background-color: #f7F7f7;
+    padding: .375rem .75rem;
+}
