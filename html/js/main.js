@@ -105,6 +105,12 @@ ha.createSideMenuList = function (sideMenuId) {
         callback: function () { chg_lang.loadChangeLanguage(); }
     };
     personium.createSideMenuItem(paramObj);
+    // Privacy Policy
+    paramObj = {
+        title: "PrivacyPolicy",
+        callback: function () { privacy_policy.loadContent(); }
+    };
+    personium.createSideMenuItem(paramObj);
     // log out
     paramObj = {
         title: "Logout",
