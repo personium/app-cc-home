@@ -712,3 +712,24 @@ main {
     background-color: #f7F7f7;
     padding: .375rem .75rem;
 }
+
+#content {
+    margin: 20px 20px 0px 20px;
+}
+
+#content ul {
+    list-style-type: circle !important;
+    padding-inline-start: 40px;
+    background-color: #F7F7F7;
+}
+
+#content li {
+    border-bottom: none !important;
+}
+
+#content a {
+    color: #007bff;
+    text-decoration: underline !important;
+    background-color: transparent;
+    cursor: pointer;
+}
