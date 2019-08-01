@@ -202,7 +202,7 @@ ut.createModalFooterTag = function (id, callback) {
     });
     let cancelBtnTag = $("<button>", {
         type: "button",
-        class: "btn btn-default",
+        class: "btn btn-light",
         "data-dismiss": "modal",
         "data-i18n": "Cancel"
     });
@@ -219,6 +219,8 @@ ut.createModalFooterTag = function (id, callback) {
         }
     });
     footerTag.append(okBtnTag);
+    
+    footerTag.localize();
 
     return footerTag;
 }
