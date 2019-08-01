@@ -1,3 +1,8 @@
+#loginForm {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
 .header-body {
     flex: 1 1 auto;
 }
