@@ -409,7 +409,7 @@ ut.setCropperModalImage = function (imgSrc) {
  * Retrieve the croped image.
  */
 ut.getCroppedModalImage = function () {
-    return $("#cropped_img").attr("src");
+    return $("#cropping_img").cropper("getCroppedCanvas", {width: 92, height: 92}).toDataURL();
 }
 
 /*
