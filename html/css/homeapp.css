@@ -733,3 +733,7 @@ main {
     background-color: transparent;
     cursor: pointer;
 }
+
+.brand-text::after {
+    content: 'Personium Demo JP';
+}
