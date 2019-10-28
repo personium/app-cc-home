@@ -259,7 +259,7 @@ new_links.createExtCell = function (url, count) {
 new_links.searchDirectoryAPI = function (searchVal) {
     return $.ajax({
         type: "GET",
-        url: appDirectoryEndpoint + "?$filter=substringof%28%27" + searchVal + "%27%2CalternateName%29+or+substringof%28%27" + searchVal + "%27%2Curl%29",
+        url: appDirectoryEndpoint + "?%24filter=startswith(alternateName%2C%27" + searchVal + "%27)+or+startswith(url%2C%27https%3A%2F%2F" + searchVal + "%27)",
         datatype: "json",
         headers: {
             "Accept": "application/json"
