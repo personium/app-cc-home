@@ -14,7 +14,7 @@ chg_lang.loadChangeLanguage = function () {
 }
 
 chg_lang.init = function() {
-    $('#language-list li.' + i18next.language).addClass('check-mark-left');
+    $('#language-list li.' + ut.getSupportedLocale()).addClass('check-mark-left');
 }
 
 chg_lang.updateLanguage = function (lng) {

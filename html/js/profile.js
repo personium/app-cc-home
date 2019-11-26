@@ -83,6 +83,7 @@ profile.attachFile = function (popupImageErrorId, fileDialogId) {
         if (cm.validateFileType(profile.fileName, imageFileSize, popupImageErrorId)) {
             profile.getAsBinaryString(file);
         } else {
+            alert("Failed to upload image; format not supported");
             console.log("Failed to upload image; format not supported");
         }
     }
@@ -155,21 +156,21 @@ profile.updateCellProfile = function () {
     }
 };
 profile.retrieveCollectionAPIResponse = function (json) {
-    let profileUrl = cm.getMyCellUrl() + '__/profile.json';
+    let defaultProfileUrl = cm.getMyCellUrl() + '__/profile.json';
     // Check if there is locales folder
     ut.confirmExistenceOfURL(cm.getMyCellUrl() + '__/locales').done(function (res) {
         // Update default profile
-        ut.putFileAPI(profileUrl, json).fail(function (res) {
+        ut.putFileAPI(defaultProfileUrl, json).fail(function (res) {
             console.log(res);
         });
-
-        profileUrl = cm.getMyCellUrl() + '__/locales/' + i18next.language + '/profile.json';
-
+        
+        let localesUrl = cm.getMyCellUrl() + '__/locales/' + ut.getSupportedLocale();
+        let profileUrl = localesUrl + '/profile.json';
         // Check if there is a target language folder
-        ut.confirmExistenceOfURL(cm.getMyCellUrl() + '__/locales/' + i18next.language).fail(function (res) {
+        ut.confirmExistenceOfURL(localesUrl).fail(function (res) {
             $.ajax({
                 type: "MKCOL",
-                url: cm.getMyCellUrl() + '__/locales/' + i18next.language,
+                url: localesUrl,
                 data: '<?xml version="1.0" encoding="utf-8"?><D:mkcol xmlns:D="DAV:" xmlns:p="urn:x-personium:xmlns"><D:set><D:prop><D:resourcetype><D:collection/></D:resourcetype></D:prop></D:set></D:mkcol>',
                 processData: false,
                 headers: {
@@ -185,12 +186,12 @@ profile.retrieveCollectionAPIResponse = function (json) {
             profile.putFileProcess(profileUrl, json);
         });
     }).fail(function (res) {
-        profile.putFileProcess(profileUrl, json);
+        profile.putFileProcess(defaultProfileUrl, json);
     });
 };
 profile.putFileProcess = function (profileUrl, json) {
     ut.putFileAPI(profileUrl, json).done(function (data) {
-        cm.i18nAddProfile(i18next.language, "profTrans", "myProfile", json, cm.getMyCellUrl(), "profile");
+        cm.i18nAddProfile(ut.getSupportedLocale(), "profTrans", "myProfile", json, cm.getMyCellUrl(), "profile");
         $("#user-name-form").val(json.DisplayName).data("previousValue", json.DisplayName);
     }).fail(function () {
         alert("fail");

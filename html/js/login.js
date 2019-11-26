@@ -202,33 +202,50 @@ lg.cellUrl = function() {
     return tempUrl;
 };
 
+/*
+ * 
+ */
 lg.loadProfile = function() {
+    let locale = ut.getSupportedLocale();
+    let profileByLocale = {};
+    personium.getTargetProfileLng(lg.rootUrl, locale, 'profile')
+        .done(function(data){
+            profileByLocale = data;
+        }).fail(function(){
+            console.log('Cannot find profile for: ' + locale);
+        }).always(function(){
+            lg.mergeProfiles(profileByLocale);
+        });
+};
+
+lg.mergeProfiles = function(profileByLocale) {
+    let profileMerged;
     $.ajax({
         type: "GET",
         url: lg.rootUrl + '__/profile.json',
         dataType: 'json',
         headers: {'Accept':'application/json'}
     }).done(function(data) {
-        lg.profile = data;
-        sessionStorage.setItem("myProfile", JSON.stringify(lg.profile));
-        lg.populateProfile(data);
+        profileMerged = $.extend(data, profileByLocale);
     }).fail(function(){
         alert("Do not have a profile.");
-                var noProfile = {
-                    Description: "",
-                    DisplayName: "Guest",
-                    Image: ut.getJdenticon(lg.rootUrl),
-                    ProfileImageName: "",
-                    Scope: "Private"
-                };
-                lg.profile = noProfile;
-                sessionStorage.setItem("myProfile", JSON.stringify(lg.profile));
-        lg.populateProfile(noProfile);
+        var noProfile = {
+            Description: "",
+            DisplayName: "Guest",
+            Image: ut.getJdenticon(lg.rootUrl),
+            ProfileImageName: "",
+            Scope: "Private"
+        };
+        profileMerged = $.extend(noProfile, profileByLocale);
     }).always(function(){
+        lg.profile = profileMerged;
+        sessionStorage.setItem("myProfile", JSON.stringify(profileMerged));
+        lg.populateProfile(profileMerged);
         lg.setBizTheme();
         lg.automaticLogin();
     });
 };
+
 lg.populateProfile = function(profile) {
     $("#tProfileDisplayName").text(profile.DisplayName);
     document.title = "" + profile.DisplayName;
