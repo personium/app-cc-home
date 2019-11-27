@@ -504,10 +504,25 @@ ut.appendCropper = function (croppingImageSelector, dispImageSelector, cropperOp
             data['vectorX'] * canvas_w,
             data['vectorY'] * canvas_h
         );
-
+        
         // Display of cut image
         $(dispImageSelector).attr("src", canvas.toDataURL());
 
         ctx.restore();
     }
+}
+
+/*
+ * This method try to match browser locale to profile locale.
+ * Currently HomeApp only suppport "ja" and "en".
+ * ja-JP -> ja
+ * en-US -> en
+ */
+ut.getSupportedLocale = function() {
+    let tempLang = i18next.language.split('-')[0];
+    if (tempLang != 'ja') {
+        tempLang = "en"; // Default language
+    }
+    
+    return tempLang;
 }
