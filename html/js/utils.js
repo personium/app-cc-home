@@ -85,17 +85,16 @@ ut.changeUnitUrlToLocalUnit = function (cellUrl, cellName, unitUrl) {
  * Convert "personium-localunit:{cellName}:/" to the normal URL format when the Cell (cellUrl) is in the same Personium Unit.
  * Cell URL: personium-localunit:/dixonsiu  (supporting old format)
  *           personium-localunit:/dixonsiu/ (supporting old format)
- *           personium-localunit:dixonsiu:/ new
+ *           personium-localunit:dixonsiu:  (new - missing ending slash)
+ *           personium-localunit:dixonsiu:/ (new)
  */
 ut.changeLocalUnitToUnitUrl = function (cellUrl) {
     var result = cellUrl;
     if (cellUrl.startsWith(ut.PERSONIUM_LOCALUNIT)) {
         // Remove the keyword first
         let cellname = cellUrl.replace(ut.PERSONIUM_LOCALUNIT, "");
-        // Remove ending ":/" of "dixonsiu:/"
-        cellname = cellname.replace(":/", "");
-        // Remove all "/" of "/dixonsiu" and "/dixonsiu/"
-        cellname = cellname.replace(/\//g, "");
+        // Remove all "/" of "/dixonsiu", "/dixonsiu/", "dixonsiu:" and "dixonsiu:/"
+        cellname = cellname.replace(/:|\//g, "");
         
         if (cm.path_based_cellurl_enabled) {
             // https://fqdn/cellname/
