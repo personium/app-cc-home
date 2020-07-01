@@ -67,35 +67,43 @@ ut.getName = function(path, withoutExtension) {
 };
 
 /*
- * Replace the same unit URL as my unit URL with personium-localunit
+ * Convert to "personium-localunit" only when the Cell (cellUrl) is in the same Personium Unit (unitUrl).
+ * Core only recognizes the new format (single slash): personium-localunit:{cellName}:/{path}
+ * Example (Cell URL): "personium-localunit:dixonsiu:/"
+ * Example (Box URL): "personium-localunit:dixonsiu:/app-calendar-box/"
  */
 ut.changeUnitUrlToLocalUnit = function (cellUrl, cellName, unitUrl) {
     var result = cellUrl;
     if (unitUrl.startsWith(cm.user.baseUrl)) {
-        result = ut.PERSONIUM_LOCALUNIT + "/" + cellName + "/";
+        result = ut.PERSONIUM_LOCALUNIT + cellName + ":/";
     }
 
     return result;
 };
 
 /*
- * Replace personium-localunit with your unit URL
+ * Convert "personium-localunit:{cellName}:/" to the normal URL format when the Cell (cellUrl) is in the same Personium Unit.
+ * Cell URL: personium-localunit:/dixonsiu  (supporting old format)
+ *           personium-localunit:/dixonsiu/ (supporting old format)
+ *           personium-localunit:dixonsiu:  (new - missing ending slash)
+ *           personium-localunit:dixonsiu:/ (new)
  */
 ut.changeLocalUnitToUnitUrl = function (cellUrl) {
     var result = cellUrl;
     if (cellUrl.startsWith(ut.PERSONIUM_LOCALUNIT)) {
-        if (!cm.path_based_cellurl_enabled) {
+        // Remove the keyword first
+        let cellname = cellUrl.replace(ut.PERSONIUM_LOCALUNIT, "");
+        // Remove all "/" of "/dixonsiu", "/dixonsiu/", "dixonsiu:" and "dixonsiu:/"
+        cellname = cellname.replace(/:|\//g, "");
+        
+        if (cm.path_based_cellurl_enabled) {
+            // https://fqdn/cellname/
+            result = cm.user.baseUrl + cellname + "/";
+        } else {
             // https://cellname.fqdn/
-            let cellname = cellUrl.replace(ut.PERSONIUM_LOCALUNIT + "/", "");
-            if (cellname.endsWith("/")) {
-                cellname = cellname.substring(0, cellname.length - 1);
-            }
             let unitSplit = cm.user.baseUrl.split("/");
             unitSplit[2] = cellname + "." + unitSplit[2];
             result = unitSplit.join("/");
-        } else {
-            // https://fqdn/cellname/
-            result = cellUrl.replace(ut.PERSONIUM_LOCALUNIT + "/", cm.user.baseUrl);
         }
     }
 
@@ -104,6 +112,9 @@ ut.changeLocalUnitToUnitUrl = function (cellUrl) {
 
 /*
  * Replace personium-localbox with the user's Box URL
+ * Example:
+ * - Before: "personium-localbox:/src/login.html"
+ * - After: "https://dixonsiu.demo-jp.personium.io/cell-manager/src/login.html"
  */
 ut.changeLocalBoxToBoxUrl = function (url, boxName) {
     let result = url;
