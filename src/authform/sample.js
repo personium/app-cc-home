@@ -10,7 +10,7 @@ $(document).ready(function () {
         debug: true,
         backend: {
           loadPath:
-            "https://app-cc-home.demo.personium.io/__/authform/locales/{{lng}}/{{ns}}.json",
+            "${HOME_APP_CELL_URL}__/authform/locales/{{lng}}/{{ns}}.json",
           crossDomain: true,
         },
       },
@@ -195,7 +195,7 @@ function app_on_loaded(oj) {
     document.getElementById("appName").textContent = data.DisplayName;
   } else {
     document.getElementById("logo").src =
-      "https://app-cc-home.demo.personium.io/__/authform/img/warning.svg";
+      "${HOME_APP_CELL_URL}__/authform/img/warning.svg";
     $("#appName").attr("data-i18n", "unknownApplication").localize();
     $("#appName").css("color", "red");
     $("#warningMessage").show();

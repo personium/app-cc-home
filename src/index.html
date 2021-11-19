@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Personium Cell</title>
-    <link rel="icon" href="https://app-cc-home.demo.personium.io/__/html/img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="${HOME_APP_CELL_URL}__/html/img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
     <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
@@ -38,30 +38,36 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script type="text/javascript">
         /* Specify the URL of the source that the home application loads. */
-        var appUnitFQDN = "demo.personium.io";
-        var appMarketListEndpoint = "https://market.demo.personium.io/OData/applist/Apps";
-        var appDirectoryEndpoint = "https://directory.demo.personium.io/app-uc-directory/OData/directory";
-        var homeAppUrl;
+        // var appCellName = "${CELL_NAME}";
+        // var appUnitFQDN = "${UNIT_FQDN}";
+        var appMarketListEndpoint = "${MARKETLIST_ENDPOINT}";
+        var appDirectoryEndpoint = "${APPDIRECTORY_ENDPOINT}";
         var appUseBox = "__";
-        $.ajax({
-            type: "GET",
-            url: "https://" + appUnitFQDN + "/",
-            headers: {
-                'Accept': 'application/json'
-            }
-        }).done(function (unitObj, status, xhr) {
-            let ver = xhr.getResponseHeader("x-personium-version");
-            if (ver < "1.7.1" || unitObj.unit.path_based_cellurl_enabled) {
-                homeAppUrl = "https://" + appUnitFQDN + "/app-cc-home/";
-            } else {
-                homeAppUrl = "https://app-cc-home." + appUnitFQDN + "/";
-            }
-        }).fail(function (res) {
-            homeAppUrl = "https://" + appUnitFQDN + "/app-cc-home/";
-        }).always(function () {
-            loadStyleSheet();
-            loadScript();
-        });
+        // $.ajax({
+        //     type: "GET",
+        //     url: "https://" + appUnitFQDN + "/",
+        //     headers: {
+        //         'Accept': 'application/json'
+        //     }
+        // }).done(function (unitObj, status, xhr) {
+        //     let ver = xhr.getResponseHeader("x-personium-version");
+        //     if (ver < "1.7.1" || unitObj.unit.path_based_cellurl_enabled) {
+        //         homeAppUrl = "https://" + appUnitFQDN + "/" + appCellName + "/";
+        //     } else {
+        //         homeAppUrl = "https://" + appCellName + "." + appUnitFQDN + "/";
+        //     }
+        // }).fail(function (res) {
+        //     homeAppUrl = "https://" + appUnitFQDN + "/" + appCellName + "/";
+        // }).always(function () {
+        //     loadStyleSheet();
+        //     loadScript();
+        // });
+        var homeAppUrl = "${HOME_APP_CELL_URL}";
+
+        setTimeout(function () {
+          loadStyleSheet();
+          loadScript();
+        }, 1);
 
         FontAwesomeConfig = {
             searchPseudoElements: true
