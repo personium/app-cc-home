@@ -5,9 +5,12 @@ set -e
 ME=$(basename $0)
 
 render_template() {
-  local template_dir="/opt/src"
+  local current_dir="$(pwd)"
+  local template_dir="${BUILD_DIR:-$current_dir}/src"
   local suffix=""
-  local output_dir="/opt/dst"
+  local output_dir="${BUILD_DIR:-$current_dir}/dst"
+
+  mkdir -p $output_dir
 
   local template defined_envs relative_path output_path subdir
   defined_envs=$(printf '${%s} ' $(env | cut -d= -f1))
