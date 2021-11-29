@@ -41,3 +41,20 @@ If you want to deploy your own HomeApp which supports Google Login, make sure yo
 1. Click "Google".  
 1. Enter email address.  
 1. Click "Register".  
+
+# Using docker to serve
+
+You can serve your home app with docker. To use docker to serve, you can use below command.
+
+```bash
+docker build . -t app-cc-home
+docker run -d -e HOME_APP_CELL_URL=<CELL_URL_TO_HOMEAPP> app-cc-home
+```
+
+You can specify below variables in env value.
+
+|env|description|
+|:--|:--|
+|HOME_APP_CELL_URL|Specify home app cell url.|
+|MARKET_LIST_ENDPOINT|Specify market list (OData) endpoint url.|
+|APPDIRECTORY_ENDPOINT|Specify app directory (OData) endpoint url.|
