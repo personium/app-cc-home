@@ -42,6 +42,30 @@ If you want to deploy your own HomeApp which supports Google Login, make sure yo
 1. Enter email address.  
 1. Click "Register".  
 
+
+# Using nginx to serve
+
+To serve home app with nginx, you can use build script to prepare stuff.
+
+```bash
+CELL_NAME=app-cc-home UNIT_FQDN=demo.personium.io bash ./build.sh 3> build.log
+```
+
+And then, you can use built stuff in `dst` folder to serve home app.
+
+## build variables
+
+You can specify below environment variables to configure builds.
+
+|env|description|
+|:--|:--|
+|CELL_NAME|Specify home app cell name. If `HOME_APP_CELL_URL` is not specified, this varible is used instead. |
+|UNIT_FQDN|Specify unit FQDN which home app is deployed. If `HOME_APP_CELL_URL` is not specified, this variable is used instead.|
+|HOME_APP_CELL_URL|Specify home app cell url.(Optional)|
+|MARKET_LIST_ENDPOINT|Specify market list (OData) endpoint url.|
+|APPDIRECTORY_ENDPOINT|Specify app directory (OData) endpoint url.|
+
+
 # Using docker to serve
 
 You can serve your home app with docker. To use docker to serve, you can use below command.
@@ -51,10 +75,4 @@ docker build . -t app-cc-home
 docker run -d -e HOME_APP_CELL_URL=<CELL_URL_TO_HOMEAPP> app-cc-home
 ```
 
-You can specify below variables in env value.
-
-|env|description|
-|:--|:--|
-|HOME_APP_CELL_URL|Specify home app cell url.|
-|MARKET_LIST_ENDPOINT|Specify market list (OData) endpoint url.|
-|APPDIRECTORY_ENDPOINT|Specify app directory (OData) endpoint url.|
+You can specify above build variables.
