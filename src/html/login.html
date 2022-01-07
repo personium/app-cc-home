@@ -25,19 +25,30 @@
         </div>
         <div>
           <button class="login_btn_g" id="gLogin">
-            <img id="google"style="width: 24px;height: 24px;margin-right: 8px;background: white;border-radius: 5px;" src="https://app-cc-home.demo.personium.io/__/html/img/parts_ico_google.png">
+            <img id="google" style="width: 24px;height: 24px;margin-right: 8px;background: white;border-radius: 5px;" src="">
             <span class="fontWhite" data-i18n="loginGoogleAccount">Sign in with your Google Account</span>
           </button>
       </div>
       <div class="error_box">
         <div id="error_area" class="error_area">
           <div class="error_content">
-            <img id="imError" class="image-error" src="https://app-cc-home.demo.personium.io/__/html/img/ico_error.png"/>
+            <img id="imError" class="image-error" src=""/>
             <span id="error_msg" class="error_msg" data-i18n="Error">Error</span>
           </div>
         </div>
       </div>
     </section>
   </div>
+  <script>
+    // setup
+    let imgGoogle = document.querySelector("img#google");
+    if (imgGoogle) {
+      google.src = homeAppUrl + "__/html/img/parts_ico_google.png";
+    }
+    let imgError = document.querySelector("img#imError");
+    if (imgError) {
+      imgError.src = homeAppUrl + "__/html/img/ico_error.png";
+    }
+  </script>
 </body>
 </html>
