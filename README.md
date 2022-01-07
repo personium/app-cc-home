@@ -53,17 +53,51 @@ CELL_NAME=app-cc-home UNIT_FQDN=demo.personium.io bash ./build.sh 3> build.log
 
 And then, you can use built stuff in `dst` folder to serve home app.
 
+To serve `dst` folder with nginx, you have to create a nginx configuration file on `/etc/nginx/sites-available/`. Examples are shown below.
+
+```bash
+sudo vim /etc/nginx/sites-available/app-cc-home.conf
+```
+
+```conf
+server {
+  listen  80 default_server;
+
+  location /__/ {
+    add_header Access-Control-Allow-Origin '*' always;
+    alias /opt/dst/app-cc-home/;      # change path to your dst folder
+  }
+
+  error_page 500 502 503 504 /50x.html;
+  location = /50x.html {
+    root /usr/share/nginx/html;
+  }
+}
+```
+
+To enable serving, you can do with below command.
+
+```bash
+sudo ln -s /etc/nginx/sites-available/app-cc-home.conf /etc/nginx/sites-enabled/
+```
+
+And then, restart nginx to apply configuration.
+
+```bash
+sudo systemctl restart nginx
+```
+
 ## build variables
 
 You can specify below environment variables to configure builds.
 
-|env|description|
-|:--|:--|
-|CELL_NAME|Specify home app cell name. If `HOME_APP_CELL_URL` is not specified, this varible is used instead. |
-|UNIT_FQDN|Specify unit FQDN which home app is deployed. If `HOME_APP_CELL_URL` is not specified, this variable is used instead.|
-|HOME_APP_CELL_URL|Specify home app cell url ending with `/`.|
-|MARKETLIST_ENDPOINT|Specify market list (OData) endpoint url.|
-|APPDIRECTORY_ENDPOINT|Specify app directory (OData) endpoint url.|
+|env|description|example|
+|:--|:--|:--|
+|CELL_NAME|Specify home app cell name. If `HOME_APP_CELL_URL` is not specified, this varible is used instead. |`app-cc-home`|
+|UNIT_FQDN|Specify unit FQDN which home app is deployed. If `HOME_APP_CELL_URL` is not specified, this variable is used instead.|`pds.example.com`|
+|HOME_APP_CELL_URL|Specify home app cell url ending with `/`.|`https://app-cc-home.pds.example.com/`|
+|MARKETLIST_ENDPOINT|Specify market list (OData) endpoint url.|`https://market.pds.example.com/OData/applist/Apps`|
+|APPDIRECTORY_ENDPOINT|Specify app directory (OData) endpoint url.|`https://directory.pds.example.com/app-uc-directory/OData/directory`|
 
 
 # Using docker to serve
@@ -75,4 +109,4 @@ docker build . -t app-cc-home
 docker run -d -e HOME_APP_CELL_URL=<CELL_URL_TO_HOMEAPP> app-cc-home
 ```
 
-You can specify above build variables.
+To customize launch configuration, you can specify above build variables.
