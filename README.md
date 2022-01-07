@@ -62,7 +62,7 @@ You can specify below environment variables to configure builds.
 |CELL_NAME|Specify home app cell name. If `HOME_APP_CELL_URL` is not specified, this varible is used instead. |
 |UNIT_FQDN|Specify unit FQDN which home app is deployed. If `HOME_APP_CELL_URL` is not specified, this variable is used instead.|
 |HOME_APP_CELL_URL|Specify home app cell url.(Optional)|
-|MARKET_LIST_ENDPOINT|Specify market list (OData) endpoint url.|
+|MARKETLIST_ENDPOINT|Specify market list (OData) endpoint url.|
 |APPDIRECTORY_ENDPOINT|Specify app directory (OData) endpoint url.|
 
 
